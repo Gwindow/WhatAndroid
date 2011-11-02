@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/widget100"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@drawable/wood">
+	<Button android:id="@+id/Comments" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Comments"
+		android:layout_alignParentTop="true" android:layout_toRightOf="@+id/Tags">
+	</Button>
+	<ScrollView android:id="@+id/widget111"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_below="@+id/artistInfo" android:layout_alignParentLeft="true">
+		<LinearLayout android:id="@+id/LinearLayout02"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:orientation="vertical"></LinearLayout>
+	</ScrollView>
+	<TextView android:id="@+id/artistInfo" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_below="@+id/Info" android:layout_toLeftOf="@+id/image"
+		android:layout_alignParentLeft="true" android:maxLines="10" android:minLines="10"
+		android:scrollbars="vertical"
+		 android:background="@color/transparentBlack">
+	</TextView>
+	<Button android:id="@+id/Tags" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Tags"
+		android:layout_alignParentTop="true" android:layout_toRightOf="@+id/Tags">
+	</Button>
+	<Button android:id="@+id/Info" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Info"
+		android:layout_alignParentTop="true" android:layout_alignParentLeft="true">
+	</Button>
+	<ImageView android:id="@+id/image" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_below="@+id/title"
+		android:layout_alignParentRight="true">
+	</ImageView>
+	<TextView android:id="@+id/title" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_alignParentTop="true" android:layout_alignParentRight="true"
+		 android:background="@color/transparentBlack">
+	</TextView>
+</RelativeLayout>

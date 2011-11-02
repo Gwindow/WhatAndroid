@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="wrap_content" android:background="@drawable/wood">
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:id="@+id/relativeLayout0"
+		android:gravity="center">
+		<TextView android:text="WhatStatus" android:layout_height="wrap_content"
+			android:textSize="25dip" android:textColor="#F5F5F5"
+			android:textStyle="bold" android:layout_width="wrap_content"
+			android:id="@+id/title" android:layout_centerHorizontal="true"
+			android:layout_marginLeft="25dip" android:layout_marginRight="25dip"
+			android:layout_marginTop="25dip" android:layout_marginBottom="10dip"></TextView>
+	</RelativeLayout>
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:id="@+id/relativeLayout1"
+		android:gravity="center" android:background="@color/transparentBlack"
+		android:layout_margin="25dip">
+		<TextView android:text="Site" android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content" android:id="@+id/site"
+			android:layout_below="@+id/title" android:layout_marginLeft="40dip">
+		</TextView>
+		<TextView android:text="Tracker" android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content" android:id="@+id/tracker"
+			android:layout_alignParentLeft="true" android:layout_below="@+id/site"
+			android:layout_marginLeft="40dip"></TextView>
+		<TextView android:text="IRC" android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content" android:id="@+id/irc"
+			android:layout_alignParentLeft="true" android:layout_below="@+id/tracker"
+			android:layout_marginLeft="40dip"></TextView>
+		<ImageView android:id="@+id/sitestatus" android:src="@drawable/site_up"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:layout_alignParentRight="true" android:layout_marginRight="40dip"></ImageView>
+		<ImageView android:id="@+id/trackerstatus" android:src="@drawable/site_up"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:layout_alignParentRight="true" android:layout_below="@+id/sitestatus"
+			android:layout_marginRight="40dip"></ImageView>
+		<ImageView android:id="@+id/ircstatus" android:src="@drawable/site_up"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:layout_alignParentRight="true" android:layout_below="@+id/trackerstatus"
+			android:layout_marginRight="40dip"></ImageView>
+	</RelativeLayout>
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:id="@+id/relativeLayout2"
+		android:layout_centerHorizontal="true" android:gravity="center_horizontal">
+		<RelativeLayout android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:id="@+id/relativeLayout3"
+			android:onClick="openTwitter" android:background="@color/transparentBlack"
+			android:layout_margin="25dip">
+			<TextView android:text="Twitter Feed" android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_width="wrap_content" android:id="@+id/twitter">
+			</TextView>
+			<TextView android:text=" @whatcd" android:textColor="#007FFF"
+				android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_width="wrap_content" android:id="@+id/link"
+				android:layout_toRightOf="@+id/twitter">
+			</TextView>
+		</RelativeLayout>
+		<ScrollView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:layout_below="@+id/relativeLayout3"
+			android:background="@color/transparentBlack"
+			android:layout_marginLeft="25dip" android:layout_marginRight="25dip"
+			android:layout_marginTop="5dip" android:layout_marginBottom="25dip">
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:id="@+id/twitterScroll">
+			</LinearLayout>
+		</ScrollView>
+	</RelativeLayout>
+	<LinearLayout android:orientation="vertical"
+		android:gravity="center"
+		android:layout_width="fill_parent" android:layout_height="wrap_content">
+		<TextView android:text="Content from the site whatstatus.info"
+			android:background="@color/transparentBlack" android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:layout_width="wrap_content" android:id="@+id/original"
+			android:clickable="true"
+			android:onClick="openWhatStatus" android:layout_below="@+id/title"
+			android:layout_marginTop="5dip" android:layout_marginLeft="25dip" android:layout_marginRight="25dip">
+		</TextView>
+	</LinearLayout>
+</LinearLayout>

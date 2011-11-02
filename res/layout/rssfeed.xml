@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:background="@drawable/wood">
+	<RelativeLayout android:layout_height="wrap_content"
+		android:id="@+id/titlebar" android:layout_width="fill_parent"
+		android:background="@color/transparentBlack" android:layout_margin="5dip">
+		<TextView android:text="" android:id="@+id/textView1"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_height="wrap_content" android:layout_width="fill_parent"
+			android:layout_margin="25dip"></TextView>
+	</RelativeLayout>
+	<RelativeLayout android:layout_height="fill_parent"
+		android:id="@+id/relativeLayout" android:layout_width="fill_parent">
+		<ScrollView android:id="@+id/scroller"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:background="@color/transparentBlack"
+			android:layout_margin="25dip">
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:id="@+id/feeds"
+				android:orientation="vertical">
+			</LinearLayout>
+		</ScrollView>
+	</RelativeLayout>
+	<RelativeLayout android:layout_height="fill_parent"
+		android:id="@+id/relativeLayout2" android:layout_width="fill_parent">
+	<LinearLayout android:id="@+id/linearLayout1"
+		android:layout_alignParentBottom="true" android:layout_height="wrap_content"
+		android:layout_width="fill_parent" android:layout_gravity="right"
+		android:orientation="horizontal" android:baselineAligned="false">
+		<Button android:id="@+id/markReadButton" android:layout_height="wrap_content"
+			android:onClick="markAllRead" android:layout_width="wrap_content"
+			android:text="Mark all as read" android:layout_gravity="center"></Button>
+	</LinearLayout>
+	</RelativeLayout>
+</LinearLayout>

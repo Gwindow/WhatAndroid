@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/LinearLayout01" android:layout_width="wrap_content"
+	android:layout_height="wrap_content" android:background="@drawable/userstatswidgetbackground"
+	android:layout_margin="8dip">
+	<RelativeLayout android:layout_height="wrap_content"
+		android:id="@+id/titlebar"
+		android:layout_width="fill_parent" android:background="@color/transparentBlack"
+		android:layout_margin="5dip">
+		<TextView android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:id="@+id/username" android:layout_width="wrap_content"
+			android:text="" android:layout_alignParentLeft="true"
+			android:layout_marginLeft="5dip"></TextView>
+		<TextView android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:textColor="#458B00" android:id="@+id/seedingvalue"
+			android:layout_width="wrap_content" android:text=""
+			android:layout_marginLeft="5dip" android:layout_below="@+id/username">
+		</TextView>
+		<TextView android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:textColor="#458B00" android:id="@+id/leechingvalue"
+			android:layout_width="wrap_content" android:text=""
+			android:layout_marginLeft="5dip" android:layout_below="@+id/seedingvalue">
+		</TextView>
+		<LinearLayout android:layout_height="wrap_content"
+			android:layout_width="wrap_content" android:orientation="vertical"
+			android:layout_alignParentRight="true" android:gravity="right">
+			<TextView android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceSmall"
+				android:textColor="#458B00" android:id="@+id/upvalue"
+				android:layout_width="wrap_content" android:text=""
+				android:layout_toLeftOf="@+id/downvalue"></TextView>
+			<TextView android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceSmall"
+				android:textColor="#458B00" android:id="@+id/downvalue"
+				android:layout_width="wrap_content" android:text=""
+				android:layout_toLeftOf="@+id/ratiovalue"></TextView>
+			<TextView android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceSmall"
+				android:textColor="#458B00" android:id="@+id/ratiovalue"
+				android:layout_width="wrap_content" android:text=""
+				android:layout_alignParentRight="true"></TextView>
+		</LinearLayout>
+	</RelativeLayout>
+</LinearLayout>

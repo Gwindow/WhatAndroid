@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout android:id="@+id/widget0"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<ImageView android:id="@+id/widget31" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:src="@drawable/cat"
+		android:layout_x="0px" android:layout_y="82px">
+	</ImageView>
+	<ImageView android:id="@+id/widget32" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:src="@drawable/left_speech_bubble"
+		android:layout_x="180px" android:layout_y="2px">
+	</ImageView>
+	<TextView android:id="@+id/widget33" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Dave says,"
+		android:textSize="18sp" android:textColor="#ff000000"
+		android:layout_x="240px" android:layout_y="12px">
+	</TextView>
+	<TextView android:id="@+id/textView1" android:layout_width="wrap_content"
+		android:maxWidth="130dp"
+		android:layout_height="wrap_content" android:text="I ate rippy and I'll eat you"
+		android:textColor="@color/black" android:gravity="center"
+		android:layout_x="200px" android:layout_y="52px">
+	</TextView>
+</AbsoluteLayout>

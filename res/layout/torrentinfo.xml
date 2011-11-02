@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <ScrollView android:id="@+id/scrollView" android:background="@drawable/wood" 
+	xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" 
+	android:layout_height="fill_parent"> -->
+<RelativeLayout android:id="@+id/widget30"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@drawable/wood2" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<RelativeLayout android:id="@+id/buttons"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_marginTop="5dip" android:layout_marginRight="10dip"
+		android:layout_marginLeft="10dip" android:layout_below="@+id/torrentTitle"
+		android:layout_toRightOf="@+id/torrentImage">
+		<Button android:text="Statistics" android:layout_height="wrap_content"
+			android:onClick="openStats" android:layout_width="fill_parent"
+			android:id="@+id/statsButton"></Button>
+		<Button android:text="Tags" android:layout_height="wrap_content"
+			android:layout_below="@+id/statsButton" android:layout_width="fill_parent"
+			android:onClick="openTags" android:id="@+id/tagsButton"></Button>
+	</RelativeLayout>
+	<ImageView android:id="@+id/torrentImage"
+		android:adjustViewBounds="true" android:layout_width="wrap_content"
+		android:background="@color/lightGray" android:layout_height="wrap_content"
+		android:layout_marginLeft="10dip" android:layout_marginTop="5dip"
+		android:layout_marginRight="10dip" android:padding="2dip"
+		android:layout_below="@+id/torrentTitle"
+		android:layout_alignParentLeft="true">
+	</ImageView>
+	<TextView android:id="@+id/torrentTitle" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true" android:layout_marginLeft="10dip"
+		android:padding="5dip" android:layout_marginTop="10dip"
+		android:layout_marginRight="10dip" android:text="" android:textColor="@color/white"
+		android:textStyle="bold" android:textSize="20dip"
+		android:background="@drawable/table_header_dark">
+	</TextView>
+	<TextView android:id="@+id/torrentInfo" android:layout_width="fill_parent"
+		android:visibility="gone" android:cursorVisible="false"
+		android:inputType="textMultiLine" android:layout_below="@+id/buttons"
+		android:scrollbars="vertical" android:layout_height="fill_parent"
+		android:layout_marginLeft="10dip" android:layout_marginBottom="5dip"
+		android:padding="5dip" android:layout_marginTop="5dip"
+		android:layout_marginRight="10dip" android:background="@color/lightGray"
+		android:textColor="@color/black" android:textSize="15dip">
+	</TextView>
+</RelativeLayout>
+<!-- </ScrollView> -->

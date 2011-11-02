@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/mainLayout"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:background="@drawable/wood"
+android:orientation="vertical">
+
+    <LinearLayout
+    android:id="@+id/topLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="10dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip">
+
+        <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+            <TextView
+            android:id="@+id/threadTitle"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="22dip"
+            android:onClick="scrollUp"/>
+
+            <View
+            android:layout_height="0dip"
+            android:layout_width="0dip"
+            android:layout_weight="1"/>
+
+            <TextView
+            android:id="@+id/threadAuthor"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="12dip"
+            android:textStyle="bold"
+            android:onClick="scrollUp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+            <Button
+            android:id="@+id/prevButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prev Page"
+            android:onClick="prevPage"/>
+
+            <View
+            android:layout_height="0dip"
+            android:layout_width="0dip"
+            android:layout_weight="1"/>
+
+            <TextView
+            android:id="@+id/threadPage"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="22dip"
+            android:gravity="center"/>
+
+            <View
+            android:layout_height="0dip"
+            android:layout_width="0dip"
+            android:layout_weight="1"/>
+
+            <Button
+            android:id="@+id/nextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next Page"
+            android:onClick="nextPage"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+    android:id="@+id/postScrollView"
+    android:layout_height="0dip"
+    android:layout_width="fill_parent"
+    android:layout_weight="1"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip">
+
+        <LinearLayout
+        android:id="@+id/scrollLayout"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:orientation="vertical">
+            
+            <LinearLayout
+            android:id="@+id/postLayout"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:orientation="vertical"/>
+
+        </LinearLayout>
+        
+    </ScrollView>
+
+    <RelativeLayout 
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:layout_marginBottom="10dip">
+
+        <Button
+        android:text="Reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true" android:id="@+id/replyButton"/>
+
+        <EditText
+        android:text=""
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/replyButton"
+        android:layout_width="fill_parent"
+        android:id="@+id/replyTextField"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="@string/ui_preferences">
+		<CheckBoxPreference android:key="dave_preference"
+			android:title="@string/dave_checkbox_preference" android:summary="@string/dave_checkbox_preference_summary" />
+		<ListPreference android:key="background_list_preference"
+			android:title="@string/background_list_preference" android:summary="@string/background_list_preference_summary"
+			android:entries="@array/background_entries_list" android:entryValues="@array/background_entries_list_values"
+			android:dialogTitle="@string/background_list_preference_title" />
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/refresh_preferences">
+		<EditTextPreference android:key="refresh_interval" android:title="Refresh Interval" />
+	</PreferenceCategory>
+</PreferenceScreen>
