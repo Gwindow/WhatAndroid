@@ -60,12 +60,6 @@ public class AnnouncementActivity extends MyActivity implements OnClickListener 
 	}
 
 	public void openAnnouncement(int i) {
-		/*
-		 * Bundle b = new Bundle(); intent = new Intent(NotificationsActivity.this,
-		 * what.torrents.torrents.TorrentTabActivity.class); b.putString("torrentGroupId",
-		 * notifications.getResponse().getResults().get(i).getGroupId()); intent.putExtras(b);
-		 * startActivityForResult(intent, 0);
-		 */
 	}
 
 	@Override

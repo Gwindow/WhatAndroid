@@ -219,6 +219,7 @@
 		<service android:name="what.services.NotificationService" />
 		<service android:name="what.services.InboxService" />
 		<service android:name="what.services.AnnouncementService" />
+
 		
 		<receiver android:name="what.widget.UserStatsWidgetProvider"
 			android:label="What.CD User Stats">

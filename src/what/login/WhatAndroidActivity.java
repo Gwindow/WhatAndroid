@@ -308,6 +308,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 					} else if (msg.what == 4) {
 						dialog.dismiss();
 						displayError("Error", "MySoup.isLoggedIn() == false", WhatAndroidActivity.this);
+					} else if (msg.what == 4) {
+						dialog.dismiss();
+						displayError("Error", "MySoup.isLoggedIn() == false", WhatAndroidActivity.this);
 					}
 				}
 			};
@@ -341,6 +344,10 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				MySoup.setSessionId(Settings.getSessionId());
 				// MySoup.setAuthKey(Settings.getAuthKey());
 				if (MySoup.isLoggedIn()) {
+					/*
+					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
+					 */
 					/*
 					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
 					 * catch (CouldNotLoadException e) { e.printStackTrace(); }

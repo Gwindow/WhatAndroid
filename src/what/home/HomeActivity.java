@@ -6,6 +6,7 @@ import java.util.List;
 
 import what.gui.MyActivity;
 import what.gui.R;
+import what.services.AnnouncementService;
 import what.services.InboxService;
 import what.services.NotificationService;
 import what.settings.SettingsActivity;
@@ -68,8 +69,8 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		notificationService = new Intent(this, NotificationService.class);
 		startService(notificationService);
 
-		// annoucementService = new Intent(this, AnnouncementService.class);
-		// startService(annoucementService);
+		annoucementService = new Intent(this, AnnouncementService.class);
+		startService(annoucementService);
 	}
 
 	private String toGBString(String s) {
