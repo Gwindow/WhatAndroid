@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Torrents" android:id="@+id/torrentSearchItem"
+				android:menuCategory="secondary"></item>
+			<item android:title="Requests" android:id="@+id/requestSearchItem"
+				android:menuCategory="secondary"></item>
+			<item android:title="Users" android:id="@+id/userSearchItem"
+				android:menuCategory="secondary"></item>
+</menu>

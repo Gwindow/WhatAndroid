@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/TableLayout01" android:layout_width="fill_parent"
+	android:layout_height="wrap_content" android:stretchColumns="0">
+	<TableRow android:layout_width="fill_parent"
+		android:layout_height="wrap_content" style="@style/TopTorrentNameEven">
+		<TextView android:id="@+id/title" android:layout_width="wrap_content"
+			android:textColor="@color/black" android:layout_height="wrap_content"></TextView>
+		<TextView android:id="@+id/data" android:text="00 TB"
+			android:layout_marginRight="25dip" android:textColor="@color/black"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+		<TextView android:id="@+id/snatched" android:layout_width="wrap_content"
+			android:layout_marginRight="25dip" android:textColor="@color/black"
+			android:layout_height="wrap_content"></TextView>
+		<TextView android:id="@+id/seeders" android:layout_width="wrap_content"
+			android:layout_marginRight="25dip" android:textColor="@color/black"
+			android:layout_height="wrap_content"></TextView>
+		<TextView android:id="@+id/leechers" android:layout_width="wrap_content"
+			android:layout_marginRight="25dip" android:textColor="@color/black"
+			android:layout_height="wrap_content"></TextView>
+		<TextView android:id="@+id/peers" android:text="100"
+			android:textColor="@color/black" android:layout_width="wrap_content"
+			android:layout_height="wrap_content"></TextView>
+	</TableRow>
+</TableLayout>

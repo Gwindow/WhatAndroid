@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:background="@drawable/wood">
+
+
+    <TextView
+    android:layout_width="wrap_content"
+    android:text="Search"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+	android:id="@+id/searchTextView"/>
+
+    <EditText
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/searchField"/>
+
+	<TextView
+    android:layout_width="wrap_content"
+    android:text="Tags (comma-separated)"
+	android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+	android:id="@+id/tagTextView"/>
+
+    <EditText
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/searchTagField"/>
+
+	<Button
+    android:id="@+id/searchButton"
+    android:layout_width="wrap_content"
+	android:text="Search"
+    android:layout_gravity="right"
+	android:layout_height="wrap_content"/>
+
+	<Button
+    android:id="@+id/nextButton"
+    android:layout_width="wrap_content"
+	android:text="Next Page -->"
+    android:layout_gravity="right"
+	android:layout_height="wrap_content"
+    android:visibility="invisible"/>
+
+	<ScrollView
+    android:id="@+id/ScrollView"
+	android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+	android:layout_below="@+id/nextButton"
+    android:layout_alignParentLeft="true">
+
+		<LinearLayout
+        android:id="@+id/LinearLayout02"
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+		android:orientation="vertical"/>
+
+	</ScrollView>
+    
+</LinearLayout>

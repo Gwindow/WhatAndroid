@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:background="@drawable/wood2" android:orientation="vertical">
+
+	<TextView android:id="@+id/titleText" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true" android:layout_marginLeft="10dip"
+		android:padding="5dip" android:layout_marginTop="10dip"
+		android:layout_marginRight="10dip" android:textColor="@color/white"
+		android:textStyle="bold" android:textSize="20dip"
+		android:background="@drawable/table_header_dark" />
+
+	<ScrollView android:id="@+id/threadsScroll"
+		android:layout_width="fill_parent" android:layout_height="0dip"
+		android:layout_weight="1" android:layout_marginLeft="10dip"
+		android:layout_marginRight="10dip" android:layout_marginBottom="10dip"
+		android:padding="10dip">
+
+		<TableLayout android:id="@+id/scrollLayout"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:orientation="vertical" />
+
+	</ScrollView>
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:orientation="horizontal">
+		<RelativeLayout android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:orientation="horizontal">
+			<Button android:layout_gravity="right" android:layout_width="wrap_content"
+				android:layout_alignParentLeft="true" android:text="Previous Page"
+				android:layout_height="wrap_content" android:id="@+id/previousButton"></Button>
+			<Button android:text="Next Page" android:id="@+id/nextButton"
+				android:layout_alignParentRight="true" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:layout_gravity="right"></Button>
+		</RelativeLayout>
+	</LinearLayout>
+</LinearLayout>

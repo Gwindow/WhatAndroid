@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@drawable/wood">
+	<TextView android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:id="@+id/textView1"
+		android:text="Title" android:textAppearance="?android:attr/textAppearanceLarge"></TextView>
+	<EditText android:layout_height="wrap_content" android:id="@+id/threadTitle"
+		android:layout_width="fill_parent">
+	</EditText>
+	<TextView android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:id="@+id/textView2"
+		android:text="Body" android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+	<EditText android:id="@+id/threadBody" android:layout_height="wrap_content"
+		android:maxLines="7" android:minLines="7" android:layout_width="fill_parent">
+	</EditText>
+	<LinearLayout android:id="@+id/linearLayout1"
+		android:layout_height="wrap_content" android:layout_width="fill_parent"
+		android:layout_gravity="right" android:orientation="horizontal"
+		android:baselineAligned="false">
+		<Button android:id="@+id/postButton" android:layout_height="wrap_content"
+			android:layout_width="wrap_content" android:text="Post Reply"
+			android:layout_gravity="right"></Button>
+		<Button android:id="@+id/cancelButton" android:layout_height="wrap_content"
+			android:layout_width="wrap_content" android:text="Cancel"
+			android:layout_gravity="right"></Button>
+	</LinearLayout>
+
+
+</LinearLayout>
