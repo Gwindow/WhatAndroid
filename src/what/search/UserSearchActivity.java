@@ -9,8 +9,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,13 +28,28 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 	private ProgressDialog dialog;
 	private String searchTerm;
 	private EditText searchBar;
+	private Button backButton, nextButton;
+	private int page;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.usersearch);
+		backButton = (Button) this.findViewById(R.id.previousButton);
+		nextButton = (Button) this.findViewById(R.id.nextButton);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
+
+		getBundle();
+	}
+
+	private void getBundle() {
+		Bundle b = this.getIntent().getExtras();
+		try {
+			page = b.getInt("page");
+		} catch (Exception e) {
+			page = 1;
+		}
 	}
 
 	public void search(View v) {
@@ -46,6 +63,9 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 	}
 
 	private void populateLayout() {
+		backButton.setEnabled(userSearch.hasPreviousPage());
+		nextButton.setEnabled(userSearch.hasNextPage());
+
 		List<Results> results = userSearch.getResponse().getResults();
 
 		if (!results.isEmpty()) {
@@ -89,6 +109,39 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 		}
 	}
 
+	public void next(View v) {
+		Bundle b = new Bundle();
+		intent = new Intent(UserSearchActivity.this, what.search.UserSearchActivity.class);
+		b.putInt("page", page + 1);
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
+	}
+
+	public void back(View v) {
+		finish();
+	}
+
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+		if ((e2.getX() - e1.getX()) > 35) {
+			try {
+				if (userSearch.hasNextPage()) {
+					next(null);
+				}
+			} catch (Exception e) {
+				finish();
+			}
+		}
+		if ((e2.getX() - e1.getX()) < -35) {
+			try {
+				finish();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
 	private class LoadSearchResults extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPreExecute() {
@@ -101,7 +154,7 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			userSearch = UserSearch.userSearchFromSearchTerm(searchTerm);
+			userSearch = UserSearch.userSearchFromSearchTermAndPage(searchTerm, page);
 			return userSearch.getStatus();
 		}
 
@@ -110,10 +163,10 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 			if (status == true) {
 				populateLayout();
 			}
+			dialog.dismiss();
 			if (status == false) {
 				Toast.makeText(UserSearchActivity.this, "Could not load search results", Toast.LENGTH_LONG).show();
 			}
-			dialog.dismiss();
 			unlockScreenRotation();
 		}
 	}

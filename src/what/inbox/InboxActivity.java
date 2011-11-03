@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -121,6 +122,27 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 		if ((v.getId() >= 0) && (counter >= v.getId())) {
 			openMessage(v.getId());
 		}
+	}
+
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+		if ((e2.getX() - e1.getX()) > 35) {
+			try {
+				if (inbox.hasNextPage()) {
+					next(null);
+				}
+			} catch (Exception e) {
+				finish();
+			}
+		}
+		if ((e2.getX() - e1.getX()) < -35) {
+			try {
+				finish();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 
 	private class LoadInbox extends AsyncTask<Void, Void, Boolean> {

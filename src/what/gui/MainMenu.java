@@ -61,7 +61,8 @@ public class MainMenu extends MyActivity {
 	}
 
 	public void settings(View v) {
-		// TODO add
+		intent = new Intent(MainMenu.this, what.settings.SettingsActivity.class);
+		startActivityForResult(intent, 0);
 	}
 
 	public void report(View v) {

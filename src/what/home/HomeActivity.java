@@ -6,9 +6,7 @@ import java.util.List;
 
 import what.gui.MyActivity;
 import what.gui.R;
-import what.services.AnnouncementService;
 import what.services.InboxService;
-import what.services.NotificationService;
 import what.settings.SettingsActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -66,11 +64,11 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		inboxService = new Intent(this, InboxService.class);
 		startService(inboxService);
 
-		notificationService = new Intent(this, NotificationService.class);
-		startService(notificationService);
+		// notificationService = new Intent(this, NotificationService.class);
+		// startService(notificationService);
 
-		annoucementService = new Intent(this, AnnouncementService.class);
-		startService(annoucementService);
+		// annoucementService = new Intent(this, AnnouncementService.class);
+		// startService(annoucementService);
 	}
 
 	private String toGBString(String s) {
@@ -144,16 +142,18 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			subscriptions = Subscriptions.init();
-			return true;
+			return subscriptions.getStatus();
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			populateLayout();
+			if (status == true) {
+				populateLayout();
+			}
+			dialog.dismiss();
 			if (status == false) {
 				Toast.makeText(HomeActivity.this, "Could not load subscriptions", Toast.LENGTH_LONG).show();
 			}
-			dialog.dismiss();
 			unlockScreenRotation();
 		}
 	}

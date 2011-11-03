@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -71,7 +72,7 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 		backButton.setEnabled(notifications.hasPreviousPage());
 		nextButton.setEnabled(notifications.hasNextPage());
 
-		title.setText("Notifications, page " + notifications.getResponse().getCurrentPages().toString() + ", "
+		title.setText("Notifications, page " + notifications.getResponse().getCurrentPages().toString() + "\n"
 				+ notifications.getResponse().getNumNew() + " new notifications");
 		for (int i = 0; i < notifications.getResponse().getResults().size(); i++) {
 			if ((i % 2) == 0) {
@@ -131,6 +132,27 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 				openTorrent(i);
 			}
 		}
+	}
+
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+		if ((e2.getX() - e1.getX()) > 35) {
+			try {
+				if (notifications.hasNextPage()) {
+					next(null);
+				}
+			} catch (Exception e) {
+				finish();
+			}
+		}
+		if ((e2.getX() - e1.getX()) < -35) {
+			try {
+				finish();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 
 	private class LoadNotifications extends AsyncTask<Void, Void, Boolean> {

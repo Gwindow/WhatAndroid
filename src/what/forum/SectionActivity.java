@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,7 +25,6 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	private TableLayout scrollTable;
 	private int counter;
 	private ProgressDialog dialog;
-	private TableRow topRow;
 	private ArrayList<TableRow> threadList = new ArrayList<TableRow>();
 	private ArrayList<Button> lastReadList = new ArrayList<Button>();
 	private ArrayList<TextView> titleList = new ArrayList<TextView>();
@@ -33,11 +33,15 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	private Intent intent;
 	private Section section;
 	private int id, page;
+	private Button backButton, nextButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.threads);
+		backButton = (Button) this.findViewById(R.id.previousButton);
+		nextButton = (Button) this.findViewById(R.id.nextButton);
+
 		scrollTable = (TableLayout) findViewById(R.id.scrollLayout);
 		sectionTitle = (TextView) findViewById(R.id.titleText);
 		getBundle();
@@ -52,6 +56,8 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	}
 
 	private void populateLayout() {
+		backButton.setEnabled(section.hasPreviousPage());
+		nextButton.setEnabled(section.hasNextPage());
 
 		int rowLayoutId;
 		int textLayoutId;
@@ -137,6 +143,19 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 		Toast.makeText(this, "author " + i, Toast.LENGTH_SHORT).show();
 	}
 
+	public void back(View v) {
+		finish();
+	}
+
+	public void next(View v) {
+		Bundle b = new Bundle();
+		intent = new Intent(SectionActivity.this, what.forum.SectionActivity.class);
+		b.putInt("id", id);
+		b.putInt("page", 2);
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
+	}
+
 	@Override
 	public void onClick(View v) {
 		for (int i = 0; i < (threadList.size()); i++) {
@@ -152,6 +171,27 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 		}
 	}
 
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+		if ((e2.getX() - e1.getX()) > 35) {
+			try {
+				if (section.hasNextPage()) {
+					next(null);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if ((e2.getX() - e1.getX()) < -35) {
+			try {
+				finish();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
 	private class LoadSection extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPreExecute() {
@@ -165,18 +205,18 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			section = Section.sectionFromIdAndPage(id, page);
-			// return artist.getStatus();
-			// TODO fix
-			return true;
+			return section.getStatus();
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			populateLayout();
+			if (status == true) {
+				populateLayout();
+			}
+			dialog.dismiss();
 			if (status == false) {
 				Toast.makeText(SectionActivity.this, "Could not load subscriptions", Toast.LENGTH_LONG).show();
 			}
-			dialog.dismiss();
 			unlockScreenRotation();
 		}
 	}
