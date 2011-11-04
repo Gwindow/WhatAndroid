@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="horizontal" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-	<Button android:id="@+id/quoteButton" android:layout_height="wrap_content"
-		android:layout_width="wrap_content" android:text="Quote"
-		android:onClick="quotePost"
-		android:layout_gravity="right" android:layout_weight="1"></Button>
-	<Button android:id="@+id/timeButton" android:layout_height="wrap_content"
-		android:layout_width="wrap_content" android:text="Time"
-		android:onClick="showPostTime"
-		android:layout_gravity="right" android:layout_weight="1"></Button>
-	<Button android:id="@+id/profileButton" android:layout_height="wrap_content"
-		android:layout_width="wrap_content" android:text="Profile"
-		android:onClick="openProfile"
-		android:layout_gravity="right" android:layout_weight="1"></Button>
-	<Button android:id="@+id/reportButton" android:layout_height="wrap_content"
-		android:layout_width="wrap_content" android:text="Report"
-		android:onClick="reportPost"
-		android:layout_gravity="right" android:layout_weight="1"></Button>
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="horizontal" android:gravity="fill_vertical">
+	<LinearLayout android:id="@+id/buttons1"
+		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
+		android:layout_height="wrap_content" android:layout_width="fill_parent"
+		android:orientation="horizontal">
+		<Button android:text="Quote" android:id="@+id/button1"
+			android:background="@drawable/btn_black" style="@style/ButtonText"
+			android:onClick="quotePost" android:layout_height="wrap_content"
+			android:layout_weight="1" android:layout_width="0dp"></Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/buttons2"
+		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
+		android:layout_below="@+id/buttons1" android:layout_height="wrap_content"
+		android:layout_width="fill_parent">
+		<Button android:text="Time" android:id="@+id/button3"
+			android:background="@drawable/btn_black" style="@style/ButtonText"
+			android:onClick="showPostTime" android:layout_height="wrap_content"
+			android:layout_weight="1" android:layout_width="0dp"></Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/buttons3"
+		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
+		android:layout_below="@+id/buttons2" android:layout_height="wrap_content"
+		android:layout_width="fill_parent">
+		<Button android:text="Profile" android:id="@+id/button7"
+			android:background="@drawable/btn_black" style="@style/ButtonText"
+			android:onClick="openProfile" android:layout_height="wrap_content"
+			android:layout_weight="1" android:layout_width="0dp"></Button>
+
+	</LinearLayout>
+</RelativeLayout>

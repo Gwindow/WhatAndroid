@@ -11,15 +11,27 @@
 		android:textColor="@color/white" android:textStyle="bold"
 		android:textSize="20dip" android:background="@drawable/table_header_dark">
 	</TextView>
-	<Button android:layout_width="fill_parent" android:id="@+id/scanbutton" android:background="@drawable/btn_black" style="@style/ButtonText"
+	<Button android:layout_width="fill_parent" android:id="@+id/scanbutton"
+		android:background="@drawable/btn_black" style="@style/ButtonText"
 		android:layout_below="@+id/title" android:text="Scan" android:onClick="scan"
-		android:padding="5dip" android:layout_height="wrap_content" android:layout_margin="10dip" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:layout_marginTop="10dip" android:layout_marginBottom="5dip"></Button>
-	<Button android:layout_width="fill_parent" android:id="@+id/manualbutton" android:background="@drawable/btn_black" style="@style/ButtonText"
+		android:padding="5dip" android:layout_height="wrap_content"
+		android:layout_margin="10dip" android:layout_marginLeft="10dip"
+		android:layout_marginRight="10dip" android:layout_marginTop="10dip"
+		android:layout_marginBottom="5dip"></Button>
+	<Button android:layout_width="fill_parent" android:id="@+id/manualbutton"
+		android:background="@drawable/btn_black" style="@style/ButtonText"
 		android:layout_below="@+id/scanbutton" android:text="Enter UPC"
-		android:onClick="manual" android:padding="5dip" android:layout_height="wrap_content" android:layout_margin="10dip" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:layout_marginTop="10dip" android:layout_marginBottom="5dip"></Button>
-	<Button android:layout_width="fill_parent" android:id="@+id/buybutton" android:background="@drawable/btn_black" style="@style/ButtonText"
+		android:onClick="manual" android:padding="5dip" android:layout_height="wrap_content"
+		android:layout_margin="10dip" android:layout_marginLeft="10dip"
+		android:layout_marginRight="10dip" android:layout_marginTop="10dip"
+		android:layout_marginBottom="5dip"></Button>
+	<Button android:layout_width="fill_parent" android:id="@+id/buybutton"
+		android:background="@drawable/btn_black" style="@style/ButtonText"
 		android:layout_below="@+id/manualbutton" android:text="Buy Music"
-		android:onClick="buy" android:padding="5dip" android:layout_height="wrap_content" android:layout_margin="10dip" android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:layout_marginTop="10dip" android:layout_marginBottom="5dip"></Button>
+		android:onClick="buy" android:padding="5dip" android:layout_height="wrap_content"
+		android:layout_margin="10dip" android:layout_marginLeft="10dip"
+		android:layout_marginRight="10dip" android:layout_marginTop="10dip"
+		android:layout_marginBottom="5dip"></Button>
 	<ScrollView android:id="@+id/scrollView"
 		android:layout_below="@id/buybutton" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:layout_marginTop="10dip"

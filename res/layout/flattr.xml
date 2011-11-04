@@ -9,12 +9,12 @@
 		android:layout_marginRight="10dip" android:text="Donate money via Flattr"
 		android:textColor="@color/white" android:textStyle="bold"
 		android:textSize="18dip" android:background="@drawable/table_header_dark" />
+	<TextView android:text="The developers...." android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge"
+		android:id="@+id/textView1" android:layout_margin="5dip"></TextView>
 	<com.flattr4android.sdk.FlattrButton
-		flattr_sdk:token=""
-		flattr_sdk:token_secret=""
-		flattr_sdk:thing_id=""
-		 android:layout_width="fill_parent"
-		android:layout_gravity="center" android:layout_height="fill_parent"
-		android:layout_margin="25dip"></com.flattr4android.sdk.FlattrButton>
+		flattr_sdk:token="" flattr_sdk:token_secret="" flattr_sdk:thing_id=""
+		android:layout_width="fill_parent" android:layout_gravity="center"
+		android:layout_height="fill_parent" android:layout_margin="25dip"></com.flattr4android.sdk.FlattrButton>
 </LinearLayout>
     

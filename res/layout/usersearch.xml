@@ -19,6 +19,7 @@
 		android:layout_width="fill_parent">
 	</EditText>
 	<Button android:text="Search" android:layout_width="wrap_content"
+		android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
 		android:layout_marginRight="10dip" android:layout_alignParentRight="true"
 		android:layout_height="wrap_content" android:id="@+id/searchButton"
 		android:onClick="search" android:layout_below="@+id/searchBar">
@@ -27,7 +28,7 @@
 		android:layout_below="@+id/searchButton" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:layout_marginTop="5dip"
 		android:layout_marginLeft="10dip" android:layout_marginRight="10dip"
-		android:layout_marginBottom="5dip" android:padding="5dip">
+		android:padding="5dip" android:layout_above="@+id/linearLayout1">
 		<LinearLayout android:id="@+id/scrollLayout"
 			android:layout_height="fill_parent" android:layout_width="fill_parent"
 			android:orientation="vertical">

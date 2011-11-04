@@ -26,7 +26,7 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 	private UserSearch userSearch;
 	private Intent intent;
 	private ProgressDialog dialog;
-	private String searchTerm;
+	private String searchTerm = "";
 	private EditText searchBar;
 	private Button backButton, nextButton;
 	private int page;
@@ -41,6 +41,11 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
 
 		getBundle();
+
+		// if the page is greater than one than get the search term and automatically search for it
+		if (page > 1) {
+			new LoadSearchResults().execute();
+		}
 	}
 
 	private void getBundle() {
@@ -50,12 +55,20 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 		} catch (Exception e) {
 			page = 1;
 		}
+
+		try {
+			searchTerm = b.getString("searchTerm");
+		} catch (Exception e) {
+			searchTerm = "";
+		}
 	}
 
 	public void search(View v) {
 		searchTerm = searchBar.getText().toString().trim();
 		if (searchTerm.length() > 0) {
 			clear();
+			// reset the page to 1 for the search
+			page = 1;
 			new LoadSearchResults().execute();
 		} else {
 			Toast.makeText(this, "Nothing to search for", Toast.LENGTH_SHORT).show();
@@ -113,6 +126,7 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 		Bundle b = new Bundle();
 		intent = new Intent(UserSearchActivity.this, what.search.UserSearchActivity.class);
 		b.putInt("page", page + 1);
+		b.putString("searchTerm", searchTerm);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}

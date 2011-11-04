@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="wrap_content" android:background="@drawable/wood">
+	android:layout_height="wrap_content" android:background="@drawable/wood2">
 	<RelativeLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:id="@+id/relativeLayout0"
 		android:gravity="center">
-		<TextView android:text="WhatStatus" android:layout_height="wrap_content"
-			android:textSize="25dip" android:textColor="#F5F5F5"
-			android:textStyle="bold" android:layout_width="wrap_content"
-			android:id="@+id/title" android:layout_centerHorizontal="true"
-			android:layout_marginLeft="25dip" android:layout_marginRight="25dip"
-			android:layout_marginTop="25dip" android:layout_marginBottom="10dip"></TextView>
+		<TextView android:id="@+id/title" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:layout_alignParentTop="true"
+			android:layout_alignParentLeft="true" android:layout_marginLeft="10dip"
+			android:padding="5dip" android:layout_marginTop="10dip"
+			android:layout_marginRight="10dip" android:text="WhatStatus"
+			android:textColor="@color/white" android:textStyle="bold"
+			android:textSize="20dip" android:background="@drawable/table_header_dark">
+		</TextView>
 	</RelativeLayout>
 	<RelativeLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:id="@+id/relativeLayout1"
-		android:gravity="center" android:background="@color/transparentBlack"
+		android:gravity="center" android:textStyle="bold"
+			android:background="@drawable/table_header_dark"
 		android:layout_margin="25dip">
 		<TextView android:text="Site" android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceMedium"
@@ -48,16 +51,19 @@
 		android:layout_centerHorizontal="true" android:gravity="center_horizontal">
 		<RelativeLayout android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:id="@+id/relativeLayout3"
-			android:onClick="openTwitter" android:background="@color/transparentBlack"
-			android:layout_margin="25dip">
+			android:onClick="openTwitter" android:layout_margin="25dip">
 			<TextView android:text="Twitter Feed" android:layout_height="wrap_content"
+				android:textStyle="bold" android:textSize="20dip"
+				android:background="@drawable/table_header_dark"
 				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:layout_width="wrap_content" android:id="@+id/twitter">
+				android:id="@+id/twitter" android:layout_width="wrap_content">
 			</TextView>
 			<TextView android:text=" @whatcd" android:textColor="#007FFF"
+				android:textStyle="bold" android:textSize="20dip"
+				android:background="@drawable/table_header_dark"
 				android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium"
-				android:layout_width="wrap_content" android:id="@+id/link"
-				android:layout_toRightOf="@+id/twitter">
+				android:id="@+id/link" android:layout_toRightOf="@+id/twitter"
+				android:layout_width="fill_parent">
 			</TextView>
 		</RelativeLayout>
 		<ScrollView android:layout_width="fill_parent"
@@ -71,15 +77,16 @@
 		</ScrollView>
 	</RelativeLayout>
 	<LinearLayout android:orientation="vertical"
-		android:gravity="center"
-		android:layout_width="fill_parent" android:layout_height="wrap_content">
+		android:gravity="center" android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
 		<TextView android:text="Content from the site whatstatus.info"
-			android:background="@color/transparentBlack" android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceSmall"
+
+			android:background="@drawable/table_header_dark"
+			android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall"
 			android:layout_width="wrap_content" android:id="@+id/original"
-			android:clickable="true"
-			android:onClick="openWhatStatus" android:layout_below="@+id/title"
-			android:layout_marginTop="5dip" android:layout_marginLeft="25dip" android:layout_marginRight="25dip">
+			android:clickable="true" android:onClick="openWhatStatus"
+			android:layout_below="@+id/title" android:layout_marginTop="5dip"
+			android:layout_marginLeft="25dip" android:layout_marginRight="25dip">
 		</TextView>
 	</LinearLayout>
 </LinearLayout>

@@ -10,12 +10,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import api.products.ProductSearch;
 
-public class ScannerActivity extends MyActivity {
+public class ScannerActivity extends MyActivity implements OnClickListener {
 	private static final String KEY = "AIzaSyDOPEJep1GSxaWylXm7Tvdytozve8odmuo";
 	private Intent intent;
 	private String contents;
@@ -61,7 +62,6 @@ public class ScannerActivity extends MyActivity {
 				contents = intent.getStringExtra("SCAN_RESULT");
 				format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 				upc = contents;
-				test();
 				new LoadSearchResults().execute();
 			} else if (resultCode == RESULT_CANCELED) {
 				Toast.makeText(this, "Scan failed", Toast.LENGTH_LONG).show();
@@ -69,14 +69,13 @@ public class ScannerActivity extends MyActivity {
 		}
 	}
 
-	// TODO remove
-	private void test() {
-		Toast.makeText(this, "Contents: " + contents, Toast.LENGTH_LONG).show();
-		Toast.makeText(this, "Format: " + format, Toast.LENGTH_LONG).show();
-	}
-
 	private void populateLayout() {
 		Toast.makeText(this, "name: " + searchterm, Toast.LENGTH_LONG).show();
+		// if music doesnt exsist on what open up a popup
+		displayMessagePopup();
+		// else {
+		// populate layout with search results
+		// }
 	}
 
 	public void displayEditTextPopup() {
@@ -106,6 +105,38 @@ public class ScannerActivity extends MyActivity {
 		alert.show();
 	}
 
+	public void displayMessagePopup() {
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		alert.setTitle("");
+		alert.setMessage("Could not find this music on What.CD");
+
+		alert.setPositiveButton("Buy it", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+				buy(null);
+			}
+		});
+
+		alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+
+			}
+		});
+
+		alert.show();
+	}
+
+	@Override
+	public void onClick(View v) {
+		// for (int i = 0; i < (resultList.size()); i++) {
+		// if (v.getId() == resultList.get(i).getId()) {
+		// openUser(i);
+		// }
+		// }
+	}
+
 	private class LoadSearchResults extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPreExecute() {
@@ -119,7 +150,7 @@ public class ScannerActivity extends MyActivity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			productSearch = ProductSearch.ProductSearchFromUPC(upc);
-			if (productSearch.getStatus()) {
+			if (productSearch.hasItems()) {
 				searchterm = productSearch.getItems().get(0).getProduct().getTitle();
 				// TODO do what search
 				return true;
@@ -133,7 +164,7 @@ public class ScannerActivity extends MyActivity {
 				populateLayout();
 			}
 			if (status == false) {
-				Toast.makeText(ScannerActivity.this, "Could not load ", Toast.LENGTH_LONG).show();
+				Toast.makeText(ScannerActivity.this, "Could not find product", Toast.LENGTH_LONG).show();
 			}
 			dialog.dismiss();
 			unlockScreenRotation();

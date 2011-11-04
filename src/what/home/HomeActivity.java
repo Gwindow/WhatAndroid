@@ -77,10 +77,15 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	}
 
 	public void openProfile(View v) {
-		openOptionsMenu();
+		Bundle b = new Bundle();
+		intent = new Intent(HomeActivity.this, what.user.UserProfileActivity.class);
+		b.putString("userId", MySoup.getUserId());
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
 	}
 
 	public void openTorrents(View v) {
+		openOptionsMenu();
 
 	}
 

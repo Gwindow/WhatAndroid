@@ -13,7 +13,7 @@
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
+
 			</intent-filter>
 		</activity>
 		<activity android:name=".MainMenu" android:theme="@style/Theme.MenuDialog">
@@ -30,6 +30,7 @@
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
 		<activity android:name="what.home.HomeActivity"
@@ -199,6 +200,20 @@
 		<service android:name="what.services.NotificationService" />
 		<service android:name="what.services.InboxService" />
 		<service android:name="what.services.AnnouncementService" />
+
+
+		<activity android:name="what.user.UserProfilePopUpActivity"
+			android:theme="@android:style/Theme.Dialog">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		
+		<activity android:name="what.user.UserProfilActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
 
 
 		<receiver android:name="what.widget.UserStatsWidgetProvider"

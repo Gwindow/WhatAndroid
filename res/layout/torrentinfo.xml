@@ -12,9 +12,11 @@
 		android:layout_marginLeft="10dip" android:layout_below="@+id/torrentTitle"
 		android:layout_toRightOf="@+id/torrentImage">
 		<Button android:text="Statistics" android:layout_height="wrap_content"
+			android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
 			android:onClick="openStats" android:layout_width="fill_parent"
 			android:id="@+id/statsButton"></Button>
 		<Button android:text="Tags" android:layout_height="wrap_content"
+			android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
 			android:layout_below="@+id/statsButton" android:layout_width="fill_parent"
 			android:onClick="openTags" android:id="@+id/tagsButton"></Button>
 	</RelativeLayout>

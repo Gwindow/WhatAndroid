@@ -23,6 +23,7 @@ public class MyActivity extends Activity implements OnGestureListener {
 		@SuppressWarnings("unused")
 		ReportSender sender = new ReportSender(this);
 		gestureDetector = new GestureDetector(this);
+		setDisplayMetrics();
 	}
 
 	public void onCreate(Bundle savedInstanceState, int layoutReference, boolean enableBackground) {
@@ -48,16 +49,10 @@ public class MyActivity extends Activity implements OnGestureListener {
 	}
 
 	public int getHeight() {
-		if (displaymetrics == null) {
-			setDisplayMetrics();
-		}
 		return height;
 	}
 
 	public int getWidth() {
-		if (displaymetrics == null) {
-			setDisplayMetrics();
-		}
 		return width;
 	}
 

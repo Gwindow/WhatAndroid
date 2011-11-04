@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- <ScrollView android:id="@+id/scrollView" android:background="@drawable/wood" 
-	xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" 
-	android:layout_height="fill_parent"> -->
 <RelativeLayout android:id="@+id/widget30"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:background="@drawable/wood2" android:layout_width="fill_parent"
@@ -12,12 +9,15 @@
 		android:layout_marginLeft="10dip" android:layout_below="@+id/artistTitle"
 		android:layout_toRightOf="@+id/artistImage">
 		<Button android:text="Similar Artists" android:layout_height="wrap_content"
+			android:background="@drawable/btn_black" style="@style/ButtonText"
 			android:onClick="openSimilar" android:layout_width="fill_parent"
 			android:id="@+id/similiarButton"></Button>
 		<Button android:text="Statistics" android:layout_height="wrap_content"
+			android:background="@drawable/btn_black" style="@style/ButtonText"
 			android:layout_below="@+id/similiarButton" android:onClick="openStats"
 			android:layout_width="fill_parent" android:id="@+id/statsButton"></Button>
 		<Button android:text="Tags" android:layout_height="wrap_content"
+			android:background="@drawable/btn_black" style="@style/ButtonText"
 			android:layout_below="@+id/statsButton" android:layout_width="fill_parent"
 			android:onClick="openTags" android:id="@+id/tagsButton"></Button>
 	</RelativeLayout>
@@ -47,4 +47,3 @@
 		android:textColor="@color/black" android:textSize="15dip">
 	</TextView>
 </RelativeLayout>
-<!-- </ScrollView> -->

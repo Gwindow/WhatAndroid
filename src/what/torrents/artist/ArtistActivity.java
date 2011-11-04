@@ -73,6 +73,16 @@ public class ArtistActivity extends MyActivity {
 		super.onPause();
 	}
 
+	@Override
+	public void onDestroy() {
+		try {
+			bmp.recycle();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		super.onDestroy();
+	}
+
 	private class PopulateLayout extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPreExecute() {
@@ -97,11 +107,7 @@ public class ArtistActivity extends MyActivity {
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			dialog.dismiss();
-			// TODO fix
-
-			// if (ArtistTabActivity.getArtist().getStatus()) {
-			if (true) {
+			if (ArtistTabActivity.getArtist().getStatus()) {
 				artistTitle.setText(ArtistTabActivity.getArtist().getResponse().getName());
 				String body = ArtistTabActivity.getArtist().getResponse().getBody();
 				if (body.length() > 0) {
@@ -112,9 +118,9 @@ public class ArtistActivity extends MyActivity {
 					artistImage.setImageBitmap(bmp);
 				} else {
 					artistImage.setImageResource(R.drawable.dne);
-
 				}
 			}
+			dialog.dismiss();
 		}
 	}
 }

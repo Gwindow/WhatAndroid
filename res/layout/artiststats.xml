@@ -11,22 +11,22 @@
 		android:layout_marginLeft="10dip" android:layout_marginBottom="5dip"
 		android:layout_below="@+id/groups" android:textAppearance="?android:attr/textAppearanceMedium"
 		android:id="@+id/torrents" android:layout_height="wrap_content"
-		android:text="TextView"></TextView>
+		android:text=""></TextView>
 	<TextView android:layout_width="wrap_content"
 		android:layout_marginLeft="10dip" android:layout_marginBottom="5dip"
 		android:layout_below="@+id/torrents" android:textAppearance="?android:attr/textAppearanceMedium"
 		android:id="@+id/seeders" android:layout_height="wrap_content"
-		android:text="TextView"></TextView>
+		android:text=""></TextView>
 	<TextView android:layout_width="wrap_content"
 		android:layout_marginLeft="10dip" android:layout_marginBottom="5dip"
 		android:layout_below="@+id/seeders" android:textAppearance="?android:attr/textAppearanceMedium"
 		android:id="@+id/leechers" android:layout_height="wrap_content"
-		android:text="TextView"></TextView>
+		android:text=""></TextView>
 	<TextView android:layout_width="wrap_content"
 		android:layout_marginLeft="10dip" android:layout_marginBottom="5dip"
 		android:layout_below="@+id/leechers" android:textAppearance="?android:attr/textAppearanceMedium"
 		android:id="@+id/snatches" android:layout_height="wrap_content"
-		android:text="TextView"></TextView>
+		android:text=""></TextView>
 	<CheckBox android:id="@+id/bookmark" android:layout_width="wrap_content"
 		android:layout_marginLeft="5dip" android:layout_marginBottom="5dip"
 		android:layout_below="@+id/snatches" android:layout_alignParentLeft="true"
