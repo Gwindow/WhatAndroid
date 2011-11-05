@@ -13,15 +13,15 @@
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
-
+				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".MainMenu" android:theme="@style/Theme.MenuDialog">
+		<activity android:name=".MainMenu" android:theme="@style/Theme.MenuDialog" android:noHistory="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".SearchMenu" android:theme="@style/Theme.MenuDialog">
+		<activity android:name=".SearchMenu" android:theme="@style/Theme.MenuDialog" android:noHistory="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
@@ -30,7 +30,6 @@
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
 		<activity android:name="what.home.HomeActivity"
@@ -147,14 +146,14 @@
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.donate.FlattrDonationActivity"
-			android:theme="@android:style/Theme.Dialog">
+		<activity android:name="what.donate.FlattrDonationActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 		<activity android:name="what.forum.PostOptionsActivity"
-			android:theme="@android:style/Theme.Dialog">
+			android:noHistory="true"
+			android:theme="@style/Theme.MenuDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
@@ -208,7 +207,7 @@
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		
+
 		<activity android:name="what.user.UserProfilActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />

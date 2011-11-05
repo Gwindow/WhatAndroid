@@ -36,13 +36,15 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.notifications);
+
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		myNotificationManager.cancel(NotificationService.ID);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		title = (TextView) this.findViewById(R.id.title);
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
-
+		setButtonState(backButton, false);
+		setButtonState(nextButton, false);
 		getBundle();
 
 		if (page == 1) {
@@ -69,11 +71,10 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 	}
 
 	private void populateLayout() {
-		backButton.setEnabled(notifications.hasPreviousPage());
-		nextButton.setEnabled(notifications.hasNextPage());
-
 		title.setText("Notifications, page " + notifications.getResponse().getCurrentPages().toString() + "\n"
 				+ notifications.getResponse().getNumNew() + " new notifications");
+		setButtonState(backButton, notifications.hasNextPage());
+		setButtonState(nextButton, notifications.hasPreviousPage());
 		for (int i = 0; i < notifications.getResponse().getResults().size(); i++) {
 			if ((i % 2) == 0) {
 				torrentList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
@@ -104,8 +105,8 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 		notifications.clearNotifications();
 		torrentList.clear();
 		scrollLayout.removeAllViews();
-		backButton.setEnabled(false);
-		nextButton.setEnabled(false);
+		setButtonState(backButton, false);
+		setButtonState(nextButton, false);
 
 	}
 

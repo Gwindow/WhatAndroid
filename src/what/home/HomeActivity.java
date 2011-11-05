@@ -99,8 +99,8 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		startActivityForResult(intent, 0);
 	}
 
-	public void openNotifications(View v) {
-		intent = new Intent(HomeActivity.this, what.notifications.NotificationsActivity.class);
+	public void openTopTen(View v) {
+		intent = new Intent(HomeActivity.this, what.top.TopTorrentsActivity.class);
 		startActivityForResult(intent, 0);
 	}
 

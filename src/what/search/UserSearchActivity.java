@@ -30,6 +30,7 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 	private EditText searchBar;
 	private Button backButton, nextButton;
 	private int page;
+	private TextView title;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,9 +40,12 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 		nextButton = (Button) this.findViewById(R.id.nextButton);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
+		title = (TextView) this.findViewById(R.id.title);
+
+		setButtonState(backButton, false);
+		setButtonState(nextButton, false);
 
 		getBundle();
-
 		// if the page is greater than one than get the search term and automatically search for it
 		if (page > 1) {
 			new LoadSearchResults().execute();
@@ -76,8 +80,9 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 	}
 
 	private void populateLayout() {
-		backButton.setEnabled(userSearch.hasPreviousPage());
-		nextButton.setEnabled(userSearch.hasNextPage());
+		title.setText("User Search, page " + page);
+		setButtonState(backButton, userSearch.hasPreviousPage());
+		setButtonState(nextButton, userSearch.hasNextPage());
 
 		List<Results> results = userSearch.getResponse().getResults();
 

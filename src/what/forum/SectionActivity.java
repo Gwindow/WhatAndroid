@@ -44,6 +44,9 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 
 		scrollTable = (TableLayout) findViewById(R.id.scrollLayout);
 		sectionTitle = (TextView) findViewById(R.id.titleText);
+
+		setButtonState(backButton, false);
+		setButtonState(nextButton, false);
 		getBundle();
 		new LoadSection().execute();
 	}
@@ -56,9 +59,8 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	}
 
 	private void populateLayout() {
-		backButton.setEnabled(section.hasPreviousPage());
-		nextButton.setEnabled(section.hasNextPage());
-
+		setButtonState(backButton, section.hasPreviousPage());
+		setButtonState(nextButton, section.hasNextPage());
 		int rowLayoutId;
 		int textLayoutId;
 

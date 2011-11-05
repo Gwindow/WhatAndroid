@@ -34,7 +34,7 @@ public class UserProfilePopUpActivity extends MyActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.id.userprofilepopup);
+		super.setContentView(R.layout.userprofilepopup);
 		WindowManager.LayoutParams lp = getWindow().getAttributes();
 		lp.dimAmount = 0.0f;
 		getWindow().setAttributes(lp);
@@ -45,7 +45,7 @@ public class UserProfilePopUpActivity extends MyActivity {
 
 		userclass = (TextView) this.findViewById(R.id.userclass);
 		uploaded = (TextView) this.findViewById(R.id.uploaded);
-		downloaded = (TextView) this.findViewById(R.id.dowloaded);
+		downloaded = (TextView) this.findViewById(R.id.downloaded);
 		ratio = (TextView) this.findViewById(R.id.ratio);
 		posts = (TextView) this.findViewById(R.id.posts);
 

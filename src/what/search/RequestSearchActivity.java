@@ -42,7 +42,8 @@ public class RequestSearchActivity extends MyActivity implements OnClickListener
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
 		tagsearchBar = (EditText) this.findViewById(R.id.tagsearchBar);
-
+		setButtonState(backButton, false);
+		setButtonState(nextButton, false);
 		getBundle();
 
 		// if the page is greater than one than get the search term and automatically search for it
@@ -98,8 +99,8 @@ public class RequestSearchActivity extends MyActivity implements OnClickListener
 	}
 
 	private void populateLayout() {
-		backButton.setEnabled(userSearch.hasPreviousPage());
-		nextButton.setEnabled(userSearch.hasNextPage());
+		setButtonState(backButton, userSearch.hasPreviousPage());
+		setButtonState(nextButton, userSearch.hasNextPage());
 
 		List<Results> results = userSearch.getResponse().getResults();
 

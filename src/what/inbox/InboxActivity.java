@@ -37,6 +37,7 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 	private Inbox inbox;
 	private Button backButton, nextButton;
 	private int page;
+	private TextView title;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,10 +46,11 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		myNotificationManager.cancel(InboxService.ID);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
-
+		title = (TextView) this.findViewById(R.id.title);
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
-
+		setButtonState(backButton, false);
+		setButtonState(nextButton, false);
 		getBundle();
 
 		if (page == 1) {
@@ -82,14 +84,14 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 	}
 
 	public void back(View v) {
-		Bundle b = new Bundle();
-		intent = new Intent(InboxActivity.this, what.inbox.InboxActivity.class);
-		b.putInt("page", page - 1);
-		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		finish();
 	}
 
 	private void populateLayout() {
+		title.setText("Inbox, page " + page);
+		setButtonState(backButton, inbox.hasPreviousPage());
+		setButtonState(nextButton, inbox.hasNextPage());
+
 		backButton.setEnabled(inbox.hasPreviousPage());
 		nextButton.setEnabled(inbox.hasNextPage());
 

@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.widget.Button;
 
 public class MyActivity extends Activity implements OnGestureListener {
 	private GestureDetector gestureDetector;
@@ -24,6 +26,15 @@ public class MyActivity extends Activity implements OnGestureListener {
 		ReportSender sender = new ReportSender(this);
 		gestureDetector = new GestureDetector(this);
 		setDisplayMetrics();
+	}
+
+	public void setButtonState(Button button, boolean b) {
+		button.setEnabled(b);
+		if (b == true) {
+			button.setTextAppearance(this, R.style.ButtonTextSmall);
+		} else {
+			button.setTextColor(Color.BLACK);
+		}
 	}
 
 	public void onCreate(Bundle savedInstanceState, int layoutReference, boolean enableBackground) {

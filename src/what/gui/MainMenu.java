@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
+import api.soup.MySoup;
 
 /**
  * @author Tim
@@ -46,8 +48,13 @@ public class MainMenu extends MyActivity {
 	}
 
 	public void notifications(View v) {
-		intent = new Intent(MainMenu.this, what.notifications.NotificationsActivity.class);
-		startActivityForResult(intent, 0);
+		if (MySoup.canNotifications()) {
+			intent = new Intent(MainMenu.this, what.notifications.NotificationsActivity.class);
+			startActivityForResult(intent, 0);
+		} else {
+			Toast.makeText(this, "You need to be a power user or higher to access notifications", Toast.LENGTH_LONG).show();
+		}
+
 	}
 
 	public void inbox(View v) {

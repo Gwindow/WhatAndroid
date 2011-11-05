@@ -2,19 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:flattr_sdk="http://schemas.flattr4android.com/sdk"
 	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:background="@drawable/wood2" android:layout_height="fill_parent">
 	<TextView android:id="@+id/titleText" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_marginTop="10dip"
-		android:gravity="center" android:layout_marginLeft="10dip"
-		android:layout_marginRight="10dip" android:text="Donate money via Flattr"
-		android:textColor="@color/white" android:textStyle="bold"
-		android:textSize="18dip" android:background="@drawable/table_header_dark" />
-	<TextView android:text="The developers...." android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge"
-		android:id="@+id/textView1" android:layout_margin="5dip"></TextView>
+		android:layout_height="wrap_content" android:gravity="center"
+		android:text="Donate via Flattr" android:textColor="@color/white"
+		android:textStyle="bold" android:textSize="20dip"
+		android:background="@drawable/table_header_dark"
+		android:layout_marginLeft="10dip" android:layout_marginRight="10dip"
+		android:layout_marginTop="10dip" android:layout_marginBottom="10dip" />
+	<TextView
+		android:text="The developers of this app love cookies and other tasty whatnots, but if you can't bake and still want to express your love how about a donation? We use flattr, the same donation service as What.CD."
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:id="@+id/textView1" android:layout_margin="10dip"
+		android:background="@color/transparentBlack"
+		android:layout_gravity="center_horizontal"></TextView>
 	<com.flattr4android.sdk.FlattrButton
 		flattr_sdk:token="" flattr_sdk:token_secret="" flattr_sdk:thing_id=""
-		android:layout_width="fill_parent" android:layout_gravity="center"
-		android:layout_height="fill_parent" android:layout_margin="25dip"></com.flattr4android.sdk.FlattrButton>
+		android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="25dip" android:layout_gravity="center_horizontal"></com.flattr4android.sdk.FlattrButton>
 </LinearLayout>
     

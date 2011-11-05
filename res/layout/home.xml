@@ -58,8 +58,8 @@
 				android:onClick="openInbox" android:layout_marginLeft="7dip"
 				android:clickable="true" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_weight="1"></TextView>
-			<TextView android:text="Notifications" android:id="@+id/requestsButton"
-				android:onClick="openNotifications" android:layout_marginLeft="7dip"
+			<TextView android:text="Top 10" android:id="@+id/topButton"
+				android:onClick="openTopTen" android:layout_marginLeft="7dip"
 				android:clickable="true" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_weight="1"></TextView>
 		</LinearLayout>
