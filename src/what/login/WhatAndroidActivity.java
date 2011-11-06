@@ -106,11 +106,12 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 		setContentView(R.layout.login);
 		@SuppressWarnings("unused")
 		ReportSender sender = new ReportSender(this);
-		MySoup.setSite("http://192.168.1.147:8080/");
+		// MySoup.setSite("http://192.168.1.147:8080/");
 		// MySoup.setSite("http://173.250.180.148:8080/");
+		MySoup.setSite("http://what.cd/");
 		setVersionName();
 		try {
-			checkForUpdate();
+			// checkForUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -156,8 +157,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				e.printStackTrace();
 			}
 		}
-		username.setText("gazelle");
-		password.setText("123456");
 
 		/* if (settings.getString("sessionId", null) != null) { // Resume the session // TODO fix // resume(); } */
 	}

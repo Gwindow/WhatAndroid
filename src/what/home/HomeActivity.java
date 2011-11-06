@@ -6,7 +6,6 @@ import java.util.List;
 
 import what.gui.MyActivity;
 import what.gui.R;
-import what.services.InboxService;
 import what.settings.SettingsActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -61,8 +60,8 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		bufferValue.setText("B: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getBuffer()) + "GB");
 		new LoadSubscriptions().execute();
 
-		inboxService = new Intent(this, InboxService.class);
-		startService(inboxService);
+		// inboxService = new Intent(this, InboxService.class);
+		// startService(inboxService);
 
 		// notificationService = new Intent(this, NotificationService.class);
 		// startService(notificationService);
@@ -146,14 +145,21 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			subscriptions = Subscriptions.init();
-			return subscriptions.getStatus();
+			try {
+				subscriptions = Subscriptions.init();
+				return subscriptions.getStatus();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
 			if (status == true) {
-				populateLayout();
+				// TODO renable
+				// populateLayout();
 			}
 			dialog.dismiss();
 			if (status == false) {

@@ -208,12 +208,35 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name="what.user.UserProfilActivity">
+		<activity android:name="what.user.UserProfileActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-
+		
+		<activity android:name="what.inbox.BugReportActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		
+		<activity android:name="what.inbox.ConversationActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		
+		<activity android:name="what.inbox.NewConversationActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		
+		<activity android:name="what.inbox.NewThreadActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
 
 		<receiver android:name="what.widget.UserStatsWidgetProvider"
 			android:label="What.CD User Stats">

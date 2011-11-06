@@ -153,7 +153,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 		Bundle b = new Bundle();
 		intent = new Intent(SectionActivity.this, what.forum.SectionActivity.class);
 		b.putInt("id", id);
-		b.putInt("page", 2);
+		b.putInt("page", page + 1);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
@@ -186,7 +186,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 		}
 		if ((e2.getX() - e1.getX()) < -35) {
 			try {
-				finish();
+				back(null);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -18,14 +18,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import api.status.Status;
 import api.util.CouldNotLoadException;
+import api.whatstatus.Status2;
 
 public class StatusActivity extends MyActivity {
 	LinearLayout twitterScroll;
 	ImageView siteStatus, trackerStatus, ircStatus;
 	ArrayList<TextView> tweetList = new ArrayList<TextView>();
-	Status status;
+	Status2 status;
 	ProgressDialog progress;
 
 	@Override
@@ -54,7 +54,7 @@ public class StatusActivity extends MyActivity {
 					public void run() {
 						try {
 							StatusActivity.this.lockScreenRotation();
-							status = new Status();
+							status = new Status2();
 							loadingHandler.sendEmptyMessage(0);
 						} catch (CouldNotLoadException e) {
 							Toast.makeText(StatusActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();

@@ -73,7 +73,8 @@ public class MainMenu extends MyActivity {
 	}
 
 	public void report(View v) {
-		// TODO add
+		intent = new Intent(MainMenu.this, what.inbox.BugReportActivity.class);
+		startActivityForResult(intent, 0);
 	}
 
 	public void status(View v) {
