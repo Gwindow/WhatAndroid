@@ -2,7 +2,6 @@ package what.barcode;
 
 import what.gui.MyTabActivity;
 import what.gui.R;
-import what.torrents.artist.ArtistActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -31,26 +30,18 @@ public class ScannerActivity extends MyTabActivity implements OnClickListener {
 	private Resources res; // Resource object to get Drawables
 	private TabHost tabHost;// The activity TabHost
 	private TabHost.TabSpec spec; // Resusable TabSpec for each tab
+	private Button torrentsButton, requestsButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.scanner);
 		buyButton = (Button) this.findViewById(R.id.buybutton);
-	}
+		torrentsButton = (Button) this.findViewById(R.id.torrentsbutton);
+		requestsButton = (Button) this.findViewById(R.id.requestsbutton);
 
-	private void createTabs() {
-		res = getResources();
-		tabHost = getTabHost();
-
-		// Create an Intent to launch an Activity for the tab (to be reused)
-		intent = new Intent().setClass(ScannerActivity.this, ArtistActivity.class);
-		// Initialize a TabSpec for each tab and add it to the TabHost
-		spec = tabHost.newTabSpec("artist").setIndicator("Artist").setContent(intent);
-		tabHost.addTab(spec);
-
-		tabHost.setCurrentTab(0);
-
+		setButtonState(torrentsButton, false);
+		setButtonState(requestsButton, false);
 	}
 
 	public void scan(View v) {
@@ -75,6 +66,14 @@ public class ScannerActivity extends MyTabActivity implements OnClickListener {
 		displayEditTextPopup();
 	}
 
+	public void torrents(View v) {
+		openTorrentSearch();
+	}
+
+	public void requests(View v) {
+		openRequestSearch();
+	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode == 0) {
@@ -90,8 +89,8 @@ public class ScannerActivity extends MyTabActivity implements OnClickListener {
 	}
 
 	private void populateLayout() {
+
 		Toast.makeText(this, "name: " + searchterm, Toast.LENGTH_LONG).show();
-		createTabs();
 		// if music doesnt exsist on what open up a popup
 		// displayMessagePopup();
 		// else {
@@ -149,25 +148,82 @@ public class ScannerActivity extends MyTabActivity implements OnClickListener {
 		alert.show();
 	}
 
+	private void openTorrentSearch() {
+		Bundle b = new Bundle();
+		intent = new Intent(this, what.search.TorrentSearchActivity.class);
+		b.putString("searchTerm", searchterm);
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
+	}
+
+	private void openRequestSearch() {
+		Bundle b = new Bundle();
+		intent = new Intent(this, what.search.RequestSearchActivity.class);
+		b.putString("searchTerm", searchterm);
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
+	}
+
 	public void displayFoundPopup(int torrents, int requests) {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 		alert.setTitle("");
-		alert.setMessage("Found " + torrents + " and " + requests);
 
-		alert.setPositiveButton("Buy it", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int whichButton) {
-				buy(null);
-			}
-		});
+		if ((torrents > 0) && (requests > 0)) {
+			alert.setMessage("Found " + torrents + " and " + requests);
+			final CharSequence[] items = { "Torrents", "Requests", "Buy it", "Close" };
 
-		alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int whichButton) {
+			alert.setItems(items, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int item) {
+					if (item == 0) {
+						openTorrentSearch();
+					}
+					if (item == 1) {
+						openRequestSearch();
+					}
+					if (item == 2) {
+						buy(null);
+					}
 
-			}
-		});
+				}
+			});
+		}
+
+		if ((torrents > 0) && (requests == 0)) {
+			alert.setMessage("Found " + torrents + " and " + requests);
+			final CharSequence[] items = { "Torrents", "Buy it", "Close" };
+
+			alert.setItems(items, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int item) {
+					if (item == 0) {
+						openTorrentSearch();
+					}
+					if (item == 1) {
+						buy(null);
+					}
+
+				}
+			});
+		}
+
+		if ((torrents == 0) && (requests > 0)) {
+			alert.setMessage("Found " + torrents + " and " + requests);
+			final CharSequence[] items = { "Requests", "Buy it", "Close" };
+
+			alert.setItems(items, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int item) {
+					if (item == 0) {
+						openRequestSearch();
+					}
+					if (item == 1) {
+						buy(null);
+					}
+				}
+			});
+		}
 
 		alert.show();
 	}

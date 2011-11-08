@@ -31,7 +31,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	private ProgressDialog dialog;
 	private Intent intent;
 	private DecimalFormat df = new DecimalFormat("#.00");
-	int counter = 0;
+	private int counter = 0;
 	private Intent inboxService;
 	private Intent notificationService;
 	private Intent annoucementService;
@@ -84,8 +84,8 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	}
 
 	public void openTorrents(View v) {
-		openOptionsMenu();
-
+		Intent intent = new Intent(this, what.gui.MainMenu.class);
+		startActivityForResult(intent, 0);
 	}
 
 	public void openForum(View v) {

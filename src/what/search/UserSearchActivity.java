@@ -47,7 +47,7 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 
 		getBundle();
 		// if the page is greater than one than get the search term and automatically search for it
-		if (page > 1) {
+		if ((page > 1) || (searchTerm.length() > 1)) {
 			new LoadSearchResults().execute();
 		}
 	}
