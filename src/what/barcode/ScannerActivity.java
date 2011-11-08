@@ -1,11 +1,13 @@
 package what.barcode;
 
-import what.gui.MyActivity;
+import what.gui.MyTabActivity;
 import what.gui.R;
+import what.torrents.artist.ArtistActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,10 +15,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TabHost;
 import android.widget.Toast;
 import api.products.ProductSearch;
 
-public class ScannerActivity extends MyActivity implements OnClickListener {
+public class ScannerActivity extends MyTabActivity implements OnClickListener {
 	private static final String KEY = "AIzaSyDOPEJep1GSxaWylXm7Tvdytozve8odmuo";
 	private Intent intent;
 	private String contents;
@@ -25,12 +28,29 @@ public class ScannerActivity extends MyActivity implements OnClickListener {
 	private ProgressDialog dialog;
 	private String upc, searchterm;
 	private ProductSearch productSearch;
+	private Resources res; // Resource object to get Drawables
+	private TabHost tabHost;// The activity TabHost
+	private TabHost.TabSpec spec; // Resusable TabSpec for each tab
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.scanner);
 		buyButton = (Button) this.findViewById(R.id.buybutton);
+	}
+
+	private void createTabs() {
+		res = getResources();
+		tabHost = getTabHost();
+
+		// Create an Intent to launch an Activity for the tab (to be reused)
+		intent = new Intent().setClass(ScannerActivity.this, ArtistActivity.class);
+		// Initialize a TabSpec for each tab and add it to the TabHost
+		spec = tabHost.newTabSpec("artist").setIndicator("Artist").setContent(intent);
+		tabHost.addTab(spec);
+
+		tabHost.setCurrentTab(0);
+
 	}
 
 	public void scan(View v) {
@@ -71,8 +91,9 @@ public class ScannerActivity extends MyActivity implements OnClickListener {
 
 	private void populateLayout() {
 		Toast.makeText(this, "name: " + searchterm, Toast.LENGTH_LONG).show();
+		createTabs();
 		// if music doesnt exsist on what open up a popup
-		displayMessagePopup();
+		// displayMessagePopup();
 		// else {
 		// populate layout with search results
 		// }
@@ -105,11 +126,34 @@ public class ScannerActivity extends MyActivity implements OnClickListener {
 		alert.show();
 	}
 
-	public void displayMessagePopup() {
+	public void displayNotFoundPopup() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 		alert.setTitle("");
 		alert.setMessage("Could not find this music on What.CD");
+
+		alert.setPositiveButton("Buy it", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+				buy(null);
+			}
+		});
+
+		alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+
+			}
+		});
+
+		alert.show();
+	}
+
+	public void displayFoundPopup(int torrents, int requests) {
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		alert.setTitle("");
+		alert.setMessage("Found " + torrents + " and " + requests);
 
 		alert.setPositiveButton("Buy it", new DialogInterface.OnClickListener() {
 			@Override

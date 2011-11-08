@@ -10,7 +10,7 @@ import api.soup.MySoup;
 import api.user.User;
 
 public class UserProfileActivity extends MyActivity {
-	private String userId;
+	private int userId;
 	private User user;
 	private ProgressDialog dialog;
 
@@ -25,10 +25,10 @@ public class UserProfileActivity extends MyActivity {
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
 		try {
-			userId = b.getString("userId");
+			userId = b.getInt("userId");
 		} catch (Exception e) {
 			// if for some reason the user id isn't received set it to your own id so everything doesnt crash
-			userId = MySoup.getUserId();
+			userId = Integer.parseInt(MySoup.getUserId());
 		}
 	}
 

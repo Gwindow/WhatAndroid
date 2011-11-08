@@ -23,7 +23,7 @@ import api.util.Tuple;
 
 public class UserProfilePopUpActivity extends MyActivity {
 	private Intent intent;
-	private String userId;
+	private int userId;
 	private User user;
 	private ProgressDialog dialog;
 	private TextView userclass, uploaded, downloaded, ratio, posts;
@@ -61,10 +61,10 @@ public class UserProfilePopUpActivity extends MyActivity {
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
 		try {
-			userId = b.getString("userId");
+			userId = b.getInt("userId");
 		} catch (Exception e) {
 			// if for some reason the user id isn't received set it to your own id so everything doesnt crash
-			userId = MySoup.getUserId();
+			userId = Integer.parseInt(MySoup.getUserId());
 		}
 	}
 
@@ -79,7 +79,7 @@ public class UserProfilePopUpActivity extends MyActivity {
 	public void more(View v) {
 		Bundle b = new Bundle();
 		intent = new Intent(UserProfilePopUpActivity.this, what.user.UserProfileActivity.class);
-		b.putString("userId", userId);
+		b.putInt("userId", userId);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}

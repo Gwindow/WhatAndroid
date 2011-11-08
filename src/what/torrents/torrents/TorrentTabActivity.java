@@ -17,7 +17,7 @@ public class TorrentTabActivity extends MyTabActivity {
 	private TabHost tabHost;// The activity TabHost
 	private TabHost.TabSpec spec; // Resusable TabSpec for each tab
 	private Intent intent; // Reusable Intent for each tab
-	private static String torrentGroupId;
+	private static int torrentGroupId;
 	private static Torrents torrents;
 	private ProgressDialog dialog;
 
@@ -50,7 +50,7 @@ public class TorrentTabActivity extends MyTabActivity {
 
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
-		torrentGroupId = b.getString("torrentGroupId");
+		torrentGroupId = b.getInt("torrentGroupId");
 	}
 
 	private class LoadTorrents extends AsyncTask<Void, Void, Boolean> {
@@ -82,7 +82,7 @@ public class TorrentTabActivity extends MyTabActivity {
 		}
 	}
 
-	public static String getTorrentGroupId() {
+	public static int getTorrentGroupId() {
 		return torrentGroupId;
 	}
 

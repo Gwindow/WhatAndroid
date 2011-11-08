@@ -53,7 +53,7 @@ public class BookmarksActivity extends MyActivity implements OnClickListener {
 	private void openBookmark(int i) {
 		Bundle b = new Bundle();
 		intent = new Intent(BookmarksActivity.this, what.torrents.torrents.TorrentTabActivity.class);
-		b.putString("torrentGroupId", bookmarks.getResponse().getBookmarksList().get(i).getId());
+		b.putInt("torrentGroupId", bookmarks.getResponse().getBookmarksList().get(i).getId());
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
@@ -86,10 +86,10 @@ public class BookmarksActivity extends MyActivity implements OnClickListener {
 			if (status == true) {
 				populateLayout();
 			}
+			dialog.dismiss();
 			if (status == false) {
 				Toast.makeText(BookmarksActivity.this, "Could not load bookmarks", Toast.LENGTH_LONG).show();
 			}
-			dialog.dismiss();
 			unlockScreenRotation();
 		}
 	}

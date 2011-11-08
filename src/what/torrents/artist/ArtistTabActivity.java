@@ -19,7 +19,7 @@ public class ArtistTabActivity extends MyTabActivity {
 	private Intent intent; // Reusable Intent for each tab
 	private ProgressDialog dialog;
 	private static Artist artist;
-	private static String artistId;
+	private static int artistId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class ArtistTabActivity extends MyTabActivity {
 		try {
 			Bundle b = this.getIntent().getExtras();
 			// artistId = b.getString("artistId");
-			artistId = "3";
+			artistId = 3;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -110,10 +110,10 @@ public class ArtistTabActivity extends MyTabActivity {
 		protected void onPostExecute(Boolean status) {
 			createTabs();
 			dialog.dismiss();
-			unlockScreenRotation();
 			if (status == false) {
 				Toast.makeText(ArtistTabActivity.this, "Could not load artist", Toast.LENGTH_LONG).show();
 			}
+			unlockScreenRotation();
 		}
 	}
 
@@ -121,7 +121,7 @@ public class ArtistTabActivity extends MyTabActivity {
 		return artist;
 	}
 
-	public static String getArtistId() {
+	public static int getArtistId() {
 		return artistId;
 	}
 
