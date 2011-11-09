@@ -2,32 +2,44 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	android:orientation="horizontal" android:gravity="fill_vertical">
+	
 	<LinearLayout android:id="@+id/buttons1"
 		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
 		android:orientation="horizontal">
-		<Button android:text="Quote" android:id="@+id/button1"
+		<Button android:text="Reply" android:id="@+id/button1"
 			android:background="@drawable/btn_black" style="@style/ButtonText"
-			android:onClick="quotePost" android:layout_height="wrap_content"
+			android:onClick="reply" android:layout_height="wrap_content"
 			android:layout_weight="1" android:layout_width="0dp"></Button>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/buttons2"
+	android:layout_below="@+id/buttons1"
 		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
-		android:layout_below="@+id/buttons1" android:layout_height="wrap_content"
-		android:layout_width="fill_parent">
-		<Button android:text="Time" android:id="@+id/button3"
+		android:layout_height="wrap_content" android:layout_width="fill_parent"
+		android:orientation="horizontal">
+		<Button android:text="Quote and Reply" android:id="@+id/button2"
 			android:background="@drawable/btn_black" style="@style/ButtonText"
-			android:onClick="showPostTime" android:layout_height="wrap_content"
+			android:onClick="quoteAndReply" android:layout_height="wrap_content"
 			android:layout_weight="1" android:layout_width="0dp"></Button>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/buttons3"
+	android:layout_below="@+id/buttons2"
 		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
-		android:layout_below="@+id/buttons2" android:layout_height="wrap_content"
-		android:layout_width="fill_parent">
-		<Button android:text="Profile" android:id="@+id/button7"
+		android:layout_height="wrap_content" android:layout_width="fill_parent"
+		android:orientation="horizontal">
+		<Button android:text="Quote" android:id="@+id/button3"
 			android:background="@drawable/btn_black" style="@style/ButtonText"
-			android:onClick="openProfile" android:layout_height="wrap_content"
+			android:onClick="quote" android:layout_height="wrap_content"
 			android:layout_weight="1" android:layout_width="0dp"></Button>
-
+	</LinearLayout>
+	<LinearLayout android:id="@+id/buttons4"
+	android:layout_below="@+id/buttons3"
+		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
+		android:layout_height="wrap_content" android:layout_width="fill_parent"
+		android:orientation="horizontal">
+		<Button android:text="User Profile" android:id="@+id/button4"
+			android:background="@drawable/btn_black" style="@style/ButtonText"
+			android:onClick="openUserProfile" android:layout_height="wrap_content"
+			android:layout_weight="1" android:layout_width="0dp"></Button>
 	</LinearLayout>
 </RelativeLayout>

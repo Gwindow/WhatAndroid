@@ -9,8 +9,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -20,7 +21,7 @@ import android.widget.Toast;
 import api.forum.thread.Posts;
 import api.forum.thread.Thread;
 
-public class ThreadActivity extends MyActivity implements OnClickListener {
+public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	private LinearLayout scrollLayout;
 	private int counter;
 	private ProgressDialog dialog;
@@ -35,6 +36,7 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.posts);
+
 		threadTitle = (TextView) findViewById(R.id.titleText);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		backButton = (Button) this.findViewById(R.id.previousButton);
@@ -67,19 +69,81 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 			username.setText(posts.get(i).getAuthor().getAuthorName());
 			body = (WebView) layout.findViewById(R.id.post);
 			body.loadData(posts.get(i).getBody(), "text/html", "utf-8");
-			body.setBackgroundColor(R.drawable.btn_black);
+			// body.setBackgroundColor(R.drawable.btn_black);
 			listOfPosts.add(layout);
+			listOfPosts.get(i).setId(i);
+			listOfPosts.get(i).setClickable(true);
+			listOfPosts.get(i).setOnLongClickListener(this);
 			scrollLayout.addView(listOfPosts.get(i));
 		}
 	}
 
 	private void openOptions(int i) {
+		Bundle b = new Bundle();
+		intent = new Intent(ThreadActivity.this, what.forum.PostOptionsActivity.class);
+		b.putString("post", thread.getResponse().getPosts().get(i).getQuotableBody());
+		b.putInt("userId", thread.getResponse().getPosts().get(i).getAuthor().getAuthorId());
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
+	}
+
+	public void back(View v) {
+		if (thread.hasPreviousPage()) {
+			Bundle b = new Bundle();
+			intent = new Intent(ThreadActivity.this, what.forum.ThreadActivity.class);
+			b.putInt("id", id);
+			b.putInt("page", page - 1);
+			intent.putExtras(b);
+			startActivityForResult(intent, 0);
+		} else {
+			finish();
+		}
+	}
+
+	public void next(View v) {
+		if (thread.hasNextPage()) {
+			Bundle b = new Bundle();
+			intent = new Intent(ThreadActivity.this, what.forum.ThreadActivity.class);
+			b.putInt("id", id);
+			b.putInt("page", page + 1);
+			intent.putExtras(b);
+			startActivityForResult(intent, 0);
+		}
 	}
 
 	@Override
-	public void onClick(View v) {
-		if ((v.getId() >= 0) && (counter >= v.getId())) {
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+		if ((e2.getX() - e1.getX()) > 35) {
+			try {
+				next(null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+		if ((e2.getX() - e1.getX()) < -35) {
+			try {
+				back(null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean onLongClick(View v) {
+		for (int i = 0; i < (listOfPosts.size()); i++) {
+			if (v.getId() == listOfPosts.get(i).getId()) {
+				openOptions(i);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void onDestroy() {
+		QuoteBuffer.clear();
+		super.onDestroy();
 	}
 
 	private class LoadThread extends AsyncTask<Void, Void, Boolean> {

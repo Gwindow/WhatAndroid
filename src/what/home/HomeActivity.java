@@ -78,7 +78,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	public void openProfile(View v) {
 		Bundle b = new Bundle();
 		intent = new Intent(HomeActivity.this, what.user.UserProfileActivity.class);
-		b.putString("userId", MySoup.getUserId());
+		b.putInt("userId", Integer.valueOf(MySoup.getUserId()));
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
@@ -104,6 +104,12 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	}
 
 	private void openThread(int i) {
+		Bundle b = new Bundle();
+		intent = new Intent(HomeActivity.this, what.forum.ThreadActivity.class);
+		b.putInt("id", subscriptions.getResponse().getThreads().get(i).getThreadId());
+		b.putInt("page", (subscriptions.getResponse().getThreads().get(i).getLastReadPage()));
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
 		scrollLayout.removeViewAt(i);
 		threadList.remove(i);
 	}
@@ -158,8 +164,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		@Override
 		protected void onPostExecute(Boolean status) {
 			if (status == true) {
-				// TODO renable
-				// populateLayout();
+				populateLayout();
 			}
 			dialog.dismiss();
 			if (status == false) {

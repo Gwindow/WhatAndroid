@@ -93,17 +93,18 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			forumSections = ForumSections.init();
-			// TODO fix
-			return true;
+			return forumSections.getStatus();
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			populateLayout();
+			if (status == true) {
+				populateLayout();
+			}
+			dialog.dismiss();
 			if (status == false) {
 				Toast.makeText(ForumSectionsListActivity.this, "Could not load forum sections", Toast.LENGTH_LONG).show();
 			}
-			dialog.dismiss();
 			unlockScreenRotation();
 		}
 	}

@@ -7,7 +7,6 @@
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
 		android:orientation="horizontal">
 		<Button android:text="Search" android:id="@+id/button1"
-
 			android:onClick="search" android:layout_height="wrap_content"
 			android:layout_weight="1" android:layout_width="0dp"
 			android:background="@drawable/btn_black" style="@style/ButtonText"></Button>

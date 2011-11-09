@@ -1,44 +1,3 @@
-//Arbitrary location for the todo list of major things
-//TODO 2) pages for threads and last read
-//TODO 3) serializible subscriptions/new threads
-//TODO 4) GUI recode
-//TODO 5) A mainpage that displays dynamic feed of forum
-//TODO 6) Jump to last read post
-//TODO 7) music searching
-//TODO 8) downloading/sending to seedbox
-//TODO 9) User Settings
-//TODO 10) IRC client
-
-// Gui to-dos
-
-//TODO GUI off by one) Try Catch statements for all communication with what.cd 
-//TODO GUI -1) create new thread button and activity
-//TODO GUI 38422) rotation
-//TODO GUI 55) Music Browsing
-//TODO GUI imaginary number) Fix changing pages in threads!!!
-//TODO GUI 0) jump to last read arrow
-//TODO GUI 1) Make sure all loading processes are threaded
-//TODO GUI 4) Finish converting all layouts to XML
-//TODO GUI 5) Finish revamping each activity's GUI
-//TODO GUI 6) Add landing page with "what's new"
-//TODO GUI 7) Create widget GUI
-//TODO GUI 8) Convert all Activities to fragments
-//TODO GUI 9) Create layouts for tablets
-//TODO GUI 10) Move most functions from menus onto screen for better UX
-//TODO GUI 11) Have post activity save info so no need to reload on orientation switch
-//TODO GUI 12) Have post activity reload itself on page change instead of loading new activity
-
-//IRC TODO
-//TODO IRC 0) something functional
-//TODO IRC 1) channel list
-//TODO IRC 2) user list
-//TODO IRC 3) private messages
-//TODO IRC 4) multiple channels
-//TODO IRC 5) drone identification
-//TODO IRC 6) More Commands
-//TODO IRC 7) Topic view
-//TODO IRC 8) SSL
-
 package what.login;
 
 import java.io.IOException;
@@ -48,7 +7,6 @@ import what.gui.R;
 import what.gui.ReportSender;
 import what.settings.Settings;
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -77,7 +35,6 @@ import api.util.CouldNotLoadException;
 /**
  * Login screen
  * 
- * @author Tim
  * 
  */
 public class WhatAndroidActivity extends MyActivity implements OnClickListener, OnEditorActionListener {
@@ -89,7 +46,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 	CheckBox rememberCheckbox;
 	CheckBox passwordCheckbox;
 	CheckBox sslCheckbox;
-	Notification notification = new Notification();
 
 	Settings settings;
 
@@ -107,7 +63,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 		@SuppressWarnings("unused")
 		ReportSender sender = new ReportSender(this);
 		// MySoup.setSite("http://192.168.1.147:8080/");
-		// MySoup.setSite("http://173.250.182.79:8080/");
+		// MySoup.setSite("http://173.250.185.120:8080/");
 		MySoup.setSite("http://what.cd/");
 		setVersionName();
 		try {
@@ -345,14 +301,10 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				MySoup.setSessionId(Settings.getSessionId());
 				// MySoup.setAuthKey(Settings.getAuthKey());
 				if (MySoup.isLoggedIn()) {
-					/*
-					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
-					 */
-					/*
-					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
-					 */
+					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
+					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
 					// Start the next activity
 					loginHandler.sendEmptyMessage(2);
 				} else {

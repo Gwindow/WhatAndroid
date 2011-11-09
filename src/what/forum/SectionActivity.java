@@ -39,6 +39,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.threads);
+
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
 
@@ -54,7 +55,11 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
 		id = b.getInt("id");
-		page = b.getInt("page");
+		try {
+			page = b.getInt("page");
+		} catch (Exception e) {
+			page = 1;
+		}
 
 	}
 
@@ -146,16 +151,27 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	}
 
 	public void back(View v) {
-		finish();
+		if (section.hasPreviousPage()) {
+			Bundle b = new Bundle();
+			intent = new Intent(SectionActivity.this, what.forum.SectionActivity.class);
+			b.putInt("id", id);
+			b.putInt("page", page - 1);
+			intent.putExtras(b);
+			startActivityForResult(intent, 0);
+		} else {
+			finish();
+		}
 	}
 
 	public void next(View v) {
-		Bundle b = new Bundle();
-		intent = new Intent(SectionActivity.this, what.forum.SectionActivity.class);
-		b.putInt("id", id);
-		b.putInt("page", page + 1);
-		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		if (section.hasNextPage()) {
+			Bundle b = new Bundle();
+			intent = new Intent(SectionActivity.this, what.forum.SectionActivity.class);
+			b.putInt("id", id);
+			b.putInt("page", page + 1);
+			intent.putExtras(b);
+			startActivityForResult(intent, 0);
+		}
 	}
 
 	@Override
@@ -177,9 +193,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 		if ((e2.getX() - e1.getX()) > 35) {
 			try {
-				if (section.hasNextPage()) {
-					next(null);
-				}
+				next(null);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -208,7 +222,6 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 		protected Boolean doInBackground(Void... params) {
 			section = Section.sectionFromIdAndPage(id, page);
 			return section.getStatus();
-			// return false;
 		}
 
 		@Override
@@ -218,7 +231,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 			}
 			dialog.dismiss();
 			if (status == false) {
-				Toast.makeText(SectionActivity.this, "Could not load subscriptions", Toast.LENGTH_LONG).show();
+				Toast.makeText(SectionActivity.this, "Could not load section", Toast.LENGTH_LONG).show();
 			}
 			unlockScreenRotation();
 		}
