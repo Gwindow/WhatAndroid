@@ -158,6 +158,13 @@
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
+		<activity android:name="what.inbox.MessageOptionsActivity"
+			android:noHistory="true"
+			android:theme="@style/Theme.MenuDialog">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
 		<service android:name="what.irc.IrcService" android:process=":remote">
 			<intent-filter>
 				<action android:name="what.irc.IRC_SERVICE" />

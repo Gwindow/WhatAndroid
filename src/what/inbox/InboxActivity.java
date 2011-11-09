@@ -31,7 +31,6 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 	private LinearLayout scrollLayout;
 	private Intent intent;
 	private ProgressDialog dialog;
-	private int counter;
 	private List<Messages> messages;
 	private NotificationManager myNotificationManager;
 	private Inbox inbox;
@@ -76,15 +75,25 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 	}
 
 	public void next(View v) {
-		Bundle b = new Bundle();
-		intent = new Intent(InboxActivity.this, what.inbox.InboxActivity.class);
-		b.putInt("page", page + 1);
-		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		if (inbox.hasNextPage()) {
+			Bundle b = new Bundle();
+			intent = new Intent(InboxActivity.this, what.inbox.InboxActivity.class);
+			b.putInt("page", page + 1);
+			intent.putExtras(b);
+			startActivityForResult(intent, 0);
+		}
 	}
 
 	public void back(View v) {
-		finish();
+		if (inbox.hasPreviousPage()) {
+			Bundle b = new Bundle();
+			intent = new Intent(InboxActivity.this, what.inbox.InboxActivity.class);
+			b.putInt("page", page - 1);
+			intent.putExtras(b);
+			startActivityForResult(intent, 0);
+		} else {
+			finish();
+		}
 	}
 
 	private void populateLayout() {
@@ -111,18 +120,23 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 				messageList.get(i).setTextSize(17);
 			}
 			scrollLayout.addView(messageList.get(i));
-			counter++;
 		}
 	}
 
 	private void openMessage(int i) {
-		// TODO fill out
+		Bundle b = new Bundle();
+		intent = new Intent(InboxActivity.this, what.forum.ThreadActivity.class);
+		b.putInt("id", inbox.getResponse().getMessages().get(i).getConvId());
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
 	}
 
 	@Override
 	public void onClick(View v) {
-		if ((v.getId() >= 0) && (counter >= v.getId())) {
-			openMessage(v.getId());
+		for (int i = 0; i < (messageList.size()); i++) {
+			if (v.getId() == messageList.get(i).getId()) {
+				openMessage(i);
+			}
 		}
 	}
 
@@ -130,16 +144,13 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 		if ((e2.getX() - e1.getX()) > 35) {
 			try {
-				if (inbox.hasNextPage()) {
-					next(null);
-				}
+				next(null);
 			} catch (Exception e) {
-				finish();
 			}
 		}
 		if ((e2.getX() - e1.getX()) < -35) {
 			try {
-				finish();
+				back(null);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -168,10 +179,10 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 			if (status == true) {
 				populateLayout();
 			}
+			dialog.dismiss();
 			if (status == false) {
 				Toast.makeText(InboxActivity.this, "Could not load inbox", Toast.LENGTH_LONG).show();
 			}
-			dialog.dismiss();
 			unlockScreenRotation();
 		}
 	}

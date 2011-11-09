@@ -12,7 +12,6 @@ import android.widget.Toast;
 import api.soup.MySoup;
 
 /**
- * @author Tim
  * 
  */
 public class MainMenu extends MyActivity {
@@ -54,7 +53,6 @@ public class MainMenu extends MyActivity {
 		} else {
 			Toast.makeText(this, "You need to be a power user or higher to access notifications", Toast.LENGTH_LONG).show();
 		}
-
 	}
 
 	public void inbox(View v) {
@@ -72,8 +70,8 @@ public class MainMenu extends MyActivity {
 		startActivityForResult(intent, 0);
 	}
 
-	public void report(View v) {
-		intent = new Intent(MainMenu.this, what.inbox.BugReportActivity.class);
+	public void home(View v) {
+		intent = new Intent(MainMenu.this, what.home.HomeActivity.class);
 		startActivityForResult(intent, 0);
 	}
 

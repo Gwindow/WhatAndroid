@@ -6,8 +6,8 @@
 		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
 		android:orientation="horizontal">
-		<Button android:text="Search" android:id="@+id/button1"
-			android:onClick="search" android:layout_height="wrap_content"
+		<Button android:text="Home" android:id="@+id/button0"
+			android:onClick="home" android:layout_height="wrap_content"
 			android:layout_weight="1" android:layout_width="0dp"
 			android:background="@drawable/btn_black" style="@style/ButtonText"></Button>
 		<Button android:text="Forum" android:id="@+id/button2"
@@ -19,10 +19,11 @@
 		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
 		android:layout_below="@+id/buttons1" android:layout_height="wrap_content"
 		android:layout_width="fill_parent">
-		<Button android:text="Notifications" android:id="@+id/button3"
-			android:onClick="notifications" android:layout_height="wrap_content"
+		<Button android:text="Search" android:id="@+id/button1"
+			android:onClick="search" android:layout_height="wrap_content"
 			android:layout_weight="1" android:layout_width="0dp"
 			android:background="@drawable/btn_black" style="@style/ButtonText"></Button>
+
 		<Button android:text="Inbox" android:id="@+id/button4"
 			android:onClick="inbox" android:layout_height="wrap_content"
 			android:layout_weight="1" android:layout_width="0dp"
@@ -32,34 +33,37 @@
 		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
 		android:layout_below="@+id/buttons2" android:layout_height="wrap_content"
 		android:layout_width="fill_parent">
-		<Button android:layout_height="wrap_content" android:onClick="bookmarks"
-			android:layout_weight="1" android:text="Bookmarks" android:id="@+id/button5"
-			android:layout_width="0dp"
+		<Button android:text="Notifications" android:id="@+id/button3"
+			android:onClick="notifications" android:layout_height="wrap_content"
+			android:layout_weight="1" android:layout_width="0dp"
 			android:background="@drawable/btn_black" style="@style/ButtonText"></Button>
-		<Button android:layout_height="wrap_content"
-			android:layout_weight="1" android:text="Status" android:id="@+id/button6"
-			android:onClick="status" android:layout_width="0dp"
+		<Button android:text="Top 10" android:id="@+id/button10"
+			android:onClick="topten" android:layout_height="wrap_content"
+			android:layout_weight="1" android:layout_width="0dp"
 			android:background="@drawable/btn_black" style="@style/ButtonText"></Button>
+
 	</LinearLayout>
 	<LinearLayout android:id="@+id/buttons4"
 		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
 		android:layout_below="@+id/buttons3" android:layout_height="wrap_content"
 		android:layout_width="fill_parent">
-		<Button android:text="Top 10" android:id="@+id/button10"
-			android:onClick="topten" android:layout_height="wrap_content"
-			android:layout_weight="1" android:layout_width="0dp"
+		<Button android:layout_height="wrap_content" android:onClick="bookmarks"
+			android:layout_weight="1" android:text="Bookmarks" android:id="@+id/button5"
+			android:layout_width="0dp" android:background="@drawable/btn_black"
+			style="@style/ButtonText"></Button>
+		<Button android:layout_height="wrap_content"
+			android:layout_weight="1" android:text="Status" android:id="@+id/button6"
+			android:onClick="status" android:layout_width="0dp"
 			android:background="@drawable/btn_black" style="@style/ButtonText"></Button>
-		<Button android:text="Settings" android:id="@+id/button9"
-			android:onClick="settings" android:layout_height="wrap_content"
-			android:layout_weight="1" android:layout_width="0dp"
-			android:background="@drawable/btn_black" style="@style/ButtonText"></Button>
+
 	</LinearLayout>
 	<LinearLayout android:id="@+id/buttons5"
 		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
 		android:layout_below="@+id/buttons4" android:layout_height="wrap_content"
 		android:layout_width="fill_parent">
-		<Button android:text="Report Bug" android:id="@+id/button7"
-			android:onClick="report" android:layout_height="wrap_content"
+
+		<Button android:text="Settings" android:id="@+id/button9"
+			android:onClick="settings" android:layout_height="wrap_content"
 			android:layout_weight="1" android:layout_width="0dp"
 			android:background="@drawable/btn_black" style="@style/ButtonText"></Button>
 		<Button android:text="Donate" android:id="@+id/button8"
