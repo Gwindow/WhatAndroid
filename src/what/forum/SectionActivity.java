@@ -208,6 +208,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 		protected Boolean doInBackground(Void... params) {
 			section = Section.sectionFromIdAndPage(id, page);
 			return section.getStatus();
+			// return false;
 		}
 
 		@Override

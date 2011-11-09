@@ -107,8 +107,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 		@SuppressWarnings("unused")
 		ReportSender sender = new ReportSender(this);
 		// MySoup.setSite("http://192.168.1.147:8080/");
-		MySoup.setSite("http://173.250.182.79:8080/");
-		// MySoup.setSite("http://what.cd/");
+		// MySoup.setSite("http://173.250.182.79:8080/");
+		MySoup.setSite("http://what.cd/");
 		setVersionName();
 		try {
 			// checkForUpdate();
@@ -157,8 +157,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				e.printStackTrace();
 			}
 		}
-		username.setText("gazelle");
-		password.setText("123456");
+		// username.setText("gazelle");
+		// password.setText("123456");
 
 		/* if (settings.getString("sessionId", null) != null) { // Resume the session // TODO fix // resume(); } */
 	}
@@ -345,10 +345,14 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				MySoup.setSessionId(Settings.getSessionId());
 				// MySoup.setAuthKey(Settings.getAuthKey());
 				if (MySoup.isLoggedIn()) {
-					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
-					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
+					/*
+					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
+					 */
+					/*
+					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
+					 */
 					// Start the next activity
 					loginHandler.sendEmptyMessage(2);
 				} else {

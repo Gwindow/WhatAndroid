@@ -53,7 +53,8 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 				}
 				sectionList.getLast().setText(
 						forumSections.getResponse().getCategories().get(i).getForums().get(j).getForumName());
-				sectionList.getLast().setId(j + counter);
+				// sectionList.getLast().setId(j + counter);
+				sectionList.getLast().setId(j);
 				sectionList.getLast().setOnClickListener(this);
 				scrollLayout.addView(sectionList.getLast());
 				counter++;
@@ -72,8 +73,10 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 
 	@Override
 	public void onClick(View v) {
-		if ((v.getId() >= 0) && (counter >= v.getId())) {
-			openSection(v.getId());
+		for (int i = 0; i < (sectionList.size()); i++) {
+			if (v.getId() == sectionList.get(i).getId()) {
+				openSection(i);
+			}
 		}
 	}
 
@@ -96,7 +99,6 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-
 			populateLayout();
 			if (status == false) {
 				Toast.makeText(ForumSectionsListActivity.this, "Could not load forum sections", Toast.LENGTH_LONG).show();
