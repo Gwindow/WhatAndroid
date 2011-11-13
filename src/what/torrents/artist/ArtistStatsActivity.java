@@ -2,7 +2,10 @@ package what.torrents.artist;
 
 import what.gui.MyActivity;
 import what.gui.R;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -48,6 +51,23 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 
 		notifications.setChecked(artist.getResponse().isNotificationsEnabled());
 		bookmark.setChecked(artist.getResponse().isBookmarked());
+	}
+
+	public void openSpotify(View v) {
+		try {
+			String spotifyUri = artist.getSpotifyUrl();
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(spotifyUri));
+			startActivity(intent);
+		} catch (Exception e) {
+			Toast.makeText(this, "Could not open Spotify, is it installed?", Toast.LENGTH_LONG).show();
+		}
+	}
+
+	public void openLastFM(View v) {
+		Intent i = new Intent();
+		i.setData(Uri.parse(artist.getLastFMUrl()));
+		i.setAction("android.intent.action.VIEW");
+		startActivity(i);
 	}
 
 	@Override

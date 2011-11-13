@@ -11,7 +11,7 @@
 		android:layout_marginTop="5dip" android:layout_marginRight="10dip"
 		android:layout_marginLeft="10dip" android:layout_below="@+id/torrentTitle"
 		android:layout_toRightOf="@+id/torrentImage">
-		<Button android:text="Statistics" android:layout_height="wrap_content"
+		<Button android:text="More" android:layout_height="wrap_content"
 			android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
 			android:onClick="openStats" android:layout_width="fill_parent"
 			android:id="@+id/statsButton"></Button>
@@ -22,11 +22,11 @@
 	</RelativeLayout>
 	<ImageView android:id="@+id/torrentImage"
 		android:adjustViewBounds="true" android:layout_width="wrap_content"
-		android:background="@color/lightGray" android:layout_height="wrap_content"
+		android:layout_height="wrap_content"
 		android:layout_marginLeft="10dip" android:layout_marginTop="5dip"
-		android:layout_marginRight="10dip" android:padding="2dip"
+		android:layout_marginRight="10dip" 
 		android:layout_below="@+id/torrentTitle"
-		android:layout_alignParentLeft="true">
+		android:layout_alignParentLeft="true" android:layout_alignBottom="@+id/buttons">
 	</ImageView>
 	<TextView android:id="@+id/torrentTitle" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_alignParentTop="true"
@@ -36,14 +36,14 @@
 		android:textStyle="bold" android:textSize="20dip"
 		android:background="@drawable/table_header_dark">
 	</TextView>
-	<TextView android:id="@+id/torrentInfo" android:layout_width="fill_parent"
+	<WebView android:id="@+id/torrentInfo" android:layout_width="fill_parent"
 		android:visibility="gone" android:cursorVisible="false"
-		android:inputType="textMultiLine" android:layout_below="@+id/buttons"
-		android:scrollbars="vertical" android:layout_height="fill_parent"
-		android:layout_marginLeft="10dip" android:layout_marginBottom="5dip"
-		android:padding="5dip" android:layout_marginTop="5dip"
-		android:layout_marginRight="10dip" android:background="@color/lightGray"
-		android:textColor="@color/black" android:textSize="15dip">
-	</TextView>
+		android:layout_below="@+id/buttons" android:scrollbars="vertical"
+		android:layout_height="fill_parent" android:layout_marginLeft="10dip"
+		android:layout_marginBottom="5dip" android:padding="5dip"
+		android:layout_marginTop="5dip" android:layout_marginRight="10dip"
+		android:background="@color/lightGray" android:textColor="@color/black"
+		android:textSize="15dip">
+	</WebView>
 </RelativeLayout>
 <!-- </ScrollView> -->

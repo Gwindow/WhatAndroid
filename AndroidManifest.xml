@@ -92,7 +92,7 @@
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.torrents.ArtistActivity"
+		<activity android:name="what.torrents.artist.ArtistActivity"
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -121,13 +121,19 @@
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.torrents.torrents.TorrentStatsActivitysActivity"
+		<activity android:name="what.torrents.torrents.TorrentStatsActivity"
 			android:theme="@android:style/Theme.Dialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.torrents.TorrentInfoActivity"
+		<activity android:name="what.torrents.torrents.TorrentInfoActivity"
+			android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		<activity android:name="what.torrents.torrents.TorrentFormatsActivity"
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />

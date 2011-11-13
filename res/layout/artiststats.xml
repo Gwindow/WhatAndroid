@@ -32,8 +32,34 @@
 		android:layout_below="@+id/snatches" android:layout_alignParentLeft="true"
 		android:layout_height="wrap_content" android:text="Bookmark"></CheckBox>
 	<CheckBox android:id="@+id/notify" android:layout_width="wrap_content"
-		android:layout_marginRight="5dip"
-		android:layout_marginLeft="5dip" android:layout_below="@+id/bookmark"
-		android:layout_marginBottom="5dip" android:layout_alignParentLeft="true"
-		android:layout_height="wrap_content" android:text="Notify of new uploads"></CheckBox>
+		android:layout_marginRight="5dip" android:layout_marginLeft="5dip"
+		android:layout_below="@+id/bookmark" android:layout_marginBottom="5dip"
+		android:layout_alignParentLeft="true" android:layout_height="wrap_content"
+		android:text="Notify of new uploads"></CheckBox>
+	<ImageButton android:src="@drawable/spotify"
+		android:layout_below="@+id/notify" android:layout_marginRight="5dip"
+		android:clickable="true" android:onClick="openSpotify"
+		android:layout_marginBottom="5dip" android:layout_marginLeft="5dip"
+		android:background="@android:color/transparent" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/spotify"
+		android:layout_alignParentLeft="true"></ImageButton>
+	<TextView android:id="@+id/textView1" android:textAppearance="?android:attr/textAppearanceMedium"
+		android:clickable="true" android:onClick="openSpotify"
+		android:layout_marginBottom="5dip" android:layout_marginTop="16px"
+		android:text="Find on Spotify" android:layout_width="wrap_content"
+		android:layout_below="@+id/notify" android:layout_height="wrap_content"
+		android:layout_toRightOf="@+id/spotify"></TextView>
+	<ImageButton android:src="@drawable/lastfm"
+		android:layout_marginBottom="5dip" android:layout_below="@+id/spotify"
+		android:layout_marginRight="5dip" android:clickable="true"
+		android:onClick="openLastFM" android:layout_marginLeft="5dip"
+		android:background="@android:color/transparent" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/lastfm"
+		android:layout_alignParentLeft="true"></ImageButton>
+	<TextView android:id="@+id/textView2" android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_marginBottom="5dip" android:clickable="true"
+		android:onClick="openLastFM" android:layout_marginTop="16px"
+		android:text="Find on Last.FM" android:layout_width="wrap_content"
+		android:layout_below="@+id/spotify" android:layout_height="wrap_content"
+		android:layout_toRightOf="@+id/lastfm"></TextView>
 </RelativeLayout>

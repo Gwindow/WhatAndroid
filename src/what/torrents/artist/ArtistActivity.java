@@ -10,8 +10,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,7 +22,7 @@ import android.widget.TextView;
 public class ArtistActivity extends MyActivity {
 	private TextView artistTitle;
 	private ImageView artistImage;
-	private TextView artistInfo;
+	private WebView artistInfo;
 	private ProgressDialog dialog;
 	private Bitmap bmp;
 	private Intent intent;
@@ -34,9 +34,9 @@ public class ArtistActivity extends MyActivity {
 		artistTitle = (TextView) this.findViewById(R.id.artistTitle);
 		artistImage = (ImageView) this.findViewById(R.id.artistImage);
 		artistImage.setMaxWidth(this.getWidth() / 3);
-		artistImage.setMaxHeight(this.getHeight() / 3);
-		artistInfo = (TextView) this.findViewById(R.id.artistInfo);
-		artistInfo.setMovementMethod(new ScrollingMovementMethod());
+		artistImage.setMaxHeight(this.getHeight() / 2);
+		artistInfo = (WebView) this.findViewById(R.id.artistInfo);
+		// artistInfo.setMovementMethod(new ScrollingMovementMethod());
 
 		new PopulateLayout().execute();
 
@@ -61,16 +61,6 @@ public class ArtistActivity extends MyActivity {
 	public void openStats(View v) {
 		intent = new Intent(ArtistActivity.this, what.torrents.artist.ArtistStatsActivity.class);
 		startActivityForResult(intent, 0);
-	}
-
-	@Override
-	public void onPause() {
-		try {
-			bmp.recycle();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		super.onPause();
 	}
 
 	@Override
@@ -111,7 +101,7 @@ public class ArtistActivity extends MyActivity {
 				artistTitle.setText(ArtistTabActivity.getArtist().getResponse().getName());
 				String body = ArtistTabActivity.getArtist().getResponse().getBody();
 				if (body.length() > 0) {
-					artistInfo.setText(body);
+					artistInfo.loadData(body, "text/html", "utf-8");
 					artistInfo.setVisibility(TextView.VISIBLE);
 				}
 				if (status == true) {

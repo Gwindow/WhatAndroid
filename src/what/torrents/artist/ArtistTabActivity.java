@@ -62,7 +62,7 @@ public class ArtistTabActivity extends MyTabActivity {
 		try {
 			Bundle b = this.getIntent().getExtras();
 			// artistId = b.getString("artistId");
-			artistId = 3;
+			artistId = 80927;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

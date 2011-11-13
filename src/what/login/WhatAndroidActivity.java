@@ -113,8 +113,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				e.printStackTrace();
 			}
 		}
-		// username.setText("gazelle");
-		// password.setText("123456");
 
 		/* if (settings.getString("sessionId", null) != null) { // Resume the session // TODO fix // resume(); } */
 	}
@@ -254,8 +252,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 					} else if (msg.what == 2) {
 						dialog.dismiss();
 						WhatAndroidActivity.this.unlockScreenRotation();
-						Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
-						// Intent intent = new Intent(WhatAndroidActivity.this, what.search.UserSearchActivity.class);
+						// Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
+						Intent intent = new Intent(WhatAndroidActivity.this, what.torrents.artist.ArtistTabActivity.class);
 						startActivity(intent);
 					} else if (msg.what == 3) {
 						dialog.dismiss();
@@ -301,10 +299,14 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				MySoup.setSessionId(Settings.getSessionId());
 				// MySoup.setAuthKey(Settings.getAuthKey());
 				if (MySoup.isLoggedIn()) {
-					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
-					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
+					/*
+					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
+					 */
+					/*
+					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
+					 */
 					// Start the next activity
 					loginHandler.sendEmptyMessage(2);
 				} else {

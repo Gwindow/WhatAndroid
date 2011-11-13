@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import what.gui.MyActivity;
 import what.gui.R;
-import what.gui.ReportSender;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -31,7 +30,6 @@ public class TorrentListActivity extends MyActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.torrentlist);
-		ReportSender sender = new ReportSender(this);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		populateLayout();
 	}
@@ -66,15 +64,17 @@ public class TorrentListActivity extends MyActivity implements OnClickListener {
 	private void openTorrent(int i) {
 		Bundle b = new Bundle();
 		intent = new Intent(TorrentListActivity.this, what.torrents.torrents.TorrentTabActivity.class);
-		b.putString("torrentGroupId", artist.getResponse().getTorrentgroup().get(i).getGroupId());
+		b.putInt("torrentGroupId", Integer.parseInt(artist.getResponse().getTorrentgroup().get(i).getGroupId()));
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
 
 	@Override
 	public void onClick(View v) {
-		if ((v.getId() >= 0) && (artist.getResponse().getTorrentgroup().size() >= v.getId())) {
-			openTorrent(v.getId());
+		for (int i = 0; i < (torrentList.size()); i++) {
+			if (v.getId() == torrentList.get(i).getId()) {
+				openTorrent(i);
+			}
 		}
 	}
 }
