@@ -5,6 +5,7 @@ import java.io.IOException;
 import what.gui.MyActivity;
 import what.gui.R;
 import what.gui.ReportSender;
+import what.gui.Updater;
 import what.settings.Settings;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -52,6 +53,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 	private String usernameString;
 	private String passwordString;
 
+	private Updater updater;
+
 	/**
 	 * Called when the activity is first created.
 	 * */
@@ -65,11 +68,15 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 		MySoup.setSite("http://192.168.1.147:8080/");
 		// MySoup.setSite("http://173.250.185.120:8080/");
 		// MySoup.setSite("http://what.cd/");
-		setVersionName();
+
 		try {
-			// checkForUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
+			updater = new Updater();
+			checkForMessage();
+			setVersionName();
+			checkForUpdate();
+		} catch (CouldNotLoadException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 
 		// initialize the settings writer, should only be done once
@@ -118,6 +125,13 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 	}
 
 	/**
+	 * Check for messages from the update site
+	 */
+	private void checkForMessage() {
+
+	}
+
+	/**
 	 * Set the version name from the manifest file
 	 */
 	private void setVersionName() {
@@ -134,7 +148,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 	 * Check if update exists by comparing versions
 	 */
 	private void checkForUpdate() {
-		double updateversion = Double.parseDouble(MySoup.getUpdateVersion(SITE));
+		double updateversion = updater.getVersion();
 		double currentversion = Double.parseDouble(VERSION);
 		if (updateversion > currentversion) {
 			displayAlert("", "Update available, would you like to install it?", this);
@@ -299,14 +313,10 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				MySoup.setSessionId(Settings.getSessionId());
 				// MySoup.setAuthKey(Settings.getAuthKey());
 				if (MySoup.isLoggedIn()) {
-					/*
-					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
-					 */
-					/*
-					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
-					 */
+					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
+					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
 					// Start the next activity
 					loginHandler.sendEmptyMessage(2);
 				} else {

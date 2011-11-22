@@ -8,7 +8,7 @@ import api.util.CouldNotLoadException;
 /**
  * Connects to the update site and checks for messages of updates
  * 
- * @author Tim
+ * @author Gwindow
  * 
  */
 public class Updater {
@@ -16,6 +16,7 @@ public class Updater {
 
 	public Updater() throws CouldNotLoadException {
 		try {
+			// TODO fix update url
 			doc = Jsoup.connect("http://db.tt/e0uu5bFZ").get();
 		} catch (Exception e) {
 			throw new CouldNotLoadException("Could not load update site");
@@ -30,10 +31,10 @@ public class Updater {
 		return null;
 	}
 
-	public String getVersion() {
+	public Double getVersion() {
 		if (doc != null) {
 			String version = doc.getElementsByTag("version").text();
-			return version;
+			return Double.parseDouble(version);
 		}
 		return null;
 	}

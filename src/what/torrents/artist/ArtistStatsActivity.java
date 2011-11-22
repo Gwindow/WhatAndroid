@@ -1,7 +1,7 @@
 package what.torrents.artist;
 
 import what.gui.MyActivity;
-import android.R;
+import what.gui.R;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;

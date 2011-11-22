@@ -6,7 +6,7 @@ package what.torrents.artist;
 import java.util.ArrayList;
 
 import what.gui.MyActivity;
-import android.R;
+import what.gui.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +16,7 @@ import android.widget.TextView;
 import api.torrents.artist.Artist;
 
 /**
- * @author Tim
+ * @author Gwindow
  * 
  */
 public class TorrentListActivity extends MyActivity implements OnClickListener {

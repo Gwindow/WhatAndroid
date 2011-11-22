@@ -46,7 +46,7 @@
 			android:layout_alignParentRight="true" android:layout_below="@+id/trackerstatus"
 			android:layout_marginRight="40dip"></ImageView>
 	</RelativeLayout>
-	<RelativeLayout android:layout_width="fill_parent"
+	<!-- <RelativeLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:id="@+id/relativeLayout2"
 		android:layout_centerHorizontal="true" android:gravity="center_horizontal">
 		<RelativeLayout android:layout_width="fill_parent"
@@ -88,5 +88,5 @@
 			android:layout_below="@+id/title" android:layout_marginTop="5dip"
 			android:layout_marginLeft="25dip" android:layout_marginRight="25dip">
 		</TextView>
-	</LinearLayout>
+	</LinearLayout> -->
 </LinearLayout>

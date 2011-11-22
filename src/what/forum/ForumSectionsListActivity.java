@@ -17,10 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import api.forum.forumsections.ForumSections;
 import api.forum.forumsections.Forums;
+import api.soup.MySoup;
 
 public class ForumSectionsListActivity extends MyActivity implements OnClickListener {
 	private LinearLayout scrollLayout;
-	private int counter;
 	private ProgressDialog dialog;
 	ForumSections forumSections;
 	private List<Forums> forumsList;
@@ -53,11 +53,9 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 				}
 				sectionList.getLast().setText(
 						forumSections.getResponse().getCategories().get(i).getForums().get(j).getForumName());
-				// sectionList.getLast().setId(j + counter);
 				sectionList.getLast().setId(j);
 				sectionList.getLast().setOnClickListener(this);
 				scrollLayout.addView(sectionList.getLast());
-				counter++;
 			}
 		}
 	}
@@ -92,7 +90,7 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			forumSections = ForumSections.init();
+			forumSections = MySoup.loadForumSections();
 			return forumSections.getStatus();
 		}
 

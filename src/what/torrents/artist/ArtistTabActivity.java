@@ -62,6 +62,7 @@ public class ArtistTabActivity extends MyTabActivity {
 		try {
 			Bundle b = this.getIntent().getExtras();
 			// artistId = b.getString("artistId");
+			// TODO remove
 			artistId = 80927;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -101,14 +102,14 @@ public class ArtistTabActivity extends MyTabActivity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			artist = Artist.artistFromId(artistId);
-			// return artist.getStatus();
-			// TODO fix
-			return true;
+			return artist.getStatus();
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			createTabs();
+			if (status == true) {
+				createTabs();
+			}
 			dialog.dismiss();
 			if (status == false) {
 				Toast.makeText(ArtistTabActivity.this, "Could not load artist", Toast.LENGTH_LONG).show();

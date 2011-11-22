@@ -74,10 +74,10 @@ public class TorrentTabActivity extends MyTabActivity {
 			if (status == true) {
 				createTabs();
 			}
+			dialog.dismiss();
 			if (status == false) {
 				Toast.makeText(TorrentTabActivity.this, "Could not load torrents", Toast.LENGTH_LONG).show();
 			}
-			dialog.dismiss();
 			unlockScreenRotation();
 		}
 	}

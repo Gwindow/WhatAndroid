@@ -6,6 +6,7 @@ import java.util.List;
 
 import what.gui.MyActivity;
 import what.gui.R;
+import what.settings.Settings;
 import what.settings.SettingsActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -31,7 +32,6 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	private ProgressDialog dialog;
 	private Intent intent;
 	private DecimalFormat df = new DecimalFormat("#.00");
-	private int counter = 0;
 	private Intent inboxService;
 	private Intent notificationService;
 	private Intent annoucementService;
@@ -49,9 +49,10 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
-		// if (!Settings.getQuickSearch()) {
-		// searchBar.setVisibility(EditText.INVISIBLE);
-		// }
+		// hide searchbar if if its disabled in settings
+		if (!Settings.getQuickSearch()) {
+			searchBar.setVisibility(EditText.INVISIBLE);
+		}
 
 		username.setText(MySoup.getUsername());
 		uploadedValue.setText("U: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getUploaded().toString()) + "GB");
@@ -79,7 +80,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	public void openProfile(View v) {
 		Bundle b = new Bundle();
 		intent = new Intent(HomeActivity.this, what.user.UserProfileActivity.class);
-		b.putInt("userId", Integer.valueOf(MySoup.getUserId()));
+		b.putInt("userId", (MySoup.getUserId()));
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
@@ -104,6 +105,10 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		startActivityForResult(intent, 0);
 	}
 
+	public void refresh(View v) {
+
+	}
+
 	private void openThread(int i) {
 		Bundle b = new Bundle();
 		intent = new Intent(HomeActivity.this, what.forum.ThreadActivity.class);
@@ -116,18 +121,20 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	}
 
 	private void populateLayout() {
-		List<Threads> threads = subscriptions.getResponse().getThreads();
-		for (int i = 0; i < threads.size(); i++) {
-			if ((i % 2) == 0) {
-				threadList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
-			} else {
-				threadList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+		if (subscriptions.hasUnreadThreads()) {
+			List<Threads> threads = subscriptions.getResponse().getThreads();
+			for (int i = 0; i < threads.size(); i++) {
+				if ((i % 2) == 0) {
+					threadList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
+				} else {
+					threadList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+				}
+				threadList.get(i).setTextSize(18);
+				threadList.get(i).setText(threads.get(i).getForumName() + " > " + threads.get(i).getThreadTitle());
+				threadList.get(i).setId(i);
+				threadList.get(i).setOnClickListener(this);
+				scrollLayout.addView(threadList.get(i));
 			}
-			threadList.get(i).setTextSize(18);
-			threadList.get(i).setText(threads.get(i).getForumName() + " > " + threads.get(i).getThreadTitle());
-			threadList.get(i).setId(i);
-			threadList.get(i).setOnClickListener(this);
-			scrollLayout.addView(threadList.get(i));
 		}
 	}
 
@@ -152,14 +159,9 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			try {
-				subscriptions = Subscriptions.init();
-				return subscriptions.getStatus();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return false;
-			}
+			// TODO why was there a try catch statement here before?
+			subscriptions = Subscriptions.init();
+			return subscriptions.getStatus();
 		}
 
 		@Override

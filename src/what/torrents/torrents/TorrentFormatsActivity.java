@@ -3,7 +3,7 @@ package what.torrents.torrents;
 import java.util.ArrayList;
 
 import what.gui.MyActivity;
-import android.R;
+import what.gui.R;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
