@@ -17,7 +17,7 @@ import api.util.CouldNotLoadException;
 public class UserStatsWidgetProvider extends AppWidgetProvider {
 	private RemoteViews remoteViews;
 	private ComponentName userStatsWidget;
-	private int id = Integer.parseInt(MySoup.getIndex().getResponse().getId());
+	private int id = (MySoup.getIndex().getResponse().getId().intValue());
 	private String username;
 	private String up, down, ratio;
 	private String seeding, leeching;
@@ -40,8 +40,8 @@ public class UserStatsWidgetProvider extends AppWidgetProvider {
 		up = toGBString(user.getProfile().getRanks().getUploaded().toString() + " GB");
 		down = toGBString(user.getProfile().getRanks().getDownloaded().toString() + " GB");
 		ratio = user.getProfile().getStats().getRatio().toString();
-		seeding = user.getProfile().getCommunity().getSeeding();
-		leeching = user.getProfile().getCommunity().getLeeching();
+		seeding = user.getProfile().getCommunity().getSeeding().toString();
+		leeching = user.getProfile().getCommunity().getLeeching().toString();
 
 		remoteViews.setTextViewText(R.id.username, username);
 		remoteViews.setTextViewText(R.id.upvalue, up);

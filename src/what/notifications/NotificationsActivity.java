@@ -96,7 +96,7 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 	private void openTorrent(int i) {
 		Bundle b = new Bundle();
 		intent = new Intent(NotificationsActivity.this, what.torrents.torrents.TorrentTabActivity.class);
-		b.putString("torrentGroupId", notifications.getResponse().getResults().get(i).getGroupId());
+		b.putInt("torrentGroupId", notifications.getResponse().getResults().get(i).getGroupId().intValue());
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}

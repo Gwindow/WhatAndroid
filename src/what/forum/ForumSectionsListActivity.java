@@ -65,7 +65,7 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 	private void openSection(int i) {
 		Bundle b = new Bundle();
 		intent = new Intent(ForumSectionsListActivity.this, what.forum.SectionActivity.class);
-		b.putInt("id", Integer.valueOf(forumsList.get(i).getForumId()));
+		b.putInt("id", (forumsList.get(i).getForumId().intValue()));
 		b.putInt("page", 1);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);

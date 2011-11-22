@@ -23,11 +23,10 @@ import api.forum.thread.Thread;
 
 public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	private LinearLayout scrollLayout;
-	private int counter;
 	private ProgressDialog dialog;
 	private api.forum.thread.Thread thread;
 	private Intent intent;
-	private int id, page;
+	private int id, page, postId;
 	private TextView threadTitle;
 	private Button backButton, nextButton;
 	private ArrayList<RelativeLayout> listOfPosts = new ArrayList<RelativeLayout>();
@@ -51,7 +50,16 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
 		id = b.getInt("id");
-		page = b.getInt("page");
+		try {
+			page = b.getInt("page");
+		} catch (Exception e) {
+			page = 0;
+		}
+		try {
+			b.getInt("postId");
+		} catch (Exception e) {
+			postId = 0;
+		}
 
 	}
 
@@ -82,7 +90,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		Bundle b = new Bundle();
 		intent = new Intent(ThreadActivity.this, what.forum.PostOptionsActivity.class);
 		b.putString("post", thread.getResponse().getPosts().get(i).getQuotableBody());
-		b.putInt("userId", thread.getResponse().getPosts().get(i).getAuthor().getAuthorId());
+		b.putInt("userId", thread.getResponse().getPosts().get(i).getAuthor().getAuthorId().intValue());
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
@@ -158,13 +166,25 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			thread = Thread.threadFromIdAndPage(id, page);
+			// load from last post id
+			if ((page == 0) && (postId != 0)) {
+				thread = Thread.threadFromIdAndPostId(id, postId);
+			}
+			// load from page number
+			else if ((postId == 0) && (page != 0)) {
+				thread = Thread.threadFromIdAndPage(id, page);
+			}
+			// if everything goes wrong load from the first page
+			else {
+				thread = Thread.threadFromFirstPage(id);
+			}
 			return thread.getStatus();
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
 			if (status == true) {
+				page = thread.getResponse().getCurrentPage().intValue();
 				populateLayout();
 			}
 			dialog.dismiss();

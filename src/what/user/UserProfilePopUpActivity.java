@@ -64,7 +64,7 @@ public class UserProfilePopUpActivity extends MyActivity {
 			userId = b.getInt("userId");
 		} catch (Exception e) {
 			// if for some reason the user id isn't received set it to your own id so everything doesnt crash
-			userId = Integer.parseInt(MySoup.getUserId());
+			userId = (MySoup.getUserId());
 		}
 	}
 

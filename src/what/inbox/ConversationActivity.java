@@ -72,7 +72,7 @@ public class ConversationActivity extends MyActivity implements OnLongClickListe
 		Bundle b = new Bundle();
 		intent = new Intent(ConversationActivity.this, what.inbox.MessageOptionsActivity.class);
 		b.putString("post", conversation.getResponse().getMessages().get(i).getQuotableBody());
-		b.putInt("userId", conversation.getResponse().getMessages().get(i).getSenderId());
+		b.putInt("userId", conversation.getResponse().getMessages().get(i).getSenderId().intValue());
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}

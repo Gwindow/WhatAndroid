@@ -1,7 +1,7 @@
 package what.torrents.artist;
 
 import what.gui.MyActivity;
-import what.gui.R;
+import android.R;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,7 +49,7 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 		numLeechers.setText("Leechers :" + artist.getResponse().getStatistics().getNumLeechers());
 		numSnatches.setText("Snatches :" + artist.getResponse().getStatistics().getNumSnatches());
 
-		notifications.setChecked(artist.getResponse().isNotificationsEnabled());
+		notifications.setChecked(artist.getResponse().hasNotificationsEnabled());
 		bookmark.setChecked(artist.getResponse().isBookmarked());
 	}
 

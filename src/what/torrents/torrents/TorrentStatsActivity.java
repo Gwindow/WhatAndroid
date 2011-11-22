@@ -1,7 +1,7 @@
 package what.torrents.torrents;
 
 import what.gui.MyActivity;
-import what.gui.R;
+import android.R;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,29 +10,31 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
-import api.torrents.torrents.Torrents;
+import api.torrents.torrents.TorrentGroup;
 
 public class TorrentStatsActivity extends MyActivity implements OnCheckedChangeListener {
 	private CheckBox bookmark;
-	private Torrents torrents;
+	private TorrentGroup torrentGroup;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.torrentstats);
 		bookmark = (CheckBox) this.findViewById(R.id.bookmark);
+		// TODO see why bookmarks arent working
+		bookmark.setVisibility(CheckBox.INVISIBLE);
 		bookmark.setOnCheckedChangeListener(this);
 		populateLayout();
 	}
 
 	private void populateLayout() {
-		torrents = TorrentTabActivity.getTorrents();
-		bookmark.setChecked(torrents.getResponse().getGroup().isBookmarked());
+		torrentGroup = TorrentTabActivity.getTorrentGroup();
+		// bookmark.setChecked(torrentGroup.getResponse().getGroup()
 	}
 
 	public void openSpotify(View v) {
 		try {
-			String spotifyUri = torrents.getSpotifyUrl();
+			String spotifyUri = torrentGroup.getSpotifyUrl();
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(spotifyUri));
 			startActivity(intent);
 		} catch (Exception e) {
@@ -42,7 +44,7 @@ public class TorrentStatsActivity extends MyActivity implements OnCheckedChangeL
 
 	public void openLastFM(View v) {
 		Intent i = new Intent();
-		i.setData(Uri.parse(torrents.getLastFMUrl()));
+		i.setData(Uri.parse(torrentGroup.getLastFMUrl()));
 		i.setAction("android.intent.action.VIEW");
 		startActivity(i);
 	}
@@ -52,14 +54,14 @@ public class TorrentStatsActivity extends MyActivity implements OnCheckedChangeL
 		if (buttonView.getId() == bookmark.getId()) {
 			if (isChecked == true) {
 				try {
-					torrents.addBookmark();
+					// torrentGroup.addBookmark();
 				} catch (Exception e) {
 					Toast.makeText(TorrentStatsActivity.this, "Could not add bookmark", Toast.LENGTH_LONG).show();
 				}
 			}
 			if (isChecked == false) {
 				try {
-					torrents.removeBookmark();
+					// torrentGroup.removeBookmark();
 				} catch (Exception e) {
 					Toast.makeText(TorrentStatsActivity.this, "Could not remove bookmark", Toast.LENGTH_LONG).show();
 

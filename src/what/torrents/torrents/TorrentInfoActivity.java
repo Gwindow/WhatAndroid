@@ -3,7 +3,7 @@ package what.torrents.torrents;
 import java.net.URL;
 
 import what.gui.MyActivity;
-import what.gui.R;
+import android.R;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,7 +15,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import api.torrents.torrents.Torrents;
+import api.torrents.torrents.TorrentGroup;
 
 public class TorrentInfoActivity extends MyActivity {
 	private TextView torrentTitle;
@@ -23,7 +23,7 @@ public class TorrentInfoActivity extends MyActivity {
 	private WebView torrentInfo;
 	private ProgressDialog dialog;
 	private Bitmap bmp;
-	private Torrents torrents;
+	private TorrentGroup torrentGroup;
 	private Intent intent;
 
 	@Override
@@ -36,7 +36,7 @@ public class TorrentInfoActivity extends MyActivity {
 		torrentImage.setMaxWidth(this.getWidth() / 3);
 		torrentImage.setMaxHeight(this.getHeight() / 2);
 		torrentInfo = (WebView) this.findViewById(R.id.torrentInfo);
-		torrents = TorrentTabActivity.getTorrents();
+		torrentGroup = TorrentTabActivity.getTorrentGroup();
 
 		new PopulateLayout().execute();
 	}
@@ -78,7 +78,7 @@ public class TorrentInfoActivity extends MyActivity {
 		protected Boolean doInBackground(Void... params) {
 			URL url;
 			try {
-				url = new URL(torrents.getResponse().getGroup().getWikiImage());
+				url = new URL(torrentGroup.getResponse().getGroup().getWikiImage());
 				bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 				return true;
 			} catch (Exception e) {
@@ -92,13 +92,13 @@ public class TorrentInfoActivity extends MyActivity {
 			// TODO fix
 			// if (torrentTabActivity.gettorrent().getStatus()) {
 			if (true) {
-				if (torrents.hasFreeLeech()) {
-					torrentTitle.setText("Freeleech! " + torrents.getResponse().getGroup().getName());
+				if (torrentGroup.hasFreeLeech()) {
+					torrentTitle.setText("Freeleech! " + torrentGroup.getResponse().getGroup().getName());
 					torrentTitle.setTextColor(Color.YELLOW);
 				} else {
-					torrentTitle.setText(torrents.getResponse().getGroup().getName());
+					torrentTitle.setText(torrentGroup.getResponse().getGroup().getName());
 				}
-				String body = torrents.getResponse().getGroup().getWikiBody();
+				String body = torrentGroup.getResponse().getGroup().getWikiBody();
 				if (body.length() > 0) {
 					torrentInfo.loadData(body, "text/html", "utf-8");
 

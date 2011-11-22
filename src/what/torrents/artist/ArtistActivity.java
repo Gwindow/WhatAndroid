@@ -3,7 +3,7 @@ package what.torrents.artist;
 import java.net.URL;
 
 import what.gui.MyActivity;
-import what.gui.R;
+import android.R;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * @author Tim
+ * @author Gwindow
  * 
  */
 public class ArtistActivity extends MyActivity {

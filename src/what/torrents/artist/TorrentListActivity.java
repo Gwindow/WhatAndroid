@@ -6,7 +6,7 @@ package what.torrents.artist;
 import java.util.ArrayList;
 
 import what.gui.MyActivity;
-import what.gui.R;
+import android.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -64,7 +64,7 @@ public class TorrentListActivity extends MyActivity implements OnClickListener {
 	private void openTorrent(int i) {
 		Bundle b = new Bundle();
 		intent = new Intent(TorrentListActivity.this, what.torrents.torrents.TorrentTabActivity.class);
-		b.putInt("torrentGroupId", Integer.parseInt(artist.getResponse().getTorrentgroup().get(i).getGroupId()));
+		b.putInt("torrentGroupId", (artist.getResponse().getTorrentgroup().get(i).getGroupId().intValue()));
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}

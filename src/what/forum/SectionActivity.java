@@ -131,8 +131,8 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	private void openLastReadThread(int i) {
 		Bundle b = new Bundle();
 		intent = new Intent(SectionActivity.this, what.forum.ThreadActivity.class);
-		b.putInt("id", Integer.valueOf(section.getResponse().getThreads().get(i).getTopicId()));
-		b.putInt("page", Integer.valueOf(section.getResponse().getThreads().get(i).getLastReadPage()));
+		b.putInt("id", (section.getResponse().getThreads().get(i).getTopicId().intValue()));
+		b.putInt("page", (section.getResponse().getThreads().get(i).getLastReadPage().intValue()));
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
@@ -140,8 +140,9 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	private void openThread(int i) {
 		Bundle b = new Bundle();
 		intent = new Intent(SectionActivity.this, what.forum.ThreadActivity.class);
-		b.putInt("id", Integer.valueOf(section.getResponse().getThreads().get(i).getTopicId()));
-		b.putInt("page", 1);
+		b.putInt("id", (section.getResponse().getThreads().get(i).getTopicId().intValue()));
+		// TODO is this needed?
+		// b.putInt("page", 1);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}

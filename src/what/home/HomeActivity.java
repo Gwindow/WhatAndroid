@@ -54,10 +54,11 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		// }
 
 		username.setText(MySoup.getUsername());
-		uploadedValue.setText("U: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getUploaded()) + "GB");
-		downloadedValue.setText("D: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getDownloaded()) + "GB");
+		uploadedValue.setText("U: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getUploaded().toString()) + "GB");
+		downloadedValue.setText("D: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getDownloaded().toString())
+				+ "GB");
 		ratioValue.setText("R: " + MySoup.getIndex().getResponse().getUserstats().getRatio());
-		bufferValue.setText("B: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getBuffer()) + "GB");
+		bufferValue.setText("B: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getBuffer().toString()) + "GB");
 		new LoadSubscriptions().execute();
 
 		// inboxService = new Intent(this, InboxService.class);
@@ -106,8 +107,8 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	private void openThread(int i) {
 		Bundle b = new Bundle();
 		intent = new Intent(HomeActivity.this, what.forum.ThreadActivity.class);
-		b.putInt("id", subscriptions.getResponse().getThreads().get(i).getThreadId());
-		b.putInt("page", (subscriptions.getResponse().getThreads().get(i).getLastReadPage()));
+		b.putInt("id", subscriptions.getResponse().getThreads().get(i).getThreadId().intValue());
+		b.putInt("postId", (subscriptions.getResponse().getThreads().get(i).getLastPostId().intValue()));
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 		scrollLayout.removeViewAt(i);

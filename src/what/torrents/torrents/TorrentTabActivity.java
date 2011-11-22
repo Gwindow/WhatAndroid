@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.TabHost;
 import android.widget.Toast;
-import api.torrents.torrents.Torrents;
+import api.torrents.torrents.TorrentGroup;
 
 public class TorrentTabActivity extends MyTabActivity {
 	private Resources res; // Resource object to get Drawables
@@ -18,7 +18,7 @@ public class TorrentTabActivity extends MyTabActivity {
 	private TabHost.TabSpec spec; // Resusable TabSpec for each tab
 	private Intent intent; // Reusable Intent for each tab
 	private static int torrentGroupId;
-	private static Torrents torrents;
+	private static TorrentGroup torrentGroup;
 	private ProgressDialog dialog;
 
 	@Override
@@ -65,8 +65,8 @@ public class TorrentTabActivity extends MyTabActivity {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			torrents = Torrents.torrentsFromId(torrentGroupId);
-			return torrents.getStatus();
+			torrentGroup = TorrentGroup.torrentGroupFromId(torrentGroupId);
+			return torrentGroup.getStatus();
 		}
 
 		@Override
@@ -86,8 +86,8 @@ public class TorrentTabActivity extends MyTabActivity {
 		return torrentGroupId;
 	}
 
-	public static Torrents getTorrents() {
-		return torrents;
+	public static TorrentGroup getTorrentGroup() {
+		return torrentGroup;
 	}
 
 	@Override
