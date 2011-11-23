@@ -2,9 +2,12 @@ package what.torrents.artist;
 
 import what.gui.MyActivity;
 import what.gui.R;
+import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -55,12 +58,18 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 
 	public void openSpotify(View v) {
 		try {
-			String spotifyUri = artist.getSpotifyUrl();
-			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(spotifyUri));
-			startActivity(intent);
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.setAction(MediaStore.INTENT_ACTION_MEDIA_SEARCH);
+			intent.putExtra(SearchManager.QUERY, "evgeny kissin");
+			intent.setComponent(new ComponentName("com.spotify.mobile.android.ui", "com.spotify.mobile.android.ui.Launcher"));
+			startActivityForResult(intent, 0);
 		} catch (Exception e) {
 			Toast.makeText(this, "Could not open Spotify, is it installed?", Toast.LENGTH_LONG).show();
 		}
+
+		/* try { String spotifyUri = artist.getSpotifyUrl(); Intent intent = new Intent(Intent.ACTION_VIEW,
+		 * Uri.parse(spotifyUri)); startActivity(intent); } catch (Exception e) { Toast.makeText(this,
+		 * "Could not open Spotify, is it installed?", Toast.LENGTH_LONG).show(); } */
 	}
 
 	public void openLastFM(View v) {
