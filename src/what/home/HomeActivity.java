@@ -105,15 +105,11 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		startActivityForResult(intent, 0);
 	}
 
-	public void refresh(View v) {
-
-	}
-
 	private void openThread(int i) {
 		Bundle b = new Bundle();
 		intent = new Intent(HomeActivity.this, what.forum.ThreadActivity.class);
 		b.putInt("id", subscriptions.getResponse().getThreads().get(i).getThreadId().intValue());
-		b.putInt("postId", (subscriptions.getResponse().getThreads().get(i).getLastPostId().intValue()));
+		b.putInt("postId", subscriptions.getResponse().getThreads().get(i).getLastPostId().intValue());
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 		scrollLayout.removeViewAt(i);

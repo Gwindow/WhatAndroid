@@ -76,6 +76,11 @@ public class UserProfilePopUpActivity extends MyActivity {
 		posts.setText("P: " + user.getProfile().getCommunity().getPosts());
 	}
 
+	public void message(View v) {
+		// TODO fill out
+
+	}
+
 	public void more(View v) {
 		Bundle b = new Bundle();
 		intent = new Intent(UserProfilePopUpActivity.this, what.user.UserProfileActivity.class);

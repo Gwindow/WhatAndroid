@@ -23,9 +23,13 @@
 			android:layout_height="wrap_content" android:layout_below="@+id/ratio"
 			style="@style/ButtonText" android:layout_width="fill_parent"
 			android:id="@+id/posts"></TextView>
-		<Button android:text="More" android:layout_height="wrap_content"
+		<Button android:text="Message" android:layout_height="wrap_content"
 			android:background="@drawable/btn_black" style="@style/ButtonText"
 			android:layout_below="@+id/posts" android:layout_width="fill_parent"
+			android:onClick="message" android:id="@+id/messageButton"></Button>
+		<Button android:text="More" android:layout_height="wrap_content"
+			android:background="@drawable/btn_black" style="@style/ButtonText"
+			android:layout_below="@+id/messageButton" android:layout_width="fill_parent"
 			android:onClick="more" android:id="@+id/moreButton"></Button>
 	</RelativeLayout>
 	<ImageView android:id="@+id/userImage"

@@ -15,8 +15,7 @@
 	<ScrollView android:id="@+id/scrollView"
 		android:layout_width="fill_parent" android:layout_height="0dip"
 		android:layout_weight="1" android:layout_marginLeft="10dip"
-		android:layout_marginRight="10dip" android:layout_marginBottom="10dip"
-		android:padding="10dip">
+		android:layout_marginRight="10dip" android:layout_marginBottom="10dip">
 
 		<LinearLayout android:id="@+id/scrollLayout"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
@@ -25,8 +24,9 @@
 	</ScrollView>
 	<LinearLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:orientation="horizontal">
-		<RelativeLayout android:layout_width="fill_parent" android:layout_margin="5dip"
-			android:layout_height="wrap_content" android:orientation="horizontal">
+		<RelativeLayout android:layout_width="fill_parent"
+			android:layout_margin="5dip" android:layout_height="wrap_content"
+			android:orientation="horizontal">
 			<Button android:layout_gravity="right" android:layout_width="wrap_content"
 				android:onClick="back" android:background="@drawable/btn_black"
 				style="@style/ButtonTextSmall" android:layout_alignParentLeft="true"

@@ -40,7 +40,6 @@ import api.util.CouldNotLoadException;
  */
 public class WhatAndroidActivity extends MyActivity implements OnClickListener, OnEditorActionListener {
 	private String VERSION;
-	private String SITE = "http://timmikeladze.github.com/whatAndroid/index.html";
 	TextView username;
 	TextView password;
 	Button login;
@@ -121,6 +120,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 			}
 		}
 
+		username.setText("tester");
+		password.setText("123456");
+
 		/* if (settings.getString("sessionId", null) != null) { // Resume the session // TODO fix // resume(); } */
 	}
 
@@ -159,7 +161,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 	 * Open the download link to the update
 	 */
 	private void openUpdate() {
-		String url = MySoup.getUpdateLink(SITE);
+		String url = updater.getDownloadLink();
 		if (!url.startsWith("http://") && !url.startsWith("https://")) {
 			url = "http://" + url;
 		}
@@ -266,8 +268,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 					} else if (msg.what == 2) {
 						dialog.dismiss();
 						WhatAndroidActivity.this.unlockScreenRotation();
-						// Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
-						Intent intent = new Intent(WhatAndroidActivity.this, what.torrents.artist.ArtistTabActivity.class);
+						Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
+						// Intent intent = new Intent(WhatAndroidActivity.this,
+						// what.torrents.artist.ArtistTabActivity.class);
 						startActivity(intent);
 					} else if (msg.what == 3) {
 						dialog.dismiss();
@@ -313,10 +316,14 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				MySoup.setSessionId(Settings.getSessionId());
 				// MySoup.setAuthKey(Settings.getAuthKey());
 				if (MySoup.isLoggedIn()) {
-					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
-					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
+					/*
+					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
+					 */
+					/*
+					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
+					 */
 					// Start the next activity
 					loginHandler.sendEmptyMessage(2);
 				} else {

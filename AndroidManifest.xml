@@ -45,13 +45,13 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="what.forum.SectionActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+			android:theme="@android:style/Theme.NoTitleBar" android:noHistory="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 		<activity android:name="what.forum.ThreadActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+			android:theme="@android:style/Theme.NoTitleBar" android:noHistory="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
