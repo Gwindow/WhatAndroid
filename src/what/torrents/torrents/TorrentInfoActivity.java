@@ -41,6 +41,7 @@ public class TorrentInfoActivity extends MyActivity {
 		new PopulateLayout().execute();
 	}
 
+	// TODO add in php
 	public void openTags(View v) {
 		Bundle b = new Bundle();
 		intent = new Intent(TorrentInfoActivity.this, what.torrents.ListActivity.class);

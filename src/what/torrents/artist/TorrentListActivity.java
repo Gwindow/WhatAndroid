@@ -36,28 +36,29 @@ public class TorrentListActivity extends MyActivity implements OnClickListener {
 
 	private void populateLayout() {
 		artist = ArtistTabActivity.getArtist();
-		// TODO if statement
-		String currentReleaseType = "";
-		int counter = 0;
-		for (int i = 0; i < artist.getResponse().getTorrentgroup().size(); i++) {
-			if (!currentReleaseType.equalsIgnoreCase(artist.getResponse().getTorrentgroup().get(i).getReleaseType())) {
-				sectionList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_section_title, null));
-				sectionList.get(counter).setText(artist.getResponse().getTorrentgroup().get(i).getReleaseType());
-				scrollLayout.addView(sectionList.get(counter));
-				currentReleaseType = artist.getResponse().getTorrentgroup().get(i).getReleaseType();
-				counter++;
+		if (artist.getStatus()) {
+			String currentReleaseType = "";
+			int counter = 0;
+			for (int i = 0; i < artist.getResponse().getTorrentgroup().size(); i++) {
+				if (!currentReleaseType.equalsIgnoreCase(artist.getResponse().getTorrentgroup().get(i).getReleaseType())) {
+					sectionList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_section_title, null));
+					sectionList.get(counter).setText(artist.getResponse().getTorrentgroup().get(i).getReleaseType());
+					scrollLayout.addView(sectionList.get(counter));
+					currentReleaseType = artist.getResponse().getTorrentgroup().get(i).getReleaseType();
+					counter++;
+				}
+				if ((i % 2) == 0) {
+					torrentList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
+				} else {
+					torrentList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+				}
+				torrentList.get(i).setText(
+						artist.getResponse().getTorrentgroup().get(i).getGroupName() + " ["
+								+ artist.getResponse().getTorrentgroup().get(i).getGroupYear() + "]");
+				torrentList.get(i).setId(i);
+				torrentList.get(i).setOnClickListener(this);
+				scrollLayout.addView(torrentList.get(i));
 			}
-			if ((i % 2) == 0) {
-				torrentList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
-			} else {
-				torrentList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
-			}
-			torrentList.get(i).setText(
-					artist.getResponse().getTorrentgroup().get(i).getGroupName() + " ["
-							+ artist.getResponse().getTorrentgroup().get(i).getGroupYear() + "]");
-			torrentList.get(i).setId(i);
-			torrentList.get(i).setOnClickListener(this);
-			scrollLayout.addView(torrentList.get(i));
 		}
 	}
 

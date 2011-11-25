@@ -69,11 +69,18 @@
 		android:hint="Quick search" android:layout_height="wrap_content"
 		android:id="@+id/searchBar">
 	</EditText>
+	<TextView android:layout_height="wrap_content" android:text="Subscriptions"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:id="@+id/subscriptionsTitle" android:padding="5dip"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true" android:background="@drawable/table_header_dark"
+		android:layout_width="fill_parent" android:layout_marginLeft="30dip"
+		android:layout_marginRight="30dip" android:layout_marginTop="10dip"></TextView>
 	<ScrollView android:id="@+id/scrollView"
-		android:layout_marginLeft="15dip" android:padding="10dip"
-		android:layout_marginTop="5dip" android:layout_marginRight="15dip"
-		android:layout_below="@+id/searchBar" android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
+		android:layout_marginLeft="30dip" android:padding="10dip"
+		android:layout_marginTop="5dip" android:layout_marginRight="30dip"
+		android:layout_marginBottom="5dip" android:layout_below="@+id/searchBar"
+		android:layout_width="fill_parent" android:layout_height="fill_parent">
 		<LinearLayout android:id="@+id/scrollLayout"
 			android:layout_height="fill_parent" android:layout_width="fill_parent"
 			android:orientation="vertical">

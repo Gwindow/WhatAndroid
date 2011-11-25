@@ -47,7 +47,7 @@ public class ArtistTabActivity extends MyTabActivity {
 		tabHost.addTab(spec);
 
 		// Do the same for the other tabs
-		intent = new Intent().setClass(ArtistTabActivity.this, TorrentListActivity.class);
+		intent = new Intent().setClass(ArtistTabActivity.this, RequestListActivity.class);
 		spec = tabHost.newTabSpec("requests").setIndicator("Requests").setContent(intent);
 		tabHost.addTab(spec);
 
@@ -63,7 +63,7 @@ public class ArtistTabActivity extends MyTabActivity {
 			Bundle b = this.getIntent().getExtras();
 			// artistId = b.getString("artistId");
 			// TODO remove
-			artistId = 80927;
+			artistId = 1;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

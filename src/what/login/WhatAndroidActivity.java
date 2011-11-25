@@ -268,9 +268,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 					} else if (msg.what == 2) {
 						dialog.dismiss();
 						WhatAndroidActivity.this.unlockScreenRotation();
-						Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
-						// Intent intent = new Intent(WhatAndroidActivity.this,
-						// what.torrents.artist.ArtistTabActivity.class);
+						// Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
+						Intent intent = new Intent(WhatAndroidActivity.this, what.torrents.artist.ArtistTabActivity.class);
 						startActivity(intent);
 					} else if (msg.what == 3) {
 						dialog.dismiss();
