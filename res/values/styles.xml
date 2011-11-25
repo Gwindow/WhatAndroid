@@ -75,14 +75,14 @@
 	<style name="TorrentNameEven">
 		<item name="android:padding">10dip</item>
 		<item name="android:background">@color/white</item>
-		<item name="android:textColor">@color/black</item>
+		<item name="android:textColor">@color/textview_colors</item>
 		<item name="android:textSize">14dip</item>
 	</style>
 
 	<style name="TorrentNameOdd">
 		<item name="android:padding">10dip</item>
 		<item name="android:background">@color/lightGray</item>
-		<item name="android:textColor">@color/black</item>
+		<item name="android:textColor">@color/textview_colors</item>
 		<item name="android:textSize">14dip</item>
 	</style>
 
