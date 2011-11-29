@@ -24,6 +24,8 @@
 	<ImageView android:id="@+id/artistImage"
 		android:adjustViewBounds="true" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_marginLeft="10dip"
+		android:maxWidth="120px"
+		android:maxHeight="370px"
 		android:layout_marginTop="5dip" android:layout_below="@+id/artistTitle"
 		android:layout_alignParentLeft="true" android:layout_alignBottom="@+id/buttons">
 	</ImageView>

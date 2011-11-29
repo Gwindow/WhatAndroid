@@ -6,6 +6,7 @@ import what.gui.MyActivity;
 import what.gui.R;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 import api.torrents.torrents.TorrentGroup;
 
 public class TorrentFormatsActivity extends MyActivity implements OnClickListener {
-	private ArrayList<TextView> sectionList = new ArrayList<TextView>();
 	private ArrayList<TextView> torrentList = new ArrayList<TextView>();
 	private LinearLayout scrollLayout;
 	private TorrentGroup torrentGroup;
@@ -56,16 +56,23 @@ public class TorrentFormatsActivity extends MyActivity implements OnClickListene
 		}
 	}
 
-	/* private void downloadTorrent(int i) { String url = album.getFormatList().get(j).getDownloadLink(); if
-	 * (!url.startsWith("http://") && !url.startsWith("https://")) { url = "http://" + url; } Intent i = new
-	 * Intent(Intent.ACTION_VIEW); i.setData(Uri.parse(url)); startActivity(i);
-	 * 
-	 * } } */
+	private void downloadTorrent(int i) {
+		String url = torrentGroup.getResponse().getTorrents().get(i).getDownloadLink();
+		if (!url.startsWith("http://") && !url.startsWith("https://")) {
+			url = "http://" + url;
+		}
+		intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse(url));
+		startActivity(intent);
+
+	}
 
 	@Override
 	public void onClick(View v) {
-		// if ((v.getId() >= 0) && (artist.getResponse().getTorrentgroup().size() >= v.getId())) {
-		// openTorrent(v.getId());
-		// }
+		for (int i = 0; i < (torrentList.size()); i++) {
+			if (v.getId() == torrentList.get(i).getId()) {
+				downloadTorrent(i);
+			}
+		}
 	}
 }

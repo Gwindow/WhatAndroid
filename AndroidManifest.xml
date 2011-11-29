@@ -9,19 +9,20 @@
 	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
 	<uses-permission android:name="com.flattr4android.permission.READ_THING" />
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
-		<activity android:name="what.login.WhatAndroidActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:name="what.login.WhatAndroidActivity" android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".MainMenu" android:theme="@style/Theme.MenuDialog" android:noHistory="true">
+		<activity android:name=".MainMenu" android:theme="@style/Theme.MenuDialog"
+			android:noHistory="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".SearchMenu" android:theme="@style/Theme.MenuDialog" android:noHistory="true">
+		<activity android:name=".SearchMenu" android:theme="@style/Theme.MenuDialog"
+			android:noHistory="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
@@ -45,13 +46,13 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="what.forum.SectionActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+			android:theme="@android:style/Theme.NoTitleBar" android:noHistory="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 		<activity android:name="what.forum.ThreadActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+			android:theme="@android:style/Theme.NoTitleBar" android:noHistory="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
@@ -87,7 +88,7 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="what.torrents.ListActivity"
-			android:theme="@android:style/Theme.Dialog">
+			android:theme="@style/Theme.NoTitleDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
@@ -99,12 +100,19 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="what.torrents.artist.ArtistStatsActivity"
-			android:theme="@android:style/Theme.Dialog">
+			android:theme="@style/Theme.NoTitleDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.RequestActivity" android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:name="what.torrents.artist.RequestListActivity"
+			android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		<activity android:name="what.requests.RequestActivity"
+			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
@@ -122,7 +130,7 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="what.torrents.torrents.TorrentStatsActivity"
-			android:theme="@android:style/Theme.Dialog">
+			android:theme="@style/Theme.NoTitleDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
@@ -158,15 +166,13 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="what.forum.PostOptionsActivity"
-			android:noHistory="true"
-			android:theme="@style/Theme.MenuDialog">
+			android:noHistory="true" android:theme="@style/Theme.MenuDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 		<activity android:name="what.inbox.MessageOptionsActivity"
-			android:noHistory="true"
-			android:theme="@style/Theme.MenuDialog">
+			android:noHistory="true" android:theme="@style/Theme.MenuDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
@@ -226,25 +232,25 @@
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		
+
 		<activity android:name="what.inbox.BugReportActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		
+
 		<activity android:name="what.inbox.ConversationActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		
+
 		<activity android:name="what.inbox.NewConversationActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		
+
 		<activity android:name="what.inbox.NewThreadActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />

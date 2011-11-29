@@ -54,11 +54,13 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			page = b.getInt("page");
 		} catch (Exception e) {
 			page = 0;
+			e.printStackTrace();
 		}
 		try {
-			b.getInt("postId");
+			postId = b.getInt("postId");
 		} catch (Exception e) {
 			postId = 0;
+			e.printStackTrace();
 		}
 
 	}

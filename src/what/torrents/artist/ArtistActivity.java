@@ -33,8 +33,8 @@ public class ArtistActivity extends MyActivity {
 		setContentView(R.layout.artist);
 		artistTitle = (TextView) this.findViewById(R.id.artistTitle);
 		artistImage = (ImageView) this.findViewById(R.id.artistImage);
-		artistImage.setMaxWidth(this.getWidth() / 3);
-		artistImage.setMaxHeight(this.getHeight() / 2);
+		// artistImage.setMaxWidth(this.getWidth() / 3);
+		// artistImage.setMaxHeight(this.getHeight() / 2);
 		artistInfo = (WebView) this.findViewById(R.id.artistInfo);
 		// artistInfo.setMovementMethod(new ScrollingMovementMethod());
 

@@ -47,6 +47,7 @@ public class TorrentStatsActivity extends MyActivity implements OnCheckedChangeL
 		i.setData(Uri.parse(torrentGroup.getLastFMUrl()));
 		i.setAction("android.intent.action.VIEW");
 		startActivity(i);
+		finish();
 	}
 
 	@Override

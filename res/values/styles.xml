@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<style name="NotificationText">
-      <item name="android:textColor">?android:attr/textColorPrimary</item>
-    </style>
-    <style name="NotificationTitle">
-      <item name="android:textColor">?android:attr/textColorPrimary</item>
-      <item name="android:textStyle">bold</item>
-    </style>
+		<item name="android:textColor">?android:attr/textColorPrimary</item>
+	</style>
+	<style name="NotificationTitle">
+		<item name="android:textColor">?android:attr/textColorPrimary</item>
+		<item name="android:textStyle">bold</item>
+	</style>
 	<style name="ForumSectionTitle">
 		<item name="android:padding">5dip</item>
 		<item name="android:background">@drawable/table_header_dark</item>
@@ -71,18 +71,18 @@
 		<item name="android:textStyle">bold</item>
 		<item name="android:textSize">20dip</item>
 	</style>
-	
+
 	<style name="TorrentNameEven">
 		<item name="android:padding">10dip</item>
 		<item name="android:background">@color/white</item>
-		<item name="android:textColor">@color/black</item>
+		<item name="android:textColor">@color/textview_colors</item>
 		<item name="android:textSize">14dip</item>
 	</style>
-	
+
 	<style name="TorrentNameOdd">
 		<item name="android:padding">10dip</item>
 		<item name="android:background">@color/lightGray</item>
-		<item name="android:textColor">@color/black</item>
+		<item name="android:textColor">@color/textview_colors</item>
 		<item name="android:textSize">14dip</item>
 	</style>
 
@@ -112,7 +112,7 @@
 		<item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
 
 	</style>
-	
+
 	<style name="Theme.MenuDialog">
 
 		<item name="android:windowBackground">@android:color/transparent</item>
@@ -123,28 +123,15 @@
 
 		<item name="android:windowIsFloating">true</item>
 
-	
 		<item name="android:windowIsTranslucent">true</item>
 
 		<item name="android:windowNoTitle">true</item>
-		
+
 		<item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
 
 	</style>
 
-	<style name="Theme.NoTitleDialog">
-
-		<item name="android:windowBackground">@android:color/transparent</item>
-
-		<item name="android:windowFrame">@null</item>
-
-		<item name="android:windowContentOverlay">@null</item>
-
-		<item name="android:windowIsFloating">true</item>
-
-		<item name="android:backgroundDimEnabled">true</item>
-
-		<item name="android:windowIsTranslucent">false</item>
+	<style name="Theme.NoTitleDialog" parent="android:style/Theme.Dialog">
 
 		<item name="android:windowNoTitle">true</item>
 

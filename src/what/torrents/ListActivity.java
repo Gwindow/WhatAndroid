@@ -34,34 +34,40 @@ public class ListActivity extends MyActivity implements OnLongClickListener {
 
 	private void populateLayout() {
 		if (type.equals("artist_tags")) {
-			// TODO fix
-			// if(ArtistTabActivity.getStatus());
-			for (int i = 0; i < ArtistTabActivity.getArtist().getResponse().getTags().size(); i++) {
-				textViewList.add(new TextView(this));
-				textViewList.get(i).setText(ArtistTabActivity.getArtist().getResponse().getTags().get(i).getName());
-				textViewList.get(i).setTextSize(17);
-				textViewList.get(i).setId(i);
-				textViewList.get(i).setOnLongClickListener(this);
-				scrollLayout.addView(textViewList.get(i));
+			if (ArtistTabActivity.getArtist().getStatus()) {
+				for (int i = 0; i < ArtistTabActivity.getArtist().getResponse().getTags().size(); i++) {
+					textViewList.add(new TextView(this));
+					textViewList.get(i).setText(ArtistTabActivity.getArtist().getResponse().getTags().get(i).getName());
+					textViewList.get(i).setTextSize(17);
+					textViewList.get(i).setId(i);
+					textViewList.get(i).setOnLongClickListener(this);
+					scrollLayout.addView(textViewList.get(i));
+				}
 			}
+
 		}
+
 		if (type.equals("artist_similiar")) {
-			for (int i = 0; i < ArtistTabActivity.getArtist().getResponse().getSimilarArtists().size(); i++) {
-				textViewList.add(new TextView(this));
-				textViewList.get(i).setText(ArtistTabActivity.getArtist().getResponse().getSimilarArtists().get(i).getName());
-				textViewList.get(i).setTextSize(17);
-				textViewList.get(i).setId(i);
-				textViewList.get(i).setOnLongClickListener(this);
-				scrollLayout.addView(textViewList.get(i));
+			if (ArtistTabActivity.getArtist().getStatus()) {
+				for (int i = 0; i < ArtistTabActivity.getArtist().getResponse().getSimilarArtists().size(); i++) {
+					textViewList.add(new TextView(this));
+					textViewList.get(i).setText(ArtistTabActivity.getArtist().getResponse().getSimilarArtists().get(i).getName());
+					textViewList.get(i).setTextSize(17);
+					textViewList.get(i).setId(i);
+					textViewList.get(i).setOnLongClickListener(this);
+					scrollLayout.addView(textViewList.get(i));
+				}
 			}
 		}
-		// TODO add tags
-		/* if (type.equals("torrent_tags")) { // get tags for (int i = 0; i <
-		 * TorrentTabActivity.getTorrents().getResponse(); i++) { textViewList.add(new TextView(this));
-		 * textViewList.get(
-		 * i).setText(ArtistTabActivity.getArtist().getResponse().getSimilarArtists().get(i).getName());
+		// TODO add tags in php
+		/*
+		 * if (type.equals("torrent_tags")) { if(TorrentTabActivity.getTorrentGroup().getStatus()) { for (int i = 0; i <
+		 * TorrentTabActivity.getTorrentGroup().getResponse().getTorrents().get(i).get i++) { textViewList.add(new
+		 * TextView(this));
+		 * textViewList.get(i).setText(ArtistTabActivity.getArtist().getResponse().getTags().get(i).getName());
 		 * textViewList.get(i).setTextSize(17); textViewList.get(i).setId(i);
-		 * textViewList.get(i).setOnLongClickListener(this); scrollLayout.addView(textViewList.get(i)); } } */
+		 * textViewList.get(i).setOnLongClickListener(this); scrollLayout.addView(textViewList.get(i)); } } }
+		 */
 	}
 
 	private void searchForTag(int i) {

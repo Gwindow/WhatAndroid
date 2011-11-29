@@ -46,11 +46,11 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 	private void populateLayout() {
 		artist = ArtistTabActivity.getArtist();
 
-		numGroups.setText("Groups :" + artist.getResponse().getStatistics().getNumGroups());
-		numTorrents.setText("Torrents :" + artist.getResponse().getStatistics().getNumTorrents());
-		numSeeders.setText("Seeders :" + artist.getResponse().getStatistics().getNumSeeders());
-		numLeechers.setText("Leechers :" + artist.getResponse().getStatistics().getNumLeechers());
-		numSnatches.setText("Snatches :" + artist.getResponse().getStatistics().getNumSnatches());
+		numGroups.setText("Groups: " + artist.getResponse().getStatistics().getNumGroups());
+		numTorrents.setText("Torrents: " + artist.getResponse().getStatistics().getNumTorrents());
+		numSeeders.setText("Seeders: " + artist.getResponse().getStatistics().getNumSeeders());
+		numLeechers.setText("Leechers: " + artist.getResponse().getStatistics().getNumLeechers());
+		numSnatches.setText("Snatches: " + artist.getResponse().getStatistics().getNumSnatches());
 
 		notifications.setChecked(artist.getResponse().hasNotificationsEnabled());
 		bookmark.setChecked(artist.getResponse().isBookmarked());
@@ -63,13 +63,16 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 			intent.putExtra(SearchManager.QUERY, "evgeny kissin");
 			intent.setComponent(new ComponentName("com.spotify.mobile.android.ui", "com.spotify.mobile.android.ui.Launcher"));
 			startActivityForResult(intent, 0);
+			finish();
 		} catch (Exception e) {
 			Toast.makeText(this, "Could not open Spotify, is it installed?", Toast.LENGTH_LONG).show();
 		}
 
-		/* try { String spotifyUri = artist.getSpotifyUrl(); Intent intent = new Intent(Intent.ACTION_VIEW,
+		/*
+		 * try { String spotifyUri = artist.getSpotifyUrl(); Intent intent = new Intent(Intent.ACTION_VIEW,
 		 * Uri.parse(spotifyUri)); startActivity(intent); } catch (Exception e) { Toast.makeText(this,
-		 * "Could not open Spotify, is it installed?", Toast.LENGTH_LONG).show(); } */
+		 * "Could not open Spotify, is it installed?", Toast.LENGTH_LONG).show(); }
+		 */
 	}
 
 	public void openLastFM(View v) {
@@ -77,6 +80,7 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 		i.setData(Uri.parse(artist.getLastFMUrl()));
 		i.setAction("android.intent.action.VIEW");
 		startActivity(i);
+		finish();
 	}
 
 	@Override
