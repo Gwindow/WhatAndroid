@@ -5,11 +5,13 @@ import what.gui.R;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+import api.user.PrivateMessage;
 
 public class NewConversationActivity extends MyActivity {
 	private EditText messageBody;
 	private EditText messageSubject;
-	private String userId;
+	private int userId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,16 +25,22 @@ public class NewConversationActivity extends MyActivity {
 
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
-		userId = b.getString("userId");
+		userId = b.getInt("userId");
 	}
 
 	public void send(View v) {
 		String subject = messageSubject.getText().toString();
 		String body = messageBody.getText().toString();
-		// TODO do the sending message code
+		if ((subject.length() > 1) && (body.length() > 1)) {
+			PrivateMessage pm = new PrivateMessage(userId, subject, body);
+			pm.sendMessage();
+		} else {
+			Toast.makeText(this, "Form not complete", Toast.LENGTH_LONG).show();
+		}
 	}
 
 	public void cancel(View v) {
 		finish();
 	}
+
 }

@@ -5,11 +5,13 @@ import what.gui.R;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+import api.forum.section.Section;
 
 public class NewThreadActivity extends MyActivity {
 	private EditText threadTitle;
 	private EditText threadBody;
-	private String sectionId;
+	private int sectionId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,13 +25,17 @@ public class NewThreadActivity extends MyActivity {
 
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
-		sectionId = b.getString("sectionId");
+		sectionId = b.getInt("sectionId");
 	}
 
 	public void post(View v) {
 		String title = threadTitle.getText().toString();
 		String body = threadBody.getText().toString();
-		// TODO do the posting code
+		if ((title.length() > 1) && (body.length() > 1)) {
+			Section.createNewThread(sectionId, title, body);
+		} else {
+			Toast.makeText(this, "Form not complete", Toast.LENGTH_LONG).show();
+		}
 	}
 
 	public void cancel(View v) {
