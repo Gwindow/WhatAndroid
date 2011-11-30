@@ -28,39 +28,39 @@
 	<style name="TopTorrentNameEven">
 		<item name="android:padding">10dip</item>
 		<item name="android:background">@color/white</item>
-		<item name="android:textColor">@color/black</item>
+		<item name="android:textColor">@color/textview_colors</item>
 		<item name="android:textSize">16dip</item>
 	</style>
 	<style name="TopTorrentNameOdd">
 		<item name="android:padding">10dip</item>
 		<item name="android:background">@color/lightGray</item>
-		<item name="android:textColor">@color/black</item>
+		<item name="android:textColor">@color/textview_colors</item>
 		<item name="android:textSize">16dip</item>
 	</style>
 
 	<style name="ForumNameOdd">
 		<item name="android:padding">10dip</item>
 		<item name="android:background">@color/lightGray</item>
-		<item name="android:textColor">@color/black</item>
+		<item name="android:textColor">@color/textview_colors</item>
 		<item name="android:textSize">21dip</item>
 	</style>
 
 	<style name="ForumNameEven">
 		<item name="android:padding">10dip</item>
 		<item name="android:background">@color/white</item>
-		<item name="android:textColor">@color/black</item>
+		<item name="android:textColor">@color/textview_colors</item>
 		<item name="android:textSize">21dip</item>
 	</style>
 
 	<style name="ThreadNameEven">
 		<item name="android:background">@color/white</item>
-		<item name="android:textColor">@color/black</item>
+		<item name="android:textColor">@color/textview_colors</item>
 		<item name="android:textSize">18dip</item>
 	</style>
 
 	<style name="ThreadNameOdd">
 		<item name="android:background">@color/lightGray</item>
-		<item name="android:textColor">@color/black</item>
+		<item name="android:textColor">@color/textview_colors</item>
 		<item name="android:textSize">18dip</item>
 	</style>
 
