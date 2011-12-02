@@ -68,6 +68,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 		// MySoup.setSite("http://173.250.185.120:8080/");
 		// MySoup.setSite("http://what.cd/");
 
+		// initialize the settings writer, should only be done once
+		Settings.init(this);
+
 		try {
 			updater = new Updater();
 			checkForMessage();
@@ -77,9 +80,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
-		// initialize the settings writer, should only be done once
-		Settings.init(this);
 
 		// Set UI component references
 		username = (TextView) this.findViewById(R.id.username);
@@ -120,8 +120,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 			}
 		}
 
-		username.setText("tester");
-		password.setText("123456");
+		// username.setText("tester");
+		// password.setText("123456");
 
 		/* if (settings.getString("sessionId", null) != null) { // Resume the session // TODO fix // resume(); } */
 	}
@@ -130,6 +130,27 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 	 * Check for messages from the update site
 	 */
 	private void checkForMessage() {
+		String title = updater.getMessage().getA();
+		String body = updater.getMessage().getB();
+		if (!body.equalsIgnoreCase(Settings.getMessage())) {
+			Settings.saveMessage(body);
+
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+			alert.setTitle(title);
+
+			alert.setMessage(body);
+			final CharSequence[] items = { "Close" };
+
+			alert.setItems(items, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int item) {
+					if (item == 0) {
+					}
+				}
+			});
+			alert.show();
+		}
 
 	}
 
@@ -153,7 +174,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 		double updateversion = updater.getVersion();
 		double currentversion = Double.parseDouble(VERSION);
 		if (updateversion > currentversion) {
-			displayAlert("", "Update available, would you like to install it?", this);
+			displayAlert("Update available", updateversion + " has been released, would you like to update?", this);
 		}
 	}
 
@@ -315,14 +336,10 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				MySoup.setSessionId(Settings.getSessionId());
 				// MySoup.setAuthKey(Settings.getAuthKey());
 				if (MySoup.isLoggedIn()) {
-					/*
-					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
-					 */
-					/*
-					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
-					 */
+					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
+					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
 					// Start the next activity
 					loginHandler.sendEmptyMessage(2);
 				} else {

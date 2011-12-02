@@ -177,10 +177,10 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 			if (status == true) {
 				populateLayout();
 			}
+			dialog.dismiss();
 			if (status == false) {
 				Toast.makeText(NotificationsActivity.this, "Could not load notifications", Toast.LENGTH_LONG).show();
 			}
-			dialog.dismiss();
 			unlockScreenRotation();
 		}
 	}

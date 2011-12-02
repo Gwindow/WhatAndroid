@@ -33,10 +33,7 @@ public class ArtistActivity extends MyActivity {
 		setContentView(R.layout.artist);
 		artistTitle = (TextView) this.findViewById(R.id.artistTitle);
 		artistImage = (ImageView) this.findViewById(R.id.artistImage);
-		// artistImage.setMaxWidth(this.getWidth() / 3);
-		// artistImage.setMaxHeight(this.getHeight() / 2);
 		artistInfo = (WebView) this.findViewById(R.id.artistInfo);
-		// artistInfo.setMovementMethod(new ScrollingMovementMethod());
 
 		new PopulateLayout().execute();
 
@@ -77,22 +74,26 @@ public class ArtistActivity extends MyActivity {
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
-			dialog = new ProgressDialog(ArtistActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Loading...");
-			dialog.show();
+			// dialog = new ProgressDialog(ArtistActivity.this);
+			// dialog.setIndeterminate(true);
+			// dialog.setMessage("Loading...");
+			// dialog.show();
 		}
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			URL url;
-			try {
-				url = new URL(ArtistTabActivity.getArtist().getResponse().getImage());
-				bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-				return true;
-			} catch (Exception e) {
+			String s = ArtistTabActivity.getArtist().getResponse().getImage();
+			if (s.length() > 0) {
+				try {
+					url = new URL(s);
+					bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+					return true;
+				} catch (Exception e) {
+					return false;
+				}
+			} else
 				return false;
-			}
 		}
 
 		@Override
@@ -102,15 +103,16 @@ public class ArtistActivity extends MyActivity {
 				String body = ArtistTabActivity.getArtist().getResponse().getBody();
 				if (body.length() > 0) {
 					artistInfo.loadData(body, "text/html", "utf-8");
-					artistInfo.setVisibility(TextView.VISIBLE);
+					artistInfo.setVisibility(WebView.VISIBLE);
 				}
 				if (status == true) {
 					artistImage.setImageBitmap(bmp);
 				} else {
-					artistImage.setImageResource(R.drawable.dne);
+					artistImage.setImageResource(R.drawable.noartwork);
 				}
 			}
-			dialog.dismiss();
+			unlockScreenRotation();
+			// dialog.dismiss();
 		}
 	}
 }

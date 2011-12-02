@@ -77,7 +77,11 @@ public class UserProfilePopUpActivity extends MyActivity {
 	}
 
 	public void message(View v) {
-		// TODO fill out
+		Bundle b = new Bundle();
+		intent = new Intent(UserProfilePopUpActivity.this, what.inbox.ConversationActivity.class);
+		b.putInt("userId", userId);
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
 
 	}
 

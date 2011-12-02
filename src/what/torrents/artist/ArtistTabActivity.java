@@ -38,17 +38,21 @@ public class ArtistTabActivity extends MyTabActivity {
 		// Create an Intent to launch an Activity for the tab (to be reused)
 		intent = new Intent().setClass(ArtistTabActivity.this, ArtistActivity.class);
 		// Initialize a TabSpec for each tab and add it to the TabHost
-		spec = tabHost.newTabSpec("artist").setIndicator("Artist").setContent(intent);
+		spec =
+				tabHost.newTabSpec("artist").setIndicator("Artist", res.getDrawable(R.drawable.artist_icon_dark))
+						.setContent(intent);
 		tabHost.addTab(spec);
 
 		// Do the same for the other tabs
 		intent = new Intent().setClass(ArtistTabActivity.this, TorrentListActivity.class);
-		spec = tabHost.newTabSpec("music").setIndicator("Music").setContent(intent);
+		spec = tabHost.newTabSpec("music").setIndicator("Music", res.getDrawable(R.drawable.music_icon_dark)).setContent(intent);
 		tabHost.addTab(spec);
 
 		// Do the same for the other tabs
 		intent = new Intent().setClass(ArtistTabActivity.this, RequestListActivity.class);
-		spec = tabHost.newTabSpec("requests").setIndicator("Requests").setContent(intent);
+		spec =
+				tabHost.newTabSpec("requests").setIndicator("Requests", res.getDrawable(R.drawable.request_icon_dark))
+						.setContent(intent);
 		tabHost.addTab(spec);
 
 		tabHost.setCurrentTab(0);

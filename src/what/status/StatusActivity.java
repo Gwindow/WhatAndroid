@@ -4,11 +4,8 @@ import what.gui.MyActivity;
 import what.gui.R;
 import what.gui.ReportSender;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -81,19 +78,11 @@ public class StatusActivity extends MyActivity {
 		 * Toast.makeText(this, "Could not load tweets", Toast.LENGTH_LONG).show(); e.printStackTrace(); } */
 	}
 
-	public void openTwitter(View v) {
-		String url = "http://twitter.com/#!/whatcd";
-		Intent i = new Intent(Intent.ACTION_VIEW);
-		i.setData(Uri.parse(url));
-		startActivity(i);
-	}
+	/* public void openTwitter(View v) { String url = "http://twitter.com/#!/whatcd"; Intent i = new
+	 * Intent(Intent.ACTION_VIEW); i.setData(Uri.parse(url)); startActivity(i); } */
 
-	public void openWhatStatus(View v) {
-		String url = "http://whatstatus.info/";
-		Intent i = new Intent(Intent.ACTION_VIEW);
-		i.setData(Uri.parse(url));
-		startActivity(i);
-	}
+	/* public void openWhatStatus(View v) { String url = "http://whatstatus.info/"; Intent i = new
+	 * Intent(Intent.ACTION_VIEW); i.setData(Uri.parse(url)); startActivity(i); } */
 
 	private class LoadStatus extends AsyncTask<Void, Void, Boolean> {
 		@Override
@@ -107,9 +96,15 @@ public class StatusActivity extends MyActivity {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			whatStatus = WhatStatus.init();
-			// always returns true until a way to get request status can be implement into whatstatus.info
-			return true;
+			try {
+				whatStatus = WhatStatus.init();
+				// always returns true until a way to get request status can be implement into whatstatus.info
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+
 		}
 
 		@Override

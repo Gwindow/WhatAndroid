@@ -11,11 +11,13 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import api.forum.thread.Thread;
 
 public class PostOptionsActivity extends MyActivity {
 	private Intent intent;
 	private String post;
 	private int userId;
+	private int threadId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class PostOptionsActivity extends MyActivity {
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
 		userId = b.getInt("userId");
+		threadId = b.getInt("threadId");
 		post = b.getString("post");
 	}
 
@@ -83,7 +86,7 @@ public class PostOptionsActivity extends MyActivity {
 		alert.setPositiveButton("Post", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
-				// TODO post reply
+				Thread.postReply(threadId, input.getText().toString());
 			}
 		});
 

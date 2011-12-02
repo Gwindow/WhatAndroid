@@ -16,17 +16,16 @@
 			android:onClick="openStats" android:layout_width="fill_parent"
 			android:id="@+id/statsButton"></Button>
 		<Button android:text="Tags" android:layout_height="wrap_content"
-			android:visibility="gone"
-			android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
-			android:layout_below="@+id/statsButton" android:layout_width="fill_parent"
-			android:onClick="openTags" android:id="@+id/tagsButton"></Button>
+			android:visibility="gone" android:background="@drawable/btn_black"
+			style="@style/ButtonTextSmall" android:layout_below="@+id/statsButton"
+			android:layout_width="fill_parent" android:onClick="openTags"
+			android:id="@+id/tagsButton"></Button>
 	</RelativeLayout>
 	<ImageView android:id="@+id/torrentImage"
 		android:adjustViewBounds="true" android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginLeft="10dip" android:layout_marginTop="5dip"
-		android:layout_marginRight="10dip" 
-		android:layout_below="@+id/torrentTitle"
+		android:layout_height="wrap_content" android:maxWidth="120px"
+		android:maxHeight="370px" android:layout_marginLeft="10dip"
+		android:layout_marginTop="5dip" android:layout_below="@+id/torrentTitle"
 		android:layout_alignParentLeft="true" android:layout_alignBottom="@+id/buttons">
 	</ImageView>
 	<TextView android:id="@+id/torrentTitle" android:layout_width="fill_parent"

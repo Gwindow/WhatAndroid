@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public class RequestActivity extends MyActivity {
 	private Intent intent;
-	ProgressDialog dialog;
+	private ProgressDialog dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

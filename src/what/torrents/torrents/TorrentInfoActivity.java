@@ -33,15 +33,13 @@ public class TorrentInfoActivity extends MyActivity {
 
 		torrentTitle = (TextView) this.findViewById(R.id.torrentTitle);
 		torrentImage = (ImageView) this.findViewById(R.id.torrentImage);
-		torrentImage.setMaxWidth(this.getWidth() / 3);
-		torrentImage.setMaxHeight(this.getHeight() / 2);
 		torrentInfo = (WebView) this.findViewById(R.id.torrentInfo);
 		torrentGroup = TorrentTabActivity.getTorrentGroup();
 
 		new PopulateLayout().execute();
 	}
 
-	// TODO add in php
+	// TODO add in php, disabled at the moment
 	public void openTags(View v) {
 		Bundle b = new Bundle();
 		intent = new Intent(TorrentInfoActivity.this, what.torrents.ListActivity.class);
@@ -69,48 +67,52 @@ public class TorrentInfoActivity extends MyActivity {
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
-			dialog = new ProgressDialog(TorrentInfoActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Loading...");
-			dialog.show();
+			// dialog = new ProgressDialog(TorrentInfoActivity.this);
+			// dialog.setIndeterminate(true);
+			// dialog.setMessage("Loading...");
+			// dialog.show();
 		}
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			URL url;
-			try {
-				url = new URL(torrentGroup.getResponse().getGroup().getWikiImage());
-				bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-				return true;
-			} catch (Exception e) {
+			String u = torrentGroup.getResponse().getGroup().getWikiImage();
+			if (u.length() > 0) {
+				try {
+					url = new URL(torrentGroup.getResponse().getGroup().getWikiImage());
+					bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+					return true;
+				} catch (Exception e) {
+					return false;
+				}
+			} else
 				return false;
-			}
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			dialog.dismiss();
-			// TODO fix
-			// if (torrentTabActivity.gettorrent().getStatus()) {
-			if (true) {
-				if (torrentGroup.hasFreeLeech()) {
-					torrentTitle.setText("Freeleech! " + torrentGroup.getResponse().getGroup().getName());
-					torrentTitle.setTextColor(Color.YELLOW);
-				} else {
-					torrentTitle.setText(torrentGroup.getResponse().getGroup().getName());
-				}
-				String body = torrentGroup.getResponse().getGroup().getWikiBody();
-				if (body.length() > 0) {
-					torrentInfo.loadData(body, "text/html", "utf-8");
-
-					torrentInfo.setVisibility(TextView.VISIBLE);
-				}
-				if (status == true) {
-					torrentImage.setImageBitmap(bmp);
-				} else {
-					torrentImage.setImageResource(R.drawable.dne);
+			// dialog.dismiss();
+			if (torrentGroup.getStatus()) {
+				if (true) {
+					if (torrentGroup.hasFreeLeech()) {
+						torrentTitle.setText("Freeleech! " + torrentGroup.getResponse().getGroup().getName());
+						torrentTitle.setTextColor(Color.YELLOW);
+					} else {
+						torrentTitle.setText(torrentGroup.getResponse().getGroup().getName());
+					}
+					String body = torrentGroup.getResponse().getGroup().getWikiBody();
+					if (body.length() > 0) {
+						torrentInfo.loadData(body, "text/html", "utf-8");
+						torrentInfo.setVisibility(WebView.VISIBLE);
+					}
+					if (status == true) {
+						torrentImage.setImageBitmap(bmp);
+					} else {
+						torrentImage.setImageResource(R.drawable.noartwork);
+					}
 				}
 			}
+			unlockScreenRotation();
 		}
 	}
 }

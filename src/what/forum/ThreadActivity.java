@@ -78,6 +78,9 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			username = (TextView) layout.findViewById(R.id.username);
 			username.setText(posts.get(i).getAuthor().getAuthorName());
 			body = (WebView) layout.findViewById(R.id.post);
+			// TODO confirm that the following 2 lines fix large image loading
+			body.getSettings().setLoadWithOverviewMode(true);
+			body.getSettings().setUseWideViewPort(true);
 			body.loadData(posts.get(i).getBody(), "text/html", "utf-8");
 			// body.setBackgroundColor(R.drawable.btn_black);
 			listOfPosts.add(layout);
@@ -91,6 +94,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	private void openOptions(int i) {
 		Bundle b = new Bundle();
 		intent = new Intent(ThreadActivity.this, what.forum.PostOptionsActivity.class);
+		b.putInt("threadId", thread.getResponse().getThreadId().intValue());
 		b.putString("post", thread.getResponse().getPosts().get(i).getQuotableBody());
 		b.putInt("userId", thread.getResponse().getPosts().get(i).getAuthor().getAuthorId().intValue());
 		intent.putExtras(b);

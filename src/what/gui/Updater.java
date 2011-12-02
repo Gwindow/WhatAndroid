@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import api.util.CouldNotLoadException;
+import api.util.Tuple;
 
 /**
  * Connects to the update site and checks for messages of updates
@@ -12,21 +13,23 @@ import api.util.CouldNotLoadException;
  * 
  */
 public class Updater {
-	Document doc = null;
+	private Document doc = null;
+	private static final String UPDATE_SITE = "http://db.tt/YVOxcyvL";
 
 	public Updater() throws CouldNotLoadException {
 		try {
 			// TODO fix update url
-			doc = Jsoup.connect("http://db.tt/e0uu5bFZ").get();
+			doc = Jsoup.connect(UPDATE_SITE).get();
 		} catch (Exception e) {
 			throw new CouldNotLoadException("Could not load update site");
 		}
 	}
 
-	public String getMessage() {
+	public Tuple<String, String> getMessage() {
 		if (doc != null) {
-			String message = doc.getElementsByTag("message").text();
-			return message;
+			String title = doc.getElementsByTag("title").text();
+			String body = doc.getElementsByTag("body").text();
+			return new Tuple<String, String>(title, body);
 		}
 		return null;
 	}
