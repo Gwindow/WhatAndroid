@@ -163,12 +163,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		@Override
 		protected void onPostExecute(Boolean status) {
 			if (status == true) {
-				try {
-					populateLayout();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				populateLayout();
 			}
 			dialog.dismiss();
 			if (status == false) {

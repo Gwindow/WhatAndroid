@@ -61,7 +61,7 @@ public class MainMenu extends MyActivity {
 	}
 
 	public void bookmarks(View v) {
-		intent = new Intent(MainMenu.this, what.bookmarks.BookmarksActivity.class);
+		intent = new Intent(MainMenu.this, what.bookmarks.TorrentBookmarksActivity.class);
 		startActivityForResult(intent, 0);
 	}
 
