@@ -66,15 +66,10 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 		// initialize the settings writer, should only be done once
 		Settings.init(this);
 
-		try {
-			updater = new Updater();
-			checkForMessage();
-			setVersionName();
-			checkForUpdate();
-		} catch (CouldNotLoadException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		/*
+		 * try { updater = new Updater(); checkForMessage(); setVersionName(); checkForUpdate(); } catch
+		 * (CouldNotLoadException e1) { // TODO Auto-generated catch block e1.printStackTrace(); }
+		 */
 
 		// Set UI component references
 		username = (TextView) this.findViewById(R.id.username);
@@ -129,23 +124,12 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 		String body = updater.getMessage().getB();
 		if (!body.equalsIgnoreCase(Settings.getMessage())) {
 			// Settings.saveMessage(body);
-
-			final CharSequence[] items = { "Close" };
-
-			AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-			alert.setTitle(title);
-
-			alert.setMessage("test message");
-
-			alert.setItems(items, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int item) {
-					if (item == 0) {
-					}
-				}
-			});
-			alert.show();
+			AlertDialog.Builder dlgAlert = new AlertDialog.Builder(this);
+			dlgAlert.setTitle(title);
+			dlgAlert.setMessage(body);
+			dlgAlert.setPositiveButton("OK, let me use the app!", null);
+			dlgAlert.setCancelable(true);
+			dlgAlert.create().show();
 		}
 
 	}
@@ -285,8 +269,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 					} else if (msg.what == 2) {
 						dialog.dismiss();
 						WhatAndroidActivity.this.unlockScreenRotation();
-						// Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
-						Intent intent = new Intent(WhatAndroidActivity.this, what.torrents.artist.ArtistTabActivity.class);
+						Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
+						// Intent intent = new Intent(WhatAndroidActivity.this,
+						// what.torrents.artist.ArtistTabActivity.class);
 						startActivity(intent);
 					} else if (msg.what == 3) {
 						dialog.dismiss();

@@ -27,8 +27,8 @@ public class Updater {
 
 	public Tuple<String, String> getMessage() {
 		if (doc != null) {
-			String title = doc.getElementsByTag("title").text();
-			String body = doc.getElementsByTag("body").text();
+			String title = doc.getElementsByTag("subject").text();
+			String body = doc.getElementsByTag("info").text();
 			return new Tuple<String, String>(title, body);
 		}
 		return null;
