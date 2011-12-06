@@ -22,7 +22,7 @@ public class TorrentStatsActivity extends MyActivity implements OnCheckedChangeL
 		setContentView(R.layout.torrentstats);
 		bookmark = (CheckBox) this.findViewById(R.id.bookmark);
 		// TODO see why bookmarks arent working
-		bookmark.setVisibility(CheckBox.INVISIBLE);
+		bookmark.setVisibility(CheckBox.GONE);
 		bookmark.setOnCheckedChangeListener(this);
 		populateLayout();
 	}

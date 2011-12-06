@@ -4,7 +4,6 @@ import java.net.URL;
 
 import what.gui.MyActivity;
 import what.gui.R;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,7 +20,6 @@ public class TorrentInfoActivity extends MyActivity {
 	private TextView torrentTitle;
 	private ImageView torrentImage;
 	private WebView torrentInfo;
-	private ProgressDialog dialog;
 	private Bitmap bmp;
 	private TorrentGroup torrentGroup;
 	private Intent intent;

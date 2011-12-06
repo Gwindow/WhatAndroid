@@ -16,7 +16,7 @@
 			android:onClick="openStats" android:layout_width="fill_parent"
 			android:id="@+id/statsButton"></Button>
 		<Button android:text="Tags" android:layout_height="wrap_content"
-			android:visibility="gone" android:background="@drawable/btn_black"
+			android:visibility="invisible" android:background="@drawable/btn_black"
 			style="@style/ButtonTextSmall" android:layout_below="@+id/statsButton"
 			android:layout_width="fill_parent" android:onClick="openTags"
 			android:id="@+id/tagsButton"></Button>

@@ -65,9 +65,9 @@ public class ArtistTabActivity extends MyTabActivity {
 	private void getBundle() {
 		try {
 			Bundle b = this.getIntent().getExtras();
-			// artistId = b.getString("artistId");
+			artistId = b.getInt("artistId");
 			// TODO remove
-			artistId = 1;
+			// artistId = 1;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -109,6 +109,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				e.printStackTrace();
 			}
 		}
+		username.setText("gazelle");
+		password.setText("123456");
 
 		// username.setText("tester");
 		// password.setText("123456");
@@ -269,9 +271,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 					} else if (msg.what == 2) {
 						dialog.dismiss();
 						WhatAndroidActivity.this.unlockScreenRotation();
-						Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
-						// Intent intent = new Intent(WhatAndroidActivity.this,
-						// what.torrents.artist.ArtistTabActivity.class);
+						// Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
+						Intent intent = new Intent(WhatAndroidActivity.this, what.bookmarks.BookmarksTabActivity.class);
 						startActivity(intent);
 					} else if (msg.what == 3) {
 						dialog.dismiss();

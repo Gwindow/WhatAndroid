@@ -84,7 +84,7 @@ public class BookmarksTabActivity extends MyTabActivity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			torrents = Bookmarks.initTorrentBookmarks();
-			artists = Bookmarks.initTorrentBookmarks();
+			artists = Bookmarks.initArtistBookmarks();
 			if ((artists.getStatus() == false) || (torrents.getStatus() == false))
 				return false;
 			return true;

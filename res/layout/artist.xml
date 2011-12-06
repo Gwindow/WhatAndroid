@@ -8,7 +8,7 @@
 		android:layout_marginTop="5dip" android:layout_marginRight="10dip"
 		android:layout_marginLeft="10dip" android:layout_below="@+id/artistTitle"
 		android:layout_toRightOf="@+id/artistImage">
-		<Button android:text="Similar Artists" android:layout_height="wrap_content"
+		<Button android:text="Similar" android:layout_height="wrap_content"
 			android:background="@drawable/btn_black" style="@style/ButtonText"
 			android:onClick="openSimilar" android:layout_width="fill_parent"
 			android:id="@+id/similiarButton"></Button>

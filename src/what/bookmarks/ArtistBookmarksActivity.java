@@ -34,17 +34,19 @@ public class ArtistBookmarksActivity extends MyActivity implements OnClickListen
 	}
 
 	private void populateLayout() {
-		List<Artist> list = bookmarks.getResponse().getArtists();
-		for (int i = 0; i < list.size(); i++) {
-			if ((i % 2) == 0) {
-				bookmarksList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
-			} else {
-				bookmarksList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+		if (bookmarks.hasArtistBookmarks()) {
+			List<Artist> list = bookmarks.getResponse().getArtists();
+			for (int i = 0; i < list.size(); i++) {
+				if ((i % 2) == 0) {
+					bookmarksList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
+				} else {
+					bookmarksList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+				}
+				bookmarksList.get(i).setText(list.get(i).getArtistName());
+				bookmarksList.get(i).setId(i);
+				bookmarksList.get(i).setOnClickListener(this);
+				scrollLayout.addView(bookmarksList.get(i));
 			}
-			bookmarksList.get(i).setText(list.get(i).getArtistName());
-			bookmarksList.get(i).setId(i);
-			bookmarksList.get(i).setOnClickListener(this);
-			scrollLayout.addView(bookmarksList.get(i));
 		}
 	}
 
