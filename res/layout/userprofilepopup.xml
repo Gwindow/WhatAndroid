@@ -37,6 +37,7 @@
 		android:background="@color/lightGray" android:layout_height="wrap_content"
 		android:layout_marginLeft="10dip" android:layout_marginTop="5dip"
 		android:layout_marginRight="10dip" android:padding="2dip"
+		android:layout_alignBaseline="@+id/moreButton"
 		android:layout_below="@+id/username" android:layout_alignParentLeft="true">
 	</ImageView>
 	<TextView android:id="@+id/username" android:layout_width="fill_parent"

@@ -231,7 +231,7 @@
 
 
 		<activity android:name="what.user.UserProfilePopUpActivity"
-			android:theme="@android:style/Theme.Dialog">
+			android:theme="@style/Theme.NoTitleDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>

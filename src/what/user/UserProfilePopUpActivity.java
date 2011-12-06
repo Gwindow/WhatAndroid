@@ -40,8 +40,10 @@ public class UserProfilePopUpActivity extends MyActivity {
 		getWindow().setAttributes(lp);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
+		userImage = (ImageView) this.findViewById(R.id.userImage);
+
 		userImage.setMaxWidth(this.getWidth() / 3);
-		userImage.setMaxHeight(this.getHeight() / 2);
+		// userImage.setMaxHeight(this.getHeight() / 2);
 
 		userclass = (TextView) this.findViewById(R.id.userclass);
 		uploaded = (TextView) this.findViewById(R.id.uploaded);
@@ -53,8 +55,8 @@ public class UserProfilePopUpActivity extends MyActivity {
 		new LoadUser().execute();
 	}
 
-	private String toGBString(String s) {
-		double d = Double.parseDouble(s) / Math.pow(1024, 3);
+	private String toGBString(Double input) {
+		double d = input / Math.pow(1024, 3);
 		return df.format(d);
 	}
 
@@ -70,10 +72,10 @@ public class UserProfilePopUpActivity extends MyActivity {
 
 	private void populateLayout() {
 		userclass.setText(user.getProfile().getPersonal().getUserClass());
-		uploaded.setText(toGBString("U: " + user.getProfile().getRanks().getUploaded() + "GB"));
-		downloaded.setText(toGBString("D: " + user.getProfile().getRanks().getDownloaded() + "GB"));
-		ratio.setText("R: " + user.getProfile().getStats().getRatio());
-		posts.setText("P: " + user.getProfile().getCommunity().getPosts());
+		uploaded.setText("U: " + toGBString(user.getProfile().getRanks().getUploaded().doubleValue()) + "GB");
+		downloaded.setText("D: " + toGBString(user.getProfile().getRanks().getDownloaded().doubleValue()) + "GB");
+		ratio.setText("R: " + user.getProfile().getStats().getRatio().toString());
+		posts.setText("P: " + user.getProfile().getCommunity().getPosts().toString());
 	}
 
 	public void message(View v) {
@@ -155,6 +157,7 @@ public class UserProfilePopUpActivity extends MyActivity {
 			if (status.getB() == false) {
 				userImage.setImageResource(R.drawable.dne);
 			}
+			dialog.dismiss();
 			unlockScreenRotation();
 		}
 	}

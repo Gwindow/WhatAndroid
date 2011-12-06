@@ -59,17 +59,15 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 		setContentView(R.layout.login);
 		@SuppressWarnings("unused")
 		ReportSender sender = new ReportSender(this);
-		MySoup.setSite("http://192.168.1.147:8080/");
-		// MySoup.setSite("http://173.250.185.120:8080/");
-		// MySoup.setSite("http://what.cd/");
+		// MySoup.setSite("http://192.168.1.147:8080/");
+		// MySoup.setSite("http://173.250.184.103:8080/");
+		MySoup.setSite("http://what.cd/");
 
 		// initialize the settings writer, should only be done once
 		Settings.init(this);
 
-		/*
-		 * try { updater = new Updater(); checkForMessage(); setVersionName(); checkForUpdate(); } catch
-		 * (CouldNotLoadException e1) { // TODO Auto-generated catch block e1.printStackTrace(); }
-		 */
+		/* try { updater = new Updater(); checkForMessage(); setVersionName(); checkForUpdate(); } catch
+		 * (CouldNotLoadException e1) { // TODO Auto-generated catch block e1.printStackTrace(); } */
 
 		// Set UI component references
 		username = (TextView) this.findViewById(R.id.username);
@@ -109,8 +107,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				e.printStackTrace();
 			}
 		}
-		username.setText("gazelle");
-		password.setText("123456");
+		// username.setText("gazelle");
+		// password.setText("123456");
 
 		// username.setText("tester");
 		// password.setText("123456");
@@ -271,8 +269,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 					} else if (msg.what == 2) {
 						dialog.dismiss();
 						WhatAndroidActivity.this.unlockScreenRotation();
-						// Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
-						Intent intent = new Intent(WhatAndroidActivity.this, what.bookmarks.BookmarksTabActivity.class);
+						Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
+						// Intent intent = new Intent(WhatAndroidActivity.this,
+						// what.bookmarks.BookmarksTabActivity.class);
 						startActivity(intent);
 					} else if (msg.what == 3) {
 						dialog.dismiss();
@@ -318,14 +317,10 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				MySoup.setSessionId(Settings.getSessionId());
 				// MySoup.setAuthKey(Settings.getAuthKey());
 				if (MySoup.isLoggedIn()) {
-					/*
-					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
-					 */
-					/*
-					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
-					 */
+					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
+					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
 					// Start the next activity
 					loginHandler.sendEmptyMessage(2);
 				} else {

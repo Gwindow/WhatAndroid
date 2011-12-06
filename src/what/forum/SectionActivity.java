@@ -26,7 +26,6 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	private int counter;
 	private ProgressDialog dialog;
 	private ArrayList<TableRow> threadList = new ArrayList<TableRow>();
-	private ArrayList<Button> lastReadList = new ArrayList<Button>();
 	private ArrayList<TextView> titleList = new ArrayList<TextView>();
 	private ArrayList<TextView> authorList = new ArrayList<TextView>();
 	private TextView sectionTitle;
@@ -54,7 +53,8 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
-		id = b.getInt("id");
+		// id = b.getInt("id");
+		id = 7;
 		try {
 			page = b.getInt("page");
 		} catch (Exception e) {
@@ -69,7 +69,8 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 		int rowLayoutId;
 		int textLayoutId;
 
-		sectionTitle.setText(section.getResponse().getForumName() + ", page " + section.getResponse().getCurrentPage());
+		sectionTitle
+				.setText(section.getResponse().getForumName() + ", page " + section.getResponse().getCurrentPage().intValue());
 
 		List<Threads> threads = section.getResponse().getThreads();
 		for (int i = 0; i < threads.size(); i++) {
@@ -82,10 +83,6 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 			}
 
 			threadList.add((TableRow) getLayoutInflater().inflate(rowLayoutId, null));
-
-			lastReadList.add(new Button(this));
-			lastReadList.get(i).setBackgroundResource(R.drawable.right_arrow);
-			lastReadList.get(i).setOnClickListener(this);
 
 			titleList.add((TextView) getLayoutInflater().inflate(textLayoutId, null));
 			authorList.add((TextView) getLayoutInflater().inflate(textLayoutId, null));
@@ -105,14 +102,12 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 			titleList.get(i).setSingleLine(false);
 			titleList.get(i).setOnClickListener(this);
 			authorList.get(i).setOnClickListener(this);
+			authorList.get(i).setSingleLine(true);
 
-			threadList.get(i).addView(lastReadList.get(i));
 			threadList.get(i).addView(titleList.get(i));
 			threadList.get(i).addView(authorList.get(i));
 
 			scrollTable.setColumnShrinkable(0, true);
-			scrollTable.setColumnShrinkable(1, true);
-			scrollTable.setColumnShrinkable(2, true);
 			scrollTable.addView(threadList.get(i), new TableLayout.LayoutParams(LayoutParams.FILL_PARENT,
 					LayoutParams.WRAP_CONTENT));
 			counter++;
@@ -123,32 +118,31 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	private void idGenerator() {
 		for (int i = 0; i < counter; i++) {
 			titleList.get(i).setId(i);
-			lastReadList.get(i).setId(i + counter);
-			authorList.get(i).setId(i + (2 * counter));
+			authorList.get(i).setId(i + counter);
 		}
-	}
-
-	private void openLastReadThread(int i) {
-		Bundle b = new Bundle();
-		intent = new Intent(SectionActivity.this, what.forum.ThreadActivity.class);
-		b.putInt("id", (section.getResponse().getThreads().get(i).getTopicId().intValue()));
-		b.putInt("page", (section.getResponse().getThreads().get(i).getLastReadPage().intValue()));
-		intent.putExtras(b);
-		startActivityForResult(intent, 0);
 	}
 
 	private void openThread(int i) {
 		Bundle b = new Bundle();
 		intent = new Intent(SectionActivity.this, what.forum.ThreadActivity.class);
 		b.putInt("id", (section.getResponse().getThreads().get(i).getTopicId().intValue()));
-		// TODO is this needed?
-		// b.putInt("page", 1);
+
+		// if the thread has been read in the past automatically jump to last read page
+		if (section.getResponse().getThreads().get(i).isRead()) {
+			b.putInt("page", (section.getResponse().getThreads().get(i).getLastReadPage().intValue()));
+		} else {
+			b.putInt("page", 1);
+		}
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
 
 	private void openAuthor(int i) {
-		Toast.makeText(this, "author " + i, Toast.LENGTH_SHORT).show();
+		Bundle b = new Bundle();
+		intent = new Intent(SectionActivity.this, what.user.UserProfilePopUpActivity.class);
+		b.putInt("userId", section.getResponse().getThreads().get(i).getAuthorId().intValue());
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
 	}
 
 	public void back(View v) {
@@ -183,9 +177,6 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 			}
 			if (v.getId() == authorList.get(i).getId()) {
 				openAuthor(i);
-			}
-			if (v.getId() == lastReadList.get(i).getId()) {
-				openLastReadThread(i);
 			}
 		}
 	}

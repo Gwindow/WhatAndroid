@@ -40,6 +40,7 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 	private void populateLayout() {
 		forumSections.loadForumsList();
 		forumsList = forumSections.getForumsList();
+
 		// TODO if statement
 		for (int i = 0; i < forumSections.getResponse().getCategories().size(); i++) {
 			sectionTitleList.add((TextView) getLayoutInflater().inflate(R.layout.forum_section_title, null));
@@ -60,10 +61,11 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 		}
 	}
 
-	private void openSection(int i) {
+	private void openSection(int id) {
 		Bundle b = new Bundle();
 		intent = new Intent(ForumSectionsListActivity.this, what.forum.SectionActivity.class);
-		b.putInt("id", (forumsList.get(i).getForumId().intValue()));
+		Toast.makeText(this, String.valueOf(id), Toast.LENGTH_SHORT).show();
+		b.putInt("id", id);
 		b.putInt("page", 1);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
@@ -71,9 +73,9 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 
 	@Override
 	public void onClick(View v) {
-		for (int i = 0; i < (sectionList.size()); i++) {
+		for (int i = 0; i < sectionList.size(); i++) {
 			if (v.getId() == sectionList.get(i).getId()) {
-				openSection(i);
+				openSection(forumsList.get(i).getForumId().intValue());
 			}
 		}
 	}
