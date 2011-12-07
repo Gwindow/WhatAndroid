@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -62,7 +63,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			postId = 0;
 			e.printStackTrace();
 		}
-
+		Toast.makeText(this, String.valueOf(id) + "," + String.valueOf(postId), Toast.LENGTH_LONG).show();
 	}
 
 	private void populateLayout() {
@@ -71,16 +72,18 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		threadTitle.setText(thread.getResponse().getThreadTitle() + ", page " + thread.getResponse().getCurrentPage());
 		List<Posts> posts = thread.getResponse().getPosts();
 		RelativeLayout layout;
-		TextView username;
+		TextView username, time;
 		WebView body;
 		for (int i = 0; i < posts.size(); i++) {
 			layout = (RelativeLayout) getLayoutInflater().inflate(R.layout.post, null);
 			username = (TextView) layout.findViewById(R.id.username);
 			username.setText(posts.get(i).getAuthor().getAuthorName());
+			time = (TextView) layout.findViewById(R.id.time);
+			time.setText(posts.get(i).getAddedTime());
 			body = (WebView) layout.findViewById(R.id.post);
 			// TODO confirm that the following 2 lines fix large image loading
 			// body.getSettings().setLoadWithOverviewMode(true);
-			// body.getSettings().setUseWideViewPort(true);
+			body.getSettings().setUseWideViewPort(true);
 			body.loadData(posts.get(i).getBody(), "text/html", "utf-8");
 			// body.setBackgroundColor(R.drawable.btn_black);
 			listOfPosts.add(layout);
@@ -175,14 +178,19 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			// load from last post id
 			if ((page == 0) && (postId != 0)) {
 				thread = Thread.threadFromIdAndPostId(id, postId);
+				Log.v("thread test", "load from last post id");
 			}
 			// load from page number
 			else if ((postId == 0) && (page != 0)) {
 				thread = Thread.threadFromIdAndPage(id, page);
+				Log.v("thread test", "load from last page");
+
 			}
 			// if everything goes wrong load from the first page
 			else {
 				thread = Thread.threadFromFirstPage(id);
+				Log.v("thread test", "load from first page");
+
 			}
 			return thread.getStatus();
 		}

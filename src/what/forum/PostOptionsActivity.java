@@ -3,14 +3,17 @@ package what.forum;
 import what.gui.MyActivity;
 import what.gui.R;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.Toast;
 import api.forum.thread.Thread;
 
 public class PostOptionsActivity extends MyActivity {
@@ -18,6 +21,7 @@ public class PostOptionsActivity extends MyActivity {
 	private String post;
 	private int userId;
 	private int threadId;
+	private ProgressDialog dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +90,11 @@ public class PostOptionsActivity extends MyActivity {
 		alert.setPositiveButton("Post", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
-				Thread.postReply(threadId, input.getText().toString());
+				if (input.getText().length() > 0) {
+					new PostReply().execute(input.getText().toString());
+				} else {
+					Toast.makeText(PostOptionsActivity.this, "Enter a reply", Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 
@@ -98,5 +106,40 @@ public class PostOptionsActivity extends MyActivity {
 		});
 
 		alert.show();
+	}
+
+	private class PostReply extends AsyncTask<String, Void, Boolean> {
+		@Override
+		protected void onPreExecute() {
+			lockScreenRotation();
+			dialog = new ProgressDialog(PostOptionsActivity.this);
+			dialog.setIndeterminate(true);
+			dialog.setMessage("Loading...");
+			dialog.show();
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			try {
+				Thread.postReply(threadId, params[0]);
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status) {
+			dialog.dismiss();
+			if (status == true) {
+				Toast.makeText(PostOptionsActivity.this, "Reply posted", Toast.LENGTH_SHORT).show();
+			}
+			if (status == false) {
+				Toast.makeText(PostOptionsActivity.this, "Could not post reply", Toast.LENGTH_LONG).show();
+			}
+			unlockScreenRotation();
+			finish();
+		}
 	}
 }

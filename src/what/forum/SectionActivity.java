@@ -99,7 +99,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 				titleList.get(i).setText(threads.get(i).getTitle());
 				authorList.get(i).setText("\t" + threads.get(i).getAuthorName());
 			}
-			titleList.get(i).setSingleLine(false);
+			titleList.get(i).setSingleLine(true);
 			titleList.get(i).setOnClickListener(this);
 			authorList.get(i).setOnClickListener(this);
 			authorList.get(i).setSingleLine(true);
@@ -167,6 +167,14 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 			intent.putExtras(b);
 			startActivityForResult(intent, 0);
 		}
+	}
+
+	public void newThread(View v) {
+		Bundle b = new Bundle();
+		intent = new Intent(SectionActivity.this, what.forum.NewThreadActivity.class);
+		b.putInt("sectionId", Section.getId());
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
 	}
 
 	@Override

@@ -28,13 +28,18 @@
 		android:layout_height="wrap_content" android:orientation="horizontal">
 		<RelativeLayout android:layout_width="fill_parent"
 			android:layout_margin="5dip" android:layout_height="wrap_content"
-			android:orientation="horizontal">
+			android:orientation="horizontal" android:layout_weight="1">
 			<Button android:layout_gravity="right" android:layout_width="wrap_content"
 				android:onClick="back" android:background="@drawable/btn_black"
 				style="@style/ButtonTextSmall" android:layout_alignParentLeft="true"
 				android:text="Previous" android:layout_height="wrap_content"
 				android:id="@+id/previousButton"></Button>
-			<Button android:text="Next" android:id="@+id/nextButton"
+			<Button android:layout_width="wrap_content"
+				android:layout_centerHorizontal="true" android:onClick="newThread"
+				android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
+				android:text="New Thread" android:layout_height="wrap_content"
+				android:id="@+id/newThreadButton"></Button>
+			<Button android:text="   Next   " android:id="@+id/nextButton"
 				android:onClick="next" android:background="@drawable/btn_black"
 				style="@style/ButtonTextSmall" android:layout_alignParentRight="true"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"

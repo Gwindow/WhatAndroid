@@ -32,36 +32,50 @@
 	<string name="send_message">Send</string>
 	<string name="ui_preferences">UI Preferences</string>
 	<string name="dave_checkbox_preference">Use Dave</string>
-	<string name="dave_checkbox_preference_summary">Dave the Cat will notify you when something goes wrong</string>
+	<string name="dave_checkbox_preference_summary">Dave the Cat will notify you when something goes
+		wrong</string>
 	<string name="background_list_preference">App Background</string>
 	<string name="background_list_preference_summary">Change the Application\'s background image</string>
 	<string name="background_list_preference_title">App Background</string>
 	<string name="refresh_preferences">Refresh Interval for something</string>
-	
+
 	<style name="ButtonText">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">#ffffff</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">18dp</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:shadowColor">#000000</item>
-    <item name="android:shadowDx">1</item>
-    <item name="android:shadowDy">1</item>
-    <item name="android:shadowRadius">2</item>
-    </style>
-    <style name="ButtonTextSmall">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">#ffffff</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">15dp</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:shadowColor">#000000</item>
-    <item name="android:shadowDx">1</item>
-    <item name="android:shadowDy">1</item>
-    <item name="android:shadowRadius">2</item>
-</style>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">#ffffff</item>
+		<item name="android:gravity">center</item>
+		<item name="android:layout_margin">3dp</item>
+		<item name="android:textSize">18dp</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:shadowColor">#000000</item>
+		<item name="android:shadowDx">1</item>
+		<item name="android:shadowDy">1</item>
+		<item name="android:shadowRadius">2</item>
+	</style>
+	<style name="ButtonTextSmall">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">#ffffff</item>
+		<item name="android:gravity">center</item>
+		<item name="android:layout_margin">3dp</item>
+		<item name="android:textSize">15dp</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:shadowColor">#000000</item>
+		<item name="android:shadowDx">1</item>
+		<item name="android:shadowDy">1</item>
+		<item name="android:shadowRadius">2</item>
+	</style>
+	<style name="ButtonTextTiny">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">#ffffff</item>
+		<item name="android:gravity">center</item>
+		<item name="android:layout_margin">3dp</item>
+		<item name="android:textSize">10dp</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:shadowColor">#000000</item>
+		<item name="android:shadowDx">1</item>
+		<item name="android:shadowDy">1</item>
+		<item name="android:shadowRadius">2</item>
+	</style>
 </resources>

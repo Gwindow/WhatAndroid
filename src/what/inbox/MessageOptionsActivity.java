@@ -97,4 +97,5 @@ public class MessageOptionsActivity extends MyActivity {
 
 		alert.show();
 	}
+
 }

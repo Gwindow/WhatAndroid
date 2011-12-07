@@ -26,7 +26,7 @@ public class UserProfilePopUpActivity extends MyActivity {
 	private int userId;
 	private User user;
 	private ProgressDialog dialog;
-	private TextView userclass, uploaded, downloaded, ratio, posts;
+	private TextView username, userclass, uploaded, downloaded, ratio, posts;
 	private Bitmap bmp;
 	private ImageView userImage;
 	private DecimalFormat df = new DecimalFormat("#.00");
@@ -45,6 +45,7 @@ public class UserProfilePopUpActivity extends MyActivity {
 		userImage.setMaxWidth(this.getWidth() / 3);
 		// userImage.setMaxHeight(this.getHeight() / 2);
 
+		username = (TextView) this.findViewById(R.id.username);
 		userclass = (TextView) this.findViewById(R.id.userclass);
 		uploaded = (TextView) this.findViewById(R.id.uploaded);
 		downloaded = (TextView) this.findViewById(R.id.downloaded);
@@ -71,6 +72,7 @@ public class UserProfilePopUpActivity extends MyActivity {
 	}
 
 	private void populateLayout() {
+		username.setText(user.getProfile().getUsername());
 		userclass.setText(user.getProfile().getPersonal().getUserClass());
 		uploaded.setText("U: " + toGBString(user.getProfile().getRanks().getUploaded().doubleValue()) + "GB");
 		downloaded.setText("D: " + toGBString(user.getProfile().getRanks().getDownloaded().doubleValue()) + "GB");
@@ -80,7 +82,7 @@ public class UserProfilePopUpActivity extends MyActivity {
 
 	public void message(View v) {
 		Bundle b = new Bundle();
-		intent = new Intent(UserProfilePopUpActivity.this, what.inbox.ConversationActivity.class);
+		intent = new Intent(UserProfilePopUpActivity.this, what.inbox.NewConversationActivity.class);
 		b.putInt("userId", userId);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);

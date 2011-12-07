@@ -9,7 +9,8 @@
 	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
 	<uses-permission android:name="com.flattr4android.permission.READ_THING" />
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
-		<activity android:name="what.login.WhatAndroidActivity" android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:name="what.login.WhatAndroidActivity"
+			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -46,13 +47,13 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="what.forum.SectionActivity"
-			android:theme="@android:style/Theme.NoTitleBar" android:noHistory="true">
+			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 		<activity android:name="what.forum.ThreadActivity"
-			android:theme="@android:style/Theme.NoTitleBar" android:noHistory="true">
+			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
@@ -166,13 +167,13 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="what.forum.PostOptionsActivity"
-			android:noHistory="true" android:theme="@style/Theme.MenuDialog">
+			android:theme="@style/Theme.MenuDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 		<activity android:name="what.inbox.MessageOptionsActivity"
-			android:noHistory="true" android:theme="@style/Theme.MenuDialog">
+			android:theme="@style/Theme.MenuDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
@@ -261,7 +262,7 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name="what.inbox.NewThreadActivity">
+		<activity android:name="what.forum.NewThreadActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
