@@ -10,7 +10,7 @@
 			android:layout_height="wrap_content" android:layout_alignParentTop="true"
 			android:layout_alignParentLeft="true" android:layout_width="wrap_content"
 			android:layout_alignParentRight="true" android:layout_marginTop="5dip"></TextView>
-		<TextView android:textAppearance="?android:attr/textAppearanceMedium"
+		<TextView android:textAppearance="?android:attr/textAppearanceSmall"
 			android:layout_height="wrap_content" android:id="@+id/time"
 			android:layout_marginTop="5dip" android:layout_marginLeft="20dip"
 			android:layout_width="wrap_content" android:text=""></TextView>
