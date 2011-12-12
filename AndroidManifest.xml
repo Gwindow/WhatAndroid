@@ -112,7 +112,19 @@
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
+		<activity android:name="what.requests.RequestTabActivity"
+			android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
 		<activity android:name="what.requests.RequestActivity"
+			android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		<activity android:name="what.requests.RequestDetailsActivity"
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />

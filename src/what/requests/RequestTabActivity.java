@@ -1,4 +1,4 @@
-package what.torrents.artist;
+package what.requests;
 
 import what.gui.MyTabActivity;
 import what.gui.R;
@@ -10,16 +10,16 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.TabHost;
 import android.widget.Toast;
-import api.torrents.artist.Artist;
+import api.requests.Request;
 
-public class ArtistTabActivity extends MyTabActivity {
+public class RequestTabActivity extends MyTabActivity {
 	private Resources res; // Resource object to get Drawables
 	private TabHost tabHost;// The activity TabHost
 	private TabHost.TabSpec spec; // Resusable TabSpec for each tab
 	private Intent intent; // Reusable Intent for each tab
 	private ProgressDialog dialog;
-	private static Artist artist;
-	private static int artistId;
+	private static Request request;
+	private static int requestId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class ArtistTabActivity extends MyTabActivity {
 		setContentView(R.layout.tabs);
 
 		getBundle();
-		new LoadArtist().execute();
+		new LoadRequest().execute();
 
 	}
 
@@ -36,22 +36,17 @@ public class ArtistTabActivity extends MyTabActivity {
 		tabHost = getTabHost();
 
 		// Create an Intent to launch an Activity for the tab (to be reused)
-		intent = new Intent().setClass(ArtistTabActivity.this, ArtistActivity.class);
+		intent = new Intent().setClass(RequestTabActivity.this, RequestActivity.class);
 		// Initialize a TabSpec for each tab and add it to the TabHost
 		spec =
-				tabHost.newTabSpec("artist").setIndicator("Artist", res.getDrawable(R.drawable.artist_icon_dark))
+				tabHost.newTabSpec("request").setIndicator("Request", res.getDrawable(R.drawable.artist_icon_dark))
 						.setContent(intent);
 		tabHost.addTab(spec);
 
 		// Do the same for the other tabs
-		intent = new Intent().setClass(ArtistTabActivity.this, TorrentListActivity.class);
-		spec = tabHost.newTabSpec("music").setIndicator("Music", res.getDrawable(R.drawable.music_icon_dark)).setContent(intent);
-		tabHost.addTab(spec);
-
-		// Do the same for the other tabs
-		intent = new Intent().setClass(ArtistTabActivity.this, RequestListActivity.class);
+		intent = new Intent().setClass(RequestTabActivity.this, RequestDetailsActivity.class);
 		spec =
-				tabHost.newTabSpec("requests").setIndicator("Requests", res.getDrawable(R.drawable.request_icon_dark))
+				tabHost.newTabSpec("details").setIndicator("Details", res.getDrawable(R.drawable.music_icon_dark))
 						.setContent(intent);
 		tabHost.addTab(spec);
 
@@ -59,15 +54,13 @@ public class ArtistTabActivity extends MyTabActivity {
 
 	}
 
-	/**
-	 * Get the bundle from the previous intent specifying the artist id
-	 */
+	/** Get the bundle from the previous intent specifying the artist id */
 	private void getBundle() {
 		try {
 			Bundle b = this.getIntent().getExtras();
-			artistId = b.getInt("artistId");
+			requestId = b.getInt("requestId");
 			// TODO remove
-			// artistId = 1;
+			// requestId = 1;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -93,11 +86,11 @@ public class ArtistTabActivity extends MyTabActivity {
 		return false;
 	}
 
-	private class LoadArtist extends AsyncTask<Void, Void, Boolean> {
+	private class LoadRequest extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
-			dialog = new ProgressDialog(ArtistTabActivity.this);
+			dialog = new ProgressDialog(RequestTabActivity.this);
 			dialog.setIndeterminate(true);
 			dialog.setMessage("Loading...");
 			dialog.show();
@@ -105,8 +98,8 @@ public class ArtistTabActivity extends MyTabActivity {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			artist = Artist.artistFromId(artistId);
-			return artist.getStatus();
+			request = Request.requestFromId(requestId);
+			return request.getStatus();
 		}
 
 		@Override
@@ -116,18 +109,24 @@ public class ArtistTabActivity extends MyTabActivity {
 			}
 			dialog.dismiss();
 			if (status == false) {
-				Toast.makeText(ArtistTabActivity.this, "Could not load artist", Toast.LENGTH_LONG).show();
+				Toast.makeText(RequestTabActivity.this, "Could not load request", Toast.LENGTH_LONG).show();
 			}
 			unlockScreenRotation();
 		}
 	}
 
-	public static Artist getArtist() {
-		return artist;
+	/**
+	 * @return the request
+	 */
+	public static Request getRequest() {
+		return request;
 	}
 
-	public static int getArtistId() {
-		return artistId;
+	/**
+	 * @return the requestId
+	 */
+	public static int getRequestId() {
+		return requestId;
 	}
 
 }

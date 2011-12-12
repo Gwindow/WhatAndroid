@@ -249,7 +249,7 @@ public class ScannerActivity extends MyTabActivity implements OnClickListener {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			productSearch = ProductSearch.ProductSearchFromUPC(upc);
+			productSearch = ProductSearch.productSearchFromUPC(upc);
 			if (productSearch.hasItems()) {
 				searchterm = productSearch.getItems().get(0).getProduct().getTitle();
 				// TODO do what search

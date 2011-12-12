@@ -21,6 +21,7 @@ import android.widget.Toast;
 import api.forum.section.Section;
 import api.forum.section.Threads;
 
+//TODO reenable author names at some point?
 public class SectionActivity extends MyActivity implements OnClickListener {
 	private TableLayout scrollTable;
 	private int counter;
@@ -85,27 +86,27 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 			threadList.add((TableRow) getLayoutInflater().inflate(rowLayoutId, null));
 
 			titleList.add((TextView) getLayoutInflater().inflate(textLayoutId, null));
-			authorList.add((TextView) getLayoutInflater().inflate(textLayoutId, null));
+			// authorList.add((TextView) getLayoutInflater().inflate(textLayoutId, null));
 			if (threads.get(i).isLocked()) {
 				titleList.get(i).setText("Locked: " + threads.get(i).getTitle());
-				authorList.get(i).setText("\t" + threads.get(i).getAuthorName());
+				// authorList.get(i).setText("\t" + threads.get(i).getAuthorName());
 			} else if (threads.get(i).isSticky()) {
 				titleList.get(i).setText("Sticky: " + threads.get(i).getTitle());
-				authorList.get(i).setText("\t" + threads.get(i).getAuthorName());
+				// authorList.get(i).setText("\t" + threads.get(i).getAuthorName());
 			} else if (threads.get(i).isLocked() && threads.get(i).isSticky()) {
 				titleList.get(i).setText("Locked Sticky: " + threads.get(i).getTitle());
-				authorList.get(i).setText("\t" + threads.get(i).getAuthorName());
+				// authorList.get(i).setText("\t" + threads.get(i).getAuthorName());
 			} else {
 				titleList.get(i).setText(threads.get(i).getTitle());
-				authorList.get(i).setText("\t" + threads.get(i).getAuthorName());
+				// authorList.get(i).setText("\t" + threads.get(i).getAuthorName());
 			}
 			titleList.get(i).setSingleLine(true);
 			titleList.get(i).setOnClickListener(this);
-			authorList.get(i).setOnClickListener(this);
-			authorList.get(i).setSingleLine(true);
+			// authorList.get(i).setOnClickListener(this);
+			// authorList.get(i).setSingleLine(true);
 
 			threadList.get(i).addView(titleList.get(i));
-			threadList.get(i).addView(authorList.get(i));
+			// threadList.get(i).addView(authorList.get(i));
 
 			scrollTable.setColumnShrinkable(0, true);
 			scrollTable.addView(threadList.get(i), new TableLayout.LayoutParams(LayoutParams.FILL_PARENT,
@@ -183,9 +184,9 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 			if (v.getId() == titleList.get(i).getId()) {
 				openThread(i);
 			}
-			if (v.getId() == authorList.get(i).getId()) {
-				openAuthor(i);
-			}
+			// if (v.getId() == authorList.get(i).getId()) {
+			// openAuthor(i);
+			// }
 		}
 	}
 
