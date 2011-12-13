@@ -39,16 +39,15 @@ public class RequestTabActivity extends MyTabActivity {
 		intent = new Intent().setClass(RequestTabActivity.this, RequestActivity.class);
 		// Initialize a TabSpec for each tab and add it to the TabHost
 		spec =
-				tabHost.newTabSpec("request").setIndicator("Request", res.getDrawable(R.drawable.artist_icon_dark))
+				tabHost.newTabSpec("request").setIndicator("Request", res.getDrawable(R.drawable.request_icon_dark))
 						.setContent(intent);
 		tabHost.addTab(spec);
 
-		// Do the same for the other tabs
-		intent = new Intent().setClass(RequestTabActivity.this, RequestDetailsActivity.class);
-		spec =
-				tabHost.newTabSpec("details").setIndicator("Details", res.getDrawable(R.drawable.music_icon_dark))
-						.setContent(intent);
-		tabHost.addTab(spec);
+		/*
+		 * // Do the same for the other tabs intent = new Intent().setClass(RequestTabActivity.this,
+		 * RequestDetailsActivity.class); spec = tabHost.newTabSpec("details").setIndicator("Details",
+		 * res.getDrawable(R.drawable.details_icon_dark)) .setContent(intent); tabHost.addTab(spec);
+		 */
 
 		tabHost.setCurrentTab(0);
 
