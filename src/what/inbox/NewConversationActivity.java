@@ -5,6 +5,7 @@ import what.gui.R;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,6 +26,8 @@ public class NewConversationActivity extends MyActivity {
 		getBundle();
 		messageSubject = (EditText) this.findViewById(R.id.messageSubject);
 		messageBody = (EditText) this.findViewById(R.id.messageBody);
+		messageBody.setGravity(Gravity.TOP);
+		messageBody.setGravity(Gravity.LEFT);
 	}
 
 	private void getBundle() {

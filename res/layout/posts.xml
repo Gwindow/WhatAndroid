@@ -7,7 +7,7 @@
 	<TextView android:id="@+id/titleText" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_alignParentTop="true"
 		android:layout_alignParentLeft="true" android:layout_marginLeft="10dip"
-		android:padding="5dip" android:layout_marginTop="10dip"
+		android:padding="5dip" android:layout_marginTop="10dip" android:layout_marginBottom="10dip"
 		android:layout_marginRight="10dip" android:textColor="@color/white"
 		android:textStyle="bold" android:textSize="20dip"
 		android:background="@drawable/table_header_dark" />

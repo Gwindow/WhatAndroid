@@ -86,7 +86,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	}
 
 	public void openTorrents(View v) {
-		Intent intent = new Intent(this, what.gui.MainMenu.class);
+		Intent intent = new Intent(this, what.torrents.artist.ArtistTabActivity.class);
 		startActivityForResult(intent, 0);
 	}
 

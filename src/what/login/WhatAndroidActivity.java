@@ -59,8 +59,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 		setContentView(R.layout.login);
 		@SuppressWarnings("unused")
 		ReportSender sender = new ReportSender(this);
-		MySoup.setSite("http://192.168.1.147:8080/");
-		// MySoup.setSite("http://173.250.184.103:8080/");
+		// MySoup.setSite("http://192.168.1.147:8080/");
+		MySoup.setSite("http://67.183.192.159/");
 		// MySoup.setSite("http://what.cd/");
 
 		// initialize the settings writer, should only be done once
@@ -271,8 +271,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 					} else if (msg.what == 2) {
 						dialog.dismiss();
 						WhatAndroidActivity.this.unlockScreenRotation();
-						// Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
-						Intent intent = new Intent(WhatAndroidActivity.this, what.torrents.artist.ArtistTabActivity.class);
+						Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
+						// Intent intent = new Intent(WhatAndroidActivity.this,
+						// what.torrents.artist.ArtistTabActivity.class);
 						startActivity(intent);
 					} else if (msg.what == 3) {
 						dialog.dismiss();

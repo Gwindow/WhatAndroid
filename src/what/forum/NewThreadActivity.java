@@ -5,6 +5,7 @@ import what.gui.R;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,6 +26,8 @@ public class NewThreadActivity extends MyActivity {
 		getBundle();
 		threadTitle = (EditText) this.findViewById(R.id.threadTitle);
 		threadBody = (EditText) this.findViewById(R.id.threadBody);
+		threadBody.setGravity(Gravity.TOP);
+		threadBody.setGravity(Gravity.LEFT);
 	}
 
 	private void getBundle() {

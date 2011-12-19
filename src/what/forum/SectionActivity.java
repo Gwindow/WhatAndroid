@@ -28,7 +28,6 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	private ProgressDialog dialog;
 	private ArrayList<TableRow> threadList = new ArrayList<TableRow>();
 	private ArrayList<TextView> titleList = new ArrayList<TextView>();
-	private ArrayList<TextView> authorList = new ArrayList<TextView>();
 	private TextView sectionTitle;
 	private Intent intent;
 	private Section section;
@@ -55,7 +54,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
 		// id = b.getInt("id");
-		id = 7;
+		id = 2;
 		try {
 			page = b.getInt("page");
 		} catch (Exception e) {
@@ -119,7 +118,6 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	private void idGenerator() {
 		for (int i = 0; i < counter; i++) {
 			titleList.get(i).setId(i);
-			authorList.get(i).setId(i + counter);
 		}
 	}
 
