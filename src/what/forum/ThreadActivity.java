@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import what.gui.MyActivity;
+import what.gui.PatchInputStream;
 import what.gui.R;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -35,7 +36,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	private Intent intent;
 	private int id, page, postId;
 	private TextView threadTitle;
-	private Button backButton, nextButton;
+	private Button backButton, nextButton, lastButton;
 	private ArrayList<RelativeLayout> listOfPosts = new ArrayList<RelativeLayout>();
 
 	@Override
@@ -47,8 +48,11 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
+		lastButton = (Button) this.findViewById(R.id.lastButton);
 		setButtonState(backButton, false);
 		setButtonState(nextButton, false);
+		setButtonState(lastButton, false);
+
 		getBundle();
 
 		new LoadThread().execute();
@@ -75,6 +79,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	private void populateLayout() {
 		setButtonState(backButton, thread.hasPreviousPage());
 		setButtonState(nextButton, thread.hasNextPage());
+		setButtonState(lastButton, thread.hasNextPage());
 		threadTitle.setText(thread.getResponse().getThreadTitle() + ", page " + thread.getResponse().getCurrentPage());
 		List<Posts> posts = thread.getResponse().getPosts();
 		RelativeLayout layout;
@@ -99,7 +104,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			listOfPosts.get(i).setClickable(true);
 			listOfPosts.get(i).setOnLongClickListener(this);
 			scrollLayout.addView(listOfPosts.get(i));
-			// new LoadAvatar().execute(new Tuple<Integer, String>(i, posts.get(i).getAuthor().getAvatar()));
+			new LoadAvatar().execute(new Tuple<Integer, String>(i, posts.get(i).getAuthor().getAvatar()));
 		}
 	}
 
@@ -137,6 +142,17 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		}
 	}
 
+	public void last(View v) {
+		if (thread.hasNextPage()) {
+			Bundle b = new Bundle();
+			intent = new Intent(ThreadActivity.this, what.forum.ThreadActivity.class);
+			b.putInt("id", id);
+			b.putInt("page", thread.getLastPage());
+			intent.putExtras(b);
+			startActivityForResult(intent, 0);
+		}
+	}
+
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 		if ((e2.getX() - e1.getX()) > 35) {
@@ -169,25 +185,32 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	@Override
 	public void onDestroy() {
 		QuoteBuffer.clear();
+		ImageView a;
+		for (int i = 0; i < listOfPosts.size(); i++) {
+			try {
+				a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar);
+				a.destroyDrawingCache();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		super.onDestroy();
 	}
 
-	private class LoadAvatar2 extends AsyncTask<String, Bitmap, Boolean> {
-		@Override
-		protected void onPreExecute() {
-
+	@Override
+	public void onPause() {
+		ImageView a;
+		for (int i = 0; i < listOfPosts.size(); i++) {
+			try {
+				a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar);
+				a.destroyDrawingCache();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-
-		@Override
-		protected Boolean doInBackground(String... params) {
-
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean status) {
-
-		}
+		super.onPause();
 	}
 
 	private class LoadAvatar extends AsyncTask<Tuple<Integer, String>, Void, Triple<Boolean, Integer, Bitmap>> {
@@ -205,9 +228,10 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			if (s.length() > 0) {
 				try {
 					url = new URL(s);
-					b = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+					b = BitmapFactory.decodeStream(new PatchInputStream(url.openStream()));
 					return new Triple<Boolean, Integer, Bitmap>(true, pos, b);
 				} catch (Exception e) {
+					e.printStackTrace();
 					return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
 				}
 			}
@@ -224,6 +248,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 				a.setImageResource(R.drawable.dne);
 			}
 		}
+
 	}
 
 	private class LoadAvatars extends AsyncTask<Void, Void, List<Bitmap>> {

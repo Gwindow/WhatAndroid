@@ -7,10 +7,10 @@
 	<TextView android:id="@+id/titleText" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_alignParentTop="true"
 		android:layout_alignParentLeft="true" android:layout_marginLeft="10dip"
-		android:padding="5dip" android:layout_marginTop="10dip" android:layout_marginBottom="10dip"
-		android:layout_marginRight="10dip" android:textColor="@color/white"
-		android:textStyle="bold" android:textSize="20dip"
-		android:background="@drawable/table_header_dark" />
+		android:padding="5dip" android:layout_marginTop="10dip"
+		android:layout_marginBottom="10dip" android:layout_marginRight="10dip"
+		android:textColor="@color/white" android:textStyle="bold"
+		android:textSize="20dip" android:background="@drawable/table_header_dark" />
 
 	<ScrollView android:id="@+id/scrollView"
 		android:layout_width="fill_parent" android:layout_height="0dip"
@@ -33,10 +33,15 @@
 				android:text="Previous" android:layout_height="wrap_content"
 				android:id="@+id/previousButton"></Button>
 			<Button android:text="Next" android:id="@+id/nextButton"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:onClick="next" android:background="@drawable/btn_black"
+				style="@style/ButtonTextSmall" android:layout_toLeftOf="@+id/lastButton"></Button>
+			<Button android:text="Last" android:id="@+id/lastButton"
+				android:onClick="last" android:background="@drawable/btn_black"
 				style="@style/ButtonTextSmall" android:layout_alignParentRight="true"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:layout_gravity="right"></Button>
+
 		</RelativeLayout>
 	</LinearLayout>
 </LinearLayout>

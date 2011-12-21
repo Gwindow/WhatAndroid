@@ -77,7 +77,8 @@
 		android:layout_width="fill_parent" android:layout_marginLeft="30dip"
 		android:layout_marginRight="30dip" android:layout_marginTop="10dip"></TextView>
 	<ScrollView android:id="@+id/scrollView"
-		android:layout_marginLeft="30dip" android:padding="10dip"
+		android:layout_marginLeft="30dip" android:paddingLeft="10dip"
+		android:paddingRight="10dip" android:paddingTop="10dip"
 		android:layout_marginTop="5dip" android:layout_marginRight="30dip"
 		android:layout_marginBottom="5dip" android:layout_below="@+id/searchBar"
 		android:layout_width="fill_parent" android:layout_height="fill_parent">

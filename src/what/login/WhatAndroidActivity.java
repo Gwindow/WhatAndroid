@@ -109,8 +109,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				e.printStackTrace();
 			}
 		}
-		username.setText("Gwindow");
-		password.setText("t2ustUdE");
 
 		// username.setText("tester");
 		// password.setText("123456");
