@@ -60,8 +60,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 		@SuppressWarnings("unused")
 		ReportSender sender = new ReportSender(this);
 		// MySoup.setSite("http://192.168.1.147:8080/");
-		MySoup.setSite("http://67.183.192.159/");
-		// MySoup.setSite("http://what.cd/");
+		// MySoup.setSite("http://67.183.192.159/");
+		MySoup.setSite("http://what.cd/");
 
 		// initialize the settings writer, should only be done once
 		Settings.init(this);
@@ -109,8 +109,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				e.printStackTrace();
 			}
 		}
-		username.setText("gazelle");
-		password.setText("123456");
+		username.setText("Gwindow");
+		password.setText("t2ustUdE");
 
 		// username.setText("tester");
 		// password.setText("123456");

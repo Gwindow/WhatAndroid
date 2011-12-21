@@ -1,5 +1,6 @@
 package what.forum;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,8 @@ import what.gui.MyActivity;
 import what.gui.R;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,12 +18,15 @@ import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.forum.thread.Posts;
 import api.forum.thread.Thread;
+import api.util.Triple;
+import api.util.Tuple;
 
 public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	private LinearLayout scrollLayout;
@@ -81,6 +87,8 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			time = (TextView) layout.findViewById(R.id.time);
 			time.setText(posts.get(i).getAddedTime());
 			body = (WebView) layout.findViewById(R.id.post);
+			// TODO if statement to check if avatars enabled
+
 			// TODO confirm that the following 2 lines fix large image loading
 			// body.getSettings().setLoadWithOverviewMode(true);
 			body.getSettings().setUseWideViewPort(true);
@@ -91,6 +99,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			listOfPosts.get(i).setClickable(true);
 			listOfPosts.get(i).setOnLongClickListener(this);
 			scrollLayout.addView(listOfPosts.get(i));
+			// new LoadAvatar().execute(new Tuple<Integer, String>(i, posts.get(i).getAuthor().getAvatar()));
 		}
 	}
 
@@ -161,6 +170,99 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	public void onDestroy() {
 		QuoteBuffer.clear();
 		super.onDestroy();
+	}
+
+	private class LoadAvatar2 extends AsyncTask<String, Bitmap, Boolean> {
+		@Override
+		protected void onPreExecute() {
+
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status) {
+
+		}
+	}
+
+	private class LoadAvatar extends AsyncTask<Tuple<Integer, String>, Void, Triple<Boolean, Integer, Bitmap>> {
+		@Override
+		protected void onPreExecute() {
+
+		}
+
+		@Override
+		protected Triple<Boolean, Integer, Bitmap> doInBackground(Tuple<Integer, String>... params) {
+			Bitmap b;
+			URL url;
+			String s = params[0].getB();
+			int pos = params[0].getA().intValue();
+			if (s.length() > 0) {
+				try {
+					url = new URL(s);
+					b = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+					return new Triple<Boolean, Integer, Bitmap>(true, pos, b);
+				} catch (Exception e) {
+					return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
+				}
+			}
+			return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
+		}
+
+		@Override
+		protected void onPostExecute(Triple<Boolean, Integer, Bitmap> t) {
+			ImageView a;
+			a = (ImageView) listOfPosts.get(t.getB()).findViewById(R.id.avatar);
+			if (t.getA() == true) {
+				a.setImageBitmap(t.getC());
+			} else {
+				a.setImageResource(R.drawable.dne);
+			}
+		}
+	}
+
+	private class LoadAvatars extends AsyncTask<Void, Void, List<Bitmap>> {
+		@Override
+		protected void onPreExecute() {
+
+		}
+
+		@Override
+		protected List<Bitmap> doInBackground(Void... params) {
+			ArrayList<Bitmap> list = new ArrayList<Bitmap>();
+			for (int i = 0; i < thread.getResponse().getPosts().size(); i++) {
+				URL url;
+				String s = thread.getResponse().getPosts().get(i).getAuthor().getAvatar();
+				if (s.length() > 0) {
+					try {
+						url = new URL(s);
+						list.add(BitmapFactory.decodeStream(url.openConnection().getInputStream()));
+					} catch (Exception e) {
+
+					}
+				}
+			}
+			return list;
+		}
+
+		@Override
+		protected void onPostExecute(List<Bitmap> list) {
+			for (int i = 0; i < list.size(); i++) {
+				ImageView a;
+				a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar);
+				try {
+					a.setImageBitmap(list.get(i));
+				} catch (Exception e) {
+					a.setImageResource(R.drawable.dne);
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	private class LoadThread extends AsyncTask<Void, Void, Boolean> {

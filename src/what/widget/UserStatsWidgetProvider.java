@@ -37,8 +37,8 @@ public class UserStatsWidgetProvider extends AppWidgetProvider {
 
 	private void populateUserStats() {
 		username = user.getProfile().getUsername();
-		up = toGBString(user.getProfile().getRanks().getUploaded().toString() + " GB");
-		down = toGBString(user.getProfile().getRanks().getDownloaded().toString() + " GB");
+		up = toGBString(user.getProfile().getRanks().getUploaded().doubleValue()) + " GB";
+		down = toGBString(user.getProfile().getRanks().getDownloaded().doubleValue()) + " GB";
 		ratio = user.getProfile().getStats().getRatio().toString();
 		seeding = user.getProfile().getCommunity().getSeeding().toString();
 		leeching = user.getProfile().getCommunity().getLeeching().toString();
@@ -51,8 +51,8 @@ public class UserStatsWidgetProvider extends AppWidgetProvider {
 		remoteViews.setTextViewText(R.id.leechingvalue, leeching);
 	}
 
-	private String toGBString(String s) {
-		double d = Double.parseDouble(s) / Math.pow(1024, 3);
+	private String toGBString(Double d) {
+		d = d / Math.pow(1024, 3);
 		return df.format(d);
 	}
 
