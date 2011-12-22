@@ -4,13 +4,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import what.gui.ImageLoader;
 import what.gui.MyActivity;
-import what.gui.PatchInputStream;
 import what.gui.R;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -76,6 +75,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		Toast.makeText(this, String.valueOf(id) + "," + String.valueOf(postId), Toast.LENGTH_LONG).show();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void populateLayout() {
 		setButtonState(backButton, thread.hasPreviousPage());
 		setButtonState(nextButton, thread.hasNextPage());
@@ -227,8 +227,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			int pos = params[0].getA().intValue();
 			if (s.length() > 0) {
 				try {
-					url = new URL(s);
-					b = BitmapFactory.decodeStream(new PatchInputStream(url.openStream()));
+					b = ImageLoader.loadBitmap(s);
 					return new Triple<Boolean, Integer, Bitmap>(true, pos, b);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -249,45 +248,6 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			}
 		}
 
-	}
-
-	private class LoadAvatars extends AsyncTask<Void, Void, List<Bitmap>> {
-		@Override
-		protected void onPreExecute() {
-
-		}
-
-		@Override
-		protected List<Bitmap> doInBackground(Void... params) {
-			ArrayList<Bitmap> list = new ArrayList<Bitmap>();
-			for (int i = 0; i < thread.getResponse().getPosts().size(); i++) {
-				URL url;
-				String s = thread.getResponse().getPosts().get(i).getAuthor().getAvatar();
-				if (s.length() > 0) {
-					try {
-						url = new URL(s);
-						list.add(BitmapFactory.decodeStream(url.openConnection().getInputStream()));
-					} catch (Exception e) {
-
-					}
-				}
-			}
-			return list;
-		}
-
-		@Override
-		protected void onPostExecute(List<Bitmap> list) {
-			for (int i = 0; i < list.size(); i++) {
-				ImageView a;
-				a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar);
-				try {
-					a.setImageBitmap(list.get(i));
-				} catch (Exception e) {
-					a.setImageResource(R.drawable.dne);
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	private class LoadThread extends AsyncTask<Void, Void, Boolean> {

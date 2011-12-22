@@ -1,15 +1,14 @@
 package what.user;
 
-import java.net.URL;
 import java.text.DecimalFormat;
 
+import what.gui.ImageLoader;
 import what.gui.MyActivity;
 import what.gui.R;
 import what.torrents.artist.ArtistTabActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import api.soup.MySoup;
 import api.user.User;
 import api.util.Tuple;
 
@@ -42,9 +40,6 @@ public class UserProfilePopUpActivity extends MyActivity {
 
 		userImage = (ImageView) this.findViewById(R.id.userImage);
 
-		userImage.setMaxWidth(this.getWidth() / 3);
-		// userImage.setMaxHeight(this.getHeight() / 2);
-
 		username = (TextView) this.findViewById(R.id.username);
 		userclass = (TextView) this.findViewById(R.id.userclass);
 		uploaded = (TextView) this.findViewById(R.id.uploaded);
@@ -66,8 +61,8 @@ public class UserProfilePopUpActivity extends MyActivity {
 		try {
 			userId = b.getInt("userId");
 		} catch (Exception e) {
-			// if for some reason the user id isn't received set it to your own id so everything doesnt crash
-			userId = (MySoup.getUserId());
+			finish();
+			Toast.makeText(this, "Could not get user id", Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -134,10 +129,9 @@ public class UserProfilePopUpActivity extends MyActivity {
 			user = User.userFromId(userId);
 			status.setA(user.getStatus());
 
-			URL url;
 			try {
-				url = new URL(ArtistTabActivity.getArtist().getResponse().getImage());
-				bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+				String s = ArtistTabActivity.getArtist().getResponse().getImage();
+				bmp = ImageLoader.loadBitmap(s);
 				status.setB(true);
 			} catch (Exception e) {
 				status.setB(false);

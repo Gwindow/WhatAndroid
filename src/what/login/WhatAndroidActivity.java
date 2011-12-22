@@ -110,9 +110,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 			}
 		}
 
-		// username.setText("tester");
-		// password.setText("123456");
-
 		/* if (settings.getString("sessionId", null) != null) { // Resume the session // TODO fix // resume(); } */
 	}
 
