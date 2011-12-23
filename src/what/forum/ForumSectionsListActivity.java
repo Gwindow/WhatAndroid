@@ -1,6 +1,8 @@
 package what.forum;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import what.gui.MyActivity;
 import what.gui.R;
@@ -14,15 +16,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.forum.forumsections.ForumSections;
+import api.forum.forumsections.Forums;
 import api.soup.MySoup;
 
 public class ForumSectionsListActivity extends MyActivity implements OnClickListener {
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
 	ForumSections forumSections;
-	// private List<Forums> forumsList;
+	private List<Forums> forumsList;
 	private ArrayList<TextView> sectionTitleList = new ArrayList<TextView>();
 	private ArrayList<TextView> sectionList = new ArrayList<TextView>();
+	private LinkedList<TextView> sectionList2 = new LinkedList<TextView>();
 	private Intent intent;
 
 	@Override
@@ -42,16 +46,16 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 			scrollLayout.addView(sectionTitleList.get(i));
 			for (int j = 0; j < forumSections.getResponse().getCategories().get(i).getForums().size(); j++) {
 				if ((j % 2) == 0) {
-					sectionList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_even, null));
+					sectionList2.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_even, null));
 				} else {
-					sectionList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_odd, null));
+					sectionList2.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_odd, null));
 				}
 
-				sectionList.get(counter).setText(
+				sectionList2.get(counter).setText(
 						forumSections.getResponse().getCategories().get(i).getForums().get(j).getForumName());
-				sectionList.get(counter).setId(counter);
-				sectionList.get(counter).setOnClickListener(this);
-				scrollLayout.addView(sectionList.get(counter));
+				sectionList2.get(counter).setId(counter);
+				sectionList2.get(counter).setOnClickListener(this);
+				scrollLayout.addView(sectionList2.get(counter));
 				counter++;
 			}
 		}
@@ -59,7 +63,7 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 
 	private void populateLayout2() {
 		forumSections.loadForumsList();
-		// forumsList = forumSections.getForumsList();
+		forumsList = forumSections.getForumsList();
 
 		// TODO if statement
 		for (int i = 0; i < forumSections.getResponse().getCategories().size(); i++) {
@@ -68,14 +72,15 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 			scrollLayout.addView(sectionTitleList.get(i));
 			for (int j = 0; j < forumSections.getResponse().getCategories().get(i).getForums().size(); j++) {
 				if ((j % 2) == 0) {
-					sectionList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_even, null));
+					sectionList2.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_even, null));
 				} else {
-					sectionList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_odd, null));
+					sectionList2.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_odd, null));
 				}
-				sectionList.get(i).setText(forumSections.getResponse().getCategories().get(i).getForums().get(j).getForumName());
-				// sectionList.get(i).setId(forumsList.get(i).getForumId().intValue());
-				sectionList.get(i).setOnClickListener(this);
-				scrollLayout.addView(sectionList.get(i));
+				sectionList2.getLast().setText(
+						forumSections.getResponse().getCategories().get(i).getForums().get(j).getForumName());
+				sectionList2.getLast().setId(j);
+				sectionList2.getLast().setOnClickListener(this);
+				scrollLayout.addView(sectionList2.getLast());
 			}
 		}
 	}
@@ -92,9 +97,9 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 
 	@Override
 	public void onClick(View v) {
-		for (int i = 0; i < sectionList.size(); i++) {
-			if (v.getId() == sectionList.get(i).getId()) {
-				openSection(forumSections.getForumsList().get(i).getForumId().intValue());
+		for (int i = 0; i < sectionList2.size(); i++) {
+			if (v.getId() == sectionList2.get(i).getId()) {
+				openSection(forumsList.get(i).getForumId().intValue());
 			}
 		}
 	}
