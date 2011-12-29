@@ -16,14 +16,13 @@
 			android:layout_width="wrap_content" android:text=""></TextView>
 	</LinearLayout>
 	<ImageView android:layout_height="wrap_content" android:src="@drawable/dne"
-		android:background="#FFFFFF"
-		android:adjustViewBounds="true"
+		android:background="#FFFFFF" android:adjustViewBounds="true"
 		android:maxWidth="100px" android:layout_below="@+id/bar"
 		android:layout_width="wrap_content" android:id="@+id/avatar"
 		android:layout_alignParentLeft="true" android:layout_marginTop="5dip"></ImageView>
 	<WebView android:text="" android:id="@+id/post"
 		android:clickable="true" android:background="@color/transparentBlack"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_toRightOf="@+id/avatar"
-		android:layout_alignParentRight="true" android:layout_alignTop="@+id/avatar" android:layout_alignBottom="@+id/avatar"></WebView>
+		android:layout_width="wrap_content" android:layout_toRightOf="@+id/avatar"
+		android:layout_alignParentRight="true" android:layout_alignTop="@+id/avatar"
+		android:layout_height="wrap_content" android:layout_alignBottom="@+id/avatar"></WebView>
 </RelativeLayout>
