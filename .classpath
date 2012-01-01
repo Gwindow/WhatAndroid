@@ -4,12 +4,7 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="lib" path="libs/flattr-android-sdk-0.0.2.0.jar"/>
-	<classpathentry kind="lib" path="libs/gson-1.7.1.jar"/>
 	<classpathentry kind="lib" path="libs/java-flattr-rest-0.0.3.0.jar"/>
-	<classpathentry kind="lib" path="libs/jsoup-1.6.1.jar"/>
-	<classpathentry kind="lib" path="libs/signpost-commonshttp4-1.2.1.1.jar"/>
-	<classpathentry kind="lib" path="libs/signpost-core-1.2.1.1.jar"/>
-	<classpathentry kind="lib" path="libs/twitter4j-core-android-2.2.4.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/WhatAPI"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -5,7 +5,6 @@ import java.io.IOException;
 import what.gui.MyActivity;
 import what.gui.R;
 import what.gui.ReportSender;
-import what.gui.Updater;
 import what.settings.Settings;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -32,22 +31,22 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import api.soup.MySoup;
 import api.util.CouldNotLoadException;
+import api.util.Updater;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener, OnEditorActionListener {
 	private String VERSION;
-	TextView username;
-	TextView password;
-	Button login;
-	CheckBox rememberCheckbox;
-	CheckBox passwordCheckbox;
-	CheckBox sslCheckbox;
-
-	Settings settings;
-
+	private TextView username;
+	private TextView password;
+	private Button login;
+	private CheckBox rememberCheckbox;
+	private CheckBox passwordCheckbox;
+	private CheckBox sslCheckbox;
+	private Settings settings;
 	private String usernameString;
 	private String passwordString;
 
 	private Updater updater;
+	private static final String UPDATE_SITE = "http://db.tt/YVOxcyvL";
 
 	/**
 	 * Called when the activity is first created.
@@ -60,16 +59,14 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 		@SuppressWarnings("unused")
 		ReportSender sender = new ReportSender(this);
 		// MySoup.setSite("http://192.168.1.147:8080/");
-		// MySoup.setSite("http://67.183.192.159/");
-		MySoup.setSite("http://what.cd/");
+		MySoup.setSite("http://67.183.192.159/");
+		// MySoup.setSite("http://what.cd/");
 
 		// initialize the settings writer, should only be done once
 		Settings.init(this);
 
-		/*
-		 * try { updater = new Updater(); checkForMessage(); setVersionName(); checkForUpdate(); } catch
-		 * (CouldNotLoadException e1) { // TODO Auto-generated catch block e1.printStackTrace(); }
-		 */
+		/* try { updater = new Updater(UPDATE_SITE); checkForMessage(); setVersionName(); checkForUpdate(); } catch
+		 * (CouldNotLoadException e1) { // TODO Auto-generated catch block e1.printStackTrace(); } */
 
 		// Set UI component references
 		username = (TextView) this.findViewById(R.id.username);
@@ -128,7 +125,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 			dlgAlert.setCancelable(true);
 			dlgAlert.create().show();
 		}
-
 	}
 
 	/**
@@ -266,9 +262,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 					} else if (msg.what == 2) {
 						dialog.dismiss();
 						WhatAndroidActivity.this.unlockScreenRotation();
-						Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
-						// Intent intent = new Intent(WhatAndroidActivity.this,
-						// what.torrents.artist.ArtistTabActivity.class);
+						// Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
+						Intent intent = new Intent(WhatAndroidActivity.this, what.torrents.artist.ArtistTabActivity.class);
 						startActivity(intent);
 					} else if (msg.what == 3) {
 						dialog.dismiss();
@@ -314,14 +309,10 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				MySoup.setSessionId(Settings.getSessionId());
 				// MySoup.setAuthKey(Settings.getAuthKey());
 				if (MySoup.isLoggedIn()) {
-					/*
-					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
-					 */
-					/*
-					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
-					 */
+					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
+					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
 					// Start the next activity
 					loginHandler.sendEmptyMessage(2);
 				} else {

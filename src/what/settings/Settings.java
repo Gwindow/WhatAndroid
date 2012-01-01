@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 public class Settings {
 	private static SharedPreferences settings;
 	private static SharedPreferences.Editor settingsEditor;
-	private static int counter;
-	private static int listOfFeedsLength;
 
 	/**
 	 * Initialize the settings reader and writer, should only be done once
