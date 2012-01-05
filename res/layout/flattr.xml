@@ -11,14 +11,14 @@
 		android:layout_marginLeft="10dip" android:layout_marginRight="10dip"
 		android:layout_marginTop="10dip" android:layout_marginBottom="10dip" />
 	<TextView
-		android:text="The developers of this app love cookies and other tasty whatnots, but if you can't bake and still want to express your love how about a donation? We use flattr, the same donation service as What.CD."
+		android:text="If you feel like show us some love in a monetary fashion we accept donations using flattr. This "
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:id="@+id/textView1" android:layout_margin="10dip"
-		android:background="@color/transparentBlack"
-		android:layout_gravity="center_horizontal"></TextView>
+		android:background="@color/transparentBlack" android:layout_gravity="center_horizontal"></TextView>
 	<com.flattr4android.sdk.FlattrButton
 		flattr_sdk:token="" flattr_sdk:token_secret="" flattr_sdk:thing_id=""
-		android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="25dip" android:layout_gravity="center_horizontal"></com.flattr4android.sdk.FlattrButton>
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:layout_margin="25dip" android:layout_gravity="center_horizontal"></com.flattr4android.sdk.FlattrButton>
 </LinearLayout>
     
