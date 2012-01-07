@@ -1,13 +1,12 @@
 package what.requests;
 
-import java.net.URL;
 import java.text.DecimalFormat;
 
+import what.gui.ImageLoader;
 import what.gui.MyActivity;
 import what.gui.R;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -39,8 +38,7 @@ public class RequestActivity extends MyActivity {
 	}
 
 	private void populateLayout() {
-		requestTitle.setText(request.getResponse().getCategoryName() + " - " + request.getResponse().getTitle() + " ["
-				+ request.getResponse().getYear().intValue() + "]");
+		requestTitle.setText(request.getResponse().getCategoryName() + " - " + request.getResponse().getTitle());
 
 		bounty.setText("Bounty: " + toGBString(request.getResponse().getTotalBounty().doubleValue()) + " GB");
 		bitrate.setText("Bitrate: " + request.getResponse().getBitrateList());
@@ -77,12 +75,10 @@ public class RequestActivity extends MyActivity {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			URL url;
 			String s = request.getResponse().getImage();
 			if (s.length() > 0) {
 				try {
-					url = new URL(s);
-					bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+					bmp = ImageLoader.loadBitmap(s);
 					return true;
 				} catch (Exception e) {
 					return false;

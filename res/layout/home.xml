@@ -70,6 +70,7 @@
 		android:id="@+id/searchBar">
 	</EditText>
 	<TextView android:layout_height="wrap_content" android:text="Subscriptions"
+		android:clickable="true" android:onClick="refresh"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:id="@+id/subscriptionsTitle" android:padding="5dip"
 		android:layout_alignParentBottom="true"

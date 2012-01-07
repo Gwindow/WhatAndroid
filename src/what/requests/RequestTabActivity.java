@@ -43,11 +43,11 @@ public class RequestTabActivity extends MyTabActivity {
 						.setContent(intent);
 		tabHost.addTab(spec);
 
-		/*
-		 * // Do the same for the other tabs intent = new Intent().setClass(RequestTabActivity.this,
-		 * RequestDetailsActivity.class); spec = tabHost.newTabSpec("details").setIndicator("Details",
-		 * res.getDrawable(R.drawable.details_icon_dark)) .setContent(intent); tabHost.addTab(spec);
-		 */
+		intent = new Intent().setClass(RequestTabActivity.this, RequestDetailsActivity.class);
+		spec =
+				tabHost.newTabSpec("details").setIndicator("Details", res.getDrawable(R.drawable.details_icon_dark))
+						.setContent(intent);
+		tabHost.addTab(spec);
 
 		tabHost.setCurrentTab(0);
 
@@ -58,8 +58,6 @@ public class RequestTabActivity extends MyTabActivity {
 		try {
 			Bundle b = this.getIntent().getExtras();
 			requestId = b.getInt("requestId");
-			// TODO remove
-			// requestId = 1;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -101,8 +101,28 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	}
 
 	public void openTopTen(View v) {
-		intent = new Intent(HomeActivity.this, what.top.TopTorrentsActivity.class);
+		// TODO remove
+		intent = new Intent(HomeActivity.this, what.gui.MainMenu.class);
 		startActivityForResult(intent, 0);
+	}
+
+	public void refresh(View v) {
+		scrollLayout.removeAllViews();
+		threadList.clear();
+		new LoadSubscriptions() {
+			@Override
+			protected void onPostExecute(Boolean status) {
+				if (status == true) {
+					populateLayout();
+					Toast.makeText(HomeActivity.this, "Subscriptions Refreshed", Toast.LENGTH_SHORT).show();
+				}
+				dialog.dismiss();
+				if (status == false) {
+					Toast.makeText(HomeActivity.this, "Could not load subscriptions", Toast.LENGTH_LONG).show();
+				}
+				unlockScreenRotation();
+			}
+		}.execute();
 	}
 
 	private void openThread(int i) {

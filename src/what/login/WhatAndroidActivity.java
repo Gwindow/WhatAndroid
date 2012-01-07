@@ -107,6 +107,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 			}
 		}
 
+		username.setText("gazelle");
+		password.setText("123456");
+
 		/* if (settings.getString("sessionId", null) != null) { // Resume the session // TODO fix // resume(); } */
 	}
 
@@ -262,8 +265,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 					} else if (msg.what == 2) {
 						dialog.dismiss();
 						WhatAndroidActivity.this.unlockScreenRotation();
-						// Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
-						Intent intent = new Intent(WhatAndroidActivity.this, what.torrents.artist.ArtistTabActivity.class);
+						Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
 						startActivity(intent);
 					} else if (msg.what == 3) {
 						dialog.dismiss();
