@@ -122,7 +122,6 @@ public final class R {
         public static final int forumButton=0x7f0b002c;
         public static final int forumItem=0x7f0b008b;
         public static final int groups=0x7f0b000b;
-        public static final int home_root=0x7f0b0023;
         public static final int image=0x7f0b001d;
         public static final int imageView1=0x7f0b0039;
         public static final int inboxButton=0x7f0b002d;
@@ -170,6 +169,7 @@ public final class R {
         public static final int requestSearchItem=0x7f0b0093;
         public static final int requestTitle=0x7f0b0057;
         public static final int requestsbutton=0x7f0b0066;
+        public static final int root=0x7f0b0023;
         public static final int rssButton=0x7f0b006a;
         public static final int scanbutton=0x7f0b0062;
         public static final int scrollLayout=0x7f0b0003;

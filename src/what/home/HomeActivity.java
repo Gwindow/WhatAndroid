@@ -7,7 +7,6 @@ import java.util.List;
 import what.gui.MyActivity;
 import what.gui.R;
 import what.settings.Settings;
-import what.settings.SettingsActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -39,8 +38,8 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.home);
-		findViewById(R.id.home_root).setBackgroundResource(SettingsActivity.backgroundFromPreference(this));
+		super.setContentView(R.layout.home, true);
+		// findViewById(R.id.root).setBackgroundResource(SettingsActivity.backgroundFromPreference(this));
 		username = (TextView) this.findViewById(R.id.username);
 		uploadedValue = (TextView) this.findViewById(R.id.upvalue);
 		downloadedValue = (TextView) this.findViewById(R.id.downvalue);

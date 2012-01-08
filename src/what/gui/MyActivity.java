@@ -12,6 +12,7 @@ import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MyActivity extends Activity implements OnGestureListener {
 	private GestureDetector gestureDetector;
@@ -26,6 +27,19 @@ public class MyActivity extends Activity implements OnGestureListener {
 		ReportSender sender = new ReportSender(this);
 		gestureDetector = new GestureDetector(this);
 		setDisplayMetrics();
+	}
+
+	public void setContentView(int layoutResID, boolean enableBackground) {
+		super.setContentView(layoutResID);
+		if (enableBackground) {
+			try {
+				// this.findViewById(R.id.root).setBackgroundResource(R.drawable.chopin);
+				getWindow().getDecorView().findViewById(android.R.id.content).setBackgroundResource(R.drawable.chopin);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Toast.makeText(this, "could not set background", Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 
 	public void setButtonState(Button button, boolean b) {

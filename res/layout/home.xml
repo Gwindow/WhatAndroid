@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:background="@drawable/wood2"
-	android:id="@+id/home_root">
+	android:id="@+id/root">
 	<RelativeLayout android:layout_width="fill_parent"
 		android:id="@+id/userbar" android:layout_height="wrap_content"
 		android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
