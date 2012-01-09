@@ -1,5 +1,6 @@
 package what.gui;
 
+import what.settings.SettingsActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -11,8 +12,9 @@ import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class MyActivity extends Activity implements OnGestureListener {
 	private GestureDetector gestureDetector;
@@ -29,15 +31,23 @@ public class MyActivity extends Activity implements OnGestureListener {
 		setDisplayMetrics();
 	}
 
+	/**
+	 * Sets the content view with background
+	 * 
+	 * @param layoutResID
+	 *            the layout res id
+	 * @param enableBackground
+	 *            the enable background
+	 */
 	public void setContentView(int layoutResID, boolean enableBackground) {
 		super.setContentView(layoutResID);
 		if (enableBackground) {
 			try {
-				// this.findViewById(R.id.root).setBackgroundResource(R.drawable.chopin);
-				getWindow().getDecorView().findViewById(android.R.id.content).setBackgroundResource(R.drawable.chopin);
+				View v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+				v.setBackgroundResource(SettingsActivity.backgroundFromPreference(this));
+				// v.setBackgroundResource(R.drawable.background_cupcakes);
 			} catch (Exception e) {
 				e.printStackTrace();
-				Toast.makeText(this, "could not set background", Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

@@ -39,7 +39,6 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home, true);
-		// findViewById(R.id.root).setBackgroundResource(SettingsActivity.backgroundFromPreference(this));
 		username = (TextView) this.findViewById(R.id.username);
 		uploadedValue = (TextView) this.findViewById(R.id.upvalue);
 		downloadedValue = (TextView) this.findViewById(R.id.downvalue);
