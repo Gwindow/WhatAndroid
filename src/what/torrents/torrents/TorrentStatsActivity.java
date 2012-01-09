@@ -9,19 +9,41 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import api.torrents.torrents.TorrentGroup;
 
 public class TorrentStatsActivity extends MyActivity implements OnCheckedChangeListener {
 	private CheckBox bookmark;
 	private TorrentGroup torrentGroup;
+	private ImageButton spotifyImage, lastfmImage;
+	private TextView spotifyText, lastfmText;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.torrentstats);
 		bookmark = (CheckBox) this.findViewById(R.id.bookmark);
-		// TODO see why bookmarks arent working
+
+		spotifyImage = (ImageButton) this.findViewById(R.id.spotify);
+		lastfmImage = (ImageButton) this.findViewById(R.id.lastfm);
+		spotifyText = (TextView) this.findViewById(R.id.spotifyText);
+		lastfmText = (TextView) this.findViewById(R.id.lastfmText);
+
+		this.initSharedPreferences();
+
+		if (this.getSharedPreferences().getBoolean("spotifyButton_preference", true) == false) {
+			spotifyImage.setVisibility(View.GONE);
+			spotifyText.setVisibility(View.GONE);
+		}
+
+		if (this.getSharedPreferences().getBoolean("lastfmButton_preference", true) == false) {
+			lastfmImage.setVisibility(View.GONE);
+			lastfmText.setVisibility(View.GONE);
+		}
+
+		// TODO see why bookmarks arent working?
 		bookmark.setVisibility(CheckBox.GONE);
 		bookmark.setOnCheckedChangeListener(this);
 		populateLayout();

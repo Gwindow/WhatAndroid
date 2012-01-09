@@ -1,12 +1,13 @@
 package what.gui;
 
-import what.settings.SettingsActivity;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -20,7 +21,7 @@ public class MyActivity extends Activity implements OnGestureListener {
 	private GestureDetector gestureDetector;
 	private int height, width;
 	private DisplayMetrics displaymetrics = null;
-	private Intent intent;
+	private SharedPreferences sharedPreferences;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,8 @@ public class MyActivity extends Activity implements OnGestureListener {
 		if (enableBackground) {
 			try {
 				View v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
-				v.setBackgroundResource(SettingsActivity.backgroundFromPreference(this));
-				// v.setBackgroundResource(R.drawable.background_cupcakes);
+				// v.setBackgroundResource(SettingsActivity.backgroundFromPreference(this));
+				v.setBackgroundResource(R.drawable.background_flowers);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -74,6 +75,19 @@ public class MyActivity extends Activity implements OnGestureListener {
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+
+	public void initSharedPreferences() {
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+	}
+
+	public SharedPreferences getSharedPreferences() {
+		try {
+			return sharedPreferences;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private void setDisplayMetrics() {

@@ -16,6 +16,7 @@ public class Settings {
 	public static void init(Context c) {
 		settings = c.getSharedPreferences("settings", Context.MODE_PRIVATE);
 		settingsEditor = settings.edit();
+
 	}
 
 	public static void saveQuickSearch(boolean b) {

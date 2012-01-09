@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.soup.MySoup;
@@ -21,6 +22,8 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 	private CheckBox notifications, bookmark;
 	private Artist artist;
 	private TextView numGroups, numTorrents, numSeeders, numLeechers, numSnatches;
+	private ImageButton spotifyImage, lastfmImage;
+	private TextView spotifyText, lastfmText;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,23 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 		numSeeders = (TextView) this.findViewById(R.id.seeders);
 		numLeechers = (TextView) this.findViewById(R.id.leechers);
 		numSnatches = (TextView) this.findViewById(R.id.snatches);
+
+		spotifyImage = (ImageButton) this.findViewById(R.id.spotify);
+		lastfmImage = (ImageButton) this.findViewById(R.id.lastfm);
+		spotifyText = (TextView) this.findViewById(R.id.spotifyText);
+		lastfmText = (TextView) this.findViewById(R.id.lastfmText);
+
+		this.initSharedPreferences();
+
+		if (this.getSharedPreferences().getBoolean("spotifyButton_preference", true) == false) {
+			spotifyImage.setVisibility(View.GONE);
+			spotifyText.setVisibility(View.GONE);
+		}
+
+		if (this.getSharedPreferences().getBoolean("lastfmButton_preference", true) == false) {
+			lastfmImage.setVisibility(View.GONE);
+			lastfmText.setVisibility(View.GONE);
+		}
 
 		populateLayout();
 	}

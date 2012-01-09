@@ -6,7 +6,6 @@ import java.util.List;
 
 import what.gui.MyActivity;
 import what.gui.R;
-import what.settings.Settings;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -39,6 +38,8 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home, true);
+		initSharedPreferences();
+
 		username = (TextView) this.findViewById(R.id.username);
 		uploadedValue = (TextView) this.findViewById(R.id.upvalue);
 		downloadedValue = (TextView) this.findViewById(R.id.downvalue);
@@ -48,8 +49,8 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
 		// hide searchbar if if its disabled in settings
-		if (!Settings.getQuickSearch()) {
-			searchBar.setVisibility(EditText.INVISIBLE);
+		if (getSharedPreferences().getBoolean("quickSearch_preference", true) == false) {
+			searchBar.setVisibility(EditText.GONE);
 		}
 
 		username.setText(MySoup.getUsername());
@@ -58,6 +59,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 				+ "GB");
 		ratioValue.setText("R: " + MySoup.getIndex().getResponse().getUserstats().getRatio());
 		bufferValue.setText("B: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getBuffer().toString()) + "GB");
+
 		new LoadSubscriptions().execute();
 
 		// inboxService = new Intent(this, InboxService.class);
