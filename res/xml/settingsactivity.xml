@@ -30,7 +30,7 @@
 		<EditTextPreference android:key="announcementsService_interval"
 			android:title="Refresh Interval"
 			android:dialogMessage="Set the refresh rate in minutes, minimum is 30, default is 180."
-			android:dialogTitle="Announcements Refresh Interval" />
+			android:dialogTitle="Announcements Refresh Interval" android:defaultValue="180"/>
 		<CheckBoxPreference android:key="inboxService_preference"
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Inbox Service"
@@ -39,7 +39,7 @@
 		<EditTextPreference android:key="inboxService_interval"
 			android:title="Refresh Interval"
 			android:dialogMessage="Set the refresh rate in minutes, minimum is 30, default is 60."
-			android:dialogTitle="Inbox Refresh Interval" />
+			android:dialogTitle="Inbox Refresh Interval" android:defaultValue="60"/>
 		<CheckBoxPreference android:key="notificationsService_preference"
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Notifications Service"
@@ -47,7 +47,7 @@
 			android:defaultValue="false" />
 		<EditTextPreference android:key="notificationsService_interval"
 			android:title="Refresh Interval" android:dialogTitle="Notifications Refresh Interval"
-			android:dialogMessage="Set the refresh rate in minutes, minimum is 30, default is 180." />
+			android:dialogMessage="Set the refresh rate in minutes, minimum is 30, default is 180." android:defaultValue="180"/>
 
 	</PreferenceCategory>
 </PreferenceScreen>

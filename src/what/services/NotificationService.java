@@ -1,16 +1,17 @@
 package what.services;
 
 import what.notifications.NotificationsActivity;
-import what.settings.Settings;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import api.notifications.Notifications;
 
 public class NotificationService extends Service {
@@ -18,6 +19,7 @@ public class NotificationService extends Service {
 	private final Handler handler = new Handler();
 	private Intent intent;
 	private NotificationManager myNotificationManager;
+	private SharedPreferences sharedPreferences;
 	public static Notifications notifications;
 	public static int ID = 4;
 	private static boolean isRunning = false;
@@ -25,6 +27,8 @@ public class NotificationService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
 		setRunning(true);
 		intent = new Intent();
 	}
@@ -44,7 +48,7 @@ public class NotificationService extends Service {
 				e.printStackTrace();
 			}
 			sendBroadcast(intent);
-			handler.postDelayed(this, Settings.getNotificationRefreshRate()); // delay
+			handler.postDelayed(this, loadRefreshRate()); // delay
 		}
 	};
 
@@ -84,6 +88,16 @@ public class NotificationService extends Service {
 
 	public static void setRunning(boolean isRunning) {
 		NotificationService.isRunning = isRunning;
+	}
+
+	private int loadRefreshRate() {
+		try {
+			return Integer.parseInt(sharedPreferences.getString("notificationsService_interval", "180")) * 60000;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 10800000;
+		}
 	}
 
 	private class LoadNotifications extends AsyncTask<Void, Void, Boolean> {

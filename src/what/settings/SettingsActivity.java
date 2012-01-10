@@ -88,10 +88,12 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 			if (sharedPreferences.getBoolean("inboxService_preference", true) == true && !InboxService.isRunning()) {
 				try {
 					startService(inboxService);
+					Toast.makeText(this, sharedPreferences.getString("inboxService_interval", "-1"), Toast.LENGTH_SHORT).show();
 				} catch (Exception e) {
 					Toast.makeText(this, "Could not start service", Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
 				}
+
 			} else {
 				try {
 					stopService(inboxService);
