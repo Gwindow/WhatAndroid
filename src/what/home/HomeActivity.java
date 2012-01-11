@@ -6,6 +6,10 @@ import java.util.List;
 
 import what.gui.MyActivity;
 import what.gui.R;
+import what.services.AnnouncementService;
+import what.services.InboxService;
+import what.services.NotificationService;
+import what.settings.Settings;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -38,7 +42,25 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home, true);
-		initSharedPreferences();
+		// super.initSharedPreferences();
+		// startServices();
+
+		/*
+		 * Toast.makeText(this, String.valueOf((getSharedPreferences().getBoolean("quickSearch_preference", true))),
+		 * Toast.LENGTH_LONG).show();
+		 * 
+		 * Toast.makeText(this, String.valueOf((getSharedPreferences().getBoolean("quickSearch_preference", false))),
+		 * Toast.LENGTH_LONG).show();
+		 */
+
+		// Toast.makeText(this, String.valueOf(getSharedPreferences().getBoolean("quickSearch_preference", true)),
+		// Toast.LENGTH_LONG)
+		// .show();
+
+		// Toast.makeText(this, String.valueOf(getSharedPreferences().getBoolean("quickSearch_preference", false)),
+		// Toast.LENGTH_LONG).show();
+
+		Toast.makeText(this, String.valueOf(Settings.getQuickSearch()), Toast.LENGTH_LONG).show();
 
 		username = (TextView) this.findViewById(R.id.username);
 		uploadedValue = (TextView) this.findViewById(R.id.upvalue);
@@ -46,11 +68,11 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		ratioValue = (TextView) this.findViewById(R.id.ratiovalue);
 		bufferValue = (TextView) this.findViewById(R.id.buffervalue);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
-
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
 		// hide searchbar if if its disabled in settings
-		if (getSharedPreferences().getBoolean("quickSearch_preference", true) == false) {
+		if (Settings.getQuickSearch() == false) {
 			searchBar.setVisibility(EditText.GONE);
+
 		}
 
 		username.setText(MySoup.getUsername());
@@ -70,6 +92,40 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 
 		// annoucementService = new Intent(this, AnnouncementService.class);
 		// startService(annoucementService);
+	}
+
+	private void startServices() {
+		annoucementService = new Intent(this, AnnouncementService.class);
+		inboxService = new Intent(this, InboxService.class);
+		notificationService = new Intent(this, NotificationService.class);
+
+		if (getSharedPreferences().getBoolean("announcementsService_preference", true) == true
+				&& !AnnouncementService.isRunning()) {
+			try {
+				startService(annoucementService);
+			} catch (Exception e) {
+				Toast.makeText(this, "Could not start announcements service", Toast.LENGTH_SHORT).show();
+				e.printStackTrace();
+			}
+		}
+		if (getSharedPreferences().getBoolean("inboxService_preference", true) == true && !InboxService.isRunning()) {
+			try {
+				startService(inboxService);
+			} catch (Exception e) {
+				Toast.makeText(this, "Could not start inbox service", Toast.LENGTH_SHORT).show();
+				e.printStackTrace();
+			}
+		}
+
+		if (getSharedPreferences().getBoolean("notificationsService_preference", true) == true
+				&& !NotificationService.isRunning()) {
+			try {
+				startService(notificationService);
+			} catch (Exception e) {
+				Toast.makeText(this, "Could not start notifications service", Toast.LENGTH_SHORT).show();
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private String toGBString(String s) {

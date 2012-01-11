@@ -103,6 +103,7 @@ public class ArtistActivity extends MyActivity {
 				String body = ArtistTabActivity.getArtist().getResponse().getBody();
 				if (body.length() > 0) {
 					artistInfo.loadData(body, "text/html", "utf-8");
+					artistInfo.setBackgroundResource(R.drawable.color_transparent_white);
 					artistInfo.setVisibility(WebView.VISIBLE);
 				}
 				if (status == true) {

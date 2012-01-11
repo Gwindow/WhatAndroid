@@ -2,6 +2,7 @@ package what.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public class Settings {
 	private static SharedPreferences settings;
@@ -14,7 +15,7 @@ public class Settings {
 	 *            Context
 	 */
 	public static void init(Context c) {
-		settings = c.getSharedPreferences("settings", Context.MODE_PRIVATE);
+		settings = PreferenceManager.getDefaultSharedPreferences(c);
 		settingsEditor = settings.edit();
 
 	}
@@ -24,12 +25,7 @@ public class Settings {
 	}
 
 	public static boolean getQuickSearch() {
-		try {
-			return settings.getBoolean("quickSearch", true);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return true;
-		}
+		return settings.getBoolean("quickSearch_preference", false);
 	}
 
 	public static void saveNotificationRate(long rate) {

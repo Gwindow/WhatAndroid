@@ -8,7 +8,7 @@
 		<CheckBoxPreference android:key="quickSearch_preference"
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Quick Search" android:summary="Enable/Disable Quick Search"
-			android:defaultValue="true" />
+			android:defaultValue="true"/>
 		<CheckBoxPreference android:key="spotifyButton_preference"
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Spotify Button" android:summary="Enable/Disable Spotify Button"

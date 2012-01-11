@@ -12,7 +12,9 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 import api.notifications.Notifications;
+import api.soup.MySoup;
 
 public class NotificationService extends Service {
 	public static final String BROADCAST_ACTION = "";
@@ -35,8 +37,13 @@ public class NotificationService extends Service {
 
 	@Override
 	public void onStart(Intent intent, int startId) {
-		handler.removeCallbacks(sendUpdatesToUI);
-		handler.postDelayed(sendUpdatesToUI, 0); // initial delay
+		if (MySoup.canNotifications()) {
+			handler.removeCallbacks(sendUpdatesToUI);
+			handler.postDelayed(sendUpdatesToUI, 0); // initial delay
+		} else {
+			Toast.makeText(this, "Need to be a Power User or higher to enable torrent notifications", Toast.LENGTH_LONG).show();
+			onDestroy();
+		}
 	}
 
 	private Runnable sendUpdatesToUI = new Runnable() {

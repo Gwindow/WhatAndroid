@@ -65,8 +65,10 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 		// initialize the settings writer, should only be done once
 		Settings.init(this);
 
-		/* try { updater = new Updater(UPDATE_SITE); checkForMessage(); setVersionName(); checkForUpdate(); } catch
-		 * (CouldNotLoadException e1) { // TODO Auto-generated catch block e1.printStackTrace(); } */
+		/*
+		 * try { updater = new Updater(UPDATE_SITE); checkForMessage(); setVersionName(); checkForUpdate(); } catch
+		 * (CouldNotLoadException e1) { // TODO Auto-generated catch block e1.printStackTrace(); }
+		 */
 
 		// Set UI component references
 		username = (TextView) this.findViewById(R.id.username);
@@ -311,10 +313,14 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener, 
 				MySoup.setSessionId(Settings.getSessionId());
 				// MySoup.setAuthKey(Settings.getAuthKey());
 				if (MySoup.isLoggedIn()) {
-					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
-					/* try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); } */
+					/*
+					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
+					 */
+					/*
+					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
+					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
+					 */
 					// Start the next activity
 					loginHandler.sendEmptyMessage(2);
 				} else {
