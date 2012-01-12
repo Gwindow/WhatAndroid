@@ -20,54 +20,8 @@ public class Settings {
 
 	}
 
-	public static void saveQuickSearch(boolean b) {
-		settingsEditor.putBoolean("quickSearch", b);
-	}
-
 	public static boolean getQuickSearch() {
-		return settings.getBoolean("quickSearch_preference", false);
-	}
-
-	public static void saveNotificationRate(long rate) {
-		settingsEditor.putLong("notificationRefreshRate", rate);
-	}
-
-	public static long getNotificationRefreshRate() {
-		// default is 1 hour
-		try {
-			return settings.getLong("notificationRefreshRate", 3600000);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 3600000;
-		}
-	}
-
-	public static void saveAnnoucnementRefreshRate(long rate) {
-		settingsEditor.putLong("anouncementRefreshRate", rate);
-	}
-
-	public static long getAnouncementRefreshRate() {
-		// default is 1 hour
-		try {
-			return settings.getLong("anouncementRefreshRate", 3600000);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 3600000;
-		}
-	}
-
-	public static void saveInboxRefreshRate(long rate) {
-		settingsEditor.putLong("inboxRefreshRate", rate);
-	}
-
-	public static long getInboxRefreshRate() {
-		// default is 1 hour
-		try {
-			return settings.getLong("inboxRefreshRate", 3600000);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 3600000;
-		}
+		return settings.getBoolean("quickSearch_preference", true);
 	}
 
 	public static void saveNumberOfAnnouncements(int i) {
@@ -114,12 +68,7 @@ public class Settings {
 	}
 
 	public static String getUsername() {
-		try {
-			return settings.getString("username", "");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
+		return settings.getString("username", "");
 	}
 
 	public static void savePassword(String password) {
@@ -127,12 +76,7 @@ public class Settings {
 	}
 
 	public static String getPassword() {
-		try {
-			return settings.getString("password", "");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
+		return settings.getString("password", "");
 
 	}
 
@@ -141,12 +85,7 @@ public class Settings {
 	}
 
 	public static boolean getRememberMe() {
-		try {
-			return settings.getBoolean("rememberMe", false);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+		return settings.getBoolean("rememberMe", false);
 	}
 
 	public static void saveSSL(boolean b) {
@@ -154,12 +93,7 @@ public class Settings {
 	}
 
 	public static Boolean getSSL() {
-		try {
-			return settings.getBoolean("useSSL", false);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+		return settings.getBoolean("useSSL", false);
 	}
 
 	public static void saveSessionId(String id) {
@@ -167,12 +101,7 @@ public class Settings {
 	}
 
 	public static String getSessionId() {
-		try {
-			return settings.getString("sessionId", "");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
+		return settings.getString("sessionId", "");
 	}
 
 	public static void saveAuthKey(String key) {
@@ -180,12 +109,7 @@ public class Settings {
 	}
 
 	public static String getAuthKey() {
-		try {
-			return settings.getString("authKey", "");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
+		return settings.getString("authKey", "");
 	}
 
 	public static void commit() {
