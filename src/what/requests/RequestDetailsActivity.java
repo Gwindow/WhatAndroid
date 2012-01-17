@@ -1,6 +1,5 @@
 package what.requests;
 
-import java.text.DecimalFormat;
 import java.util.LinkedList;
 
 import what.gui.MyActivity;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 public class RequestDetailsActivity extends MyActivity {
 	private TextView requestTitle;
 	private api.requests.Request request = RequestTabActivity.getRequest();
-	private DecimalFormat df = new DecimalFormat("#.00");
 	private LinkedList<TextView> detailList = new LinkedList<TextView>();
 	private LinearLayout scrollLayout;
 	private int counter;
@@ -58,10 +56,5 @@ public class RequestDetailsActivity extends MyActivity {
 		detailList.getLast().setText(s);
 		scrollLayout.addView(detailList.getLast());
 		counter++;
-	}
-
-	private String toGBString(Double s) {
-		double d = s / Math.pow(1024, 3);
-		return df.format(d);
 	}
 }

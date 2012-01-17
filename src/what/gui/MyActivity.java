@@ -166,4 +166,13 @@ public class MyActivity extends Activity implements OnGestureListener {
 		return df.format(d);
 	}
 
+	public String toGBString(Double s) {
+		double d = s / Math.pow(1024, 3);
+		return df.format(d);
+	}
+
+	public String toGBString(int s) {
+		double d = s / Math.pow(1024, 3);
+		return df.format(d);
+	}
 }
