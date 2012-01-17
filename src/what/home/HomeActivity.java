@@ -1,6 +1,5 @@
 package what.home;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,6 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
 	private Intent intent;
-	private DecimalFormat df = new DecimalFormat("#.00");
 	private Intent inboxService;
 	private Intent notificationService;
 	private Intent annoucementService;
@@ -42,25 +40,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home, true);
-		// super.initSharedPreferences();
-		// startServices();
-
-		/*
-		 * Toast.makeText(this, String.valueOf((getSharedPreferences().getBoolean("quickSearch_preference", true))),
-		 * Toast.LENGTH_LONG).show();
-		 * 
-		 * Toast.makeText(this, String.valueOf((getSharedPreferences().getBoolean("quickSearch_preference", false))),
-		 * Toast.LENGTH_LONG).show();
-		 */
-
-		// Toast.makeText(this, String.valueOf(getSharedPreferences().getBoolean("quickSearch_preference", true)),
-		// Toast.LENGTH_LONG)
-		// .show();
-
-		// Toast.makeText(this, String.valueOf(getSharedPreferences().getBoolean("quickSearch_preference", false)),
-		// Toast.LENGTH_LONG).show();
-
-		Toast.makeText(this, String.valueOf(Settings.getQuickSearch()), Toast.LENGTH_LONG).show();
+		startServices();
 
 		username = (TextView) this.findViewById(R.id.username);
 		uploadedValue = (TextView) this.findViewById(R.id.upvalue);
@@ -69,29 +49,11 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		bufferValue = (TextView) this.findViewById(R.id.buffervalue);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
-		// hide searchbar if if its disabled in settings
-		if (Settings.getQuickSearch() == false) {
-			searchBar.setVisibility(EditText.GONE);
 
-		}
-
-		username.setText(MySoup.getUsername());
-		uploadedValue.setText("U: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getUploaded().toString()) + "GB");
-		downloadedValue.setText("D: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getDownloaded().toString())
-				+ "GB");
-		ratioValue.setText("R: " + MySoup.getIndex().getResponse().getUserstats().getRatio());
-		bufferValue.setText("B: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getBuffer().toString()) + "GB");
+		loadSearchBar();
+		loadStats();
 
 		new LoadSubscriptions().execute();
-
-		// inboxService = new Intent(this, InboxService.class);
-		// startService(inboxService);
-
-		// notificationService = new Intent(this, NotificationService.class);
-		// startService(notificationService);
-
-		// annoucementService = new Intent(this, AnnouncementService.class);
-		// startService(annoucementService);
 	}
 
 	private void startServices() {
@@ -99,8 +61,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		inboxService = new Intent(this, InboxService.class);
 		notificationService = new Intent(this, NotificationService.class);
 
-		if (getSharedPreferences().getBoolean("announcementsService_preference", true) == true
-				&& !AnnouncementService.isRunning()) {
+		if (Settings.getAnnouncementsService() == true && !AnnouncementService.isRunning()) {
 			try {
 				startService(annoucementService);
 			} catch (Exception e) {
@@ -108,7 +69,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 				e.printStackTrace();
 			}
 		}
-		if (getSharedPreferences().getBoolean("inboxService_preference", true) == true && !InboxService.isRunning()) {
+		if (Settings.getInboxService() == true && !InboxService.isRunning()) {
 			try {
 				startService(inboxService);
 			} catch (Exception e) {
@@ -117,8 +78,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 			}
 		}
 
-		if (getSharedPreferences().getBoolean("notificationsService_preference", true) == true
-				&& !NotificationService.isRunning()) {
+		if (Settings.getNotificationsService() == true && !NotificationService.isRunning() && MySoup.canNotifications()) {
 			try {
 				startService(notificationService);
 			} catch (Exception e) {
@@ -128,9 +88,21 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		}
 	}
 
-	private String toGBString(String s) {
-		double d = Double.parseDouble(s) / Math.pow(1024, 3);
-		return df.format(d);
+	private void loadStats() {
+		username.setText(MySoup.getUsername());
+		uploadedValue.setText("U: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getUploaded().toString()) + "GB");
+		downloadedValue.setText("D: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getDownloaded().toString())
+				+ "GB");
+		ratioValue.setText("R: " + MySoup.getIndex().getResponse().getUserstats().getRatio());
+		bufferValue.setText("B: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getBuffer().toString()) + "GB");
+	}
+
+	private void loadSearchBar() {
+		// hide searchbar if if its disabled in settings
+		if (Settings.getQuickSearch() == false) {
+			searchBar.setVisibility(EditText.GONE);
+
+		}
 	}
 
 	public void openProfile(View v) {
@@ -231,7 +203,6 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// TODO why was there a try catch statement here before?
 			subscriptions = Subscriptions.init();
 			return subscriptions.getStatus();
 		}

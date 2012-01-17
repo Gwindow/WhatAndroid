@@ -24,6 +24,38 @@ public class Settings {
 		return settings.getBoolean("quickSearch_preference", true);
 	}
 
+	public static boolean getSpotifyButton() {
+		return settings.getBoolean("spotifyButton_preference", true);
+	}
+
+	public static boolean getLastfmButton() {
+		return settings.getBoolean("lastfmButton_preference", true);
+	}
+
+	public static boolean getAnnouncementsService() {
+		return settings.getBoolean("announcementsService_preference", true);
+	}
+
+	public static String getAnnouncementsServiceInterval() {
+		return settings.getString("announcementsService_interval", "180");
+	}
+
+	public static boolean getInboxService() {
+		return settings.getBoolean("inboxService_preference", true);
+	}
+
+	public static String getInboxServiceInterval() {
+		return settings.getString("inboxService_interval", "60");
+	}
+
+	public static boolean getNotificationsService() {
+		return settings.getBoolean("notificationsService_preference", false);
+	}
+
+	public static String getNotificationsServiceInterval() {
+		return settings.getString("notificationsService_interval", "180");
+	}
+
 	public static void saveNumberOfAnnouncements(int i) {
 		settingsEditor.putInt("numberOfA", i);
 	}

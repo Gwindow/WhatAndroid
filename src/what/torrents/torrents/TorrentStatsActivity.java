@@ -2,6 +2,7 @@ package what.torrents.torrents;
 
 import what.gui.MyActivity;
 import what.gui.R;
+import what.settings.Settings;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,14 +32,12 @@ public class TorrentStatsActivity extends MyActivity implements OnCheckedChangeL
 		spotifyText = (TextView) this.findViewById(R.id.spotifyText);
 		lastfmText = (TextView) this.findViewById(R.id.lastfmText);
 
-		this.initSharedPreferences();
-
-		if (this.getSharedPreferences().getBoolean("spotifyButton_preference", true) == false) {
+		if (Settings.getSpotifyButton() == false) {
 			spotifyImage.setVisibility(View.GONE);
 			spotifyText.setVisibility(View.GONE);
 		}
 
-		if (this.getSharedPreferences().getBoolean("lastfmButton_preference", true) == false) {
+		if (Settings.getLastfmButton() == false) {
 			lastfmImage.setVisibility(View.GONE);
 			lastfmText.setVisibility(View.GONE);
 		}

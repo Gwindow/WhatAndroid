@@ -9,11 +9,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import api.announcements.Announcements;
 
 public class AnnouncementService extends Service {
@@ -27,13 +25,11 @@ public class AnnouncementService extends Service {
 	private int numberOfB;
 	public static int IDA = 2;
 	public static int IDB = 3;
-	private SharedPreferences sharedPreferences;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
-		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		intent = new Intent();
 		setRunning(true);
 	}
@@ -111,7 +107,7 @@ public class AnnouncementService extends Service {
 
 	private long loadRefreshRate() {
 		try {
-			return Long.parseLong(sharedPreferences.getString("announcementsService_interval", "180")) * 60000;
+			return Long.parseLong(Settings.getAnnouncementsServiceInterval()) * 60000;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

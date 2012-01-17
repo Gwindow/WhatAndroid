@@ -1,17 +1,16 @@
 package what.services;
 
 import what.inbox.InboxActivity;
+import what.settings.Settings;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import api.inbox.inbox.Inbox;
 
 public class InboxService extends Service {
@@ -19,7 +18,6 @@ public class InboxService extends Service {
 	private final Handler handler = new Handler();
 	private Intent intent;
 	private NotificationManager myNotificationManager;
-	private SharedPreferences sharedPreferences;
 	public static Inbox inbox;
 	public static int ID = 0;
 	private static boolean isRunning = false;
@@ -27,7 +25,6 @@ public class InboxService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		intent = new Intent();
 		setRunning(true);
 	}
@@ -91,7 +88,7 @@ public class InboxService extends Service {
 
 	private long loadRefreshRate() {
 		try {
-			return Long.parseLong(sharedPreferences.getString("inboxService_interval", "180")) * 60000;
+			return Long.parseLong(Settings.getInboxServiceInterval()) * 60000;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

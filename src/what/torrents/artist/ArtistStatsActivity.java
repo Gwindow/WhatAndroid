@@ -2,6 +2,7 @@ package what.torrents.artist;
 
 import what.gui.MyActivity;
 import what.gui.R;
+import what.settings.Settings;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -48,14 +49,12 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 		spotifyText = (TextView) this.findViewById(R.id.spotifyText);
 		lastfmText = (TextView) this.findViewById(R.id.lastfmText);
 
-		this.initSharedPreferences();
-
-		if (this.getSharedPreferences().getBoolean("spotifyButton_preference", true) == false) {
+		if (Settings.getSpotifyButton() == false) {
 			spotifyImage.setVisibility(View.GONE);
 			spotifyText.setVisibility(View.GONE);
 		}
 
-		if (this.getSharedPreferences().getBoolean("lastfmButton_preference", true) == false) {
+		if (Settings.getLastfmButton() == false) {
 			lastfmImage.setVisibility(View.GONE);
 			lastfmText.setVisibility(View.GONE);
 		}

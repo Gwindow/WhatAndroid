@@ -53,8 +53,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
-		// id = b.getInt("id");
-		id = 7;
+		id = b.getInt("id");
 		try {
 			page = b.getInt("page");
 		} catch (Exception e) {

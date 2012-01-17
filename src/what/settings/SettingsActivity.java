@@ -14,6 +14,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+import api.soup.MySoup;
 
 public class SettingsActivity extends PreferenceActivity implements OnPreferenceClickListener {
 	// UI
@@ -104,7 +105,8 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 			}
 		}
 		if (pref == notificationsService_preference) {
-			if (sharedPreferences.getBoolean("notificationsService_preference", true) == true && !NotificationService.isRunning()) {
+			if (sharedPreferences.getBoolean("notificationsService_preference", true) == true && !NotificationService.isRunning()
+					&& MySoup.canNotifications()) {
 				try {
 					startService(notificationService);
 				} catch (Exception e) {
