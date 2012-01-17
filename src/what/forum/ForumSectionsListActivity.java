@@ -1,6 +1,5 @@
 package what.forum;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,15 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import api.forum.forumsections.Categories;
 import api.forum.forumsections.ForumSections;
-import api.forum.forumsections.Forums;
 import api.soup.MySoup;
 
 public class ForumSectionsListActivity extends MyActivity implements OnClickListener {
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
 	ForumSections forumSections;
-	private List<Forums> forumsList;
-	private ArrayList<TextView> categoryList = new ArrayList<TextView>();
 	private LinkedList<TextView> sectionList = new LinkedList<TextView>();
 	private HashMap<Integer, Integer> idMap = new HashMap<Integer, Integer>();
 	private Intent intent;

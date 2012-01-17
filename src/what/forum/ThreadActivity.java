@@ -1,6 +1,5 @@
 package what.forum;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -222,7 +221,6 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		@Override
 		protected Triple<Boolean, Integer, Bitmap> doInBackground(Tuple<Integer, String>... params) {
 			Bitmap b;
-			URL url;
 			String s = params[0].getB();
 			int pos = params[0].getA().intValue();
 			if (s.length() > 0) {
@@ -247,7 +245,6 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 				a.setImageResource(R.drawable.dne);
 			}
 		}
-
 	}
 
 	private class LoadThread extends AsyncTask<Void, Void, Boolean> {
