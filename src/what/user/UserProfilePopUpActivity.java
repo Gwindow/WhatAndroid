@@ -51,11 +51,6 @@ public class UserProfilePopUpActivity extends MyActivity {
 		new LoadUser().execute();
 	}
 
-	private String toGBString(Double input) {
-		double d = input / Math.pow(1024, 3);
-		return df.format(d);
-	}
-
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
 		try {

@@ -1,5 +1,7 @@
 package what.settings;
 
+import java.net.URISyntaxException;
+
 import what.gui.R;
 import what.services.AnnouncementService;
 import what.services.InboxService;
@@ -7,6 +9,8 @@ import what.services.NotificationService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -17,8 +21,10 @@ import android.widget.Toast;
 import api.soup.MySoup;
 
 public class SettingsActivity extends PreferenceActivity implements OnPreferenceClickListener {
+	private static final int FILE_SELECT_CODE = 0;
+
 	// UI
-	private Preference quickSearch_preference, spotifyButton_preference, lastfmButton_preference;
+	private Preference customBackground_preference, quickSearch_preference, spotifyButton_preference, lastfmButton_preference;
 	// Services
 	private Preference announcementsService_preference, inboxService_preference, notificationsService_preference;
 	// Refresh Intervals
@@ -35,6 +41,9 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.settingsactivity);
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+		customBackground_preference = findPreference("customBackground_preference");
+		customBackground_preference.setOnPreferenceClickListener(this);
 
 		quickSearch_preference = findPreference("quickSearch_preference");
 		quickSearch_preference.setOnPreferenceClickListener(this);
@@ -68,6 +77,11 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	 */
 	@Override
 	public boolean onPreferenceClick(Preference pref) {
+		if (pref == customBackground_preference) {
+			if (sharedPreferences.getBoolean("customBackground_preference", true)) {
+				showFileChooser();
+			}
+		}
 		if (pref == announcementsService_preference) {
 			if (sharedPreferences.getBoolean("announcementsService_preference", true) == true && !AnnouncementService.isRunning()) {
 				try {
@@ -131,7 +145,7 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 						"0"));
 		switch (resId) {
 		case 1:
-			return R.drawable.wood;
+			return R.drawable.background_blue_wood;
 		case 2:
 			// return some other background's resource ID.
 		case 3:
@@ -140,6 +154,67 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 		default:
 			return R.drawable.wood2;
 		}
+	}
+
+	private void showFileChooser() {
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+		intent.setType("*/*");
+		intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+		try {
+			startActivityForResult(Intent.createChooser(intent, "Select an image as a background"), FILE_SELECT_CODE);
+		} catch (android.content.ActivityNotFoundException ex) {
+			// Potentially direct the user to the Market with a Dialog
+			Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case FILE_SELECT_CODE:
+			if (resultCode == RESULT_OK) {
+				// Get the Uri of the selected file
+				Uri uri = data.getData();
+				Log.d("FILE CHOOSER", "File Uri: " + uri.toString());
+				// Get the path
+				try {
+					String path = getPath(this, uri);
+					Log.d("FILE CHOOSER", "File Path: " + path);
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+					Log.d("FILE CHOOSER", "URI SYNTAX EXCEPTION");
+				}
+				// Get the file instance
+				// File file = new File(path);
+				// Initiate the upload
+			}
+			break;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	public static String getPath(Context context, Uri uri) throws URISyntaxException {
+		if ("content".equalsIgnoreCase(uri.getScheme())) {
+			String[] projection = { "_data" };
+			Cursor cursor = null;
+
+			try {
+				cursor = context.getContentResolver().query(uri, projection, null, null, null);
+				int column_index = cursor.getColumnIndexOrThrow("_data");
+				if (cursor.moveToFirst()) {
+					return cursor.getString(column_index);
+				}
+			} catch (Exception e) {
+				// Eat it
+			}
+		}
+
+		else if ("file".equalsIgnoreCase(uri.getScheme())) {
+			return uri.getPath();
+		}
+
+		return null;
 	}
 
 }

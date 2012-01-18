@@ -22,7 +22,7 @@ import api.soup.MySoup;
 public class ForumSectionsListActivity extends MyActivity implements OnClickListener {
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
-	ForumSections forumSections;
+	private ForumSections forumSections;
 	private LinkedList<TextView> sectionList = new LinkedList<TextView>();
 	private HashMap<Integer, Integer> idMap = new HashMap<Integer, Integer>();
 	private Intent intent;
@@ -65,7 +65,6 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 	private void openSection(int id) {
 		Bundle b = new Bundle();
 		intent = new Intent(ForumSectionsListActivity.this, what.forum.SectionActivity.class);
-		Toast.makeText(this, String.valueOf(id), Toast.LENGTH_SHORT).show();
 		b.putInt("id", id);
 		b.putInt("page", 1);
 		intent.putExtras(b);

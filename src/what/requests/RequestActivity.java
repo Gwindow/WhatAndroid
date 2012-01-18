@@ -1,11 +1,8 @@
 package what.requests;
 
-import java.text.DecimalFormat;
-
 import what.gui.ImageLoader;
 import what.gui.MyActivity;
 import what.gui.R;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,9 +15,7 @@ public class RequestActivity extends MyActivity {
 	private ImageView requestImage;
 	private WebView requestInfo;
 	private Bitmap bmp;
-	private Intent intent;
 	private api.requests.Request request = RequestTabActivity.getRequest();
-	private DecimalFormat df = new DecimalFormat("#.00");
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,11 +45,6 @@ public class RequestActivity extends MyActivity {
 			requestInfo.loadData(body, "text/html", "utf-8");
 			requestInfo.setVisibility(WebView.VISIBLE);
 		}
-	}
-
-	private String toGBString(Double s) {
-		double d = s / Math.pow(1024, 3);
-		return df.format(d);
 	}
 
 	@Override

@@ -56,6 +56,14 @@ public class Settings {
 		return settings.getString("notificationsService_interval", "180");
 	}
 
+	public static boolean getCustomBackground() {
+		return settings.getBoolean("customBackground_preference", false);
+	}
+
+	public static String getCustomBackgroundPath() {
+		return settings.getString("customBackground_path", "");
+	}
+
 	public static void saveNumberOfAnnouncements(int i) {
 		settingsEditor.putInt("numberOfA", i);
 	}

@@ -5,10 +5,14 @@
 			android:title="App Background" android:summary="Change the background image"
 			android:entries="@array/background_entries_list" android:entryValues="@array/background_entries_list_values"
 			android:dialogTitle="List of Backgrounds" />
+		<CheckBoxPreference android:key="customBackground_preference"
+			android:summaryOn="Enabled" android:summaryOff="Disabled"
+			android:title="Custom Background" android:summary="Enable/Disable Custom Background"
+			android:defaultValue="false" />
 		<CheckBoxPreference android:key="quickSearch_preference"
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Quick Search" android:summary="Enable/Disable Quick Search"
-			android:defaultValue="true"/>
+			android:defaultValue="true" />
 		<CheckBoxPreference android:key="spotifyButton_preference"
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Spotify Button" android:summary="Enable/Disable Spotify Button"
@@ -30,7 +34,8 @@
 		<EditTextPreference android:key="announcementsService_interval"
 			android:title="Refresh Interval"
 			android:dialogMessage="Set the refresh rate in minutes, minimum is 30, default is 180."
-			android:dialogTitle="Announcements Refresh Interval" android:defaultValue="180"/>
+			android:dialogTitle="Announcements Refresh Interval"
+			android:defaultValue="180" />
 		<CheckBoxPreference android:key="inboxService_preference"
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Inbox Service"
@@ -39,7 +44,7 @@
 		<EditTextPreference android:key="inboxService_interval"
 			android:title="Refresh Interval"
 			android:dialogMessage="Set the refresh rate in minutes, minimum is 30, default is 60."
-			android:dialogTitle="Inbox Refresh Interval" android:defaultValue="60"/>
+			android:dialogTitle="Inbox Refresh Interval" android:defaultValue="60" />
 		<CheckBoxPreference android:key="notificationsService_preference"
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Notifications Service"
@@ -47,7 +52,8 @@
 			android:defaultValue="false" />
 		<EditTextPreference android:key="notificationsService_interval"
 			android:title="Refresh Interval" android:dialogTitle="Notifications Refresh Interval"
-			android:dialogMessage="Set the refresh rate in minutes, minimum is 30, default is 180." android:defaultValue="180"/>
+			android:dialogMessage="Set the refresh rate in minutes, minimum is 30, default is 180."
+			android:defaultValue="180" />
 
 	</PreferenceCategory>
 </PreferenceScreen>

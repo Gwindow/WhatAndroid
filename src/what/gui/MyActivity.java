@@ -46,7 +46,7 @@ public class MyActivity extends Activity implements OnGestureListener {
 			try {
 				View v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
 				// v.setBackgroundResource(SettingsActivity.backgroundFromPreference(this));
-				v.setBackgroundResource(R.drawable.background_flowers);
+				v.setBackgroundResource(R.drawable.background_blue_wood);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
