@@ -64,6 +64,11 @@ public class Settings {
 		return settings.getString("customBackground_path", "");
 	}
 
+	public static void saveCustomBackgroundPath(String s) {
+		settingsEditor.putString("customBackground_path", s);
+		commit();
+	}
+
 	public static void saveNumberOfAnnouncements(int i) {
 		settingsEditor.putInt("numberOfA", i);
 	}

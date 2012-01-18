@@ -180,6 +180,7 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 				// Get the path
 				try {
 					String path = getPath(this, uri);
+					Settings.saveCustomBackgroundPath(path);
 					Log.d("FILE CHOOSER", "File Path: " + path);
 				} catch (URISyntaxException e) {
 					e.printStackTrace();
@@ -206,14 +207,12 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 					return cursor.getString(column_index);
 				}
 			} catch (Exception e) {
-				// Eat it
 			}
 		}
 
 		else if ("file".equalsIgnoreCase(uri.getScheme())) {
 			return uri.getPath();
 		}
-
 		return null;
 	}
 

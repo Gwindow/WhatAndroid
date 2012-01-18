@@ -2,11 +2,13 @@ package what.gui;
 
 import java.text.DecimalFormat;
 
+import what.settings.Settings;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
@@ -16,8 +18,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MyActivity extends Activity implements OnGestureListener {
+	private static final boolean customBackgroundLoaded = true;
 	private GestureDetector gestureDetector;
 	private int height, width;
 	private DisplayMetrics displaymetrics = null;
@@ -42,13 +46,19 @@ public class MyActivity extends Activity implements OnGestureListener {
 	 */
 	public void setContentView(int layoutResID, boolean enableBackground) {
 		super.setContentView(layoutResID);
+		View v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
 		if (enableBackground) {
-			try {
-				View v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
-				// v.setBackgroundResource(SettingsActivity.backgroundFromPreference(this));
-				v.setBackgroundResource(R.drawable.background_blue_wood);
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (Settings.getCustomBackground()) {
+				Toast.makeText(this, Settings.getCustomBackgroundPath(), Toast.LENGTH_LONG).show();
+				Drawable drawable = Drawable.createFromPath(Settings.getCustomBackgroundPath());
+				v.setBackgroundDrawable(drawable);
+			} else {
+				try {
+					// v.setBackgroundResource(SettingsActivity.backgroundFromPreference(this));
+					v.setBackgroundResource(R.drawable.background_blue_wood);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
