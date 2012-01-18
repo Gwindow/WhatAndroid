@@ -9,183 +9,190 @@
 	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
 	<uses-permission android:name="com.flattr4android.permission.READ_THING" />
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
-		<activity android:name="what.login.WhatAndroidActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.login.WhatAndroidActivity" android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".MainMenu" android:theme="@style/Theme.MenuDialog"
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name=".MainMenu" android:theme="@style/Theme.MenuDialog"
 			android:noHistory="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".SearchMenu" android:theme="@style/Theme.MenuDialog"
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name=".SearchMenu" android:theme="@style/Theme.MenuDialog"
 			android:noHistory="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.barcode.ScannerActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.barcode.ScannerActivity" android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.home.HomeActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.home.HomeActivity" android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.forum.ForumSectionsListActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.forum.ForumSectionsListActivity" android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.forum.SectionActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.forum.SectionActivity" android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.forum.ThreadActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.forum.ThreadActivity" android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.status.StatusActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.status.StatusActivity" android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.top.TopTorrentsActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.top.TopTorrentsActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.subscriptions.SubscriptionsActivity"
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.subscriptions.SubscriptionsActivity"
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 
-		<activity android:name="what.search.UserSearchActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.search.UserSearchActivity" android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.torrents.artist.ArtistTabActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.torrents.artist.ArtistTabActivity" android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.torrents.ListActivity"
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.torrents.ListActivity" android:theme="@style/Theme.NoTitleDialog">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.torrents.artist.ArtistActivity" android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.torrents.artist.ArtistStatsActivity"
 			android:theme="@style/Theme.NoTitleDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.torrents.artist.ArtistActivity"
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.torrents.artist.RequestListActivity"
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.torrents.artist.ArtistStatsActivity"
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.requests.RequestTabActivity" android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.requests.RequestActivity" android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.requests.RequestDetailsActivity" android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.torrents.artist.TorrentListActivity"
+			android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.torrents.torrents.TorrentTabActivity"
+			android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.torrents.torrents.TorrentStatsActivity"
 			android:theme="@style/Theme.NoTitleDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.torrents.artist.RequestListActivity"
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.torrents.torrents.TorrentInfoActivity"
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.requests.RequestTabActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-			</intent-filter>
-		</activity>
-		<activity android:name="what.requests.RequestActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-			</intent-filter>
-		</activity>
-		<activity android:name="what.requests.RequestDetailsActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-			</intent-filter>
-		</activity>
-		<activity android:name="what.torrents.artist.TorrentListActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-			</intent-filter>
-		</activity>
-		<activity android:name="what.torrents.torrents.TorrentTabActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-			</intent-filter>
-		</activity>
-		<activity android:name="what.torrents.torrents.TorrentStatsActivity"
-			android:theme="@style/Theme.NoTitleDialog">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-			</intent-filter>
-		</activity>
-		<activity android:name="what.torrents.torrents.TorrentInfoActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-			</intent-filter>
-		</activity>
-		<activity android:name="what.torrents.torrents.TorrentFormatsActivity"
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.torrents.torrents.TorrentFormatsActivity"
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 
-		<activity android:name="what.settings.SettingsActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.settings.SettingsActivity" android:theme="@android:style/Theme.NoTitleBar"
+			android:noHistory="false">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.settings.RssSettingsActivity"
-			android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.donate.FlattrDonationActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.donate.FlattrDonationActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.forum.PostOptionsActivity" android:theme="@style/Theme.MenuDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.forum.PostOptionsActivity"
-			android:theme="@style/Theme.MenuDialog">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-			</intent-filter>
-		</activity>
-		<activity android:name="what.inbox.MessageOptionsActivity"
-			android:theme="@style/Theme.MenuDialog">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.inbox.MessageOptionsActivity" android:theme="@style/Theme.MenuDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
@@ -195,44 +202,52 @@
 				<action android:name="what.irc.IRC_SERVICE" />
 			</intent-filter>
 		</service>
-		<activity android:name="what.irc.IrcClient" android:label="IRC Client"
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.irc.IrcClient" android:label="IRC Client"
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 
-		<activity android:name="what.inbox.InboxActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.inbox.InboxActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.bookmarks.BookmarksTabActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.bookmarks.BookmarksTabActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.bookmarks.ArtistBookmarksActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.bookmarks.ArtistBookmarksActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.bookmarks.TorrentBookmarksActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.bookmarks.TorrentBookmarksActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.announcements.AnnouncementActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.announcements.AnnouncementActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.announcements.BlogActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.announcements.BlogActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
-		<activity android:name="what.notifications.NotificationsActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.notifications.NotificationsActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
@@ -243,38 +258,43 @@
 		<service android:name="what.services.AnnouncementService" />
 
 
-		<activity android:name="what.user.UserProfilePopUpActivity"
-			android:theme="@style/Theme.NoTitleDialog">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.user.UserProfilePopUpActivity" android:theme="@style/Theme.NoTitleDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 
-		<activity android:name="what.user.UserProfileActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.user.UserProfileActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 
-		<activity android:name="what.inbox.BugReportActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.inbox.BugReportActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 
-		<activity android:name="what.inbox.ConversationActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.inbox.ConversationActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 
-		<activity android:name="what.inbox.NewConversationActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.inbox.NewConversationActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>
 		</activity>
 
-		<activity android:name="what.forum.NewThreadActivity">
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.forum.NewThreadActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>

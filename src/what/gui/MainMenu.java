@@ -67,7 +67,7 @@ public class MainMenu extends MyActivity {
 
 	public void settings(View v) {
 		intent = new Intent(MainMenu.this, what.settings.SettingsActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void home(View v) {

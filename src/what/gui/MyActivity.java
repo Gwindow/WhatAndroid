@@ -18,14 +18,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class MyActivity extends Activity implements OnGestureListener {
+	private static DisplayMetrics displaymetrics = null;
 	private static final boolean customBackgroundLoaded = true;
+	private static String customBackgroundPath = "";
+	private static Drawable customBackgroundDrawable;
 	private GestureDetector gestureDetector;
 	private int height, width;
-	private DisplayMetrics displaymetrics = null;
 	private DecimalFormat df = new DecimalFormat("#.00");
+	private View v;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,21 +48,39 @@ public class MyActivity extends Activity implements OnGestureListener {
 	 */
 	public void setContentView(int layoutResID, boolean enableBackground) {
 		super.setContentView(layoutResID);
-		View v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+		v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
 		if (enableBackground) {
 			if (Settings.getCustomBackground()) {
-				Toast.makeText(this, Settings.getCustomBackgroundPath(), Toast.LENGTH_LONG).show();
-				Drawable drawable = Drawable.createFromPath(Settings.getCustomBackgroundPath());
-				v.setBackgroundDrawable(drawable);
+				loadCustomBackground();
 			} else {
-				try {
-					// v.setBackgroundResource(SettingsActivity.backgroundFromPreference(this));
-					v.setBackgroundResource(R.drawable.background_blue_wood);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				loadDefaultBackground();
 			}
 		}
+	}
+
+	private void loadDefaultBackground() {
+
+		try {
+			// v.setBackgroundResource(SettingsActivity.backgroundFromPreference(this));
+			v.setBackgroundResource(R.drawable.background_blue_wood);
+		} catch (Exception e) {
+			e.printStackTrace();
+			v.setBackgroundColor(R.color.black);
+		}
+	}
+
+	private void loadCustomBackground() {
+		try {
+			if (!customBackgroundPath.equalsIgnoreCase(Settings.getCustomBackgroundPath())) {
+				customBackgroundDrawable = Drawable.createFromPath(Settings.getCustomBackgroundPath());
+				customBackgroundPath = Settings.getCustomBackgroundPath();
+				v.setBackgroundDrawable(customBackgroundDrawable);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			v.setBackgroundColor(R.color.black);
+		}
+
 	}
 
 	public void setButtonState(Button button, boolean b) {
@@ -88,10 +108,12 @@ public class MyActivity extends Activity implements OnGestureListener {
 	}
 
 	private void setDisplayMetrics() {
-		displaymetrics = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-		height = displaymetrics.heightPixels;
-		width = displaymetrics.widthPixels;
+		if (displaymetrics == null) {
+			displaymetrics = new DisplayMetrics();
+			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+			height = displaymetrics.heightPixels;
+			width = displaymetrics.widthPixels;
+		}
 	}
 
 	public int getHeight() {

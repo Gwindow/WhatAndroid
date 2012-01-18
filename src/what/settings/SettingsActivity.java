@@ -216,4 +216,10 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 		return null;
 	}
 
+	/*
+	 * @Override public boolean onKeyDown(int keyCode, KeyEvent event) { if (keyCode == KeyEvent.KEYCODE_BACK) { Intent
+	 * intent = new Intent(this, what.home.HomeActivity.class); startActivityForResult(intent, 0); return true; } return
+	 * super.onKeyDown(keyCode, event); }
+	 */
+
 }

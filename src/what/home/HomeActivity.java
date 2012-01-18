@@ -131,7 +131,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	public void openTopTen(View v) {
 		// TODO remove
 		intent = new Intent(HomeActivity.this, what.gui.MainMenu.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void refresh(View v) {
