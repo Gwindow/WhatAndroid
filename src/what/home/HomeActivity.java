@@ -42,6 +42,9 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		super.setContentView(R.layout.home, true);
 		startServices();
 
+		Toast.makeText(this, String.valueOf(Settings.getCustomBackground()), Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, String.valueOf(Settings.getCustomBackgroundPath()), Toast.LENGTH_SHORT).show();
+
 		username = (TextView) this.findViewById(R.id.username);
 		uploadedValue = (TextView) this.findViewById(R.id.upvalue);
 		downloadedValue = (TextView) this.findViewById(R.id.downvalue);

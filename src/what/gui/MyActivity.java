@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MyActivity extends Activity implements OnGestureListener {
 	private static DisplayMetrics displaymetrics = null;
@@ -48,8 +49,8 @@ public class MyActivity extends Activity implements OnGestureListener {
 	 */
 	public void setContentView(int layoutResID, boolean enableBackground) {
 		super.setContentView(layoutResID);
-		v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
 		if (enableBackground) {
+			v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
 			if (Settings.getCustomBackground()) {
 				loadCustomBackground();
 			} else {
@@ -62,10 +63,14 @@ public class MyActivity extends Activity implements OnGestureListener {
 
 		try {
 			// v.setBackgroundResource(SettingsActivity.backgroundFromPreference(this));
+			Toast.makeText(this, "default background loaded", Toast.LENGTH_SHORT).show();
+
 			v.setBackgroundResource(R.drawable.background_blue_wood);
 		} catch (Exception e) {
 			e.printStackTrace();
 			v.setBackgroundColor(R.color.black);
+			Toast.makeText(this, "default background failed", Toast.LENGTH_SHORT).show();
+
 		}
 	}
 
@@ -75,10 +80,14 @@ public class MyActivity extends Activity implements OnGestureListener {
 				customBackgroundDrawable = Drawable.createFromPath(Settings.getCustomBackgroundPath());
 				customBackgroundPath = Settings.getCustomBackgroundPath();
 				v.setBackgroundDrawable(customBackgroundDrawable);
+				Toast.makeText(this, "custom background loaded", Toast.LENGTH_SHORT).show();
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			v.setBackgroundColor(R.color.black);
+			Toast.makeText(this, "custom background failed", Toast.LENGTH_SHORT).show();
+
 		}
 
 	}
