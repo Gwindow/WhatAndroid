@@ -79,9 +79,9 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 		try {
 			Intent intent = new Intent(Intent.ACTION_MAIN);
 			intent.setAction(MediaStore.INTENT_ACTION_MEDIA_SEARCH);
-			intent.putExtra(SearchManager.QUERY, "evgeny kissin");
 			intent.setComponent(new ComponentName("com.spotify.mobile.android.ui", "com.spotify.mobile.android.ui.Launcher"));
-			startActivityForResult(intent, 0);
+			intent.putExtra(SearchManager.QUERY, "oscar peterson");
+			startActivity(intent);
 			finish();
 		} catch (Exception e) {
 			Toast.makeText(this, "Could not open Spotify, is it installed?", Toast.LENGTH_LONG).show();
