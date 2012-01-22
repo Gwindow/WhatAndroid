@@ -1,429 +1,132 @@
 package what.login;
 
-import java.io.IOException;
-
 import what.gui.MyActivity;
 import what.gui.R;
-import what.gui.ReportSender;
+import what.home.HomeActivity;
 import what.settings.Settings;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 import api.soup.MySoup;
 import api.util.CouldNotLoadException;
-import api.util.Updater;
+import api.whatstatus.WhatStatus;
 
-public class WhatAndroidActivity extends MyActivity implements OnClickListener, OnEditorActionListener {
-	private String VERSION;
-	private TextView username;
-	private TextView password;
+public class WhatAndroidActivity extends MyActivity implements OnClickListener {
+	private final static String SITE = "http://67.183.192.159/";
+	// TODO fill out
+	private final static String UPDATE_SITE = "";
+	private TextView username, password;
+	private CheckBox ssl, rememberme;
 	private Button login;
-	private CheckBox rememberCheckbox;
-	private CheckBox passwordCheckbox;
-	private CheckBox sslCheckbox;
-	private Settings settings;
-	private String usernameString;
-	private String passwordString;
-
-	private Updater updater;
-	private static final String UPDATE_SITE = "http://db.tt/YVOxcyvL";
-
-	/**
-	 * Called when the activity is first created.
-	 * */
+	private Intent intent;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.login);
-		@SuppressWarnings("unused")
-		ReportSender sender = new ReportSender(this);
-		// MySoup.setSite("http://192.168.1.147:8080/");
-		MySoup.setSite("http://67.183.192.159/");
-		// MySoup.setSite("http://what.cd/");
+		super.setContentView(R.layout.login);
 
-		// initialize the settings writer, should only be done once
+		MySoup.setSite(SITE);
+
 		Settings.init(this);
 
-		/*
-		 * try { updater = new Updater(UPDATE_SITE); checkForMessage(); setVersionName(); checkForUpdate(); } catch
-		 * (CouldNotLoadException e1) { // TODO Auto-generated catch block e1.printStackTrace(); }
-		 */
-
-		// Set UI component references
 		username = (TextView) this.findViewById(R.id.username);
 		password = (TextView) this.findViewById(R.id.password);
-		password.setOnEditorActionListener(this);
-		rememberCheckbox = (CheckBox) this.findViewById(R.id.remember_checkbox);
-		rememberCheckbox.setOnClickListener(this);
-		passwordCheckbox = (CheckBox) this.findViewById(R.id.rememberpassword_checkbox);
-		passwordCheckbox.setOnClickListener(this);
-
-		sslCheckbox = (CheckBox) this.findViewById(R.id.ssl_checkbox);
-		sslCheckbox.setOnClickListener(this);
+		rememberme = (CheckBox) this.findViewById(R.id.remember_checkbox);
+		rememberme.setOnClickListener(this);
+		ssl = (CheckBox) this.findViewById(R.id.ssl_checkbox);
+		ssl.setOnClickListener(this);
 		login = (Button) this.findViewById(R.id.login);
 		login.setOnClickListener(this);
 
-		String savedUsername = Settings.getUsername();
-		String savedPassword = Settings.getPassword();
-		boolean useSSL = Settings.getSSL();
-		if (!savedUsername.equals("")) {
-			username.setText(savedUsername);
-			rememberCheckbox.setChecked(true);
-		}
-		if (!savedPassword.equals("")) {
-			password.setText(savedPassword);
-			passwordCheckbox.setChecked(true);
-		}
-
-		if (useSSL) {
-			sslCheckbox.setChecked(true);
-		}
-
-		if (!savedUsername.equals("") && !savedPassword.equals("")) {
-			try {
-				login();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		username.setText("tester");
-		password.setText("123456");
-
-		/* if (settings.getString("sessionId", null) != null) { // Resume the session // TODO fix // resume(); } */
+		tryAutoLogin();
 	}
 
-	/**
-	 * Check for messages from the update site
-	 */
-	private void checkForMessage() {
-		String title = updater.getMessage().getA();
-		String body = updater.getMessage().getB();
-		if (!body.equalsIgnoreCase(Settings.getMessage())) {
-			// Settings.saveMessage(body);
-			AlertDialog.Builder dlgAlert = new AlertDialog.Builder(this);
-			dlgAlert.setTitle(title);
-			dlgAlert.setMessage(body);
-			dlgAlert.setPositiveButton("OK, let me use the app!", null);
-			dlgAlert.setCancelable(true);
-			dlgAlert.create().show();
+	private void tryAutoLogin() {
+		if (Settings.getRememberMe()) {
+			new Login().execute(new String[] { Settings.getUsername(), Settings.getPassword() });
 		}
-	}
-
-	/**
-	 * Set the version name from the manifest file
-	 */
-	private void setVersionName() {
-		try {
-			PackageInfo manager = getPackageManager().getPackageInfo(getPackageName(), 0);
-			VERSION = manager.versionName;
-		} catch (NameNotFoundException e) {
-			VERSION = "0";
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Check if update exists by comparing versions
-	 */
-	private void checkForUpdate() {
-		double updateversion = updater.getVersion();
-		double currentversion = Double.parseDouble(VERSION);
-		if (updateversion > currentversion) {
-			displayAlert("Update available", updateversion + " has been released, would you like to update?", this);
-		}
-	}
-
-	/**
-	 * Open the download link to the update
-	 */
-	private void openUpdate() {
-		String url = updater.getDownloadLink();
-		if (!url.startsWith("http://") && !url.startsWith("https://")) {
-			url = "http://" + url;
-		}
-		Intent i = new Intent(Intent.ACTION_VIEW);
-		i.setData(Uri.parse(url));
-		startActivity(i);
-		finish();
-	}
-
-	public void displayAlert(String title, String message, Context context) {
-		new AlertDialog.Builder(context).setTitle(title).setMessage(message)
-				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						openUpdate();
-					}
-				}).setNegativeButton("No", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						arg0.dismiss();
-					}
-				}).show();
-	}
-
-	/**
-	 * Login to what.cd
-	 * 
-	 * @throws IOException
-	 */
-	private void login() throws IOException {
-		// Save username
-		if (rememberCheckbox.isChecked()) {
-			Settings.saveUsername(username.getText().toString());
-		} else {
-			Settings.saveUsername("");
-		}
-
-		// Save password
-		if (passwordCheckbox.isChecked()) {
-			Settings.savePassword(password.getText().toString());
-		} else {
-			Settings.savePassword("");
-		}
-
-		// Save SSL State
-		Settings.saveSSL(sslCheckbox.isChecked());
-		// Commit settings
-		Settings.commit();
-
-		usernameString = username.getText().toString();
-		// trim whitespace on both ends very important!
-		usernameString = usernameString.trim();
-		passwordString = password.getText().toString();
-
-		@SuppressWarnings("unused")
-		ProgressDialog dialog = new ProgressDialog(this);
-
-		Thread loadingThread = new Thread() {
-			ProgressDialog dialog = new ProgressDialog(WhatAndroidActivity.this);
-			String loginURL = "login.php";
-
-			@Override
-			public void run() {
-				WhatAndroidActivity.this.lockScreenRotation();
-				// Display the progress dialog
-				loginHandler.sendEmptyMessage(1);
-				// Enable SSL if needed
-				if (sslCheckbox.isChecked()) {
-					MySoup.enableSSL();
-				}
-
-				// Do the log in
-				try {
-					MySoup.login(loginURL, usernameString, passwordString);
-					if (MySoup.isLoggedIn()) {
-						// Save sessionId and authKey
-						Settings.saveSessionId(MySoup.getSessionId());
-						Settings.saveAuthKey(MySoup.getAuthKey());
-						Settings.commit();
-						// Manager.createForum("what.cd forum");
-						// Manager.createSubscriptions("Subscriptions");
-						loginHandler.sendEmptyMessage(2);
-						// Start the next activity
-					} else {
-						// Display the error message
-						loginHandler.sendEmptyMessage(4);
-					}
-				} catch (CouldNotLoadException e) {
-					loginHandler.sendEmptyMessage(3);
-					e.printStackTrace();
-				}
-			}
-
-			private Handler loginHandler = new Handler() {
-
-				@Override
-				public void handleMessage(Message msg) {
-					if (msg.what == 1) {
-						dialog.setIndeterminate(true);
-						dialog.setMessage(getString(R.string.loggingin));
-						dialog.show();
-					} else if (msg.what == 2) {
-						dialog.dismiss();
-						WhatAndroidActivity.this.unlockScreenRotation();
-						Intent intent = new Intent(WhatAndroidActivity.this, what.home.HomeActivity.class);
-						startActivity(intent);
-					} else if (msg.what == 3) {
-						dialog.dismiss();
-
-						displayError("Error", "Login failed, wrong username/password or a timeout, try again",
-								WhatAndroidActivity.this);
-					} else if (msg.what == 4) {
-						dialog.dismiss();
-						displayError("Error", "MySoup.isLoggedIn() == false", WhatAndroidActivity.this);
-					} else if (msg.what == 4) {
-						dialog.dismiss();
-						displayError("Error", "MySoup.isLoggedIn() == false", WhatAndroidActivity.this);
-					}
-				}
-			};
-		};
-		loadingThread.start();
-	}
-
-	/**
-	 * Doesn't work. TODO: Fix.
-	 */
-	@SuppressWarnings("unused")
-	private void resume() {
-		if ((Settings.getSessionId() == null) || (Settings.getSessionId() == ""))
-			return;
-		else {
-			// MySoup.setAuthKey(Settings.getSessionId());
-		}
-		// Do the log in
-		Thread loadingThread = new Thread() {
-			ProgressDialog dialog = new ProgressDialog(WhatAndroidActivity.this);
-
-			@Override
-			public void run() {
-				// Display the progress dialog
-				loginHandler.sendEmptyMessage(1);
-				// Enable SSL if needed
-				if (sslCheckbox.isChecked()) {
-					MySoup.enableSSL();
-				}
-				// Resume the session
-				MySoup.setSessionId(Settings.getSessionId());
-				// MySoup.setAuthKey(Settings.getAuthKey());
-				if (MySoup.isLoggedIn()) {
-					/*
-					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
-					 */
-					/*
-					 * try { // Manager.createForum("what.cd forum"); // Manager.createSubscriptions("subscriptions"); }
-					 * catch (CouldNotLoadException e) { e.printStackTrace(); }
-					 */
-					// Start the next activity
-					loginHandler.sendEmptyMessage(2);
-				} else {
-					// Display the error message
-					loginHandler.sendEmptyMessage(3);
-				}
-			}
-
-			private Handler loginHandler = new Handler() {
-
-				@Override
-				public void handleMessage(Message msg) {
-					if (msg.what == 1) {
-						dialog.setIndeterminate(true);
-						dialog.setMessage(getString(R.string.resume));
-						dialog.show();
-					} else if (msg.what == 2) {
-						dialog.dismiss();
-						// Intent intent = new Intent(WhatAndroidActivity.this, what.forum.SectionListActivity.class);
-						// startActivity(intent);
-					} else if (msg.what == 3) {
-						dialog.dismiss();
-						displayError("Error", "Login failed, wrong username/password or a timeout, try again",
-								WhatAndroidActivity.this);
-					}
-				}
-			};
-		};
-		loadingThread.start();
 	}
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.login:
-			try {
-				if (((username.getText().toString().length() != 0) && (password.getText().toString().length() != 0))
-						|| MySoup.isLoggedIn()) {
-					login();
-				} else {
-					Toast.makeText(this, "You need to enter a username and password!", Toast.LENGTH_LONG).show();
-				}
-			} catch (IOException e) {
+		if (v.getId() == login.getId()) {
+			if (username.length() > 0 && password.length() > 0)
+				new Login().execute(new String[] { username.getText().toString().trim(), password.getText().toString() });
+
+		}
+
+	}
+
+	private class Login extends AsyncTask<String, Void, Boolean> {
+		private ProgressDialog dialog;
+
+		@Override
+		protected void onPreExecute() {
+			lockScreenRotation();
+			dialog = new ProgressDialog(WhatAndroidActivity.this);
+			dialog.setIndeterminate(true);
+			dialog.setMessage("Logging in...");
+			dialog.show();
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			String username = params[0];
+			String password = params[1];
+			if (ssl.isChecked()) {
+				MySoup.enableSSL();
+				Settings.saveSSL(true);
 			}
-			break;
+			if (rememberme.isChecked()) {
+				Settings.saveUsername(username);
+				Settings.savePassword(password);
+			}
+			Settings.commit();
+			try {
+				MySoup.login("login.php", username, password);
+				return true;
+			} catch (CouldNotLoadException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status) {
+			dialog.dismiss();
+			if (status == true) {
+				unlockScreenRotation();
+				intent = new Intent(WhatAndroidActivity.this, HomeActivity.class);
+				startActivity(intent);
+			}
+			if (status == false) {
+				new AlertDialog.Builder(WhatAndroidActivity.this).setTitle("Could not login")
+						.setMessage("Check your username/password, a timeout occured, or the site is down")
+						.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+								unlockScreenRotation();
+							}
+						}).setNegativeButton("Open WhatStatus", new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								unlockScreenRotation();
+								intent = new Intent(WhatAndroidActivity.this, WhatStatus.class);
+								startActivity(intent);
+							}
+
+						}).show();
+			}
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.loginmenu, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.quitItem:
-			closeOptionsMenu();
-			break;
-		case R.id.statusItem:
-			Intent intent = new Intent(this, what.status.StatusActivity.class);
-			startActivity(intent);
-			break;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-		return true;
-	}
-
-	@Override
-	public void openOptionsMenu() {
-		super.openOptionsMenu();
-	}
-
-	@Override
-	public void closeOptionsMenu() {
-		super.closeOptionsMenu();
-	}
-
-	@Override
-	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		if (actionId == EditorInfo.IME_ACTION_GO) {
-			login.performClick();
-		}
-		return true;
-	}
-
-	/**
-	 * Display error dialog
-	 * 
-	 * @param title
-	 * @param message
-	 * @param context
-	 */
-	public void displayError(String title, String message, Context context) {
-		new AlertDialog.Builder(context).setTitle(title).setMessage(message)
-				.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						arg0.dismiss();
-					}
-				}).show();
-	}
 }
