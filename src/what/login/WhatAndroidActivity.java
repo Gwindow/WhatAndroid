@@ -8,6 +8,9 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -17,25 +20,34 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import api.soup.MySoup;
 import api.util.CouldNotLoadException;
+import api.util.Triple;
+import api.util.Updater;
 import api.whatstatus.WhatStatus;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	private final static String SITE = "http://67.183.192.159/";
-	// TODO fill out
-	private final static String UPDATE_SITE = "";
+	private final static String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
+	private static double INSTALLED_VERSION;
 	private TextView username, password;
 	private CheckBox ssl, rememberme;
 	private Button login;
 	private Intent intent;
+	private Updater updater;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.login);
 
+		Settings.init(this);
+		INSTALLED_VERSION = getInstalledVersion();
 		MySoup.setSite(SITE);
 
-		Settings.init(this);
+		try {
+			checkForUpdates();
+		} catch (CouldNotLoadException e) {
+			e.printStackTrace();
+		}
 
 		username = (TextView) this.findViewById(R.id.username);
 		password = (TextView) this.findViewById(R.id.password);
@@ -47,6 +59,62 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		login.setOnClickListener(this);
 
 		tryAutoLogin();
+	}
+
+	private void checkForUpdates() throws CouldNotLoadException {
+		updater = new Updater(UPDATE_SITE);
+		final Triple<String, String, String> message = updater.getMessage();
+		final Double version = updater.getVersion();
+		final String link = updater.getDownloadLink();
+		if (version > INSTALLED_VERSION) {
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+			alert.setTitle("Update available");
+			alert.setMessage("Version " + version + " has been released, would you like to update?");
+			alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					openUpdate(link);
+				}
+			});
+			alert.setNegativeButton("No", null);
+			alert.setCancelable(true);
+			alert.create().show();
+		}
+		if (message.getB().hashCode() != Settings.getMessageHashCode()) {
+			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+			dialog.setTitle(message.getA());
+			dialog.setMessage(message.getB() + "\n\n" + message.getC());
+			dialog.setPositiveButton("Okay", null);
+			dialog.setCancelable(true);
+			dialog.create().show();
+			Settings.saveMessageHashCode(message.getB().hashCode());
+			Settings.commit();
+		}
+	}
+
+	private void openUpdate(String url) {
+		if (!url.startsWith("http://") && !url.startsWith("https://")) {
+			url = "http://" + url;
+		}
+		Intent i = new Intent(Intent.ACTION_VIEW);
+		i.setData(Uri.parse(url));
+		startActivity(i);
+		finish();
+	}
+
+	private double getInstalledVersion() {
+		int versionCode;
+		String versionName;
+		double installedVersion = 0;
+		try {
+			PackageInfo manager = getPackageManager().getPackageInfo(getPackageName(), 0);
+			versionCode = manager.versionCode;
+			versionName = manager.versionName;
+			installedVersion = versionCode + Double.parseDouble(versionName);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return installedVersion;
 	}
 
 	private void tryAutoLogin() {

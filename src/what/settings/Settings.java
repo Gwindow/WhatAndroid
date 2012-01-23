@@ -95,16 +95,16 @@ public class Settings {
 		}
 	}
 
-	public static void saveMessage(String message) {
-		settingsEditor.putString("message", message);
+	public static void saveMessageHashCode(int hash) {
+		settingsEditor.putInt("messageHashCode", hash);
 	}
 
-	public static String getMessage() {
+	public static int getMessageHashCode() {
 		try {
-			return settings.getString("message", "");
+			return settings.getInt("messageHashCode", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "";
+			return 0;
 		}
 	}
 
