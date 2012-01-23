@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 import api.soup.MySoup;
 import api.util.CouldNotLoadException;
 import api.util.Triple;
@@ -128,7 +129,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		if (v.getId() == login.getId()) {
 			if (username.length() > 0 && password.length() > 0)
 				new Login().execute(new String[] { username.getText().toString().trim(), password.getText().toString() });
-
+			else {
+				Toast.makeText(this, "Fill out login form", Toast.LENGTH_LONG).show();
+			}
 		}
 
 	}
