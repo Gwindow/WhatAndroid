@@ -40,7 +40,8 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home, true);
-		startServices();
+
+		// startServices();
 
 		Toast.makeText(this, String.valueOf(Settings.getCustomBackground()), Toast.LENGTH_SHORT).show();
 		Toast.makeText(this, String.valueOf(Settings.getCustomBackgroundPath()), Toast.LENGTH_SHORT).show();
@@ -64,7 +65,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		inboxService = new Intent(this, InboxService.class);
 		notificationService = new Intent(this, NotificationService.class);
 
-		if (Settings.getAnnouncementsService() == true && !AnnouncementService.isRunning()) {
+		if ((Settings.getAnnouncementsService() == true) && !AnnouncementService.isRunning()) {
 			try {
 				startService(annoucementService);
 			} catch (Exception e) {
@@ -72,7 +73,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 				e.printStackTrace();
 			}
 		}
-		if (Settings.getInboxService() == true && !InboxService.isRunning()) {
+		if ((Settings.getInboxService() == true) && !InboxService.isRunning()) {
 			try {
 				startService(inboxService);
 			} catch (Exception e) {
@@ -81,7 +82,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 			}
 		}
 
-		if (Settings.getNotificationsService() == true && !NotificationService.isRunning() && MySoup.canNotifications()) {
+		if ((Settings.getNotificationsService() == true) && !NotificationService.isRunning() && MySoup.canNotifications()) {
 			try {
 				startService(notificationService);
 			} catch (Exception e) {
