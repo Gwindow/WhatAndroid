@@ -64,13 +64,26 @@ public class Settings {
 		return settings.getString("customBackground_path", "");
 	}
 
-	public static void saveCustomBackgroundPath(String s) {
-		settingsEditor.putString("customBackground_path", s);
+	public static void saveFirstRun(boolean b) {
+		settingsEditor.putBoolean("firstRun", b);
 		commit();
+	}
+
+	public static boolean getFirstRun() {
+		return settings.getBoolean("firstRun", true);
+	}
+
+	public static boolean getAvatarsEnabled() {
+		return settings.getBoolean("avatarsEnabled_preference", true);
 	}
 
 	public static void saveNumberOfAnnouncements(int i) {
 		settingsEditor.putInt("numberOfA", i);
+	}
+
+	public static void saveCustomBackgroundPath(String s) {
+		settingsEditor.putString("customBackground_path", s);
+		commit();
 	}
 
 	public static int getNumberOfAnnouncements() {

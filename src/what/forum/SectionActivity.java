@@ -13,9 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TableRow.LayoutParams;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.forum.section.Section;
@@ -23,11 +21,10 @@ import api.forum.section.Threads;
 
 //TODO reenable author names at some point?
 public class SectionActivity extends MyActivity implements OnClickListener {
-	private TableLayout scrollTable;
+	private LinearLayout scrollLayout;
 	private int counter;
 	private ProgressDialog dialog;
-	private ArrayList<TableRow> threadList = new ArrayList<TableRow>();
-	private ArrayList<TextView> titleList = new ArrayList<TextView>();
+	private ArrayList<TextView> threadList = new ArrayList<TextView>();
 	private TextView sectionTitle;
 	private Intent intent;
 	private Section section;
@@ -42,7 +39,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
 
-		scrollTable = (TableLayout) findViewById(R.id.scrollLayout);
+		scrollLayout = (LinearLayout) findViewById(R.id.scrollLayout);
 		sectionTitle = (TextView) findViewById(R.id.titleText);
 
 		setButtonState(backButton, false);
@@ -65,7 +62,6 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	private void populateLayout() {
 		setButtonState(backButton, section.hasPreviousPage());
 		setButtonState(nextButton, section.hasNextPage());
-		int rowLayoutId;
 		int textLayoutId;
 
 		sectionTitle
@@ -74,41 +70,25 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 		List<Threads> threads = section.getResponse().getThreads();
 		for (int i = 0; i < threads.size(); i++) {
 			if ((i % 2) == 0) {
-				rowLayoutId = R.layout.thread_name_even;
 				textLayoutId = R.layout.forum_name_even;
 			} else {
-				rowLayoutId = R.layout.thread_name_odd;
 				textLayoutId = R.layout.forum_name_odd;
 			}
 
-			threadList.add((TableRow) getLayoutInflater().inflate(rowLayoutId, null));
-
-			titleList.add((TextView) getLayoutInflater().inflate(textLayoutId, null));
-			// authorList.add((TextView) getLayoutInflater().inflate(textLayoutId, null));
+			threadList.add((TextView) getLayoutInflater().inflate(textLayoutId, null));
 			if (threads.get(i).isLocked()) {
-				titleList.get(i).setText("Locked: " + threads.get(i).getTitle());
-				// authorList.get(i).setText("\t" + threads.get(i).getAuthorName());
+				threadList.get(i).setText("Locked: " + threads.get(i).getTitle());
 			} else if (threads.get(i).isSticky()) {
-				titleList.get(i).setText("Sticky: " + threads.get(i).getTitle());
-				// authorList.get(i).setText("\t" + threads.get(i).getAuthorName());
+				threadList.get(i).setText("Sticky: " + threads.get(i).getTitle());
 			} else if (threads.get(i).isLocked() && threads.get(i).isSticky()) {
-				titleList.get(i).setText("Locked Sticky: " + threads.get(i).getTitle());
-				// authorList.get(i).setText("\t" + threads.get(i).getAuthorName());
+				threadList.get(i).setText("Locked Sticky: " + threads.get(i).getTitle());
 			} else {
-				titleList.get(i).setText(threads.get(i).getTitle());
-				// authorList.get(i).setText("\t" + threads.get(i).getAuthorName());
+				threadList.get(i).setText(threads.get(i).getTitle());
 			}
-			titleList.get(i).setSingleLine(true);
-			titleList.get(i).setOnClickListener(this);
-			// authorList.get(i).setOnClickListener(this);
-			// authorList.get(i).setSingleLine(true);
+			threadList.get(i).setSingleLine(true);
+			threadList.get(i).setOnClickListener(this);
 
-			threadList.get(i).addView(titleList.get(i));
-			// threadList.get(i).addView(authorList.get(i));
-
-			scrollTable.setColumnShrinkable(0, true);
-			scrollTable.addView(threadList.get(i), new TableLayout.LayoutParams(LayoutParams.FILL_PARENT,
-					LayoutParams.WRAP_CONTENT));
+			scrollLayout.addView(threadList.get(i));
 			counter++;
 		}
 		idGenerator();
@@ -116,7 +96,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 
 	private void idGenerator() {
 		for (int i = 0; i < counter; i++) {
-			titleList.get(i).setId(i);
+			threadList.get(i).setId(i);
 		}
 	}
 
@@ -178,12 +158,9 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		for (int i = 0; i < (threadList.size()); i++) {
-			if (v.getId() == titleList.get(i).getId()) {
+			if (v.getId() == threadList.get(i).getId()) {
 				openThread(i);
 			}
-			// if (v.getId() == authorList.get(i).getId()) {
-			// openAuthor(i);
-			// }
 		}
 	}
 

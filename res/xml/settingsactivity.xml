@@ -9,6 +9,10 @@
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Custom Background" android:summary="Enable/Disable Custom Background"
 			android:defaultValue="false" />
+		<CheckBoxPreference android:key="avatarsEnabled_preference"
+			android:summaryOn="Enabled" android:summaryOff="Disabled"
+			android:title="Avatars in forum" android:summary="Enable/Disable Avatars"
+			android:defaultValue="true" />
 		<CheckBoxPreference android:key="quickSearch_preference"
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Quick Search" android:summary="Enable/Disable Quick Search"

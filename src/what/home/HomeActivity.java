@@ -9,7 +9,9 @@ import what.services.AnnouncementService;
 import what.services.InboxService;
 import what.services.NotificationService;
 import what.settings.Settings;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,6 +45,8 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 
 		// startServices();
 
+		showFirstRunDialog();
+
 		Toast.makeText(this, String.valueOf(Settings.getCustomBackground()), Toast.LENGTH_SHORT).show();
 		Toast.makeText(this, String.valueOf(Settings.getCustomBackgroundPath()), Toast.LENGTH_SHORT).show();
 
@@ -58,6 +62,26 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		loadStats();
 
 		new LoadSubscriptions().execute();
+	}
+
+	private void showFirstRunDialog() {
+		if (Settings.getFirstRun()) {
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+			alert.setTitle("Welcome");
+			alert.setMessage("Please take a moment to configure settings");
+			alert.setPositiveButton("Take me to settings", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					intent = new Intent(HomeActivity.this, what.settings.SettingsActivity.class);
+					startActivity(intent);
+				}
+			});
+			alert.setNegativeButton("Later", null);
+			alert.setCancelable(true);
+			alert.create().show();
+			Settings.saveFirstRun(false);
+		}
+
 	}
 
 	private void startServices() {

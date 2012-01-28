@@ -145,7 +145,7 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 						"0"));
 		switch (resId) {
 		case 1:
-			return R.drawable.background_blue_wood;
+			return R.drawable.wood2;
 		case 2:
 			// return some other background's resource ID.
 		case 3:

@@ -13,6 +13,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,7 +27,8 @@ import api.util.Updater;
 import api.whatstatus.WhatStatus;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
-	private final static String SITE = "http://67.183.192.159/";
+	// private final static String SITE = "http://67.183.192.159/";
+	private final static String SITE = "http://what.cd/";
 	private final static String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
 	private static double INSTALLED_VERSION;
 	private TextView username, password;
@@ -60,6 +62,11 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		login.setOnClickListener(this);
 
 		tryAutoLogin();
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		return false;
 	}
 
 	private void checkForUpdates() throws CouldNotLoadException {

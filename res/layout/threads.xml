@@ -19,7 +19,7 @@
 		android:paddingLeft="10dip" android:paddingRight="10dip"
 		android:paddingTop="10dip" android:paddingBottom="0dip">
 
-		<TableLayout android:id="@+id/scrollLayout"
+		<LinearLayout android:id="@+id/scrollLayout"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
 			android:orientation="vertical" />
 
