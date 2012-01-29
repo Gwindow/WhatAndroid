@@ -32,6 +32,11 @@
 				style="@style/ButtonTextSmall" android:layout_alignParentLeft="true"
 				android:text="Previous" android:layout_height="wrap_content"
 				android:id="@+id/previousButton"></Button>
+			<Button android:layout_width="wrap_content"
+				android:layout_centerHorizontal="true" android:onClick="Reply"
+				android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
+				android:text="reply" android:layout_height="wrap_content"
+				android:id="@+id/replyButton"></Button>
 			<Button android:text="Next" android:id="@+id/nextButton"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:onClick="next" android:background="@drawable/btn_black"
