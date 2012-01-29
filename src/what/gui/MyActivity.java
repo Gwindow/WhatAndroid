@@ -25,11 +25,11 @@ import android.widget.Toast;
 
 public class MyActivity extends Activity implements OnGestureListener {
 	private static DisplayMetrics displaymetrics = null;
+	private static int screenHeight, screenWidth;
 	private static final boolean customBackgroundLoaded = true;
 	private static String customBackgroundPath = "";
 	private static Drawable customBackgroundDrawable;
 	private GestureDetector gestureDetector;
-	private int height, width;
 	private DecimalFormat df = new DecimalFormat("#.00");
 	private View v;
 	private static BitmapDrawable resizedBackground;
@@ -142,17 +142,17 @@ public class MyActivity extends Activity implements OnGestureListener {
 		if (displaymetrics == null) {
 			displaymetrics = new DisplayMetrics();
 			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-			height = displaymetrics.heightPixels;
-			width = displaymetrics.widthPixels;
+			screenHeight = displaymetrics.heightPixels;
+			screenWidth = displaymetrics.widthPixels;
 		}
 	}
 
 	public int getHeight() {
-		return height;
+		return screenHeight;
 	}
 
 	public int getWidth() {
-		return width;
+		return screenWidth;
 	}
 
 	public void lockScreenRotation() {

@@ -16,11 +16,9 @@
 		android:layout_width="fill_parent" android:layout_height="0dip"
 		android:layout_weight="1" android:layout_marginLeft="10dip"
 		android:layout_marginRight="10dip" android:layout_marginBottom="10dip">
-
 		<LinearLayout android:id="@+id/scrollLayout"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
 			android:orientation="vertical" />
-
 	</ScrollView>
 	<LinearLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:orientation="horizontal">
@@ -33,9 +31,9 @@
 				android:text="Previous" android:layout_height="wrap_content"
 				android:id="@+id/previousButton"></Button>
 			<Button android:layout_width="wrap_content"
-				android:layout_centerHorizontal="true" android:onClick="Reply"
+				android:layout_centerHorizontal="true" android:onClick="reply"
 				android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
-				android:text="reply" android:layout_height="wrap_content"
+				android:text="Reply" android:layout_height="wrap_content"
 				android:id="@+id/replyButton"></Button>
 			<Button android:text="Next" android:id="@+id/nextButton"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"

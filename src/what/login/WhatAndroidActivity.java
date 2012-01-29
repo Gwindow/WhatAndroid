@@ -59,6 +59,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		rememberme.setOnClickListener(this);
 		ssl = (CheckBox) this.findViewById(R.id.ssl_checkbox);
 		ssl.setOnClickListener(this);
+		// TODO remove
+		ssl.setVisibility(CheckBox.INVISIBLE);
 		login = (Button) this.findViewById(R.id.login);
 		login.setOnClickListener(this);
 
@@ -138,9 +140,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == login.getId()) {
-			if (username.length() > 0 && password.length() > 0)
+			if ((username.length() > 0) && (password.length() > 0)) {
 				new Login().execute(new String[] { username.getText().toString().trim(), password.getText().toString() });
-			else {
+			} else {
 				Toast.makeText(this, "Fill out login form", Toast.LENGTH_LONG).show();
 			}
 		}
