@@ -3,13 +3,14 @@ package what.gui;
 import java.text.DecimalFormat;
 
 import what.settings.Settings;
-import what.settings.SettingsActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -31,8 +32,8 @@ public class MyActivity extends Activity implements OnGestureListener {
 	private int height, width;
 	private DecimalFormat df = new DecimalFormat("#.00");
 	private View v;
-	private static Bitmap resizedBackground;
-	private static String image_id;
+	private static BitmapDrawable resizedBackground;
+	private static String image_id = "";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,12 +65,8 @@ public class MyActivity extends Activity implements OnGestureListener {
 	}
 
 	private void loadDefaultBackground() {
-
 		try {
-			v.setBackgroundResource(SettingsActivity.backgroundFromPreference(this));
-			Toast.makeText(this, "default background loaded", Toast.LENGTH_SHORT).show();
-			v.setBackgroundResource(R.drawable.rain_background);
-
+			setAndResizeBackground(R.drawable.rain_background);
 		} catch (Exception e) {
 			e.printStackTrace();
 			v.setBackgroundColor(R.color.black);
@@ -81,10 +78,9 @@ public class MyActivity extends Activity implements OnGestureListener {
 	private void loadCustomBackground() {
 		try {
 			if (!customBackgroundPath.equalsIgnoreCase(Settings.getCustomBackgroundPath())) {
-				customBackgroundDrawable = Drawable.createFromPath(Settings.getCustomBackgroundPath());
-				customBackgroundPath = Settings.getCustomBackgroundPath();
-				v.setBackgroundDrawable(customBackgroundDrawable);
-				Toast.makeText(this, "custom background loaded", Toast.LENGTH_SHORT).show();
+				String path = (Settings.getCustomBackgroundPath());
+				setAndResizeBackground(path);
+				customBackgroundPath = path;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,14 +90,27 @@ public class MyActivity extends Activity implements OnGestureListener {
 		}
 	}
 
-	private void resizeBackground(String new_id) {
+	private void setAndResizeBackground(String new_id) {
 		if (!image_id.equals(new_id)) {
+			Bitmap bitmap = BitmapFactory.decodeFile(new_id);
+			bitmap = Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(), true);
+			resizedBackground = new BitmapDrawable(bitmap);
+			v.setBackgroundDrawable(resizedBackground);
+			image_id = new_id;
+		} else {
+			v.setBackgroundDrawable(resizedBackground);
 		}
 	}
 
-	private void resizeBackground(int new_id) {
+	private void setAndResizeBackground(int new_id) {
 		if (!image_id.equals(String.valueOf(new_id))) {
-
+			Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), new_id);
+			bitmap = Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(), true);
+			resizedBackground = new BitmapDrawable(bitmap);
+			v.setBackgroundDrawable(resizedBackground);
+			image_id = String.valueOf(new_id);
+		} else {
+			v.setBackgroundDrawable(resizedBackground);
 		}
 	}
 

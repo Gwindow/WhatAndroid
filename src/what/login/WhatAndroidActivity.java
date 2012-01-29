@@ -55,6 +55,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		username = (TextView) this.findViewById(R.id.username);
 		password = (TextView) this.findViewById(R.id.password);
 		rememberme = (CheckBox) this.findViewById(R.id.remember_checkbox);
+		rememberme.setChecked(Settings.getRememberMe());
 		rememberme.setOnClickListener(this);
 		ssl = (CheckBox) this.findViewById(R.id.ssl_checkbox);
 		ssl.setOnClickListener(this);
@@ -127,6 +128,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 
 	private void tryAutoLogin() {
 		if (Settings.getRememberMe()) {
+			username.setText(Settings.getUsername());
+			password.setText(Settings.getPassword());
+
 			new Login().execute(new String[] { Settings.getUsername(), Settings.getPassword() });
 		}
 	}
@@ -164,6 +168,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 				Settings.saveSSL(true);
 			}
 			if (rememberme.isChecked()) {
+				Settings.saveRememberMe(true);
 				Settings.saveUsername(username);
 				Settings.savePassword(password);
 			}
