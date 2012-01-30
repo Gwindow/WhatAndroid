@@ -41,7 +41,7 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.inbox);
+		super.setContentView(R.layout.inbox, true);
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		myNotificationManager.cancel(InboxService.ID);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);

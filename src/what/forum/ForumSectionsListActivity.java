@@ -30,8 +30,7 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		setContentView(R.layout.sections, true);
+		super.setContentView(R.layout.sections, true);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 
 		new LoadForumSections().execute();

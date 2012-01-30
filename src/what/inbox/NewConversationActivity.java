@@ -21,7 +21,7 @@ public class NewConversationActivity extends MyActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.newmessage);
+		super.setContentView(R.layout.newmessage, true);
 
 		getBundle();
 		messageSubject = (EditText) this.findViewById(R.id.messageSubject);

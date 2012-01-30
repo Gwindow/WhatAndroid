@@ -33,7 +33,7 @@ public class ConversationActivity extends MyActivity implements OnLongClickListe
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.conversation);
+		super.setContentView(R.layout.conversation, true);
 
 		conversationTitle = (TextView) findViewById(R.id.titleText);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);

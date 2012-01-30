@@ -21,7 +21,7 @@ public class NewThreadActivity extends MyActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.newthread);
+		super.setContentView(R.layout.newthread, true);
 
 		getBundle();
 		threadTitle = (EditText) this.findViewById(R.id.threadTitle);

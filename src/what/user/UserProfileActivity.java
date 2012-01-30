@@ -17,7 +17,7 @@ public class UserProfileActivity extends MyActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.userprofile);
+		super.setContentView(R.layout.userprofile, true);
 		getBundle();
 		new LoadUser().execute();
 	}

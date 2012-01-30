@@ -31,7 +31,7 @@ public class AnnouncementActivity extends MyActivity implements OnClickListener 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.announcements);
+		super.setContentView(R.layout.announcements, true);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		myNotificationManager.cancel(AnnouncementService.IDA);

@@ -32,7 +32,7 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.toptorrents);
+		super.setContentView(R.layout.toptorrents, true);
 		@SuppressWarnings("unused")
 		ReportSender sender = new ReportSender(this);
 

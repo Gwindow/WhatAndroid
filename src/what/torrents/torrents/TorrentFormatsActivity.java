@@ -24,7 +24,7 @@ public class TorrentFormatsActivity extends MyActivity implements OnClickListene
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.formatlist);
+		super.setContentView(R.layout.formatlist, true);
 		title = (TextView) this.findViewById(R.id.title);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		populateLayout();

@@ -36,7 +36,7 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.torrentsearch);
+		super.setContentView(R.layout.torrentsearch, true);
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);

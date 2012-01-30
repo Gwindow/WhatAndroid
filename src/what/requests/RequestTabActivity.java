@@ -24,7 +24,7 @@ public class RequestTabActivity extends MyTabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.tabs);
+		super.setContentView(R.layout.tabs, true);
 
 		getBundle();
 		new LoadRequest().execute();

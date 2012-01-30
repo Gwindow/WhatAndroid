@@ -24,7 +24,7 @@ public class TorrentBookmarksActivity extends MyActivity implements OnClickListe
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.bookmarks);
+		super.setContentView(R.layout.bookmarks, true);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		title = (TextView) this.findViewById(R.id.title);
 		title.setText("Torrent Bookmarks");

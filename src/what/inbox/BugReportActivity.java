@@ -13,7 +13,7 @@ public class BugReportActivity extends MyActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.bugreport);
+		super.setContentView(R.layout.bugreport, true);
 		messageBody = (EditText) this.findViewById(R.id.messageBody);
 	}
 

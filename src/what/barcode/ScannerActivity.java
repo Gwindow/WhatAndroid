@@ -35,7 +35,7 @@ public class ScannerActivity extends MyTabActivity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.scanner);
+		super.setContentView(R.layout.scanner, true);
 		buyButton = (Button) this.findViewById(R.id.buybutton);
 		torrentsButton = (Button) this.findViewById(R.id.torrentsbutton);
 		requestsButton = (Button) this.findViewById(R.id.requestsbutton);

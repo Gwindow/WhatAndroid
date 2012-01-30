@@ -28,7 +28,7 @@ public class SubscriptionsActivity extends MyActivity implements OnClickListener
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.subscriptions);
+		super.setContentView(R.layout.subscriptions, true);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 
 		new LoadSubscriptions().execute();

@@ -35,7 +35,7 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.notifications);
+		super.setContentView(R.layout.notifications, true);
 
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		myNotificationManager.cancel(NotificationService.ID);

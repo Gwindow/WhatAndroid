@@ -32,6 +32,7 @@ public class MyActivity extends Activity implements OnGestureListener {
 	private GestureDetector gestureDetector;
 	private DecimalFormat df = new DecimalFormat("#.00");
 	private View v;
+	private static boolean resizeBackgroundEnabled = true;
 	private static BitmapDrawable resizedBackground;
 	private static String image_id = "";
 
@@ -66,7 +67,7 @@ public class MyActivity extends Activity implements OnGestureListener {
 
 	private void loadDefaultBackground() {
 		try {
-			setAndResizeBackground(R.drawable.rain_background);
+			setAndResizeBackground(R.drawable.bricks_background);
 		} catch (Exception e) {
 			e.printStackTrace();
 			v.setBackgroundColor(R.color.black);
@@ -94,8 +95,10 @@ public class MyActivity extends Activity implements OnGestureListener {
 		if (!image_id.equals(new_id)) {
 			Bitmap bitmap = BitmapFactory.decodeFile(new_id);
 			bitmap = Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(), true);
-			resizedBackground = new BitmapDrawable(bitmap);
-			v.setBackgroundDrawable(resizedBackground);
+			if (resizeBackgroundEnabled) {
+				resizedBackground = new BitmapDrawable(bitmap);
+				v.setBackgroundDrawable(resizedBackground);
+			}
 			image_id = new_id;
 		} else {
 			v.setBackgroundDrawable(resizedBackground);
@@ -105,7 +108,9 @@ public class MyActivity extends Activity implements OnGestureListener {
 	private void setAndResizeBackground(int new_id) {
 		if (!image_id.equals(String.valueOf(new_id))) {
 			Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), new_id);
-			bitmap = Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(), true);
+			if (resizeBackgroundEnabled) {
+				bitmap = Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(), true);
+			}
 			resizedBackground = new BitmapDrawable(bitmap);
 			v.setBackgroundDrawable(resizedBackground);
 			image_id = String.valueOf(new_id);
@@ -237,5 +242,20 @@ public class MyActivity extends Activity implements OnGestureListener {
 	public String toGBString(int s) {
 		double d = s / Math.pow(1024, 3);
 		return df.format(d);
+	}
+
+	/**
+	 * @return the resizeBackgroundEnabled
+	 */
+	public static boolean isResizeBackgroundEnabled() {
+		return resizeBackgroundEnabled;
+	}
+
+	/**
+	 * @param resizeBackgroundEnabled
+	 *            the resizeBackgroundEnabled to set
+	 */
+	public static void setResizeBackgroundEnabled(boolean resizeBackgroundEnabled) {
+		MyActivity.resizeBackgroundEnabled = resizeBackgroundEnabled;
 	}
 }

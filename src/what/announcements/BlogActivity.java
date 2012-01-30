@@ -31,7 +31,7 @@ public class BlogActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.blog);
+		super.setContentView(R.layout.blog, true);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		myNotificationManager.cancel(AnnouncementService.IDB);

@@ -4,6 +4,7 @@ import what.gui.MyActivity;
 import what.gui.R;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import api.forum.thread.Thread;
@@ -86,6 +88,9 @@ public class PostOptionsActivity extends MyActivity {
 		input.setMinWidth(this.getWidth() / 2);
 		input.setText(QuoteBuffer.getBuffer());
 		alert.setView(input);
+
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
 		alert.setPositiveButton("Post", new DialogInterface.OnClickListener() {
 			@Override

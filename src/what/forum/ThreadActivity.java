@@ -8,6 +8,7 @@ import what.gui.MyActivity;
 import what.gui.R;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,6 +19,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,7 +46,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.posts);
+		super.setContentView(R.layout.posts, true);
 
 		threadTitle = (TextView) findViewById(R.id.titleText);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
@@ -158,6 +160,14 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			intent.putExtras(b);
 			startActivityForResult(intent, 0);
 		}
+	}
+
+	public void showThreadInfo(View v) {
+		/*
+		 * Bundle b = new Bundle(); intent = new Intent(ThreadActivity.this, what.forum.ThreadInfoActivity.class);
+		 * b.putInt("id", id); b.putBoolean("subscribed", thread.getResponse().isSubscribed()); intent.putExtras(b);
+		 * startActivityForResult(intent, 0);
+		 */
 	}
 
 	@Override
@@ -318,6 +328,8 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		input.setMinWidth(this.getWidth() / 2);
 		input.setText(QuoteBuffer.getBuffer());
 		alert.setView(input);
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
 		alert.setPositiveButton("Post", new DialogInterface.OnClickListener() {
 			@Override
