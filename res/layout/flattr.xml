@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:flattr_sdk="http://schemas.flattr4android.com/sdk"
 	android:orientation="vertical" android:layout_width="fill_parent"
-	android:background="@drawable/wood2" android:layout_height="fill_parent">
+	 android:layout_height="fill_parent">
 	<TextView android:id="@+id/titleText" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:gravity="center"
 		android:text="Donate via Flattr" android:textColor="@color/white"

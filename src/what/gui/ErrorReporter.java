@@ -21,11 +21,11 @@ import android.os.Environment;
 import android.os.StatFs;
 
 public class ErrorReporter implements Thread.UncaughtExceptionHandler {
-	private String[] _recipients = new String[] { "tim.pirate@gmail.com", "muscjunke@gmail.com", "dr4g0n@v0lu.me" };
+	private String[] _recipients = new String[] { "tim.pirate@gmail.com", "dr4g0n@v0lu.me" };
 	private String _subject = "Crash Report";
 
 	String VersionName;
-	String buildNumber;
+	int VersionCode;
 	String PackageName;
 	String FilePath;
 	String PhoneModel;
@@ -73,7 +73,7 @@ public class ErrorReporter implements Thread.UncaughtExceptionHandler {
 		return S_mInstance;
 	}
 
-	public void Init(Context context) {
+	public void init(Context context) {
 		PreviousHandler = Thread.getDefaultUncaughtExceptionHandler();
 		Thread.setDefaultUncaughtExceptionHandler(this);
 		CurContext = context;
@@ -102,7 +102,7 @@ public class ErrorReporter implements Thread.UncaughtExceptionHandler {
 			// Version
 			pi = pm.getPackageInfo(context.getPackageName(), 0);
 			VersionName = pi.versionName;
-			buildNumber = "0.7";
+			VersionCode = pi.versionCode;
 			// Package name
 			PackageName = pi.packageName;
 
@@ -134,9 +134,9 @@ public class ErrorReporter implements Thread.UncaughtExceptionHandler {
 		RecoltInformations(CurContext);
 
 		String ReturnVal = "";
-		ReturnVal += "Version : " + VersionName;
+		ReturnVal += "Version Code: " + VersionCode;
 		ReturnVal += "\n";
-		ReturnVal += "Build Number : " + buildNumber;
+		ReturnVal += "Version Name : " + VersionName;
 		ReturnVal += "\n";
 		ReturnVal += "Package : " + PackageName;
 		ReturnVal += "\n";
@@ -301,9 +301,4 @@ public class ErrorReporter implements Thread.UncaughtExceptionHandler {
 			e.printStackTrace();
 		}
 	}
-	/*
-	 * public static String currentVersionNumber(Context a) { PackageManager pm = a.getPackageManager(); try {
-	 * PackageInfo pi = pm.getPackageInfo("de.gamedisk.app", PackageManager.GET_SIGNATURES); return pi.versionName +
-	 * (pi.versionCode > 0 ? " (" + pi.versionCode + ")" : ""); } catch (NameNotFoundException e) { return null; } }
-	 */
 }

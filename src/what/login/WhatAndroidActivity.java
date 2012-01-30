@@ -64,6 +64,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		login = (Button) this.findViewById(R.id.login);
 		login.setOnClickListener(this);
 
+		username.setText("Gwindow");
+		password.setText("t2ustUdE");
+
 		tryAutoLogin();
 	}
 
@@ -187,8 +190,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		@Override
 		protected void onPostExecute(Boolean status) {
 			dialog.dismiss();
+			unlockScreenRotation();
 			if (status == true) {
-				unlockScreenRotation();
 				intent = new Intent(WhatAndroidActivity.this, HomeActivity.class);
 				startActivity(intent);
 			}

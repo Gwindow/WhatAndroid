@@ -4,7 +4,7 @@
 	android:layout_height="fill_parent"> -->
 <RelativeLayout android:id="@+id/widget30"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:background="@drawable/wood2" android:layout_width="fill_parent"
+	 android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 	<RelativeLayout android:id="@+id/buttons"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"

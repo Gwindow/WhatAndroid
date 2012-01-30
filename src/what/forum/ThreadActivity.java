@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -101,12 +102,17 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			time = (TextView) layout.findViewById(R.id.time);
 			time.setText(posts.get(i).getAddedTime());
 			body = (WebView) layout.findViewById(R.id.post);
+			body.getSettings().setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
+			// body.getSettings().setBuiltInZoomControls(true);
+			// body.setInitialScale(1);
 			// TODO if statement to check if avatars enabled
 
 			// TODO confirm that the following 2 lines fix large image loading
 			// body.getSettings().setLoadWithOverviewMode(true);
 			body.getSettings().setUseWideViewPort(true);
-			body.loadData(posts.get(i).getBody(), "text/html", "utf-8");
+			body.setVerticalScrollBarEnabled(true);
+			body.setVerticalScrollbarOverlay(true);
+			body.loadData(posts.get(i).getBody().trim(), "text/html", "utf-8");
 			// body.setBackgroundColor(R.drawable.btn_black);
 			listOfPosts.add(layout);
 			listOfPosts.get(i).setId(i);

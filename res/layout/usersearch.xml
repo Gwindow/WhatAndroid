@@ -2,7 +2,7 @@
 
 <RelativeLayout android:id="@+id/widget30"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:background="@drawable/wood2" android:layout_width="fill_parent"
+	 android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 	<TextView android:id="@+id/title" android:layout_width="fill_parent"
 		android:text="User Search" android:layout_height="wrap_content"

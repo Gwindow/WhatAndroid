@@ -43,9 +43,10 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home, true);
 
+		// TODO reenable
 		// startServices();
 
-		showFirstRunDialog();
+		// showFirstRunDialog();
 
 		Toast.makeText(this, String.valueOf(Settings.getCustomBackground()), Toast.LENGTH_SHORT).show();
 		Toast.makeText(this, String.valueOf(Settings.getCustomBackgroundPath()), Toast.LENGTH_SHORT).show();
@@ -197,9 +198,9 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 			List<Threads> threads = subscriptions.getResponse().getThreads();
 			for (int i = 0; i < threads.size(); i++) {
 				if ((i % 2) == 0) {
-					threadList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
+					threadList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_odd, null));
 				} else {
-					threadList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+					threadList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_even, null));
 				}
 				threadList.get(i).setTextSize(18);
 				threadList.get(i).setText(threads.get(i).getForumName() + " > " + threads.get(i).getThreadTitle());

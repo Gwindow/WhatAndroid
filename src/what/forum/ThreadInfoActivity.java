@@ -7,7 +7,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-//TODO enable thread subscribed in php
 public class ThreadInfoActivity extends MyActivity implements OnCheckedChangeListener {
 	private CheckBox subscribed;
 	private boolean isSubscribed;
@@ -32,12 +31,6 @@ public class ThreadInfoActivity extends MyActivity implements OnCheckedChangeLis
 		isSubscribed = b.getBoolean("subscribed");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged(android.widget.CompoundButton,
-	 * boolean)
-	 */
 	@Override
 	public void onCheckedChanged(CompoundButton v, boolean isChecked) {
 		if (v.getId() == subscribed.getId()) {

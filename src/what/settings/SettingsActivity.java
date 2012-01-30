@@ -145,14 +145,14 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 						"0"));
 		switch (resId) {
 		case 1:
-			return R.drawable.wood2;
+			return R.drawable.bricks_background;
 		case 2:
 			// return some other background's resource ID.
 		case 3:
 			// ...
 		case 0:
 		default:
-			return R.drawable.wood2;
+			return R.drawable.bricks_background;
 		}
 	}
 
