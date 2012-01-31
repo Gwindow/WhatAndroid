@@ -64,9 +64,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		login = (Button) this.findViewById(R.id.login);
 		login.setOnClickListener(this);
 
-		username.setText("Gwindow");
-		password.setText("t2ustUdE");
-
 		tryAutoLogin();
 	}
 
