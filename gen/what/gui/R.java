@@ -20,6 +20,7 @@ public final class R {
         public static final int button_yellow=0x7f070005;
         public static final int lightGray=0x7f070004;
         public static final int textview_colors=0x7f070008;
+        public static final int textview_colors2=0x7f070009;
         public static final int transparent=0x7f070000;
         public static final int transparentBlack=0x7f070001;
         public static final int what_gray=0x7f070007;

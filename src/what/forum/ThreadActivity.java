@@ -32,7 +32,6 @@ import android.widget.Toast;
 import api.forum.thread.Posts;
 import api.forum.thread.Thread;
 import api.util.Triple;
-import api.util.Tuple;
 
 public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	private LinearLayout scrollLayout;
@@ -119,7 +118,8 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			listOfPosts.get(i).setClickable(true);
 			listOfPosts.get(i).setOnLongClickListener(this);
 			scrollLayout.addView(listOfPosts.get(i));
-			new LoadAvatar().execute(new Tuple<Integer, String>(i, posts.get(i).getAuthor().getAvatar()));
+			new LoadAvatar().execute(new Triple<Integer, Integer, String>(i, posts.get(i).getAuthor().getAuthorId().intValue(),
+					posts.get(i).getAuthor().getAvatar()));
 		}
 	}
 
@@ -169,11 +169,9 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	}
 
 	public void showThreadInfo(View v) {
-		/*
-		 * Bundle b = new Bundle(); intent = new Intent(ThreadActivity.this, what.forum.ThreadInfoActivity.class);
+		/* Bundle b = new Bundle(); intent = new Intent(ThreadActivity.this, what.forum.ThreadInfoActivity.class);
 		 * b.putInt("id", id); b.putBoolean("subscribed", thread.getResponse().isSubscribed()); intent.putExtras(b);
-		 * startActivityForResult(intent, 0);
-		 */
+		 * startActivityForResult(intent, 0); */
 	}
 
 	@Override
@@ -236,26 +234,32 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		super.onPause();
 	}
 
-	private class LoadAvatar extends AsyncTask<Tuple<Integer, String>, Void, Triple<Boolean, Integer, Bitmap>> {
+	private class LoadAvatar extends AsyncTask<Triple<Integer, Integer, String>, Void, Triple<Boolean, Integer, Bitmap>> {
 		@Override
 		protected void onPreExecute() {
 
 		}
 
 		@Override
-		protected Triple<Boolean, Integer, Bitmap> doInBackground(Tuple<Integer, String>... params) {
-			Bitmap b;
-			String s = params[0].getB();
+		protected Triple<Boolean, Integer, Bitmap> doInBackground(Triple<Integer, Integer, String>... params) {
+			Bitmap bitmap;
 			int pos = params[0].getA().intValue();
-			if (s.length() > 0) {
+			int id = params[0].getB();
+			String url = params[0].getC();
+			// if (!ImageCache.hasImage(id, url)) {
+			if (url.length() > 0) {
 				try {
-					b = ImageLoader.loadBitmap(s);
-					return new Triple<Boolean, Integer, Bitmap>(true, pos, b);
+					bitmap = ImageLoader.loadBitmap(url);
+					// ImageCache.saveImage(id, url, bitmap);
+					// Log.v("cache", "Image saved");
+					return new Triple<Boolean, Integer, Bitmap>(true, pos, bitmap);
 				} catch (Exception e) {
 					e.printStackTrace();
 					return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
 				}
 			}
+			/* } else { Log.v("cache", "Image loaded"); return new Triple<Boolean, Integer, Bitmap>(true, pos,
+			 * ImageCache.getImage(id)); } */
 			return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
 		}
 

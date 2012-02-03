@@ -1,5 +1,6 @@
 package what.login;
 
+import what.cache.ImageCache;
 import what.gui.MyActivity;
 import what.gui.R;
 import what.home.HomeActivity;
@@ -43,6 +44,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		super.setContentView(R.layout.login);
 
 		Settings.init(this);
+		ImageCache.init();
 		INSTALLED_VERSION = getInstalledVersion();
 		MySoup.setSite(SITE);
 
