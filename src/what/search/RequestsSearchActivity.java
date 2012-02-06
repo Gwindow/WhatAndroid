@@ -18,13 +18,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import api.search.user.Results;
-import api.search.user.UserSearch;
+import api.search.requests.RequestsSearch;
+import api.search.requests.Results;
 
-public class RequestSearchActivity extends MyActivity implements OnClickListener {
+public class RequestsSearchActivity extends MyActivity implements OnClickListener {
 	private ArrayList<TextView> resultList = new ArrayList<TextView>();
 	private LinearLayout scrollLayout;
-	private UserSearch userSearch;
+	private RequestsSearch requestsSearch;
 	private Intent intent;
 	private ProgressDialog dialog;
 	private String searchTerm = "", tagsearchTerm = "";
@@ -99,10 +99,10 @@ public class RequestSearchActivity extends MyActivity implements OnClickListener
 	}
 
 	private void populateLayout() {
-		setButtonState(backButton, userSearch.hasPreviousPage());
-		setButtonState(nextButton, userSearch.hasNextPage());
+		setButtonState(backButton, requestsSearch.hasPreviousPage());
+		setButtonState(nextButton, requestsSearch.hasNextPage());
 
-		List<Results> results = userSearch.getResponse().getResults();
+		List<Results> results = requestsSearch.getResponse().getResults();
 
 		if (!results.isEmpty()) {
 
@@ -112,7 +112,9 @@ public class RequestSearchActivity extends MyActivity implements OnClickListener
 				} else {
 					resultList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
 				}
-				resultList.get(i).setText(results.get(i).getUsername());
+				resultList.get(i).setText(
+						results.get(i).getArtist() + " - " + results.get(i).getTitle() + " ["
+								+ results.get(i).getYear().toString() + "]");
 				resultList.get(i).setTextSize(18);
 				resultList.get(i).setId(i);
 				resultList.get(i).setOnClickListener(this);
@@ -132,22 +134,24 @@ public class RequestSearchActivity extends MyActivity implements OnClickListener
 		}
 	}
 
-	private void openUser(int i) {
-		Toast.makeText(this, String.valueOf(i), Toast.LENGTH_SHORT).show();
+	private void openRequest(int i) {
+		Bundle b = new Bundle();
+		// TODO hashmap
+		// Intent intent = new Intent(RequestsSearchActivity.this, RequestTabActivity.class);
+		b.putInt("requestId", i);
 	}
 
 	@Override
 	public void onClick(View v) {
 		for (int i = 0; i < (resultList.size()); i++) {
 			if (v.getId() == resultList.get(i).getId()) {
-				openUser(i);
 			}
 		}
 	}
 
 	public void next(View v) {
 		Bundle b = new Bundle();
-		intent = new Intent(RequestSearchActivity.this, what.search.RequestSearchActivity.class);
+		intent = new Intent(RequestsSearchActivity.this, what.search.RequestsSearchActivity.class);
 		b.putInt("page", page + 1);
 		b.putString("searchTerm", searchTerm);
 		b.putString("tagsearchTerm", tagsearchTerm);
@@ -163,7 +167,7 @@ public class RequestSearchActivity extends MyActivity implements OnClickListener
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 		if ((e2.getX() - e1.getX()) > 35) {
 			try {
-				if (userSearch.hasNextPage()) {
+				if (requestsSearch.hasNextPage()) {
 					next(null);
 				}
 			} catch (Exception e) {
@@ -184,7 +188,7 @@ public class RequestSearchActivity extends MyActivity implements OnClickListener
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
-			dialog = new ProgressDialog(RequestSearchActivity.this);
+			dialog = new ProgressDialog(RequestsSearchActivity.this);
 			dialog.setIndeterminate(true);
 			dialog.setMessage("Loading...");
 			dialog.show();
@@ -192,8 +196,8 @@ public class RequestSearchActivity extends MyActivity implements OnClickListener
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			userSearch = UserSearch.userSearchFromSearchTermAndPage(searchTerm, page);
-			return userSearch.getStatus();
+			requestsSearch = RequestsSearch.requestSearchFromSearchTerm(searchTerm, page);
+			return requestsSearch.getStatus();
 		}
 
 		@Override
@@ -203,7 +207,7 @@ public class RequestSearchActivity extends MyActivity implements OnClickListener
 			}
 			dialog.dismiss();
 			if (status == false) {
-				Toast.makeText(RequestSearchActivity.this, "Could not load search results", Toast.LENGTH_LONG).show();
+				Toast.makeText(RequestsSearchActivity.this, "Could not load search results", Toast.LENGTH_LONG).show();
 			}
 			unlockScreenRotation();
 		}

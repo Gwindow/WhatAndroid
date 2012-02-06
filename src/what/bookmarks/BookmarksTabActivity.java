@@ -26,7 +26,7 @@ public class BookmarksTabActivity extends MyTabActivity {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.tabs, true);
 		// TODO reenable
-		// new LoadBookmarks().execute();
+		new LoadBookmarks().execute();
 
 	}
 
@@ -37,16 +37,12 @@ public class BookmarksTabActivity extends MyTabActivity {
 		// Create an Intent to launch an Activity for the tab (to be reused)
 		intent = new Intent().setClass(BookmarksTabActivity.this, TorrentBookmarksActivity.class);
 		// Initialize a TabSpec for each tab and add it to the TabHost
-		spec =
-				tabHost.newTabSpec("torrents").setIndicator("Torrents", res.getDrawable(R.drawable.music_icon_dark))
-						.setContent(intent);
+		spec = tabHost.newTabSpec("torrents").setIndicator("Torrents", res.getDrawable(R.drawable.tab_music)).setContent(intent);
 		tabHost.addTab(spec);
 
 		// Do the same for the other tabs
 		intent = new Intent().setClass(BookmarksTabActivity.this, ArtistBookmarksActivity.class);
-		spec =
-				tabHost.newTabSpec("artists").setIndicator("Artists", res.getDrawable(R.drawable.artist_icon_dark))
-						.setContent(intent);
+		spec = tabHost.newTabSpec("artists").setIndicator("Artists", res.getDrawable(R.drawable.tab_artist)).setContent(intent);
 		tabHost.addTab(spec);
 
 		tabHost.setCurrentTab(0);

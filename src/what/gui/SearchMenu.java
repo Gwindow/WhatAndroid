@@ -38,7 +38,7 @@ public class SearchMenu extends MyActivity {
 	}
 
 	public void requests(View v) {
-		intent = new Intent(SearchMenu.this, what.search.RequestSearchActivity.class);
+		intent = new Intent(SearchMenu.this, what.search.RequestsSearchActivity.class);
 		startActivityForResult(intent, 0);
 	}
 

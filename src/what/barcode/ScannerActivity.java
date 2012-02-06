@@ -1,35 +1,34 @@
 package what.barcode;
 
-import what.gui.MyTabActivity;
+import what.gui.MyActivity;
 import what.gui.R;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TabHost;
 import android.widget.Toast;
-import api.products.ProductSearch;
+import api.search.requests.CrossReference;
+import api.search.requests.RequestsSearch;
+import api.util.Triple;
 
-public class ScannerActivity extends MyTabActivity implements OnClickListener {
+public class ScannerActivity extends MyActivity implements OnClickListener, DialogInterface.OnClickListener {
 	private static final String KEY = "AIzaSyDOPEJep1GSxaWylXm7Tvdytozve8odmuo";
+	private static final String ZXING_MARKETPLACE_URL = "market://details?id=com.google.zxing.client.android";
 	private Intent intent;
 	private String contents;
 	private String format;
 	private Button buyButton;
 	private ProgressDialog dialog;
-	private String upc, searchterm;
-	private ProductSearch productSearch;
-	private Resources res; // Resource object to get Drawables
-	private TabHost tabHost;// The activity TabHost
-	private TabHost.TabSpec spec; // Resusable TabSpec for each tab
+	private String upc, searchTerm;
+	private RequestsSearch requestsSearch;
 	private Button torrentsButton, requestsButton;
 
 	@Override
@@ -45,10 +44,31 @@ public class ScannerActivity extends MyTabActivity implements OnClickListener {
 	}
 
 	public void scan(View v) {
-		intent = new Intent("com.google.zxing.client.android.SCAN");
-		intent.setPackage("com.google.zxing.client.android");
-		intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
-		startActivityForResult(intent, 0);
+		try {
+			intent = new Intent("com.google.zxing.client.android.SCAN");
+			intent.setPackage("com.google.zxing.client.android");
+			intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+			startActivityForResult(intent, 0);
+		} catch (Exception e) {
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+			alert.setTitle("Barcode Scanner not found");
+			alert.setMessage("The Zxing Barcode Scanner is required to use the scanning features, would you like to install it?");
+			alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					openMarketPlaceUrl(ZXING_MARKETPLACE_URL);
+				}
+			});
+			alert.setNegativeButton("No", null);
+			alert.setCancelable(true);
+			alert.create().show();
+		}
+	}
+
+	private void openMarketPlaceUrl(String url) {
+		Intent i = new Intent(Intent.ACTION_VIEW);
+		i.setData(Uri.parse(url));
+		startActivity(i);
 	}
 
 	public void buy(View v) {
@@ -90,12 +110,6 @@ public class ScannerActivity extends MyTabActivity implements OnClickListener {
 
 	private void populateLayout() {
 
-		Toast.makeText(this, "name: " + searchterm, Toast.LENGTH_LONG).show();
-		// if music doesnt exsist on what open up a popup
-		// displayMessagePopup();
-		// else {
-		// populate layout with search results
-		// }
 	}
 
 	public void displayEditTextPopup() {
@@ -151,81 +165,58 @@ public class ScannerActivity extends MyTabActivity implements OnClickListener {
 	private void openTorrentSearch() {
 		Bundle b = new Bundle();
 		intent = new Intent(this, what.search.TorrentSearchActivity.class);
-		b.putString("searchTerm", searchterm);
+		b.putString("searchTerm", searchTerm);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
 
 	private void openRequestSearch() {
 		Bundle b = new Bundle();
-		intent = new Intent(this, what.search.RequestSearchActivity.class);
-		b.putString("searchTerm", searchterm);
+		intent = new Intent(ScannerActivity.this, what.search.RequestsSearchActivity.class);
+		b.putString("searchTerm", searchTerm);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
 
 	public void displayFoundPopup(int torrents, int requests) {
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		AlertDialog alert = new AlertDialog.Builder(this).create();
 
-		alert.setTitle("");
+		alert.setTitle("Results Found");
 
 		if ((torrents > 0) && (requests > 0)) {
-			alert.setMessage("Found " + torrents + " and " + requests);
-			final CharSequence[] items = { "Torrents", "Requests", "Buy it", "Close" };
-
-			alert.setItems(items, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int item) {
-					if (item == 0) {
-						openTorrentSearch();
-					}
-					if (item == 1) {
-						openRequestSearch();
-					}
-					if (item == 2) {
-						buy(null);
-					}
-
-				}
-			});
+			alert.setMessage("Found " + torrents + " torrents and " + requests + " requests");
+			alert.setButton(AlertDialog.BUTTON1, "Torrents", this);
+			alert.setButton(AlertDialog.BUTTON2, "Requests", this);
+			alert.setButton(AlertDialog.BUTTON3, "Buy it", this);
 		}
 
 		if ((torrents > 0) && (requests == 0)) {
-			alert.setMessage("Found " + torrents + " and " + requests);
-			final CharSequence[] items = { "Torrents", "Buy it", "Close" };
-
-			alert.setItems(items, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int item) {
-					if (item == 0) {
-						openTorrentSearch();
-					}
-					if (item == 1) {
-						buy(null);
-					}
-
-				}
-			});
+			alert.setMessage("Found " + torrents + " torrents");
+			alert.setButton(AlertDialog.BUTTON1, "Torrents", this);
+			alert.setButton(AlertDialog.BUTTON3, "Buy it", this);
 		}
 
 		if ((torrents == 0) && (requests > 0)) {
-			alert.setMessage("Found " + torrents + " and " + requests);
-			final CharSequence[] items = { "Requests", "Buy it", "Close" };
-
-			alert.setItems(items, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int item) {
-					if (item == 0) {
-						openRequestSearch();
-					}
-					if (item == 1) {
-						buy(null);
-					}
-				}
-			});
+			alert.setMessage("Found " + requests + " requests");
+			alert.setButton(AlertDialog.BUTTON2, "Requests", this);
+			alert.setButton(AlertDialog.BUTTON3, "Buy it", this);
 		}
 
 		alert.show();
+	}
+
+	@Override
+	public void onClick(DialogInterface dialog, int item) {
+		if (item == AlertDialog.BUTTON1) {
+			openTorrentSearch();
+		}
+		if (item == AlertDialog.BUTTON2) {
+			openRequestSearch();
+		}
+		if (item == AlertDialog.BUTTON3) {
+			buy(null);
+		}
+
 	}
 
 	@Override
@@ -237,7 +228,7 @@ public class ScannerActivity extends MyTabActivity implements OnClickListener {
 		// }
 	}
 
-	private class LoadSearchResults extends AsyncTask<Void, Void, Boolean> {
+	private class LoadSearchResults extends AsyncTask<Void, Void, Triple<Boolean, Integer, Integer>> {
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
@@ -248,26 +239,29 @@ public class ScannerActivity extends MyTabActivity implements OnClickListener {
 		}
 
 		@Override
-		protected Boolean doInBackground(Void... params) {
-			productSearch = ProductSearch.productSearchFromUPC(upc);
-			if (productSearch.hasItems()) {
-				searchterm = productSearch.getItems().get(0).getProduct().getTitle();
-				// TODO do what search
-				return true;
+		protected Triple<Boolean, Integer, Integer> doInBackground(Void... params) {
+			requestsSearch = CrossReference.crossReferenceRequestsByUPC(upc);
+			int torrentsFound = 0, requestsFound = 0;
+			if (requestsSearch.getResponse().getResults() != null && !requestsSearch.getResponse().getResults().isEmpty()) {
+				requestsFound = requestsSearch.getResponse().getResults().size();
+				return new Triple<Boolean, Integer, Integer>(true, 0, requestsFound);
 			}
-			return false;
+			return new Triple<Boolean, Integer, Integer>(false, 0, 0);
 		}
 
 		@Override
-		protected void onPostExecute(Boolean status) {
-			if (status == true) {
-				populateLayout();
-			}
-			if (status == false) {
-				Toast.makeText(ScannerActivity.this, "Could not find product", Toast.LENGTH_LONG).show();
-			}
+		protected void onPostExecute(Triple<Boolean, Integer, Integer> status) {
 			dialog.dismiss();
-			unlockScreenRotation();
+			searchTerm = CrossReference.getDeterminedSearchTerm();
+			Log.v("searchTerm", searchTerm);
+			if (status.getA() == true) {
+				displayFoundPopup(status.getB(), status.getC());
+				unlockScreenRotation();
+			}
+			if (status.getA() == false) {
+				displayNotFoundPopup();
+				unlockScreenRotation();
+			}
 		}
 	}
 

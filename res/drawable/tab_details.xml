@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- When selected, use dark -->
+    <item android:drawable="@drawable/details_icon_dark"
+          android:state_selected="true" />
+    <!-- When not selected, use light-->
+    <item android:drawable="@drawable/details_icon_light" />
+</selector>

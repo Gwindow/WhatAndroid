@@ -18,13 +18,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import api.search.user.Results;
-import api.search.user.UserSearch;
+import api.search.requests.RequestsSearch;
 
 public class TorrentSearchActivity extends MyActivity implements OnClickListener {
 	private ArrayList<TextView> resultList = new ArrayList<TextView>();
 	private LinearLayout scrollLayout;
-	private UserSearch userSearch;
+	private RequestsSearch requestSearch;
 	private Intent intent;
 	private ProgressDialog dialog;
 	private String searchTerm = "", tagsearchTerm = "";
@@ -99,10 +98,10 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 	}
 
 	private void populateLayout() {
-		setButtonState(backButton, userSearch.hasPreviousPage());
-		setButtonState(nextButton, userSearch.hasNextPage());
+		setButtonState(backButton, requestSearch.hasPreviousPage());
+		setButtonState(nextButton, requestSearch.hasNextPage());
 
-		List<Results> results = userSearch.getResponse().getResults();
+		List<api.search.requests.Results> results = requestSearch.getResponse().getResults();
 
 		if (!results.isEmpty()) {
 
@@ -112,7 +111,7 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 				} else {
 					resultList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
 				}
-				resultList.get(i).setText(results.get(i).getUsername());
+				resultList.get(i).setText(results.get(i).getTitle());
 				resultList.get(i).setTextSize(18);
 				resultList.get(i).setId(i);
 				resultList.get(i).setOnClickListener(this);
@@ -163,7 +162,7 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 		if ((e2.getX() - e1.getX()) > 35) {
 			try {
-				if (userSearch.hasNextPage()) {
+				if (requestSearch.hasNextPage()) {
 					next(null);
 				}
 			} catch (Exception e) {
@@ -192,8 +191,8 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			userSearch = UserSearch.userSearchFromSearchTermAndPage(searchTerm, page);
-			return userSearch.getStatus();
+			requestSearch = RequestsSearch.requestSearchFromSearchTerm(searchTerm);
+			return requestSearch.getStatus();
 		}
 
 		@Override

@@ -38,15 +38,13 @@ public class TorrentTabActivity extends MyTabActivity {
 		intent = new Intent().setClass(this, TorrentInfoActivity.class);
 		// Initialize a TabSpec for each tab and add it to the TabHost
 		spec =
-				tabHost.newTabSpec("torrent info").setIndicator("Info", res.getDrawable(R.drawable.torrentinfo_icon_dark))
+				tabHost.newTabSpec("torrent info").setIndicator("Info", res.getDrawable(R.drawable.tab_torrentinfo))
 						.setContent(intent);
 		tabHost.addTab(spec);
 
 		// Do the same for the other tabs
 		intent = new Intent().setClass(this, TorrentFormatsActivity.class);
-		spec =
-				tabHost.newTabSpec("formats").setIndicator("Formats", res.getDrawable(R.drawable.download_icon_dark))
-						.setContent(intent);
+		spec = tabHost.newTabSpec("formats").setIndicator("Formats", res.getDrawable(R.drawable.tab_download)).setContent(intent);
 		tabHost.addTab(spec);
 
 		tabHost.setCurrentTab(0);

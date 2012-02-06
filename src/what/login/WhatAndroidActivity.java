@@ -28,7 +28,6 @@ import api.util.Updater;
 import api.whatstatus.WhatStatus;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
-	// private final static String SITE = "http://67.183.192.159/";
 	private final static String SITE = "http://what.cd/";
 	private final static String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
 	private static double INSTALLED_VERSION;
@@ -62,6 +61,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		ssl = (CheckBox) this.findViewById(R.id.ssl_checkbox);
 		ssl.setOnClickListener(this);
 		// TODO remove
+
 		ssl.setVisibility(CheckBox.INVISIBLE);
 		login = (Button) this.findViewById(R.id.login);
 		login.setOnClickListener(this);

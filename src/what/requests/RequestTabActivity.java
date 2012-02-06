@@ -38,15 +38,11 @@ public class RequestTabActivity extends MyTabActivity {
 		// Create an Intent to launch an Activity for the tab (to be reused)
 		intent = new Intent().setClass(RequestTabActivity.this, RequestActivity.class);
 		// Initialize a TabSpec for each tab and add it to the TabHost
-		spec =
-				tabHost.newTabSpec("request").setIndicator("Request", res.getDrawable(R.drawable.request_icon_dark))
-						.setContent(intent);
+		spec = tabHost.newTabSpec("request").setIndicator("Request", res.getDrawable(R.drawable.tab_request)).setContent(intent);
 		tabHost.addTab(spec);
 
 		intent = new Intent().setClass(RequestTabActivity.this, RequestDetailsActivity.class);
-		spec =
-				tabHost.newTabSpec("details").setIndicator("Details", res.getDrawable(R.drawable.details_icon_dark))
-						.setContent(intent);
+		spec = tabHost.newTabSpec("details").setIndicator("Details", res.getDrawable(R.drawable.tab_details)).setContent(intent);
 		tabHost.addTab(spec);
 
 		tabHost.setCurrentTab(0);
