@@ -1,11 +1,13 @@
 package what.search;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import what.gui.MyActivity;
 import what.gui.R;
+import what.requests.RequestTabActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -32,6 +34,7 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 	private Button backButton, nextButton;
 	private int page;
 	private StringTokenizer tokenizer;
+	private HashMap<Integer, Integer> idMap = new HashMap<Integer, Integer>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,15 +78,17 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 
 	public void search(View v) {
 		searchTerm = searchBar.getText().toString().trim();
-		parseTags();
-		if ((searchTerm.length() > 0) || (tagsearchTerm.length() > 0)) {
-			// reset the page to 1 for the next search
-			page = 1;
-			clear();
-			new LoadSearchResults().execute();
+		if (searchTerm.length() > 0) {
+
 		} else {
-			Toast.makeText(this, "Nothing to search for", Toast.LENGTH_SHORT).show();
+			searchTerm = "";
 		}
+		parseTags();
+		// reset the page to 1 for the next search
+		page = 1;
+		clear();
+		new LoadSearchResults().execute();
+
 	}
 
 	public void parseTags() {
@@ -108,9 +113,9 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 
 			for (int i = 0; i < results.size(); i++) {
 				if ((i % 2) == 0) {
-					resultList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
+					resultList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_even, null));
 				} else {
-					resultList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+					resultList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_odd, null));
 				}
 				resultList.get(i).setText(
 						results.get(i).getArtist() + " - " + results.get(i).getTitle() + " ["
@@ -119,6 +124,7 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 				resultList.get(i).setId(i);
 				resultList.get(i).setOnClickListener(this);
 				scrollLayout.addView(resultList.get(i));
+				idMap.put(i, results.get(i).getRequestId().intValue());
 			}
 		} else {
 			Toast.makeText(this, "Nothing found", Toast.LENGTH_SHORT).show();
@@ -134,17 +140,19 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 		}
 	}
 
-	private void openRequest(int i) {
+	private void openRequest(int id) {
 		Bundle b = new Bundle();
-		// TODO hashmap
-		// Intent intent = new Intent(RequestsSearchActivity.this, RequestTabActivity.class);
-		b.putInt("requestId", i);
+		Intent intent = new Intent(RequestsSearchActivity.this, RequestTabActivity.class);
+		b.putInt("requestId", id);
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
 	}
 
 	@Override
 	public void onClick(View v) {
 		for (int i = 0; i < (resultList.size()); i++) {
 			if (v.getId() == resultList.get(i).getId()) {
+				openRequest(idMap.get(v.getId()));
 			}
 		}
 	}
