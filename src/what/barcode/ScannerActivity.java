@@ -125,7 +125,11 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
 				upc = input.getText().toString();
-				new LoadSearchResults().execute();
+				if (upc.length() > 0) {
+					new LoadSearchResults().execute();
+				} else {
+					Toast.makeText(ScannerActivity.this, "UPC not entered", Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 
@@ -221,11 +225,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 
 	@Override
 	public void onClick(View v) {
-		// for (int i = 0; i < (resultList.size()); i++) {
-		// if (v.getId() == resultList.get(i).getId()) {
-		// openUser(i);
-		// }
-		// }
+
 	}
 
 	private class LoadSearchResults extends AsyncTask<Void, Void, Triple<Boolean, Integer, Integer>> {

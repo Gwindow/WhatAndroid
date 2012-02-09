@@ -3,7 +3,6 @@ package what.search;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import what.gui.MyActivity;
 import what.gui.R;
@@ -29,11 +28,10 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 	private RequestsSearch requestsSearch;
 	private Intent intent;
 	private ProgressDialog dialog;
-	private String searchTerm = "", tagsearchTerm = "";
-	private EditText searchBar, tagsearchBar;
+	private String searchTerm = "", tagSearchTerm = "";
+	private EditText searchBar, tagSearchBar;
 	private Button backButton, nextButton;
 	private int page;
-	private StringTokenizer tokenizer;
 	private HashMap<Integer, Integer> idMap = new HashMap<Integer, Integer>();
 
 	@Override
@@ -44,13 +42,13 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 		nextButton = (Button) this.findViewById(R.id.nextButton);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
-		tagsearchBar = (EditText) this.findViewById(R.id.tagsearchBar);
+		tagSearchBar = (EditText) this.findViewById(R.id.tagsearchBar);
 		setButtonState(backButton, false);
 		setButtonState(nextButton, false);
 		getBundle();
 
 		// if the page is greater than one than get the search term and automatically search for it
-		if ((page > 1) || (searchTerm.length() > 1)) {
+		if ((page > 1) || (searchTerm.length() > 0)) {
 			new LoadSearchResults().execute();
 		}
 	}
@@ -70,37 +68,26 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 		}
 
 		try {
-			tagsearchTerm = b.getString("tagsearchTerm");
+			tagSearchTerm = b.getString("tagSearchTerm");
 		} catch (Exception e) {
-			tagsearchTerm = "";
+			tagSearchTerm = "";
 		}
 	}
 
 	public void search(View v) {
 		searchTerm = searchBar.getText().toString().trim();
-		if (searchTerm.length() > 0) {
-
-		} else {
+		tagSearchTerm = tagSearchBar.getText().toString().trim();
+		if (searchTerm.length() < 0) {
 			searchTerm = "";
 		}
-		parseTags();
+		if (tagSearchTerm.length() < 0) {
+			tagSearchTerm = "";
+		}
 		// reset the page to 1 for the next search
 		page = 1;
 		clear();
 		new LoadSearchResults().execute();
 
-	}
-
-	public void parseTags() {
-		tagsearchTerm = tagsearchBar.getText().toString().trim();
-		tokenizer = new StringTokenizer(tagsearchTerm, ",");
-		String master = "";
-		if (tagsearchTerm.length() > 0) {
-			while (tokenizer.hasMoreTokens()) {
-				master = master.concat(tokenizer.nextToken()).trim();
-			}
-		}
-		tagsearchTerm = master;
 	}
 
 	private void populateLayout() {
@@ -162,7 +149,7 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 		intent = new Intent(RequestsSearchActivity.this, what.search.RequestsSearchActivity.class);
 		b.putInt("page", page + 1);
 		b.putString("searchTerm", searchTerm);
-		b.putString("tagsearchTerm", tagsearchTerm);
+		b.putString("tagsearchTerm", tagSearchTerm);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
@@ -204,7 +191,7 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			requestsSearch = RequestsSearch.requestSearchFromSearchTerm(searchTerm, page);
+			requestsSearch = RequestsSearch.requestSearchFromSearchTermAndTags(searchTerm, tagSearchTerm, page);
 			return requestsSearch.getStatus();
 		}
 

@@ -31,21 +31,23 @@
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
 		android:layout_margin="10dip" android:layout_marginLeft="10dip"
 		android:layout_marginRight="10dip" android:layout_marginTop="5dip"
-		android:layout_marginBottom="5dip"></Button>
+		android:layout_marginBottom="5dip"
+		android:visibility="gone"
+		></Button>
 	<Button android:id="@+id/torrentsbutton" android:background="@drawable/btn_black"
 		style="@style/ButtonText" android:layout_below="@+id/buybutton"
 		android:text="Torrents" android:onClick="torrents" android:padding="5dip"
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
 		android:layout_margin="10dip" android:layout_marginLeft="10dip"
 		android:layout_marginRight="10dip" android:layout_marginTop="5dip"
-		android:layout_marginBottom="5dip"></Button>
+		android:layout_marginBottom="5dip" android:visibility="gone"></Button>
 	<Button android:id="@+id/requestsbutton" android:background="@drawable/btn_black"
 		style="@style/ButtonText" android:layout_below="@+id/torrentsbutton"
 		android:text="Requests" android:onClick="requests" android:padding="5dip"
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
 		android:layout_margin="10dip" android:layout_marginLeft="10dip"
 		android:layout_marginRight="10dip" android:layout_marginTop="5dip"
-		android:layout_marginBottom="5dip"></Button>
+		android:layout_marginBottom="5dip" android:visibility="gone"></Button>
 
 	<!-- <ScrollView android:id="@+id/scrollView" android:layout_below="@id/buybutton" 
 		android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="10dip" 
