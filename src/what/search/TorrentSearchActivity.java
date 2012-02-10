@@ -1,11 +1,12 @@
 package what.search;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import what.gui.MyActivity;
 import what.gui.R;
+import what.torrents.torrents.TorrentTabActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -18,19 +19,20 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import api.search.requests.RequestsSearch;
+import api.search.torrents.TorrentSearch;
 
 public class TorrentSearchActivity extends MyActivity implements OnClickListener {
 	private ArrayList<TextView> resultList = new ArrayList<TextView>();
 	private LinearLayout scrollLayout;
-	private RequestsSearch requestSearch;
+	private TorrentSearch torrentSearch;
 	private Intent intent;
 	private ProgressDialog dialog;
-	private String searchTerm = "", tagsearchTerm = "";
-	private EditText searchBar, tagsearchBar;
+	private String searchTerm = "", tagSearchTerm = "";
+	private EditText searchBar, tagSearchBar;
 	private Button backButton, nextButton;
 	private int page;
-	private StringTokenizer tokenizer;
+	private HashMap<Integer, Integer> idMap = new HashMap<Integer, Integer>();
+	private boolean searchBarsVisible = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,13 +42,15 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 		nextButton = (Button) this.findViewById(R.id.nextButton);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
-		tagsearchBar = (EditText) this.findViewById(R.id.tagsearchBar);
+		tagSearchBar = (EditText) this.findViewById(R.id.tagsearchBar);
 		setButtonState(backButton, false);
 		setButtonState(nextButton, false);
 		getBundle();
 
 		// if the page is greater than one than get the search term and automatically search for it
-		if ((page > 1) || (searchTerm.length() > 1)) {
+		if ((page > 1) || (searchTerm.length() > 0)) {
+			hideSearchBars();
+			searchBar.setText(searchTerm);
 			new LoadSearchResults().execute();
 		}
 	}
@@ -66,56 +70,66 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 		}
 
 		try {
-			tagsearchTerm = b.getString("tagsearchTerm");
+			tagSearchTerm = b.getString("tagSearchTerm");
 		} catch (Exception e) {
-			tagsearchTerm = "";
+			tagSearchTerm = "";
 		}
 	}
 
+	private void hideSearchBars() {
+		searchBar.setVisibility(EditText.GONE);
+		tagSearchBar.setVisibility(EditText.GONE);
+		searchBarsVisible = false;
+	}
+
+	private void showSearchBars() {
+		searchBar.setVisibility(EditText.VISIBLE);
+		tagSearchBar.setVisibility(EditText.VISIBLE);
+		searchBarsVisible = true;
+
+	}
+
 	public void search(View v) {
-		searchTerm = searchBar.getText().toString().trim();
-		parseTags();
-		if ((searchTerm.length() > 0) || (tagsearchTerm.length() > 0)) {
+		if (searchBarsVisible) {
+			searchTerm = searchBar.getText().toString().trim();
+			tagSearchTerm = tagSearchBar.getText().toString().trim();
+			if (searchTerm.length() < 0) {
+				searchTerm = "";
+			}
+			if (tagSearchTerm.length() < 0) {
+				tagSearchTerm = "";
+			}
 			// reset the page to 1 for the next search
 			page = 1;
 			clear();
 			new LoadSearchResults().execute();
+			hideSearchBars();
 		} else {
-			Toast.makeText(this, "Nothing to search for", Toast.LENGTH_SHORT).show();
+			showSearchBars();
 		}
-	}
 
-	public void parseTags() {
-		tagsearchTerm = tagsearchBar.getText().toString().trim();
-		tokenizer = new StringTokenizer(tagsearchTerm, ",");
-		String master = "";
-		if (tagsearchTerm.length() > 0) {
-			while (tokenizer.hasMoreTokens()) {
-				master = master.concat(tokenizer.nextToken()).trim();
-			}
-		}
-		tagsearchTerm = master;
 	}
 
 	private void populateLayout() {
-		setButtonState(backButton, requestSearch.hasPreviousPage());
-		setButtonState(nextButton, requestSearch.hasNextPage());
+		setButtonState(backButton, torrentSearch.hasPreviousPage());
+		setButtonState(nextButton, torrentSearch.hasNextPage());
 
-		List<api.search.requests.Results> results = requestSearch.getResponse().getResults();
+		List<api.search.torrents.Results> results = torrentSearch.getResponse().getResults();
 
 		if (!results.isEmpty()) {
 
 			for (int i = 0; i < results.size(); i++) {
 				if ((i % 2) == 0) {
-					resultList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
+					resultList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_even, null));
 				} else {
-					resultList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+					resultList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_odd, null));
 				}
-				resultList.get(i).setText(results.get(i).getTitle());
+				resultList.get(i).setText(results.get(i).getGroupName() + " [" + results.get(i).getGroupYear().toString() + "]");
 				resultList.get(i).setTextSize(18);
 				resultList.get(i).setId(i);
 				resultList.get(i).setOnClickListener(this);
 				scrollLayout.addView(resultList.get(i));
+				idMap.put(i, results.get(i).getGroupId().intValue());
 			}
 		} else {
 			Toast.makeText(this, "Nothing found", Toast.LENGTH_SHORT).show();
@@ -131,15 +145,19 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 		}
 	}
 
-	private void openUser(int i) {
-		Toast.makeText(this, String.valueOf(i), Toast.LENGTH_SHORT).show();
+	private void openTorrent(int id) {
+		Bundle b = new Bundle();
+		Intent intent = new Intent(TorrentSearchActivity.this, TorrentTabActivity.class);
+		b.putInt("torrentGroupId", id);
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
 	}
 
 	@Override
 	public void onClick(View v) {
 		for (int i = 0; i < (resultList.size()); i++) {
 			if (v.getId() == resultList.get(i).getId()) {
-				openUser(i);
+				openTorrent(idMap.get(v.getId()));
 			}
 		}
 	}
@@ -149,7 +167,7 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 		intent = new Intent(TorrentSearchActivity.this, what.search.TorrentSearchActivity.class);
 		b.putInt("page", page + 1);
 		b.putString("searchTerm", searchTerm);
-		b.putString("tagsearchTerm", tagsearchTerm);
+		b.putString("tagSearchTerm", tagSearchTerm);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
@@ -162,7 +180,7 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 		if ((e2.getX() - e1.getX()) > 35) {
 			try {
-				if (requestSearch.hasNextPage()) {
+				if (torrentSearch.hasNextPage()) {
 					next(null);
 				}
 			} catch (Exception e) {
@@ -191,8 +209,8 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			requestSearch = RequestsSearch.requestSearchFromSearchTerm(searchTerm);
-			return requestSearch.getStatus();
+			torrentSearch = TorrentSearch.torrentSearchFromSearchTermAndTags(searchTerm, tagSearchTerm, page);
+			return torrentSearch.getStatus();
 		}
 
 		@Override
@@ -207,5 +225,4 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 			unlockScreenRotation();
 		}
 	}
-
 }

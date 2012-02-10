@@ -33,6 +33,7 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 	private Button backButton, nextButton;
 	private int page;
 	private HashMap<Integer, Integer> idMap = new HashMap<Integer, Integer>();
+	private boolean searchBarsVisible = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,8 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 
 		// if the page is greater than one than get the search term and automatically search for it
 		if ((page > 1) || (searchTerm.length() > 0)) {
+			hideSearchBars();
+			searchBar.setText(searchTerm);
 			new LoadSearchResults().execute();
 		}
 	}
@@ -74,19 +77,37 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 		}
 	}
 
+	private void hideSearchBars() {
+		searchBar.setVisibility(EditText.GONE);
+		tagSearchBar.setVisibility(EditText.GONE);
+		searchBarsVisible = false;
+	}
+
+	private void showSearchBars() {
+		searchBar.setVisibility(EditText.VISIBLE);
+		tagSearchBar.setVisibility(EditText.VISIBLE);
+		searchBarsVisible = true;
+
+	}
+
 	public void search(View v) {
-		searchTerm = searchBar.getText().toString().trim();
-		tagSearchTerm = tagSearchBar.getText().toString().trim();
-		if (searchTerm.length() < 0) {
-			searchTerm = "";
+		if (searchBarsVisible) {
+			searchTerm = searchBar.getText().toString().trim();
+			tagSearchTerm = tagSearchBar.getText().toString().trim();
+			if (searchTerm.length() < 0) {
+				searchTerm = "";
+			}
+			if (tagSearchTerm.length() < 0) {
+				tagSearchTerm = "";
+			}
+			// reset the page to 1 for the next search
+			page = 1;
+			clear();
+			new LoadSearchResults().execute();
+			hideSearchBars();
+		} else {
+			showSearchBars();
 		}
-		if (tagSearchTerm.length() < 0) {
-			tagSearchTerm = "";
-		}
-		// reset the page to 1 for the next search
-		page = 1;
-		clear();
-		new LoadSearchResults().execute();
 
 	}
 
@@ -149,7 +170,7 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 		intent = new Intent(RequestsSearchActivity.this, what.search.RequestsSearchActivity.class);
 		b.putInt("page", page + 1);
 		b.putString("searchTerm", searchTerm);
-		b.putString("tagsearchTerm", tagSearchTerm);
+		b.putString("tagSearchTerm", tagSearchTerm);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
@@ -191,7 +212,8 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			requestsSearch = RequestsSearch.requestSearchFromSearchTermAndTags(searchTerm, tagSearchTerm, page);
+			// TODO tag search, what the hell is wrong?
+			requestsSearch = RequestsSearch.requestSearchFromSearchTerm(searchTerm, page);
 			return requestsSearch.getStatus();
 		}
 

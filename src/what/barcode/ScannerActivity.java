@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -17,25 +16,23 @@ import android.widget.EditText;
 import android.widget.Toast;
 import api.search.requests.CrossReference;
 import api.search.requests.RequestsSearch;
+import api.search.torrents.TorrentSearch;
 import api.util.Triple;
+import api.util.Tuple;
 
 public class ScannerActivity extends MyActivity implements OnClickListener, DialogInterface.OnClickListener {
-	private static final String KEY = "AIzaSyDOPEJep1GSxaWylXm7Tvdytozve8odmuo";
 	private static final String ZXING_MARKETPLACE_URL = "market://details?id=com.google.zxing.client.android";
 	private Intent intent;
 	private String contents;
-	private String format;
-	private Button buyButton;
 	private ProgressDialog dialog;
 	private String upc, searchTerm;
-	private RequestsSearch requestsSearch;
+	private Tuple<TorrentSearch, RequestsSearch> searches;
 	private Button torrentsButton, requestsButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.scanner, true);
-		buyButton = (Button) this.findViewById(R.id.buybutton);
 		torrentsButton = (Button) this.findViewById(R.id.torrentsbutton);
 		requestsButton = (Button) this.findViewById(R.id.requestsbutton);
 
@@ -71,7 +68,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 		startActivity(i);
 	}
 
-	public void buy(View v) {
+	private void buy() {
 		if (upc.length() > 0) {
 			String url = "http://www.google.com/m/products?q=" + upc + "&source=zxing";
 			Intent i = new Intent(Intent.ACTION_VIEW);
@@ -99,17 +96,12 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 		if (requestCode == 0) {
 			if (resultCode == RESULT_OK) {
 				contents = intent.getStringExtra("SCAN_RESULT");
-				format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 				upc = contents;
 				new LoadSearchResults().execute();
 			} else if (resultCode == RESULT_CANCELED) {
 				Toast.makeText(this, "Scan failed", Toast.LENGTH_LONG).show();
 			}
 		}
-	}
-
-	private void populateLayout() {
-
 	}
 
 	public void displayEditTextPopup() {
@@ -152,7 +144,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 		alert.setPositiveButton("Buy it", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
-				buy(null);
+				buy();
 			}
 		});
 
@@ -168,7 +160,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 
 	private void openTorrentSearch() {
 		Bundle b = new Bundle();
-		intent = new Intent(this, what.search.TorrentSearchActivity.class);
+		intent = new Intent(ScannerActivity.this, what.search.TorrentSearchActivity.class);
 		b.putString("searchTerm", searchTerm);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
@@ -218,7 +210,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 			openRequestSearch();
 		}
 		if (item == AlertDialog.BUTTON3) {
-			buy(null);
+			buy();
 		}
 
 	}
@@ -240,20 +232,24 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 
 		@Override
 		protected Triple<Boolean, Integer, Integer> doInBackground(Void... params) {
-			requestsSearch = CrossReference.crossReferenceRequestsByUPC(upc);
+			searches = CrossReference.crossReferenceTorrentsAndRequestsByUPC(upc);
 			int torrentsFound = 0, requestsFound = 0;
-			if (requestsSearch.getResponse().getResults() != null && !requestsSearch.getResponse().getResults().isEmpty()) {
-				requestsFound = requestsSearch.getResponse().getResults().size();
-				return new Triple<Boolean, Integer, Integer>(true, 0, requestsFound);
+			boolean status = false;
+			if (searches.getB().getResponse().getResults() != null && !searches.getB().getResponse().getResults().isEmpty()) {
+				requestsFound = searches.getB().getResponse().getResults().size();
+				status = true;
 			}
-			return new Triple<Boolean, Integer, Integer>(false, 0, 0);
+			if (searches.getA().getResponse().getResults() != null && !searches.getA().getResponse().getResults().isEmpty()) {
+				torrentsFound = searches.getA().getResponse().getResults().size();
+				status = true;
+			}
+			return new Triple<Boolean, Integer, Integer>(status, torrentsFound, requestsFound);
 		}
 
 		@Override
 		protected void onPostExecute(Triple<Boolean, Integer, Integer> status) {
 			dialog.dismiss();
 			searchTerm = CrossReference.getDeterminedSearchTerm();
-			Log.v("searchTerm", searchTerm);
 			if (status.getA() == true) {
 				displayFoundPopup(status.getB(), status.getC());
 				unlockScreenRotation();
