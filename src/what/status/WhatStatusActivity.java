@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import api.whatstatus.WhatStatus;
 
-public class StatusActivity extends MyActivity {
+public class WhatStatusActivity extends MyActivity {
 	// LinearLayout twitterScroll;
 	ImageView siteStatus, trackerStatus, ircStatus;
 	// ArrayList<TextView> tweetList = new ArrayList<TextView>();
@@ -32,38 +32,38 @@ public class StatusActivity extends MyActivity {
 	public void populateLayout() {
 		switch (whatStatus.getStatus().getSite()) {
 		case 0:
-			siteStatus.setImageDrawable(this.getResources().getDrawable(R.drawable.site_up));
+			siteStatus.setImageResource((R.drawable.site_up));
 			break;
 		case 1:
-			siteStatus.setImageDrawable(this.getResources().getDrawable(R.drawable.site_down));
+			siteStatus.setImageResource((R.drawable.site_down));
 			break;
 		case 2:
-			siteStatus.setImageDrawable(this.getResources().getDrawable(R.drawable.site_maintenance));
+			siteStatus.setImageResource((R.drawable.site_maintenance));
 			break;
 		default:
-			siteStatus.setImageDrawable(this.getResources().getDrawable(R.drawable.site_up));
+			siteStatus.setImageResource((R.drawable.site_up));
 			break;
 		}
 		switch (whatStatus.getStatus().getTracker()) {
 		case 0:
-			trackerStatus.setImageDrawable(this.getResources().getDrawable(R.drawable.site_up));
+			trackerStatus.setImageResource((R.drawable.site_up));
 			break;
 		case 1:
-			trackerStatus.setImageDrawable(this.getResources().getDrawable(R.drawable.site_down));
+			trackerStatus.setImageResource((R.drawable.site_down));
 			break;
 		case 2:
-			trackerStatus.setImageDrawable(this.getResources().getDrawable(R.drawable.site_maintenance));
+			trackerStatus.setImageResource((R.drawable.site_maintenance));
 			break;
 		default:
-			trackerStatus.setImageDrawable(this.getResources().getDrawable(R.drawable.site_up));
+			trackerStatus.setImageResource((R.drawable.site_up));
 			break;
 		}
 		switch (whatStatus.getStatus().getIrc()) {
 		case 0:
-			ircStatus.setImageDrawable(this.getResources().getDrawable(R.drawable.site_up));
+			ircStatus.setImageResource((R.drawable.site_up));
 			break;
 		case 1:
-			ircStatus.setImageDrawable(this.getResources().getDrawable(R.drawable.site_up));
+			ircStatus.setImageResource((R.drawable.site_up));
 			break;
 		}
 		/*
@@ -88,7 +88,7 @@ public class StatusActivity extends MyActivity {
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
-			dialog = new ProgressDialog(StatusActivity.this);
+			dialog = new ProgressDialog(WhatStatusActivity.this);
 			dialog.setIndeterminate(true);
 			dialog.setMessage("Loading...");
 			dialog.show();
@@ -98,7 +98,7 @@ public class StatusActivity extends MyActivity {
 		protected Boolean doInBackground(Void... params) {
 			try {
 				whatStatus = WhatStatus.init();
-				// always returns true until a way to get request status can be implement into whatstatus.info
+				// TODO always returns true until a way to get request status can be implement into whatstatus.info
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -114,7 +114,7 @@ public class StatusActivity extends MyActivity {
 			}
 			dialog.dismiss();
 			if (status == false) {
-				Toast.makeText(StatusActivity.this, "Could not load whatstatus", Toast.LENGTH_LONG).show();
+				Toast.makeText(WhatStatusActivity.this, "Could not load whatstatus", Toast.LENGTH_LONG).show();
 			}
 			unlockScreenRotation();
 		}

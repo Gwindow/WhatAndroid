@@ -59,7 +59,12 @@ public class ConversationActivity extends MyActivity implements OnLongClickListe
 			username.setText(messages.get(i).getSenderName());
 			body = (WebView) layout.findViewById(R.id.post);
 			body.loadData(messages.get(i).getBody(), "text/html", "utf-8");
-			// body.setBackgroundColor(R.drawable.btn_black);
+
+			int PIC_WIDTH = body.getRight() - body.getLeft();
+			Double val = new Double(super.getWidth()) / new Double(PIC_WIDTH);
+			val = val * 100d;
+			body.setInitialScale(val.intValue());
+
 			listOfMessages.add(layout);
 			listOfMessages.get(i).setId(i);
 			listOfMessages.get(i).setClickable(true);

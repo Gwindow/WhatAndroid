@@ -125,7 +125,7 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 
 	private void openMessage(int i) {
 		Bundle b = new Bundle();
-		intent = new Intent(InboxActivity.this, what.forum.ThreadActivity.class);
+		intent = new Intent(InboxActivity.this, what.inbox.ConversationActivity.class);
 		b.putInt("id", inbox.getResponse().getMessages().get(i).getConvId().intValue());
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);

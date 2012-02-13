@@ -5,6 +5,7 @@ import what.gui.MyActivity;
 import what.gui.R;
 import what.home.HomeActivity;
 import what.settings.Settings;
+import what.status.WhatStatusActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -25,7 +26,6 @@ import api.soup.MySoup;
 import api.util.CouldNotLoadException;
 import api.util.Triple;
 import api.util.Updater;
-import api.whatstatus.WhatStatus;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	private final static String SITE = "http://what.cd/";
@@ -207,7 +207,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								unlockScreenRotation();
-								intent = new Intent(WhatAndroidActivity.this, WhatStatus.class);
+								intent = new Intent(WhatAndroidActivity.this, WhatStatusActivity.class);
 								startActivity(intent);
 							}
 

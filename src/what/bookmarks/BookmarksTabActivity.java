@@ -24,7 +24,7 @@ public class BookmarksTabActivity extends MyTabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.tabs, true);
+		super.setContentView(R.layout.tabs);
 		// TODO reenable
 		new LoadBookmarks().execute();
 

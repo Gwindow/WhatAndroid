@@ -76,7 +76,7 @@ public class MainMenu extends MyActivity {
 	}
 
 	public void status(View v) {
-		intent = new Intent(MainMenu.this, what.status.StatusActivity.class);
+		intent = new Intent(MainMenu.this, what.status.WhatStatusActivity.class);
 		startActivityForResult(intent, 0);
 	}
 

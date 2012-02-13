@@ -1,6 +1,7 @@
 package what.top;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import what.gui.MyActivity;
 import what.gui.R;
@@ -28,6 +29,7 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 	private ArrayList<TextView> transferred = new ArrayList<TextView>();
 	private ArrayList<TextView> seeded = new ArrayList<TextView>();
 	private Top top;
+	private HashMap<Integer, Integer> idMap = new HashMap<Integer, Integer>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,11 +40,124 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 
-		populateLayout();
+		new LoadTopTorrents().execute();
 	}
 
-	public void populateLayout() {
-		new LoadTopTorrents().execute();
+	private void populateLayout() {
+		int counter = 0;
+		sectionTitle.add((TextView) getLayoutInflater().inflate(R.layout.forum_section_title, null));
+		sectionTitle.get(0).setText("Most Active Torrents Uploaded in the Past Day");
+		sectionTitle.get(0).setTextSize(15);
+		scrollLayout.addView(sectionTitle.get(0));
+		for (int i = 0; i < top.getResponse().get(0).getResults().size(); i++) {
+			if ((i % 2) == 0) {
+				pastDay.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
+			} else {
+				pastDay.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+			}
+			pastDay.get(i).setText(getTitle(0, i));
+			pastDay.get(i).setOnClickListener(this);
+			idMap.put(counter, getId(0, i));
+			counter++;
+			scrollLayout.addView(pastDay.get(i));
+		}
+
+		sectionTitle.add((TextView) getLayoutInflater().inflate(R.layout.forum_section_title, null));
+		sectionTitle.get(1).setText("Most Active Torrents Uploaded in the Past Week");
+		sectionTitle.get(1).setTextSize(15);
+		scrollLayout.addView(sectionTitle.get(1));
+		for (int i = 0; i < top.getResponse().get(1).getResults().size(); i++) {
+			if ((i % 2) == 0) {
+				pastWeek.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
+			} else {
+				pastWeek.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+			}
+			pastWeek.get(i).setText(getTitle(1, i));
+			pastWeek.get(i).setOnClickListener(this);
+			idMap.put(counter, getId(1, i));
+			counter++;
+			scrollLayout.addView(pastWeek.get(i));
+		}
+
+		sectionTitle.add((TextView) getLayoutInflater().inflate(R.layout.forum_section_title, null));
+		sectionTitle.get(2).setText("Most Active Torrents of All Time");
+		sectionTitle.get(2).setTextSize(15);
+		scrollLayout.addView(sectionTitle.get(2));
+		for (int i = 0; i < top.getResponse().get(2).getResults().size(); i++) {
+			if ((i % 2) == 0) {
+				allTime.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
+			} else {
+				allTime.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+			}
+			allTime.get(i).setText(getTitle(2, i));
+			allTime.get(i).setOnClickListener(this);
+			idMap.put(counter, getId(2, i));
+			counter++;
+			scrollLayout.addView(allTime.get(i));
+		}
+
+		sectionTitle.add((TextView) getLayoutInflater().inflate(R.layout.forum_section_title, null));
+		sectionTitle.get(3).setText("Most Snatched Torrents");
+		sectionTitle.get(3).setTextSize(15);
+		scrollLayout.addView(sectionTitle.get(3));
+		for (int i = 0; i < top.getResponse().get(3).getResults().size(); i++) {
+			if ((i % 2) == 0) {
+				snatched.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
+			} else {
+				snatched.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+			}
+			snatched.get(i).setText(getTitle(3, i));
+			snatched.get(i).setOnClickListener(this);
+			idMap.put(counter, getId(3, i));
+			counter++;
+			scrollLayout.addView(snatched.get(i));
+		}
+
+		sectionTitle.add((TextView) getLayoutInflater().inflate(R.layout.forum_section_title, null));
+		sectionTitle.get(4).setText("Most Data Transferred Torrents");
+		sectionTitle.get(4).setTextSize(15);
+		scrollLayout.addView(sectionTitle.get(4));
+		for (int i = 0; i < top.getResponse().get(4).getResults().size(); i++) {
+			if ((i % 2) == 0) {
+				transferred.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
+			} else {
+				transferred.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+			}
+			transferred.get(i).setText(getTitle(4, i));
+			transferred.get(i).setOnClickListener(this);
+			idMap.put(counter, getId(4, i));
+			counter++;
+			scrollLayout.addView(transferred.get(i));
+		}
+
+		sectionTitle.add((TextView) getLayoutInflater().inflate(R.layout.forum_section_title, null));
+		sectionTitle.get(5).setText("Best Seeded Torrents");
+		sectionTitle.get(5).setTextSize(15);
+		scrollLayout.addView(sectionTitle.get(5));
+		for (int i = 0; i < top.getResponse().get(5).getResults().size(); i++) {
+			if ((i % 2) == 0) {
+				seeded.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
+			} else {
+				seeded.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+			}
+			seeded.get(i).setText(getTitle(5, i));
+			seeded.get(i).setOnClickListener(this);
+			idMap.put(counter, getId(5, i));
+			counter++;
+			scrollLayout.addView(seeded.get(i));
+		}
+	}
+
+	private String getTitle(int j, int i) {
+		String artist = top.getResponse().get(j).getResults().get(i).getArtist();
+		String groupName = top.getResponse().get(j).getResults().get(i).getGroupName();
+		String year = top.getResponse().get(j).getResults().get(i).getGroupYear().toString();
+		String title = artist + " - " + groupName + " [" + year + "]";
+		return title;
+	}
+
+	private int getId(int j, int i) {
+		return top.getResponse().get(j).getResults().get(i).getGroupId().intValue();
 	}
 
 	private class LoadTopTorrents extends AsyncTask<Void, Void, Boolean> {
@@ -64,101 +179,7 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 		@Override
 		protected void onPostExecute(Boolean status) {
 			if (status == true) {
-				sectionTitle.add((TextView) getLayoutInflater().inflate(R.layout.forum_section_title, null));
-				sectionTitle.get(0).setText("Most Active Torrents Uploaded in the Past Day");
-				sectionTitle.get(0).setTextSize(15);
-				scrollLayout.addView(sectionTitle.get(0));
-				for (int i = 0; i < top.getResponse().get(0).getResults().size(); i++) {
-					if ((i % 2) == 0) {
-						pastDay.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
-					} else {
-						pastDay.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
-					}
-					pastDay.get(i)
-							.setText(top.getResponse().get(0).getResults().get(i).getArtist() + " - " + "Album name [2010]");
-					pastDay.get(i).setOnClickListener(TopTorrentsActivity.this);
-					scrollLayout.addView(pastDay.get(i));
-				}
-
-				sectionTitle.add((TextView) getLayoutInflater().inflate(R.layout.forum_section_title, null));
-				sectionTitle.get(1).setText("Most Active Torrents Uploaded in the Past Week");
-				sectionTitle.get(1).setTextSize(15);
-				scrollLayout.addView(sectionTitle.get(1));
-				for (int i = 0; i < top.getResponse().get(1).getResults().size(); i++) {
-					if ((i % 2) == 0) {
-						pastWeek.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
-					} else {
-						pastWeek.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
-					}
-					pastWeek.get(i).setText(
-							top.getResponse().get(1).getResults().get(i).getArtist() + " - " + "Album name [2010]");
-					pastWeek.get(i).setOnClickListener(TopTorrentsActivity.this);
-					scrollLayout.addView(pastWeek.get(i));
-				}
-
-				sectionTitle.add((TextView) getLayoutInflater().inflate(R.layout.forum_section_title, null));
-				sectionTitle.get(2).setText("Most Active Torrents of All Time");
-				sectionTitle.get(2).setTextSize(15);
-				scrollLayout.addView(sectionTitle.get(2));
-				for (int i = 0; i < top.getResponse().get(2).getResults().size(); i++) {
-					if ((i % 2) == 0) {
-						allTime.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
-					} else {
-						allTime.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
-					}
-					allTime.get(i)
-							.setText(top.getResponse().get(2).getResults().get(i).getArtist() + " - " + "Album name [2010]");
-					allTime.get(i).setOnClickListener(TopTorrentsActivity.this);
-					scrollLayout.addView(allTime.get(i));
-				}
-
-				sectionTitle.add((TextView) getLayoutInflater().inflate(R.layout.forum_section_title, null));
-				sectionTitle.get(3).setText("Most Snatched Torrents");
-				sectionTitle.get(3).setTextSize(15);
-				scrollLayout.addView(sectionTitle.get(3));
-				for (int i = 0; i < top.getResponse().get(3).getResults().size(); i++) {
-					if ((i % 2) == 0) {
-						snatched.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
-					} else {
-						snatched.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
-					}
-					snatched.get(i).setText(
-							top.getResponse().get(3).getResults().get(i).getArtist() + " - " + "Album name [2010]");
-					snatched.get(i).setOnClickListener(TopTorrentsActivity.this);
-					scrollLayout.addView(snatched.get(i));
-				}
-
-				sectionTitle.add((TextView) getLayoutInflater().inflate(R.layout.forum_section_title, null));
-				sectionTitle.get(4).setText("Most Data Transferred Torrents");
-				sectionTitle.get(4).setTextSize(15);
-				scrollLayout.addView(sectionTitle.get(4));
-				for (int i = 0; i < top.getResponse().get(4).getResults().size(); i++) {
-					if ((i % 2) == 0) {
-						transferred.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
-					} else {
-						transferred.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
-					}
-					transferred.get(i).setText(
-							top.getResponse().get(4).getResults().get(i).getArtist() + " - " + "Album name [2010]");
-					transferred.get(i).setOnClickListener(TopTorrentsActivity.this);
-					scrollLayout.addView(transferred.get(i));
-				}
-
-				sectionTitle.add((TextView) getLayoutInflater().inflate(R.layout.forum_section_title, null));
-				sectionTitle.get(5).setText("Best Seeded Torrents");
-				sectionTitle.get(5).setTextSize(15);
-				scrollLayout.addView(sectionTitle.get(5));
-				for (int i = 0; i < top.getResponse().get(5).getResults().size(); i++) {
-					if ((i % 2) == 0) {
-						seeded.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
-					} else {
-						seeded.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
-					}
-					seeded.get(i).setText(top.getResponse().get(5).getResults().get(i).getArtist() + " - " + "Album name [2010]");
-					seeded.get(i).setOnClickListener(TopTorrentsActivity.this);
-					scrollLayout.addView(seeded.get(i));
-				}
-
+				populateLayout();
 			} else {
 				Toast.makeText(TopTorrentsActivity.this, "Couldn't not load top 10", Toast.LENGTH_LONG).show();
 			}
@@ -167,9 +188,20 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 		}
 	}
 
+	private void openTorrent(int id) {
+		Bundle b = new Bundle();
+		intent = new Intent(TopTorrentsActivity.this, what.torrents.torrents.TorrentTabActivity.class);
+		b.putInt("torrentGroupId", id);
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
+	}
+
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
-
+		try {
+			openTorrent(idMap.get(v.getId()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
