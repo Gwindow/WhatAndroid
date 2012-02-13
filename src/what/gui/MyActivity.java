@@ -244,6 +244,10 @@ public class MyActivity extends Activity implements OnGestureListener {
 		return df.format(d);
 	}
 
+	public String cleanTags(String post) {
+		return post.replace("[img]", "").replace("[/img]", "");
+	}
+
 	/**
 	 * @return the resizeBackgroundEnabled
 	 */

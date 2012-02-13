@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -58,13 +59,7 @@ public class ConversationActivity extends MyActivity implements OnLongClickListe
 			username = (TextView) layout.findViewById(R.id.username);
 			username.setText(messages.get(i).getSenderName());
 			body = (WebView) layout.findViewById(R.id.post);
-			body.loadData(messages.get(i).getBody(), "text/html", "utf-8");
-
-			int PIC_WIDTH = body.getRight() - body.getLeft();
-			Double val = new Double(super.getWidth()) / new Double(PIC_WIDTH);
-			val = val * 100d;
-			body.setInitialScale(val.intValue());
-
+			body.loadData(Html.fromHtml(messages.get(i).getBody()).toString(), "text/html", "utf-8");
 			listOfMessages.add(layout);
 			listOfMessages.get(i).setId(i);
 			listOfMessages.get(i).setClickable(true);
