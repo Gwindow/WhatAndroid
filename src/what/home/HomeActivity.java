@@ -15,17 +15,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import api.soup.MySoup;
 import api.subscriptions.Subscriptions;
 import api.subscriptions.Threads;
 
-public class HomeActivity extends MyActivity implements OnClickListener {
+public class HomeActivity extends MyActivity implements OnClickListener, OnEditorActionListener {
 	private Subscriptions subscriptions;
 	private TextView username, uploadedValue, downloadedValue, ratioValue, bufferValue;
 	private EditText searchBar;
@@ -55,6 +58,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		bufferValue = (TextView) this.findViewById(R.id.buffervalue);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
+		searchBar.setOnEditorActionListener(this);
 
 		loadSearchBar();
 		loadStats();
@@ -140,7 +144,7 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 	}
 
 	public void openTorrents(View v) {
-		Intent intent = new Intent(this, what.torrents.artist.ArtistTabActivity.class);
+		Intent intent = new Intent(this, what.search.TorrentSearchActivity.class);
 		startActivityForResult(intent, 0);
 	}
 
@@ -158,6 +162,19 @@ public class HomeActivity extends MyActivity implements OnClickListener {
 		// TODO remove
 		intent = new Intent(HomeActivity.this, what.gui.MainMenu.class);
 		startActivity(intent);
+	}
+
+	@Override
+	public boolean onEditorAction(TextView exampleView, int actionId, KeyEvent event) {
+		if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_DOWN) {
+			Bundle b = new Bundle();
+			intent = new Intent(HomeActivity.this, what.search.TorrentSearchActivity.class);
+			b.putString("searchTerm", searchBar.getText().toString());
+			b.putString("tagSearchTerm", " ");
+			intent.putExtras(b);
+			startActivityForResult(intent, 0);
+		}
+		return true;
 	}
 
 	public void refresh(View v) {

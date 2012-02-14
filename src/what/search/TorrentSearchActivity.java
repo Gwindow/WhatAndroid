@@ -49,9 +49,8 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 
 		// if the page is greater than one than get the search term and automatically search for it
 		if ((page > 1) || (searchTerm.length() > 0)) {
-			hideSearchBars();
 			searchBar.setText(searchTerm);
-			new LoadSearchResults().execute();
+			search(null);
 		}
 	}
 
@@ -124,7 +123,12 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 				} else {
 					resultList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_odd, null));
 				}
-				resultList.get(i).setText(results.get(i).getGroupName() + " [" + results.get(i).getGroupYear().toString() + "]");
+				if (results.get(i).getGroupYear() != null) {
+					resultList.get(i).setText(
+							results.get(i).getGroupName() + " [" + results.get(i).getGroupYear().toString() + "]");
+				} else {
+					resultList.get(i).setText(results.get(i).getGroupName());
+				}
 				resultList.get(i).setTextSize(18);
 				resultList.get(i).setId(i);
 				resultList.get(i).setOnClickListener(this);
