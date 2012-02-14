@@ -2,9 +2,9 @@
 <RelativeLayout android:id="@+id/widget30"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	xmlns:android="http://schemas.android.com/apk/res/android">
+
 	<LinearLayout android:id="@+id/bar" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:background="@drawable/table_header_dark">
-
 		<TextView android:textAppearance="?android:attr/textAppearanceMedium"
 			android:text="" android:id="@+id/username" android:layout_height="wrap_content"
 			android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
@@ -15,15 +15,19 @@
 			android:layout_marginTop="5dip" android:layout_marginLeft="20dip"
 			android:layout_width="wrap_content" android:text=""></TextView>
 	</LinearLayout>
-	<ImageView android:layout_height="wrap_content" android:src="@drawable/dne"
-		android:background="#FFFFFF" android:adjustViewBounds="true"
-		android:minWidth="110px" android:maxWidth="110px"
-		android:layout_below="@+id/bar" android:layout_width="wrap_content"
-		android:id="@+id/avatar" android:layout_alignParentLeft="true"
-		android:layout_marginTop="5dip"></ImageView>
-	<WebView android:text="" android:id="@+id/post"
-		android:clickable="true" android:background="@color/transparentBlack"
-		android:layout_width="wrap_content" android:layout_toRightOf="@+id/avatar"
-		android:layout_alignParentRight="true" android:layout_alignTop="@+id/avatar"
-		android:layout_height="fill_parent" android:layout_alignBottom="@+id/avatar"></WebView>
+
+	<RelativeLayout android:id="@+id/post"
+		android:layout_below="@+id/bar" android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<ImageView android:layout_width="wrap_content" android:src="@drawable/dne"
+			android:layout_height="wrap_content" android:id="@+id/avatar"
+			android:layout_alignParentLeft="true" android:background="#FFFFFF"
+			android:adjustViewBounds="true" android:minWidth="110px"
+			android:maxWidth="110px" android:clickable="true" android:layout_marginTop="5dip">
+			</ImageView>
+		<WebView android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:id="@+id/body"
+			android:layout_toRightOf="@+id/avatar" android:clickable="true" android:layout_marginTop="5dip">
+		</WebView>
+	</RelativeLayout>
 </RelativeLayout>

@@ -100,7 +100,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			username.setText(posts.get(i).getAuthor().getAuthorName());
 			time = (TextView) layout.findViewById(R.id.time);
 			time.setText(posts.get(i).getAddedTime());
-			body = (WebView) layout.findViewById(R.id.post);
+			body = (WebView) layout.findViewById(R.id.body);
 			body.getSettings().setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
 			// body.getSettings().setBuiltInZoomControls(true);
 			// body.setInitialScale(1);
