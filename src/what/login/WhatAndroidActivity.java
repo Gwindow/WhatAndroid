@@ -28,8 +28,10 @@ import api.util.Triple;
 import api.util.Updater;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
+	// TODO remove
+	private final static double VERSION = 0.15;
 	private final static String SITE = "http://what.cd/";
-	private final static String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
+	private final static String UPDATE_SITE = "https://raw.github.com/Gwindow/WhatAndroid/gh-pages/index.html";
 	private static double INSTALLED_VERSION;
 	private TextView username, password;
 	private CheckBox ssl, rememberme;
@@ -127,7 +129,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
-		return installedVersion;
+		// TODO remove
+		// return installedVersion;
+		return VERSION;
 	}
 
 	private void tryAutoLogin() {
