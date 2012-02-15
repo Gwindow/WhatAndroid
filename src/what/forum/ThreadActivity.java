@@ -19,8 +19,8 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -101,18 +101,8 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			time = (TextView) layout.findViewById(R.id.time);
 			time.setText(posts.get(i).getAddedTime());
 			body = (WebView) layout.findViewById(R.id.body);
-			body.getSettings().setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
-			// body.getSettings().setBuiltInZoomControls(true);
-			// body.setInitialScale(1);
-			// TODO if statement to check if avatars enabled
-
-			// TODO confirm that the following 2 lines fix large image loading
-			// body.getSettings().setLoadWithOverviewMode(true);
-			body.getSettings().setUseWideViewPort(true);
-			body.setVerticalScrollBarEnabled(true);
-			body.setVerticalScrollbarOverlay(true);
 			body.loadData(posts.get(i).getBody().trim(), "text/html", "utf-8");
-			// body.setBackgroundColor(R.drawable.btn_black);
+
 			listOfPosts.add(layout);
 			listOfPosts.get(i).setId(i);
 			listOfPosts.get(i).setClickable(true);
@@ -120,6 +110,14 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			scrollLayout.addView(listOfPosts.get(i));
 			new LoadAvatar().execute(new Triple<Integer, Integer, String>(i, posts.get(i).getAuthor().getAuthorId().intValue(),
 					posts.get(i).getAuthor().getAvatar()));
+
+			ImageView a;
+			a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar);
+			if (a.getHeight() > body.getHeight()) {
+				LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, a.getHeight());
+				body.setLayoutParams(lp);
+			}
+
 		}
 	}
 
@@ -169,9 +167,11 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	}
 
 	public void showThreadInfo(View v) {
-		/* Bundle b = new Bundle(); intent = new Intent(ThreadActivity.this, what.forum.ThreadInfoActivity.class);
+		/*
+		 * Bundle b = new Bundle(); intent = new Intent(ThreadActivity.this, what.forum.ThreadInfoActivity.class);
 		 * b.putInt("id", id); b.putBoolean("subscribed", thread.getResponse().isSubscribed()); intent.putExtras(b);
-		 * startActivityForResult(intent, 0); */
+		 * startActivityForResult(intent, 0);
+		 */
 	}
 
 	@Override
@@ -258,8 +258,10 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 					return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
 				}
 			}
-			/* } else { Log.v("cache", "Image loaded"); return new Triple<Boolean, Integer, Bitmap>(true, pos,
-			 * ImageCache.getImage(id)); } */
+			/*
+			 * } else { Log.v("cache", "Image loaded"); return new Triple<Boolean, Integer, Bitmap>(true, pos,
+			 * ImageCache.getImage(id)); }
+			 */
 			return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
 		}
 
