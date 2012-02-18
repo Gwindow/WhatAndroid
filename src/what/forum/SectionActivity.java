@@ -9,11 +9,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.forum.section.Section;
@@ -21,6 +21,7 @@ import api.forum.section.Threads;
 
 //TODO reenable author names at some point?
 public class SectionActivity extends MyActivity implements OnClickListener {
+	private ScrollView scrollView;
 	private LinearLayout scrollLayout;
 	private int counter;
 	private ProgressDialog dialog;
@@ -38,7 +39,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
-
+		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) findViewById(R.id.scrollLayout);
 		sectionTitle = (TextView) findViewById(R.id.titleText);
 
@@ -165,22 +166,24 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	}
 
 	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-		if ((e2.getX() - e1.getX()) > 35) {
-			try {
-				next(null);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if ((e2.getX() - e1.getX()) < -35) {
-			try {
-				back(null);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
+	public void onRightGesturePerformed() {
+		next(null);
+	}
+
+	@Override
+	public void onLeftGesturePerformed() {
+		back(null);
+	}
+
+	@Override
+	public void onDownGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	}
+
+	@Override
+	public void onUpGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_UP);
+
 	}
 
 	private class LoadSection extends AsyncTask<Void, Void, Boolean> {

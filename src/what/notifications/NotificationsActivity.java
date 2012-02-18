@@ -12,16 +12,17 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.notifications.Notifications;
 
 public class NotificationsActivity extends MyActivity implements OnClickListener {
+	private ScrollView scrollView;
 	private TextView title;
 	private ArrayList<TextView> torrentList = new ArrayList<TextView>();
 	private LinearLayout scrollLayout;
@@ -39,6 +40,7 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		myNotificationManager.cancel(NotificationService.ID);
+		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		title = (TextView) this.findViewById(R.id.title);
 		backButton = (Button) this.findViewById(R.id.previousButton);
@@ -136,24 +138,20 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 	}
 
 	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-		if ((e2.getX() - e1.getX()) > 35) {
-			try {
-				if (notifications.hasNextPage()) {
-					next(null);
-				}
-			} catch (Exception e) {
-				finish();
-			}
-		}
-		if ((e2.getX() - e1.getX()) < -35) {
-			try {
-				finish();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
+	public void onRightGesturePerformed() {
+		if (notifications.hasNextPage())
+			next(null);
+	}
+
+	@Override
+	public void onDownGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	}
+
+	@Override
+	public void onUpGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_UP);
+
 	}
 
 	private class LoadNotifications extends AsyncTask<Void, Void, Boolean> {

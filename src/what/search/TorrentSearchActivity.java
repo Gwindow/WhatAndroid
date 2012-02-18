@@ -11,17 +11,18 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.search.torrents.TorrentSearch;
 
 public class TorrentSearchActivity extends MyActivity implements OnClickListener {
+	private ScrollView scrollView;
 	private ArrayList<TextView> resultList = new ArrayList<TextView>();
 	private LinearLayout scrollLayout;
 	private TorrentSearch torrentSearch;
@@ -40,6 +41,8 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 		super.setContentView(R.layout.torrentsearch, true);
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
+		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
+
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
 		tagSearchBar = (EditText) this.findViewById(R.id.tagsearchBar);
@@ -167,13 +170,15 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 	}
 
 	public void next(View v) {
-		Bundle b = new Bundle();
-		intent = new Intent(TorrentSearchActivity.this, what.search.TorrentSearchActivity.class);
-		b.putInt("page", page + 1);
-		b.putString("searchTerm", searchTerm);
-		b.putString("tagSearchTerm", tagSearchTerm);
-		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		if (torrentSearch.hasNextPage()) {
+			Bundle b = new Bundle();
+			intent = new Intent(TorrentSearchActivity.this, what.search.TorrentSearchActivity.class);
+			b.putInt("page", page + 1);
+			b.putString("searchTerm", searchTerm);
+			b.putString("tagSearchTerm", tagSearchTerm);
+			intent.putExtras(b);
+			startActivityForResult(intent, 0);
+		}
 	}
 
 	public void back(View v) {
@@ -181,24 +186,24 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 	}
 
 	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-		if ((e2.getX() - e1.getX()) > 35) {
-			try {
-				if (torrentSearch.hasNextPage()) {
-					next(null);
-				}
-			} catch (Exception e) {
-				finish();
-			}
-		}
-		if ((e2.getX() - e1.getX()) < -35) {
-			try {
-				finish();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
+	public void onRightGesturePerformed() {
+		next(null);
+	}
+
+	@Override
+	public void onLeftGesturePerformed() {
+		back(null);
+	}
+
+	@Override
+	public void onDownGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	}
+
+	@Override
+	public void onUpGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_UP);
+
 	}
 
 	private class LoadSearchResults extends AsyncTask<Void, Void, Boolean> {

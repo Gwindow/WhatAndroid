@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.widget.TabHost;
 import android.widget.Toast;
 import api.requests.Request;
@@ -58,25 +57,6 @@ public class RequestTabActivity extends MyTabActivity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-		if ((e2.getX() - e1.getX()) > 35) {
-			try {
-				tabHost.setCurrentTab(tabHost.getCurrentTab() + 1);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if ((e2.getX() - e1.getX()) < -35) {
-			try {
-				tabHost.setCurrentTab(tabHost.getCurrentTab() - 1);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
 	}
 
 	private class LoadRequest extends AsyncTask<Void, Void, Boolean> {

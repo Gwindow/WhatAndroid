@@ -11,18 +11,19 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.search.requests.RequestsSearch;
 import api.search.requests.Results;
 
 public class RequestsSearchActivity extends MyActivity implements OnClickListener {
+	private ScrollView scrollView;
 	private ArrayList<TextView> resultList = new ArrayList<TextView>();
 	private LinearLayout scrollLayout;
 	private RequestsSearch requestsSearch;
@@ -41,6 +42,7 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 		super.setContentView(R.layout.requestsearch, true);
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
+		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
 		tagSearchBar = (EditText) this.findViewById(R.id.tagsearchBar);
@@ -166,13 +168,15 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 	}
 
 	public void next(View v) {
-		Bundle b = new Bundle();
-		intent = new Intent(RequestsSearchActivity.this, what.search.RequestsSearchActivity.class);
-		b.putInt("page", page + 1);
-		b.putString("searchTerm", searchTerm);
-		b.putString("tagSearchTerm", tagSearchTerm);
-		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		if (requestsSearch.hasNextPage()) {
+			Bundle b = new Bundle();
+			intent = new Intent(RequestsSearchActivity.this, what.search.RequestsSearchActivity.class);
+			b.putInt("page", page + 1);
+			b.putString("searchTerm", searchTerm);
+			b.putString("tagSearchTerm", tagSearchTerm);
+			intent.putExtras(b);
+			startActivityForResult(intent, 0);
+		}
 	}
 
 	public void back(View v) {
@@ -180,24 +184,24 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 	}
 
 	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-		if ((e2.getX() - e1.getX()) > 35) {
-			try {
-				if (requestsSearch.hasNextPage()) {
-					next(null);
-				}
-			} catch (Exception e) {
-				finish();
-			}
-		}
-		if ((e2.getX() - e1.getX()) < -35) {
-			try {
-				finish();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
+	public void onRightGesturePerformed() {
+		next(null);
+	}
+
+	@Override
+	public void onLeftGesturePerformed() {
+		back(null);
+	}
+
+	@Override
+	public void onDownGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	}
+
+	@Override
+	public void onUpGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_UP);
+
 	}
 
 	private class LoadSearchResults extends AsyncTask<Void, Void, Boolean> {

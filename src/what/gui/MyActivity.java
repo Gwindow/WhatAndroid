@@ -1,12 +1,19 @@
 package what.gui;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import what.settings.Settings;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.gesture.Gesture;
+import android.gesture.GestureLibraries;
+import android.gesture.GestureLibrary;
+import android.gesture.GestureOverlayView;
+import android.gesture.GestureOverlayView.OnGesturePerformedListener;
+import android.gesture.Prediction;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,34 +21,39 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class MyActivity extends Activity implements OnGestureListener {
+public class MyActivity extends Activity implements OnGesturePerformedListener {
+	private static final String GESTURE_UP = "top";
+	private static final String GESTURE_DOWN = "bottom";
+	private static final String GESTURE_LEFT = "left";
+	private static final String GESTURE_RIGHT = "right";
+	private static final String GESTURE_REFRESH = "refresh";
+	private static final String GESTURE_HOME = "home";
+
 	private static DisplayMetrics displaymetrics = null;
 	private static int screenHeight, screenWidth;
 	private static final boolean customBackgroundLoaded = true;
 	private static String customBackgroundPath = "";
 	private static Drawable customBackgroundDrawable;
-	private GestureDetector gestureDetector;
+	private GestureLibrary gestureLib;
 	private DecimalFormat df = new DecimalFormat("#.00");
 	private View v;
 	private static boolean resizeBackgroundEnabled = true;
 	private static BitmapDrawable resizedBackground;
 	private static String image_id = "";
+	private GestureOverlayView gestureOverlayView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		@SuppressWarnings("unused")
 		ReportSender sender = new ReportSender(this);
-		gestureDetector = new GestureDetector(this);
+
 		setDisplayMetrics();
 	}
 
@@ -54,7 +66,18 @@ public class MyActivity extends Activity implements OnGestureListener {
 	 *            the enable background
 	 */
 	public void setContentView(int layoutResID, boolean enableBackground) {
-		super.setContentView(layoutResID);
+		gestureOverlayView = new GestureOverlayView(this);
+		View inflate = getLayoutInflater().inflate(layoutResID, null);
+		gestureOverlayView.addView(inflate);
+		gestureOverlayView.addOnGesturePerformedListener(this);
+		gestureOverlayView.setGestureVisible(false);
+		gestureLib = GestureLibraries.fromRawResource(this, R.raw.gestures);
+		if (!gestureLib.load()) {
+			finish();
+		}
+
+		super.setContentView(gestureOverlayView);
+
 		if (enableBackground) {
 			v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
 			if (Settings.getCustomBackground()) {
@@ -175,60 +198,6 @@ public class MyActivity extends Activity implements OnGestureListener {
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 	}
 
-	@Override
-	public boolean onTouchEvent(MotionEvent me) {
-		return gestureDetector.onTouchEvent(me);
-	}
-
-	@Override
-	public boolean onDown(MotionEvent e) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-		if ((e2.getX() - e1.getX()) > 35) {
-			try {
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if ((e2.getX() - e1.getX()) < -35) {
-			try {
-				finish();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public void onLongPress(MotionEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void onShowPress(MotionEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean onSingleTapUp(MotionEvent e) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public String toGBString(String s) {
 		double d = Double.parseDouble(s) / Math.pow(1024, 3);
 		return df.format(d);
@@ -262,4 +231,60 @@ public class MyActivity extends Activity implements OnGestureListener {
 	public static void setResizeBackgroundEnabled(boolean resizeBackgroundEnabled) {
 		MyActivity.resizeBackgroundEnabled = resizeBackgroundEnabled;
 	}
+
+	@Override
+	public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
+		ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
+		for (Prediction prediction : predictions) {
+			if (prediction.score > 2.0) {
+				if (prediction.name.trim().equals(GESTURE_UP)) {
+					onUpGesturePerformed();
+				}
+				if (prediction.name.trim().equals(GESTURE_DOWN)) {
+					onDownGesturePerformed();
+				}
+				if (prediction.name.trim().equals(GESTURE_LEFT)) {
+					onLeftGesturePerformed();
+				}
+				if (prediction.name.trim().equals(GESTURE_RIGHT)) {
+					onRightGesturePerformed();
+				}
+				if (prediction.name.trim().equals(GESTURE_REFRESH)) {
+					onRefreshGesturePerformed();
+				}
+				if (prediction.name.trim().equals(GESTURE_HOME)) {
+					onHomeGesturePerformed();
+				}
+			}
+		}
+	}
+
+	public void onRefreshGesturePerformed() {
+		finish();
+		startActivity(getIntent());
+		Toast.makeText(this, "Refreshed", Toast.LENGTH_SHORT).show();
+
+	}
+
+	public void onHomeGesturePerformed() {
+		Intent intent = new Intent(MyActivity.this, what.home.HomeActivity.class);
+		startActivity(intent);
+	}
+
+	public void onRightGesturePerformed() {
+
+	}
+
+	public void onLeftGesturePerformed() {
+
+	}
+
+	public void onDownGesturePerformed() {
+		finish();
+	}
+
+	public void onUpGesturePerformed() {
+
+	}
+
 }

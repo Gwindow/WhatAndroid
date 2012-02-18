@@ -10,13 +10,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
-public class MyTabActivity extends TabActivity implements OnGestureListener {
+public class MyTabActivity extends TabActivity {
 	private static DisplayMetrics displaymetrics = null;
 	private static int screenHeight, screenWidth;
 	private GestureDetector gestureDetector;
@@ -28,7 +27,6 @@ public class MyTabActivity extends TabActivity implements OnGestureListener {
 		super.onCreate(savedInstanceState);
 		@SuppressWarnings("unused")
 		ReportSender sender = new ReportSender(this);
-		gestureDetector = new GestureDetector(this);
 		setDisplayMetrics();
 	}
 
@@ -43,7 +41,6 @@ public class MyTabActivity extends TabActivity implements OnGestureListener {
 
 	public void onCreate(Bundle savedInstanceState, int layoutReference, boolean enableBackground) {
 		super.onCreate(savedInstanceState);
-		// set the background
 	}
 
 	@Override
@@ -91,55 +88,6 @@ public class MyTabActivity extends TabActivity implements OnGestureListener {
 	@Override
 	public boolean onTouchEvent(MotionEvent me) {
 		return gestureDetector.onTouchEvent(me);
-	}
-
-	@Override
-	public boolean onDown(MotionEvent e) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-		if ((e2.getX() - e1.getX()) > 35) {
-			try {
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if ((e2.getX() - e1.getX()) < -35) {
-			try {
-				finish();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public void onLongPress(MotionEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void onShowPress(MotionEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean onSingleTapUp(MotionEvent e) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public String toGBString(String s) {

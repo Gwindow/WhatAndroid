@@ -11,18 +11,19 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.inbox.conversation.Conversation;
 import api.inbox.conversation.Messages;
 
 public class ConversationActivity extends MyActivity implements OnLongClickListener {
+	private ScrollView scrollView;
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
 	private Conversation conversation;
@@ -36,6 +37,7 @@ public class ConversationActivity extends MyActivity implements OnLongClickListe
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.conversation, true);
 
+		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		conversationTitle = (TextView) findViewById(R.id.titleText);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		getBundle();
@@ -82,21 +84,14 @@ public class ConversationActivity extends MyActivity implements OnLongClickListe
 	}
 
 	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-		if ((e2.getX() - e1.getX()) > 35) {
-			try {
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if ((e2.getX() - e1.getX()) < -35) {
-			try {
-				back(null);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
+	public void onDownGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	}
+
+	@Override
+	public void onUpGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_UP);
+
 	}
 
 	@Override

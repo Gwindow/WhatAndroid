@@ -16,17 +16,19 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.inbox.inbox.Inbox;
 import api.inbox.inbox.Messages;
 
 public class InboxActivity extends MyActivity implements OnClickListener {
+	private ScrollView scrollView;
+
 	private ArrayList<TextView> messageList = new ArrayList<TextView>();
 	private LinearLayout scrollLayout;
 	private Intent intent;
@@ -44,6 +46,7 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 		super.setContentView(R.layout.inbox, true);
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		myNotificationManager.cancel(InboxService.ID);
+		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		title = (TextView) this.findViewById(R.id.title);
 		backButton = (Button) this.findViewById(R.id.previousButton);
@@ -141,21 +144,24 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 	}
 
 	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-		if ((e2.getX() - e1.getX()) > 35) {
-			try {
-				next(null);
-			} catch (Exception e) {
-			}
-		}
-		if ((e2.getX() - e1.getX()) < -35) {
-			try {
-				back(null);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
+	public void onRightGesturePerformed() {
+		next(null);
+	}
+
+	@Override
+	public void onLeftGesturePerformed() {
+		back(null);
+	}
+
+	@Override
+	public void onDownGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	}
+
+	@Override
+	public void onUpGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_UP);
+
 	}
 
 	private class LoadInbox extends AsyncTask<Void, Void, Boolean> {

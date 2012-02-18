@@ -16,17 +16,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.forum.thread.Posts;
@@ -34,6 +35,7 @@ import api.forum.thread.Thread;
 import api.util.Triple;
 
 public class ThreadActivity extends MyActivity implements OnLongClickListener {
+	private ScrollView scrollView;
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
 	private api.forum.thread.Thread thread;
@@ -48,7 +50,8 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.posts, true);
 
-		threadTitle = (TextView) findViewById(R.id.titleText);
+		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
+		threadTitle = (TextView) this.findViewById(R.id.titleText);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
@@ -80,7 +83,6 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			postId = 0;
 			e.printStackTrace();
 		}
-		Toast.makeText(this, String.valueOf(id) + "," + String.valueOf(postId), Toast.LENGTH_LONG).show();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -102,6 +104,9 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			time.setText(posts.get(i).getAddedTime());
 			body = (WebView) layout.findViewById(R.id.body);
 			body.loadData(posts.get(i).getBody().trim(), "text/html", "utf-8");
+
+			body.getSettings().setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
+			// body.getSettings().setUseWideViewPort(true);
 
 			listOfPosts.add(layout);
 			listOfPosts.get(i).setId(i);
@@ -175,22 +180,24 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	}
 
 	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-		if ((e2.getX() - e1.getX()) > 35) {
-			try {
-				next(null);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if ((e2.getX() - e1.getX()) < -35) {
-			try {
-				back(null);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
+	public void onRightGesturePerformed() {
+		next(null);
+	}
+
+	@Override
+	public void onLeftGesturePerformed() {
+		back(null);
+	}
+
+	@Override
+	public void onDownGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	}
+
+	@Override
+	public void onUpGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_UP);
+
 	}
 
 	@Override
