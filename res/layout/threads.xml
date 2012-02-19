@@ -12,7 +12,7 @@
 		android:textStyle="bold" android:textSize="20dip"
 		android:background="@drawable/table_header_dark" />
 
-	<ScrollView android:id="@+id/threadsScroll"
+	<ScrollView android:id="@+id/scrollView"
 		android:layout_width="fill_parent" android:layout_height="0dip"
 		android:layout_weight="1" android:layout_marginLeft="10dip"
 		android:layout_marginRight="10dip" android:layout_marginBottom="10dip"

@@ -1,5 +1,12 @@
 package what.login;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import what.cache.ImageCache;
 import what.gui.MyActivity;
 import what.gui.R;
@@ -15,6 +22,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,7 +37,7 @@ import api.util.Updater;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
-	private final static double VERSION = 0.17;
+	private final static double VERSION = 0.18;
 	private final static String SITE = "http://what.cd/";
 	private final static String UPDATE_SITE = "https://raw.github.com/Gwindow/WhatAndroid/gh-pages/index.html";
 	private static double INSTALLED_VERSION;
@@ -38,6 +46,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	private Button login;
 	private Intent intent;
 	private Updater updater;
+	private boolean hasUpdates;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +77,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		login = (Button) this.findViewById(R.id.login);
 		login.setOnClickListener(this);
 
-		tryAutoLogin();
+		if (!hasUpdates) {
+			tryAutoLogin();
+		}
 	}
 
 	@Override
@@ -88,12 +99,13 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 			alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					openUpdate(link);
+					new Update().execute(link);
 				}
 			});
 			alert.setNegativeButton("No", null);
 			alert.setCancelable(true);
 			alert.create().show();
+			hasUpdates = true;
 		}
 		if (message.getB().hashCode() != Settings.getMessageHashCode()) {
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -104,17 +116,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 			dialog.create().show();
 			Settings.saveMessageHashCode(message.getB().hashCode());
 			Settings.commit();
+			hasUpdates = true;
 		}
-	}
-
-	private void openUpdate(String url) {
-		if (!url.startsWith("http://") && !url.startsWith("https://")) {
-			url = "http://" + url;
-		}
-		Intent i = new Intent(Intent.ACTION_VIEW);
-		i.setData(Uri.parse(url));
-		startActivity(i);
-		finish();
 	}
 
 	private double getInstalledVersion() {
@@ -216,6 +219,68 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 							}
 
 						}).show();
+			}
+		}
+	}
+
+	private class Update extends AsyncTask<String, Void, Boolean> {
+		private ProgressDialog dialog;
+
+		@Override
+		protected void onPreExecute() {
+			lockScreenRotation();
+			dialog = new ProgressDialog(WhatAndroidActivity.this);
+			dialog.setIndeterminate(true);
+			dialog.setMessage("Updating...");
+			dialog.show();
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			boolean status;
+			try {
+				URL url = new URL(params[0]);
+				HttpURLConnection c = (HttpURLConnection) url.openConnection();
+				c.setRequestMethod("GET");
+				c.setDoOutput(true);
+				c.connect();
+
+				String PATH = Environment.getExternalStorageDirectory() + "/download/";
+				File file = new File(PATH);
+				file.mkdirs();
+				File outputFile = new File(file, "WhatAndroid.apk");
+				FileOutputStream fos = new FileOutputStream(outputFile);
+
+				InputStream is = c.getInputStream();
+
+				byte[] buffer = new byte[1024];
+				int len1 = 0;
+				while ((len1 = is.read(buffer)) != -1) {
+					fos.write(buffer, 0, len1);
+				}
+				fos.close();
+				is.close();
+
+				status = true;
+			} catch (IOException e) {
+				status = false;
+			}
+			return status;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status) {
+			dialog.dismiss();
+			unlockScreenRotation();
+			if (status == true) {
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setDataAndType(
+						Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/download/" + "WhatAndroid.apk")),
+						"application/vnd.android.package-archive");
+				startActivity(intent);
+			}
+			if (status == false) {
+				Toast.makeText(WhatAndroidActivity.this, "Update failed", Toast.LENGTH_LONG).show();
 			}
 		}
 	}

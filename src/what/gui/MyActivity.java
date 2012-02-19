@@ -70,7 +70,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 		View inflate = getLayoutInflater().inflate(layoutResID, null);
 		gestureOverlayView.addView(inflate);
 		gestureOverlayView.addOnGesturePerformedListener(this);
-		gestureOverlayView.setGestureVisible(false);
+		gestureOverlayView.setGestureVisible(true);
 		gestureLib = GestureLibraries.fromRawResource(this, R.raw.gestures);
 		if (!gestureLib.load()) {
 			finish();
@@ -236,7 +236,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 	public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
 		ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
 		for (Prediction prediction : predictions) {
-			if (prediction.score > 3.0) {
+			if (prediction.score > 2.0) {
 				if (prediction.name.trim().equals(GESTURE_UP)) {
 					onUpGesturePerformed();
 				}
