@@ -27,7 +27,7 @@ public class TorrentInfoActivity extends MyActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.torrentinfo, true);
+		super.setContentView(R.layout.torrentinfo, false);
 
 		torrentTitle = (TextView) this.findViewById(R.id.torrentTitle);
 		torrentImage = (ImageView) this.findViewById(R.id.torrentImage);

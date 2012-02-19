@@ -19,16 +19,17 @@
 		<TextView android:text="Ratio: " android:layout_height="wrap_content"
 			android:layout_below="@+id/downloaded" style="@style/ButtonText"
 			android:layout_width="fill_parent" android:id="@+id/ratio"></TextView>
-		<TextView android:text="Forum Posts: "
+		<TextView android:text="Posts: "
 			android:layout_height="wrap_content" android:layout_below="@+id/ratio"
 			style="@style/ButtonText" android:layout_width="fill_parent"
 			android:id="@+id/posts"></TextView>
 		<Button android:text="Message" android:layout_height="wrap_content"
-			android:background="@drawable/btn_black" style="@style/ButtonText"
+			android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
 			android:layout_below="@+id/posts" android:layout_width="fill_parent"
 			android:onClick="message" android:id="@+id/messageButton"></Button>
 		<Button android:text="More" android:layout_height="wrap_content"
-			android:background="@drawable/btn_black" style="@style/ButtonText"
+			android:layout_marginTop="5dip"
+			android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
 			android:layout_below="@+id/messageButton" android:layout_width="fill_parent"
 			android:onClick="more" android:id="@+id/moreButton"></Button>
 	</RelativeLayout>
@@ -37,7 +38,7 @@
 		android:background="#FFFFFF" android:layout_height="wrap_content"
 		android:layout_marginLeft="10dip" android:layout_marginTop="5dip"
 		android:layout_marginRight="10dip" android:padding="2dip"
-		android:maxWidth="120px" android:maxHeight="400px"
+		android:maxWidth="110px" android:maxHeight="400px"
 		android:layout_alignBaseline="@+id/moreButton"
 		android:layout_below="@+id/username" android:layout_alignParentLeft="true">
 	</ImageView>

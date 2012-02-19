@@ -23,7 +23,7 @@ public class ArtistTabActivity extends MyTabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.tabs);
+		super.setContentView(R.layout.tabs, true);
 
 		getBundle();
 		new LoadArtist().execute();
@@ -54,6 +54,9 @@ public class ArtistTabActivity extends MyTabActivity {
 
 		tabHost.setCurrentTab(0);
 
+		for (int i = 0; i < tabHost.getTabWidget().getTabCount(); i++) {
+			tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.table_header_dark);
+		}
 	}
 
 	/**

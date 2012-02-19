@@ -21,7 +21,7 @@ public class RequestListActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.request_list, true);
+		super.setContentView(R.layout.request_list, false);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		populateLayout();
 	}

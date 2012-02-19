@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import what.settings.Settings;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -23,6 +24,7 @@ import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 	private View v;
 	private static String image_id = "";
 	private GestureOverlayView gestureOverlayView;
+	private static InputMethodManager mgr;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -141,6 +144,16 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 		} else {
 			button.setTextColor(Color.BLACK);
 		}
+	}
+
+	public void showSoftKeyboard(View view) {
+		mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		mgr.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+	}
+
+	public void hideSoftKeyboard(View view) {
+		mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		mgr.hideSoftInputFromWindow(view.getWindowToken(), 0);
 	}
 
 	/**

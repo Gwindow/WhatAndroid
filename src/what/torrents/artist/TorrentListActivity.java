@@ -29,7 +29,7 @@ public class TorrentListActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.torrentlist, true);
+		super.setContentView(R.layout.torrentlist, false);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		populateLayout();
 	}

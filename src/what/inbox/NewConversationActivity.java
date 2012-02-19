@@ -39,7 +39,7 @@ public class NewConversationActivity extends MyActivity {
 	public void send(View v) {
 		String subject = messageSubject.getText().toString();
 		String body = messageBody.getText().toString();
-		if ((subject.length() > 1) && (body.length() > 1)) {
+		if ((subject.length() > 0) && (body.length() > 0)) {
 			new SendMessage().execute(new Tuple<String, String>(subject, body));
 		} else {
 			Toast.makeText(this, "Form not complete", Toast.LENGTH_LONG).show();

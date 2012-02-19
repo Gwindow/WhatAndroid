@@ -30,7 +30,7 @@ public class ArtistActivity extends MyActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.artist, true);
+		super.setContentView(R.layout.artist, false);
 		artistTitle = (TextView) this.findViewById(R.id.artistTitle);
 		artistImage = (ImageView) this.findViewById(R.id.artistImage);
 		artistInfo = (WebView) this.findViewById(R.id.artistInfo);

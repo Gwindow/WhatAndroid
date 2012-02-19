@@ -23,7 +23,7 @@ public class TorrentTabActivity extends MyTabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.tabs);
+		super.setContentView(R.layout.tabs, true);
 		getBundle();
 
 		new LoadTorrents().execute();
@@ -47,6 +47,10 @@ public class TorrentTabActivity extends MyTabActivity {
 		tabHost.addTab(spec);
 
 		tabHost.setCurrentTab(0);
+
+		for (int i = 0; i < tabHost.getTabWidget().getTabCount(); i++) {
+			tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.table_header_dark);
+		}
 	}
 
 	private void getBundle() {

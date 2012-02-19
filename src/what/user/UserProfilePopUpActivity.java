@@ -1,11 +1,8 @@
 package what.user;
 
-import java.text.DecimalFormat;
-
 import what.gui.ImageLoader;
 import what.gui.MyActivity;
 import what.gui.R;
-import what.torrents.artist.ArtistTabActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,7 +24,6 @@ public class UserProfilePopUpActivity extends MyActivity {
 	private TextView username, userclass, uploaded, downloaded, ratio, posts;
 	private Bitmap bmp;
 	private ImageView userImage;
-	private DecimalFormat df = new DecimalFormat("#.00");
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,10 +60,22 @@ public class UserProfilePopUpActivity extends MyActivity {
 	private void populateLayout() {
 		username.setText(user.getProfile().getUsername());
 		userclass.setText(user.getProfile().getPersonal().getUserClass());
-		uploaded.setText("U: " + toGBString(user.getProfile().getRanks().getUploaded().doubleValue()) + "GB");
-		downloaded.setText("D: " + toGBString(user.getProfile().getRanks().getDownloaded().doubleValue()) + "GB");
-		ratio.setText("R: " + user.getProfile().getStats().getRatio().toString());
-		posts.setText("P: " + user.getProfile().getCommunity().getPosts().toString());
+		if (user.getProfile().getRanks().getUploaded() != null) {
+			uploaded.setText("Up: " + toGBString(user.getProfile().getRanks().getUploaded().doubleValue()) + "GB");
+		} else {
+			uploaded.setText("Up: " + "Hidden");
+		}
+		if (user.getProfile().getRanks().getDownloaded() != null) {
+			downloaded.setText("Down: " + toGBString(user.getProfile().getRanks().getDownloaded().doubleValue()) + "GB");
+		} else {
+			downloaded.setText("Ratio: " + "Hidden");
+		}
+		if (user.getProfile().getStats().getRatio() != null) {
+			ratio.setText("Ratio: " + user.getProfile().getStats().getRatio().toString());
+		} else {
+			ratio.setText("Ratio: " + "Hidden");
+		}
+		posts.setText("Posts: " + user.getProfile().getCommunity().getPosts().toString());
 	}
 
 	public void message(View v) {
@@ -125,7 +133,7 @@ public class UserProfilePopUpActivity extends MyActivity {
 			status.setA(user.getStatus());
 
 			try {
-				String s = ArtistTabActivity.getArtist().getResponse().getImage();
+				String s = user.getProfile().getAvatar();
 				bmp = ImageLoader.loadBitmap(s);
 				status.setB(true);
 			} catch (Exception e) {
@@ -136,11 +144,12 @@ public class UserProfilePopUpActivity extends MyActivity {
 
 		@Override
 		protected void onPostExecute(Tuple<Boolean, Boolean> status) {
-			if (status.getA() == true) {
-				populateLayout();
-			}
-			if (status.getB() == true) {
+			dialog.dismiss();
+			if ((status.getA() == true) && (status.getB() == true)) {
 				userImage.setImageBitmap(bmp);
+				populateLayout();
+			} else if (status.getA() == true) {
+				populateLayout();
 			}
 			if (status.getA() == false) {
 				Toast.makeText(UserProfilePopUpActivity.this, "Could not load user profile", Toast.LENGTH_LONG).show();
@@ -148,7 +157,6 @@ public class UserProfilePopUpActivity extends MyActivity {
 			if (status.getB() == false) {
 				userImage.setImageResource(R.drawable.dne);
 			}
-			dialog.dismiss();
 			unlockScreenRotation();
 		}
 	}

@@ -20,7 +20,7 @@ public class RequestActivity extends MyActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.request, true);
+		super.setContentView(R.layout.request, false);
 		requestTitle = (TextView) this.findViewById(R.id.requestTitle);
 		bounty = (TextView) this.findViewById(R.id.bounty);
 		bitrate = (TextView) this.findViewById(R.id.bitrate);

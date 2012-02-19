@@ -2,25 +2,32 @@ package what.gui;
 
 import java.text.DecimalFormat;
 
+import what.settings.Settings;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MyTabActivity extends TabActivity {
 	private static DisplayMetrics displaymetrics = null;
 	private static int screenHeight, screenWidth;
-	private GestureDetector gestureDetector;
+	private static String customBackgroundPath = "";
 	private DecimalFormat df = new DecimalFormat("#.00");
 	private View v;
+	private static boolean resizeBackgroundEnabled = true;
+	private static BitmapDrawable resizedBackground;
+	private static String image_id = "";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,80 @@ public class MyTabActivity extends TabActivity {
 		setDisplayMetrics();
 	}
 
+	/**
+	 * Sets the content view with background
+	 * 
+	 * @param layoutResID
+	 *            the layout res id
+	 * @param enableBackground
+	 *            the enable background
+	 */
+	public void setContentView(int layoutResID, boolean enableBackground) {
+		super.setContentView(layoutResID);
+		if (enableBackground) {
+			v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+			if (Settings.getCustomBackground()) {
+				loadCustomBackground();
+			} else {
+				loadDefaultBackground();
+			}
+		}
+	}
+
+	private void loadDefaultBackground() {
+		try {
+			setAndResizeBackground(R.drawable.bricks_background);
+		} catch (Exception e) {
+			e.printStackTrace();
+			v.setBackgroundColor(R.color.black);
+			Toast.makeText(this, "default background failed", Toast.LENGTH_SHORT).show();
+
+		}
+	}
+
+	private void loadCustomBackground() {
+		try {
+			if (!customBackgroundPath.equalsIgnoreCase(Settings.getCustomBackgroundPath())) {
+				String path = (Settings.getCustomBackgroundPath());
+				setAndResizeBackground(path);
+				customBackgroundPath = path;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			v.setBackgroundColor(R.color.black);
+			Toast.makeText(this, "custom background failed", Toast.LENGTH_SHORT).show();
+
+		}
+	}
+
+	private void setAndResizeBackground(String new_id) {
+		if (!image_id.equals(new_id)) {
+			Bitmap bitmap = BitmapFactory.decodeFile(new_id);
+			bitmap = Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(), true);
+			if (resizeBackgroundEnabled) {
+				resizedBackground = new BitmapDrawable(bitmap);
+				v.setBackgroundDrawable(resizedBackground);
+			}
+			image_id = new_id;
+		} else {
+			v.setBackgroundDrawable(resizedBackground);
+		}
+	}
+
+	private void setAndResizeBackground(int new_id) {
+		if (!image_id.equals(String.valueOf(new_id))) {
+			Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), new_id);
+			if (resizeBackgroundEnabled) {
+				bitmap = Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(), true);
+			}
+			resizedBackground = new BitmapDrawable(bitmap);
+			v.setBackgroundDrawable(resizedBackground);
+			image_id = String.valueOf(new_id);
+		} else {
+			v.setBackgroundDrawable(resizedBackground);
+		}
+	}
+
 	public void setButtonState(Button button, boolean b) {
 		button.setEnabled(b);
 		if (b == true) {
@@ -37,10 +118,6 @@ public class MyTabActivity extends TabActivity {
 		} else {
 			button.setTextColor(Color.BLACK);
 		}
-	}
-
-	public void onCreate(Bundle savedInstanceState, int layoutReference, boolean enableBackground) {
-		super.onCreate(savedInstanceState);
 	}
 
 	@Override
@@ -85,11 +162,6 @@ public class MyTabActivity extends TabActivity {
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 	}
 
-	@Override
-	public boolean onTouchEvent(MotionEvent me) {
-		return gestureDetector.onTouchEvent(me);
-	}
-
 	public String toGBString(String s) {
 		double d = Double.parseDouble(s) / Math.pow(1024, 3);
 		return df.format(d);
@@ -103,5 +175,20 @@ public class MyTabActivity extends TabActivity {
 	public String toGBString(int s) {
 		double d = s / Math.pow(1024, 3);
 		return df.format(d);
+	}
+
+	/**
+	 * @return the resizeBackgroundEnabled
+	 */
+	public static boolean isResizeBackgroundEnabled() {
+		return resizeBackgroundEnabled;
+	}
+
+	/**
+	 * @param resizeBackgroundEnabled
+	 *            the resizeBackgroundEnabled to set
+	 */
+	public static void setResizeBackgroundEnabled(boolean resizeBackgroundEnabled) {
+		MyTabActivity.resizeBackgroundEnabled = resizeBackgroundEnabled;
 	}
 }

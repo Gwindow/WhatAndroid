@@ -72,8 +72,8 @@
 		android:id="@+id/searchBar">
 	</EditText>
 	<TextView android:layout_height="wrap_content" android:text="Subscriptions"
-		android:clickable="true" android:onClick="refresh"
-		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:textColor="@color/textview_colors2" android:clickable="true"
+		android:onClick="refresh" android:textAppearance="?android:attr/textAppearanceMedium"
 		android:id="@+id/subscriptionsTitle" android:padding="5dip"
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentLeft="true" android:background="@drawable/table_header_dark"

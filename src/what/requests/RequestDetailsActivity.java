@@ -18,7 +18,7 @@ public class RequestDetailsActivity extends MyActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.generic_list, true);
+		super.setContentView(R.layout.generic_list, false);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		requestTitle = (TextView) this.findViewById(R.id.title);
 		populateLayout();

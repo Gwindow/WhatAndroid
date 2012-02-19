@@ -69,7 +69,7 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 	private void showFirstRunDialog() {
 		if (Settings.getFirstRun()) {
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
-			alert.setTitle("Welcome");
+			alert.setTitle("Greetings");
 			alert.setMessage("Please take a moment to configure settings");
 			alert.setPositiveButton("Take me to settings", new DialogInterface.OnClickListener() {
 				@Override
@@ -128,10 +128,8 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 	}
 
 	private void loadSearchBar() {
-		// hide searchbar if if its disabled in settings
 		if (Settings.getQuickSearch() == false) {
 			searchBar.setVisibility(EditText.GONE);
-
 		}
 	}
 
@@ -159,20 +157,20 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 	}
 
 	public void openTopTen(View v) {
-		// TODO remove
-		intent = new Intent(HomeActivity.this, what.gui.MainMenu.class);
+		intent = new Intent(HomeActivity.this, what.top.TopTorrentsActivity.class);
 		startActivity(intent);
 	}
 
 	@Override
 	public boolean onEditorAction(TextView exampleView, int actionId, KeyEvent event) {
-		if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_DOWN) {
+		if ((actionId == EditorInfo.IME_NULL) && (event.getAction() == KeyEvent.ACTION_DOWN)) {
 			Bundle b = new Bundle();
 			intent = new Intent(HomeActivity.this, what.search.TorrentSearchActivity.class);
 			b.putString("searchTerm", searchBar.getText().toString());
 			b.putString("tagSearchTerm", " ");
 			intent.putExtras(b);
 			startActivityForResult(intent, 0);
+			// hideSoftKeyboard(searchBar);
 		}
 		return true;
 	}
@@ -205,6 +203,7 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 		startActivityForResult(intent, 0);
 		scrollLayout.removeViewAt(i);
 		threadList.remove(i);
+		subscriptions.getResponse().getThreads().remove(i);
 	}
 
 	private void populateLayout() {

@@ -5,7 +5,7 @@
 
 	<LinearLayout android:id="@+id/bar" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:background="@drawable/table_header_dark">
-		<TextView android:textAppearance="?android:attr/textAppearanceMedium"
+		<TextView android:textAppearance="?android:attr/textAppearanceMedium" android:textColor="@color/textview_colors2"
 			android:text="" android:id="@+id/username" android:layout_height="wrap_content"
 			android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
 			android:layout_width="wrap_content" android:layout_alignParentRight="true"
