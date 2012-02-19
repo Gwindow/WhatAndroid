@@ -4,19 +4,27 @@ import what.forum.QuoteBuffer;
 import what.gui.MyActivity;
 import what.gui.R;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
+import api.user.PrivateMessage;
 
 public class MessageOptionsActivity extends MyActivity {
+	private ProgressDialog dialog;
 	private Intent intent;
 	private String post;
 	private int userId;
+	private int convId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +51,7 @@ public class MessageOptionsActivity extends MyActivity {
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
 		userId = b.getInt("userId");
+		convId = b.getInt("convId");
 		post = b.getString("post");
 	}
 
@@ -80,11 +89,17 @@ public class MessageOptionsActivity extends MyActivity {
 		input.setMinWidth(this.getWidth() / 2);
 		input.setText(QuoteBuffer.getBuffer());
 		alert.setView(input);
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
 		alert.setPositiveButton("Post", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
-				// TODO post reply
+				if (input.getText().length() > 0) {
+					new PostReply().execute(input.getText().toString());
+				} else {
+					Toast.makeText(MessageOptionsActivity.this, "Enter a reply", Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 
@@ -96,6 +111,42 @@ public class MessageOptionsActivity extends MyActivity {
 		});
 
 		alert.show();
+	}
+
+	private class PostReply extends AsyncTask<String, Void, Boolean> {
+		@Override
+		protected void onPreExecute() {
+			lockScreenRotation();
+			dialog = new ProgressDialog(MessageOptionsActivity.this);
+			dialog.setIndeterminate(true);
+			dialog.setMessage("Sending...");
+			dialog.show();
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			try {
+				PrivateMessage pm = new PrivateMessage(userId, convId, params[0]);
+				pm.replyMessage();
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status) {
+			dialog.dismiss();
+			if (status == true) {
+				Toast.makeText(MessageOptionsActivity.this, "Reply sent", Toast.LENGTH_SHORT).show();
+			}
+			if (status == false) {
+				Toast.makeText(MessageOptionsActivity.this, "Could not send reply", Toast.LENGTH_LONG).show();
+			}
+			unlockScreenRotation();
+			finish();
+		}
 	}
 
 }

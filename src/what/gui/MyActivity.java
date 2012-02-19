@@ -27,12 +27,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class MyActivity extends Activity implements OnGesturePerformedListener {
-	private static final String GESTURE_UP = "top";
-	private static final String GESTURE_DOWN = "bottom";
-	private static final String GESTURE_LEFT = "left";
-	private static final String GESTURE_RIGHT = "right";
-	private static final String GESTURE_REFRESH = "refresh";
-	private static final String GESTURE_HOME = "home";
 
 	private static DisplayMetrics displaymetrics = null;
 	private static boolean resizeBackgroundEnabled = true;
@@ -149,9 +143,12 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 		}
 	}
 
-	public void onCreate(Bundle savedInstanceState, int layoutReference, boolean enableBackground) {
-		super.onCreate(savedInstanceState);
-		// set the background
+	/**
+	 * Reload the current activity.
+	 */
+	public void refresh() {
+		finish();
+		startActivity(getIntent());
 	}
 
 	@Override
@@ -235,31 +232,38 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 		ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
 		for (Prediction prediction : predictions) {
 			if (prediction.score > 2.5) {
-				if (prediction.name.trim().equals(GESTURE_UP)) {
+				if (prediction.name.trim().equals(Gestures.UP)) {
 					onUpGesturePerformed();
 				}
-				if (prediction.name.trim().equals(GESTURE_DOWN)) {
+				if (prediction.name.trim().equals(Gestures.DOWN)) {
 					onDownGesturePerformed();
 				}
-				if (prediction.name.trim().equals(GESTURE_LEFT)) {
+				if (prediction.name.trim().equals(Gestures.LEFT)) {
 					onLeftGesturePerformed();
 				}
-				if (prediction.name.trim().equals(GESTURE_RIGHT)) {
+				if (prediction.name.trim().equals(Gestures.RIGHT)) {
 					onRightGesturePerformed();
 				}
-				if (prediction.name.trim().equals(GESTURE_REFRESH)) {
+				if (prediction.name.trim().equals(Gestures.REFRESH)) {
 					onRefreshGesturePerformed();
 				}
-				if (prediction.name.trim().equals(GESTURE_HOME)) {
+				if (prediction.name.trim().equals(Gestures.HOME)) {
 					onHomeGesturePerformed();
+				}
+				if (prediction.name.trim().equals(Gestures.MENU)) {
+					onMenuGesturePerformed();
 				}
 			}
 		}
 	}
 
+	public void onMenuGesturePerformed() {
+		Intent intent = new Intent(MyActivity.this, what.gui.MainMenu.class);
+		startActivity(intent);
+	}
+
 	public void onRefreshGesturePerformed() {
-		finish();
-		startActivity(getIntent());
+		refresh();
 		Toast.makeText(this, "Refreshed", Toast.LENGTH_SHORT).show();
 
 	}

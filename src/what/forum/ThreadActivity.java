@@ -6,6 +6,7 @@ import java.util.List;
 import what.gui.ImageLoader;
 import what.gui.MyActivity;
 import what.gui.R;
+import what.settings.Settings;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,7 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
@@ -33,7 +34,7 @@ import api.forum.thread.Posts;
 import api.forum.thread.Thread;
 import api.util.Triple;
 
-public class ThreadActivity extends MyActivity implements OnClickListener {
+public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	private ScrollView scrollView;
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
@@ -43,11 +44,14 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 	private TextView threadTitle;
 	private Button backButton, nextButton, lastButton, replyButton;
 	private ArrayList<RelativeLayout> listOfPosts = new ArrayList<RelativeLayout>();
+	private boolean hasAvatarsEnabled;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.posts, true);
+
+		hasAvatarsEnabled = Settings.getAvatarsEnabled();
 
 		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		threadTitle = (TextView) this.findViewById(R.id.titleText);
@@ -121,11 +125,15 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 
 			listOfPosts.add(layout);
 			listOfPosts.get(i).setId(i);
-			listOfPosts.get(i).findViewById(R.id.avatar).setClickable(true);
-			listOfPosts.get(i).setOnClickListener(this);
+			listOfPosts.get(i).setClickable(true);
+			listOfPosts.get(i).setOnLongClickListener(this);
 			scrollLayout.addView(listOfPosts.get(i));
-			new LoadAvatar().execute(new Triple<Integer, Integer, String>(i, posts.get(i).getAuthor().getAuthorId().intValue(),
-					posts.get(i).getAuthor().getAvatar()));
+			if (hasAvatarsEnabled) {
+				new LoadAvatar().execute(new Triple<Integer, Integer, String>(i, posts.get(i).getAuthor().getAuthorId()
+						.intValue(), posts.get(i).getAuthor().getAvatar()));
+			} else {
+				listOfPosts.get(i).findViewById(R.id.avatar).setVisibility(ImageView.GONE);
+			}
 			/*
 			 * ImageView a; a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar); if (a.getHeight() >
 			 * body.getHeight()) { LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, a.getHeight());
@@ -205,6 +213,17 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onUpGesturePerformed() {
 		scrollView.fullScroll(ScrollView.FOCUS_UP);
+
+	}
+
+	@Override
+	public boolean onLongClick(View v) {
+		for (int i = 0; i < listOfPosts.size(); i++) {
+			if (v.getId() == listOfPosts.get(i).getId()) {
+				openOptions(i);
+			}
+		}
+		return false;
 
 	}
 
@@ -375,7 +394,7 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 			lockScreenRotation();
 			dialog = new ProgressDialog(ThreadActivity.this);
 			dialog.setIndeterminate(true);
-			dialog.setMessage("Loading...");
+			dialog.setMessage("Replying...");
 			dialog.show();
 		}
 
@@ -400,22 +419,7 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 				Toast.makeText(ThreadActivity.this, "Could not post reply", Toast.LENGTH_LONG).show();
 			}
 			unlockScreenRotation();
-			finish();
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.view.View.OnClickListener#onClick(android.view.View)
-	 */
-	@Override
-	public void onClick(View v) {
-		for (int i = 0; i < listOfPosts.size(); i++) {
-			if (v.getId() == listOfPosts.get(i).getId()) {
-				openOptions(i);
-			}
-		}
-
-	}
 }

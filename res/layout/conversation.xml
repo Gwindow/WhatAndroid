@@ -32,6 +32,11 @@
 				style="@style/ButtonTextSmall" android:layout_alignParentLeft="true"
 				android:text="Back" android:layout_height="wrap_content"
 				android:id="@+id/previousButton"></Button>
+			<Button android:layout_width="wrap_content"
+				android:layout_centerHorizontal="true" android:onClick="reply"
+				android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
+				android:text="Reply" android:layout_height="wrap_content"
+				android:id="@+id/replyButton"></Button>
 		</RelativeLayout>
 	</LinearLayout>
 </LinearLayout>

@@ -3,6 +3,7 @@ package what.settings;
 import java.net.URISyntaxException;
 
 import what.gui.R;
+import what.login.WhatAndroidActivity;
 import what.services.AnnouncementService;
 import what.services.InboxService;
 import what.services.NotificationService;
@@ -15,7 +16,9 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.util.Log;
 import android.widget.Toast;
 import api.soup.MySoup;
@@ -40,8 +43,13 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.settingsactivity);
-		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+		PreferenceScreen prefenceScreen = getPreferenceScreen();
+		PreferenceCategory preferenceCategory = new PreferenceCategory(this);
+		preferenceCategory.setTitle("Version " + WhatAndroidActivity.INSTALLED_VERSION);
+		prefenceScreen.addPreference(preferenceCategory);
+
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		customBackground_preference = findPreference("customBackground_preference");
 		customBackground_preference.setOnPreferenceClickListener(this);
 
@@ -62,8 +70,6 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 
 		notificationsService_preference = findPreference("notificationsService_preference");
 		notificationsService_preference.setOnPreferenceClickListener(this);
-
-		Log.v("Background resource ID", Integer.toString(backgroundFromPreference(this)));
 
 		annoucementService = new Intent(this, AnnouncementService.class);
 		inboxService = new Intent(this, InboxService.class);
@@ -139,23 +145,6 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 		return false;
 	}
 
-	public static int backgroundFromPreference(Context context) {
-		int resId =
-				Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("background_list_preference",
-						"0"));
-		switch (resId) {
-		case 1:
-			return R.drawable.bricks_background;
-		case 2:
-			// return some other background's resource ID.
-		case 3:
-			// ...
-		case 0:
-		default:
-			return R.drawable.bricks_background;
-		}
-	}
-
 	private void showFileChooser() {
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 		intent.setType("*/*");
@@ -216,6 +205,11 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 		return null;
 	}
 
+	@Override
+	public void onPause() {
+		Toast.makeText(SettingsActivity.this, "Settings saved", Toast.LENGTH_SHORT).show();
+		super.onPause();
+	}
 	/*
 	 * @Override public boolean onKeyDown(int keyCode, KeyEvent event) { if (keyCode == KeyEvent.KEYCODE_BACK) { Intent
 	 * intent = new Intent(this, what.home.HomeActivity.class); startActivityForResult(intent, 0); return true; } return

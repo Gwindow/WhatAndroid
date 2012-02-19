@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory android:title="UI">
-		<ListPreference android:key="background_list_preference"
-			android:title="App Background" android:summary="Change the background image"
-			android:entries="@array/background_entries_list" android:entryValues="@array/background_entries_list_values"
-			android:dialogTitle="List of Backgrounds" />
 		<CheckBoxPreference android:key="customBackground_preference"
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Custom Background" android:summary="Enable/Disable Custom Background"
@@ -28,6 +24,7 @@
 		<!-- <CheckBoxPreference android:key="donateButton_preference" android:summaryOn="Enabled" 
 			android:summaryOff="Disabled" android:title="Donate Button" android:summary="Enable/Disable 
 			Donate Button" android:defaultValue="false" /> -->
+		
 	</PreferenceCategory>
 	<PreferenceCategory android:title="Services">
 		<CheckBoxPreference android:key="announcementsService_preference"

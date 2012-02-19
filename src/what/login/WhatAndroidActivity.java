@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import what.cache.ImageCache;
 import what.gui.MyActivity;
 import what.gui.R;
 import what.home.HomeActivity;
@@ -37,10 +36,10 @@ import api.util.Updater;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
-	private final static double VERSION = 0.19;
+	private final static double VERSION = 0.20;
 	private final static String SITE = "http://what.cd/";
 	private final static String UPDATE_SITE = "https://raw.github.com/Gwindow/WhatAndroid/gh-pages/index.html";
-	private static double INSTALLED_VERSION;
+	public static double INSTALLED_VERSION;
 	private TextView username, password;
 	private CheckBox ssl, rememberme;
 	private Button login;
@@ -54,7 +53,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		super.setContentView(R.layout.login, false);
 
 		Settings.init(this);
-		ImageCache.init();
+		// ImageCache.init();
 		INSTALLED_VERSION = getInstalledVersion();
 		MySoup.setSite(SITE);
 

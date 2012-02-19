@@ -52,6 +52,7 @@ public class PostOptionsActivity extends MyActivity {
 		userId = b.getInt("userId");
 		threadId = b.getInt("threadId");
 		post = b.getString("post");
+
 	}
 
 	public void quote(View v) {
@@ -119,7 +120,7 @@ public class PostOptionsActivity extends MyActivity {
 			lockScreenRotation();
 			dialog = new ProgressDialog(PostOptionsActivity.this);
 			dialog.setIndeterminate(true);
-			dialog.setMessage("Loading...");
+			dialog.setMessage("Replying...");
 			dialog.show();
 		}
 
