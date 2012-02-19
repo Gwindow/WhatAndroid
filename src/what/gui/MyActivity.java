@@ -18,7 +18,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
@@ -36,15 +35,13 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 	private static final String GESTURE_HOME = "home";
 
 	private static DisplayMetrics displaymetrics = null;
-	private static int screenHeight, screenWidth;
-	private static final boolean customBackgroundLoaded = true;
+	private static boolean resizeBackgroundEnabled = true;
+	private static BitmapDrawable resizedBackground;
 	private static String customBackgroundPath = "";
-	private static Drawable customBackgroundDrawable;
+	private static int screenHeight, screenWidth;
 	private GestureLibrary gestureLib;
 	private DecimalFormat df = new DecimalFormat("#.00");
 	private View v;
-	private static boolean resizeBackgroundEnabled = true;
-	private static BitmapDrawable resizedBackground;
 	private static String image_id = "";
 	private GestureOverlayView gestureOverlayView;
 
@@ -71,6 +68,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 		gestureOverlayView.addView(inflate);
 		gestureOverlayView.addOnGesturePerformedListener(this);
 		gestureOverlayView.setGestureVisible(true);
+		gestureOverlayView.setGestureStrokeWidth(3.0f);
 		gestureLib = GestureLibraries.fromRawResource(this, R.raw.gestures);
 		if (!gestureLib.load()) {
 			finish();
@@ -236,7 +234,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 	public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
 		ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
 		for (Prediction prediction : predictions) {
-			if (prediction.score > 2.0) {
+			if (prediction.score > 2.5) {
 				if (prediction.name.trim().equals(GESTURE_UP)) {
 					onUpGesturePerformed();
 				}

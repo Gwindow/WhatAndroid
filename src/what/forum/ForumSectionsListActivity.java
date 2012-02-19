@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.forum.forumsections.Categories;
@@ -20,6 +21,7 @@ import api.forum.forumsections.ForumSections;
 import api.soup.MySoup;
 
 public class ForumSectionsListActivity extends MyActivity implements OnClickListener {
+	private ScrollView scrollView;
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
 	private ForumSections forumSections;
@@ -31,6 +33,8 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.sections, true);
+
+		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 
 		new LoadForumSections().execute();
@@ -78,6 +82,17 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 				openSection(idMap.get(v.getId()));
 			}
 		}
+	}
+
+	@Override
+	public void onDownGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	}
+
+	@Override
+	public void onUpGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_UP);
+
 	}
 
 	private class LoadForumSections extends AsyncTask<Void, Void, Boolean> {

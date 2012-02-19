@@ -37,7 +37,7 @@ import api.util.Updater;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
-	private final static double VERSION = 0.18;
+	private final static double VERSION = 0.19;
 	private final static String SITE = "http://what.cd/";
 	private final static String UPDATE_SITE = "https://raw.github.com/Gwindow/WhatAndroid/gh-pages/index.html";
 	private static double INSTALLED_VERSION;
@@ -51,7 +51,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.login);
+		super.setContentView(R.layout.login, false);
 
 		Settings.init(this);
 		ImageCache.init();
@@ -77,9 +77,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		login = (Button) this.findViewById(R.id.login);
 		login.setOnClickListener(this);
 
-		if (!hasUpdates) {
-			tryAutoLogin();
-		}
+		tryAutoLogin();
 	}
 
 	@Override
@@ -141,8 +139,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		if (Settings.getRememberMe()) {
 			username.setText(Settings.getUsername());
 			password.setText(Settings.getPassword());
-
-			new Login().execute(new String[] { Settings.getUsername(), Settings.getPassword() });
+			if (!hasUpdates) {
+				new Login().execute(new String[] { Settings.getUsername(), Settings.getPassword() });
+			}
 		}
 	}
 
