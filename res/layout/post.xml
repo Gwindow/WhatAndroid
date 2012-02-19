@@ -16,21 +16,18 @@
 			android:layout_width="wrap_content" android:text=""></TextView>
 	</LinearLayout>
 
-	<RelativeLayout android:id="@+id/post"
-		android:background="@color/transparentBlack"
-		android:clickable="true" android:layout_below="@+id/bar"
-		android:layout_width="wrap_content" android:layout_height="wrap_content">
+	<RelativeLayout android:id="@+id/content"
+		android:layout_below="@+id/bar" android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
 		<ImageView android:layout_width="wrap_content" android:src="@drawable/dne"
 			android:layout_height="wrap_content" android:id="@+id/avatar"
 			android:layout_alignParentLeft="true" android:background="#FFFFFF"
 			android:adjustViewBounds="true" android:minWidth="110px"
-			android:maxWidth="110px" android:clickable="true"
-			android:layout_marginTop="5dip">
+			android:maxWidth="110px" android:clickable="true">
 		</ImageView>
 		<WebView android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:id="@+id/body"
-			android:layout_toRightOf="@+id/avatar" android:clickable="true"
-			android:layout_marginTop="5dip">
+			android:layout_toRightOf="@+id/avatar">
 		</WebView>
 	</RelativeLayout>
 </RelativeLayout>

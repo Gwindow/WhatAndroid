@@ -17,8 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnLongClickListener;
-import android.view.ViewGroup.LayoutParams;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
@@ -34,7 +33,7 @@ import api.forum.thread.Posts;
 import api.forum.thread.Thread;
 import api.util.Triple;
 
-public class ThreadActivity extends MyActivity implements OnLongClickListener {
+public class ThreadActivity extends MyActivity implements OnClickListener {
 	private ScrollView scrollView;
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
@@ -98,6 +97,8 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		WebView body;
 		for (int i = 0; i < posts.size(); i++) {
 			layout = (RelativeLayout) getLayoutInflater().inflate(R.layout.post, null);
+			RelativeLayout relativeLayout = (RelativeLayout) layout.findViewById(R.id.content);
+
 			username = (TextView) layout.findViewById(R.id.username);
 			username.setText(posts.get(i).getAuthor().getAuthorName());
 			time = (TextView) layout.findViewById(R.id.time);
@@ -106,23 +107,30 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			body.loadData(posts.get(i).getBody().trim(), "text/html", "utf-8");
 
 			body.getSettings().setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
-			// body.getSettings().setUseWideViewPort(true);
+			body.getSettings().setSupportZoom(true);
+			body.setVerticalScrollBarEnabled(true);
+			body.setVerticalScrollbarOverlay(true);
+
+			if ((i % 2) == 0) {
+				relativeLayout.setBackgroundResource(R.drawable.color_transparent_white);
+				body.setBackgroundColor(0);
+			} else {
+				relativeLayout.setBackgroundResource(R.drawable.color_transparent_light_gray);
+				body.setBackgroundColor(0);
+			}
 
 			listOfPosts.add(layout);
 			listOfPosts.get(i).setId(i);
-			listOfPosts.get(i).setClickable(true);
-			listOfPosts.get(i).setOnLongClickListener(this);
+			listOfPosts.get(i).findViewById(R.id.avatar).setClickable(true);
+			listOfPosts.get(i).setOnClickListener(this);
 			scrollLayout.addView(listOfPosts.get(i));
 			new LoadAvatar().execute(new Triple<Integer, Integer, String>(i, posts.get(i).getAuthor().getAuthorId().intValue(),
 					posts.get(i).getAuthor().getAvatar()));
-
-			ImageView a;
-			a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar);
-			if (a.getHeight() > body.getHeight()) {
-				LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, a.getHeight());
-				body.setLayoutParams(lp);
-			}
-
+			/*
+			 * ImageView a; a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar); if (a.getHeight() >
+			 * body.getHeight()) { LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, a.getHeight());
+			 * body.setLayoutParams(lp); }
+			 */
 		}
 	}
 
@@ -198,16 +206,6 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	public void onUpGesturePerformed() {
 		scrollView.fullScroll(ScrollView.FOCUS_UP);
 
-	}
-
-	@Override
-	public boolean onLongClick(View v) {
-		for (int i = 0; i < (listOfPosts.size()); i++) {
-			if (v.getId() == listOfPosts.get(i).getId()) {
-				openOptions(i);
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -404,5 +402,20 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			unlockScreenRotation();
 			finish();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.view.View.OnClickListener#onClick(android.view.View)
+	 */
+	@Override
+	public void onClick(View v) {
+		for (int i = 0; i < listOfPosts.size(); i++) {
+			if (v.getId() == listOfPosts.get(i).getId()) {
+				openOptions(i);
+			}
+		}
+
 	}
 }

@@ -236,7 +236,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 	public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
 		ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
 		for (Prediction prediction : predictions) {
-			if (prediction.score > 2.0) {
+			if (prediction.score > 3.0) {
 				if (prediction.name.trim().equals(GESTURE_UP)) {
 					onUpGesturePerformed();
 				}
