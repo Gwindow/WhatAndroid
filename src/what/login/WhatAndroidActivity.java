@@ -282,9 +282,42 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 				startActivity(intent);
 			}
 			if (status == false) {
-				Toast.makeText(WhatAndroidActivity.this, "Update failed", Toast.LENGTH_LONG).show();
+				Toast.makeText(WhatAndroidActivity.this, "Update failed, install manually from http://bit.ly/git_wa_build",
+						Toast.LENGTH_LONG).show();
 			}
 		}
+	}
+
+	@Override
+	public void onMenuGesturePerformed() {
+	}
+
+	@Override
+	public void onRefreshGesturePerformed() {
+
+	}
+
+	@Override
+	public void onHomeGesturePerformed() {
+	}
+
+	@Override
+	public void onRightGesturePerformed() {
+
+	}
+
+	@Override
+	public void onLeftGesturePerformed() {
+
+	}
+
+	@Override
+	public void onDownGesturePerformed() {
+	}
+
+	@Override
+	public void onUpGesturePerformed() {
+
 	}
 
 }
