@@ -25,6 +25,7 @@ import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -107,7 +108,10 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		if (message.getB().hashCode() != Settings.getMessageHashCode()) {
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 			dialog.setTitle(message.getA());
-			dialog.setMessage(message.getB() + "\n\n" + message.getC());
+			WebView webView = new WebView(this);
+			webView.loadData(message.getB(), "text/html", "UTF-8");
+			dialog.setView(webView);
+			// dialog.setMessage(message.getB() + "\n\n" + message.getC());
 			dialog.setPositiveButton("Okay", null);
 			dialog.setCancelable(true);
 			dialog.create().show();
