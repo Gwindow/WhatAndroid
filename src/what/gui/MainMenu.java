@@ -86,7 +86,8 @@ public class MainMenu extends MyActivity {
 	}
 
 	public void donate(View v) {
-		intent = new Intent(MainMenu.this, what.donate.FlattrDonationActivity.class);
-		startActivityForResult(intent, 0);
+		/* intent = new Intent(MainMenu.this, what.donate.FlattrDonationActivity.class); startActivityForResult(intent,
+		 * 0); */
+		Toast.makeText(MainMenu.this, "I don't know yet", Toast.LENGTH_SHORT).show();
 	}
 }
