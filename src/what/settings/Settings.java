@@ -77,6 +77,10 @@ public class Settings {
 		return settings.getBoolean("avatarsEnabled_preference", true);
 	}
 
+	public static boolean getGesturesEnabled() {
+		return settings.getBoolean("gesturesEnabled_preference", true);
+	}
+
 	public static void saveNumberOfAnnouncements(int i) {
 		settingsEditor.putInt("numberOfA", i);
 	}

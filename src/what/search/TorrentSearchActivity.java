@@ -191,11 +191,6 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 	}
 
 	@Override
-	public void onLeftGesturePerformed() {
-		back(null);
-	}
-
-	@Override
 	public void onDownGesturePerformed() {
 		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 	}

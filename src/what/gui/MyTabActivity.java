@@ -1,7 +1,5 @@
 package what.gui;
 
-import java.text.DecimalFormat;
-
 import what.settings.Settings;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -23,7 +21,6 @@ public class MyTabActivity extends TabActivity {
 	private static DisplayMetrics displaymetrics = null;
 	private static int screenHeight, screenWidth;
 	private static String customBackgroundPath = "";
-	private DecimalFormat df = new DecimalFormat("#.00");
 	private View v;
 	private static boolean resizeBackgroundEnabled = true;
 	private static BitmapDrawable resizedBackground;
@@ -160,21 +157,6 @@ public class MyTabActivity extends TabActivity {
 
 	public void unlockScreenRotation() {
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-	}
-
-	public String toGBString(String s) {
-		double d = Double.parseDouble(s) / Math.pow(1024, 3);
-		return df.format(d);
-	}
-
-	public String toGBString(Double s) {
-		double d = s / Math.pow(1024, 3);
-		return df.format(d);
-	}
-
-	public String toGBString(int s) {
-		double d = s / Math.pow(1024, 3);
-		return df.format(d);
 	}
 
 	/**

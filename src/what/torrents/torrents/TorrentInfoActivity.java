@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -100,8 +101,16 @@ public class TorrentInfoActivity extends MyActivity {
 					}
 					String body = torrentGroup.getResponse().getGroup().getWikiBody();
 					if (body.length() > 0) {
+						torrentInfo.getSettings().setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
+						torrentInfo.getSettings().setSupportZoom(true);
+						torrentInfo.setVerticalScrollBarEnabled(true);
+						torrentInfo.setVerticalScrollbarOverlay(true);
+
 						torrentInfo.loadData(body, "text/html", "utf-8");
+						torrentInfo.setBackgroundColor(0);
+						torrentInfo.setBackgroundResource(R.drawable.color_transparent_white);
 						torrentInfo.setVisibility(WebView.VISIBLE);
+
 					}
 					if (status == true) {
 						torrentImage.setImageBitmap(bmp);

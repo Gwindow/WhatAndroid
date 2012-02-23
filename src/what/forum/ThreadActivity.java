@@ -9,7 +9,6 @@ import what.gui.R;
 import what.settings.Settings;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,7 +18,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnLongClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -134,11 +132,9 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			} else {
 				listOfPosts.get(i).findViewById(R.id.avatar).setVisibility(ImageView.GONE);
 			}
-			/*
-			 * ImageView a; a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar); if (a.getHeight() >
+			/* ImageView a; a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar); if (a.getHeight() >
 			 * body.getHeight()) { LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, a.getHeight());
-			 * body.setLayoutParams(lp); }
-			 */
+			 * body.setLayoutParams(lp); } */
 		}
 	}
 
@@ -188,21 +184,14 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	}
 
 	public void showThreadInfo(View v) {
-		/*
-		 * Bundle b = new Bundle(); intent = new Intent(ThreadActivity.this, what.forum.ThreadInfoActivity.class);
+		/* Bundle b = new Bundle(); intent = new Intent(ThreadActivity.this, what.forum.ThreadInfoActivity.class);
 		 * b.putInt("id", id); b.putBoolean("subscribed", thread.getResponse().isSubscribed()); intent.putExtras(b);
-		 * startActivityForResult(intent, 0);
-		 */
+		 * startActivityForResult(intent, 0); */
 	}
 
 	@Override
 	public void onRightGesturePerformed() {
 		next(null);
-	}
-
-	@Override
-	public void onLeftGesturePerformed() {
-		back(null);
 	}
 
 	@Override
@@ -282,10 +271,8 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 					return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
 				}
 			}
-			/*
-			 * } else { Log.v("cache", "Image loaded"); return new Triple<Boolean, Integer, Bitmap>(true, pos,
-			 * ImageCache.getImage(id)); }
-			 */
+			/* } else { Log.v("cache", "Image loaded"); return new Triple<Boolean, Integer, Bitmap>(true, pos,
+			 * ImageCache.getImage(id)); } */
 			return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
 		}
 
@@ -364,8 +351,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		input.setMinWidth(this.getWidth() / 2);
 		input.setText(QuoteBuffer.getBuffer());
 		alert.setView(input);
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+		showSoftKeyboard(input);
 
 		alert.setPositiveButton("Post", new DialogInterface.OnClickListener() {
 			@Override

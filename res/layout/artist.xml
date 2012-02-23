@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@+id/widget30"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	 android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
 	<RelativeLayout android:id="@+id/buttons"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:layout_marginTop="5dip" android:layout_marginRight="10dip"
@@ -22,10 +21,10 @@
 			android:onClick="openTags" android:id="@+id/tagsButton"></Button>
 	</RelativeLayout>
 	<ImageView android:id="@+id/artistImage"
-		android:adjustViewBounds="true" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_marginLeft="10dip"
 		android:maxWidth="120px" android:maxHeight="370px"
-		android:layout_marginTop="5dip" android:layout_below="@+id/artistTitle"
+		android:adjustViewBounds="true" android:layout_marginTop="5dip"
+		android:layout_below="@+id/artistTitle"
 		android:layout_alignParentLeft="true" android:layout_alignBottom="@+id/buttons">
 	</ImageView>
 	<TextView android:id="@+id/artistTitle" android:layout_width="fill_parent"

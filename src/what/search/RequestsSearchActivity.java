@@ -127,9 +127,9 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 				} else {
 					resultList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_odd, null));
 				}
-				resultList.get(i).setText(
-						results.get(i).getArtist() + " - " + results.get(i).getTitle() + " ["
-								+ results.get(i).getYear().toString() + "]");
+				// TODO renable
+				/* resultList.get(i).setText( results.get(i).getArtist() + " - " + results.get(i).getTitle() + " [" +
+				 * results.get(i).getYear().toString() + "]"); */
 				resultList.get(i).setTextSize(18);
 				resultList.get(i).setId(i);
 				resultList.get(i).setOnClickListener(this);
@@ -186,11 +186,6 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 	@Override
 	public void onRightGesturePerformed() {
 		next(null);
-	}
-
-	@Override
-	public void onLeftGesturePerformed() {
-		back(null);
 	}
 
 	@Override

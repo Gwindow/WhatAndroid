@@ -170,7 +170,7 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 			b.putString("tagSearchTerm", " ");
 			intent.putExtras(b);
 			startActivityForResult(intent, 0);
-			// hideSoftKeyboard(searchBar);
+			hideSoftKeyboard(searchBar);
 		}
 		return true;
 	}

@@ -41,6 +41,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 	private static String image_id = "";
 	private GestureOverlayView gestureOverlayView;
 	private static InputMethodManager mgr;
+	private static boolean isGesturesEnabled;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,8 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 		ReportSender sender = new ReportSender(this);
 
 		setDisplayMetrics();
+
+		isGesturesEnabled = Settings.getGesturesEnabled();
 	}
 
 	/**
@@ -60,6 +63,22 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 	 *            the enable background
 	 */
 	public void setContentView(int layoutResID, boolean enableBackground) {
+		if (isGesturesEnabled) {
+			super.setContentView(loadGestureOverLayView(layoutResID));
+		} else {
+			super.setContentView(layoutResID);
+		}
+		if (enableBackground) {
+			v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+			if (Settings.getCustomBackground()) {
+				loadCustomBackground();
+			} else {
+				loadDefaultBackground();
+			}
+		}
+	}
+
+	private GestureOverlayView loadGestureOverLayView(int layoutResID) {
 		gestureOverlayView = new GestureOverlayView(this);
 		View inflate = getLayoutInflater().inflate(layoutResID, null);
 		gestureOverlayView.addView(inflate);
@@ -70,17 +89,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 		if (!gestureLib.load()) {
 			finish();
 		}
-
-		super.setContentView(gestureOverlayView);
-
-		if (enableBackground) {
-			v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
-			if (Settings.getCustomBackground()) {
-				loadCustomBackground();
-			} else {
-				loadDefaultBackground();
-			}
-		}
+		return gestureOverlayView;
 	}
 
 	private void loadDefaultBackground() {
@@ -242,29 +251,33 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 
 	@Override
 	public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
-		ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
-		for (Prediction prediction : predictions) {
-			if (prediction.score > 2.5) {
-				if (prediction.name.trim().equals(Gestures.UP)) {
-					onUpGesturePerformed();
+		if (isGesturesEnabled) {
+			ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
+			for (Prediction prediction : predictions) {
+				if (prediction.score > 2.5) {
+					if (prediction.name.trim().equals(Gestures.UP)) {
+						onUpGesturePerformed();
+					}
+					if (prediction.name.trim().equals(Gestures.DOWN)) {
+						onDownGesturePerformed();
+					}
+					if (prediction.name.trim().equals(Gestures.LEFT)) {
+						onLeftGesturePerformed();
+					}
+					if (prediction.name.trim().equals(Gestures.RIGHT)) {
+						onRightGesturePerformed();
+					}
+					if (prediction.name.trim().equals(Gestures.REFRESH)) {
+						onRefreshGesturePerformed();
+					}
+					if (prediction.name.trim().equals(Gestures.HOME)) {
+						onHomeGesturePerformed();
+					}
 				}
-				if (prediction.name.trim().equals(Gestures.DOWN)) {
-					onDownGesturePerformed();
-				}
-				if (prediction.name.trim().equals(Gestures.LEFT)) {
-					onLeftGesturePerformed();
-				}
-				if (prediction.name.trim().equals(Gestures.RIGHT)) {
-					onRightGesturePerformed();
-				}
-				if (prediction.name.trim().equals(Gestures.REFRESH)) {
-					onRefreshGesturePerformed();
-				}
-				if (prediction.name.trim().equals(Gestures.HOME)) {
-					onHomeGesturePerformed();
-				}
-				if (prediction.name.trim().equals(Gestures.MENU)) {
-					onMenuGesturePerformed();
+				if (prediction.score > 3.5) {
+					if (prediction.name.trim().equals(Gestures.MENU)) {
+						onMenuGesturePerformed();
+					}
 				}
 			}
 		}
@@ -291,11 +304,11 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 	}
 
 	public void onLeftGesturePerformed() {
-
+		finish();
 	}
 
 	public void onDownGesturePerformed() {
-		finish();
+
 	}
 
 	public void onUpGesturePerformed() {

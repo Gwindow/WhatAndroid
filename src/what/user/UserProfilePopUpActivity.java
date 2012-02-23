@@ -60,17 +60,17 @@ public class UserProfilePopUpActivity extends MyActivity {
 	private void populateLayout() {
 		username.setText(user.getProfile().getUsername());
 		userclass.setText(user.getProfile().getPersonal().getUserClass());
-		if (user.getProfile().getRanks().getUploaded() != null) {
+		if (user.getProfile().getRanks().getUploaded().toString() != null) {
 			uploaded.setText("Up: " + toGBString(user.getProfile().getRanks().getUploaded().doubleValue()) + "GB");
 		} else {
 			uploaded.setText("Up: " + "Hidden");
 		}
-		if (user.getProfile().getRanks().getDownloaded() != null) {
+		if (user.getProfile().getRanks().getDownloaded().toString() != null) {
 			downloaded.setText("Down: " + toGBString(user.getProfile().getRanks().getDownloaded().doubleValue()) + "GB");
 		} else {
-			downloaded.setText("Ratio: " + "Hidden");
+			downloaded.setText("Download: " + "Hidden");
 		}
-		if (user.getProfile().getStats().getRatio() != null) {
+		if (user.getProfile().getStats().getRatio().toString() != null) {
 			ratio.setText("Ratio: " + user.getProfile().getStats().getRatio().toString());
 		} else {
 			ratio.setText("Ratio: " + "Hidden");

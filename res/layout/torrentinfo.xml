@@ -24,7 +24,7 @@
 	<ImageView android:id="@+id/torrentImage"
 		android:adjustViewBounds="true" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:maxWidth="120px"
-		android:maxHeight="370px" android:layout_marginLeft="10dip"
+		android:maxHeight="370px"  android:layout_marginLeft="10dip"
 		android:layout_marginTop="5dip" android:layout_below="@+id/torrentTitle"
 		android:layout_alignParentLeft="true" android:layout_alignBottom="@+id/buttons">
 	</ImageView>

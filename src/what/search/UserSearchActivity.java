@@ -150,11 +150,6 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 	}
 
 	@Override
-	public void onLeftGesturePerformed() {
-		back(null);
-	}
-
-	@Override
 	public void onDownGesturePerformed() {
 		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 	}

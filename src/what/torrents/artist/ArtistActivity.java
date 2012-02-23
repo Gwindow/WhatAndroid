@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -102,7 +103,13 @@ public class ArtistActivity extends MyActivity {
 				artistTitle.setText(ArtistTabActivity.getArtist().getResponse().getName());
 				String body = ArtistTabActivity.getArtist().getResponse().getBody();
 				if (body.length() > 0) {
+					artistInfo.getSettings().setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
+					artistInfo.getSettings().setSupportZoom(true);
+					artistInfo.setVerticalScrollBarEnabled(true);
+					artistInfo.setVerticalScrollbarOverlay(true);
+
 					artistInfo.loadData(body, "text/html", "utf-8");
+					artistInfo.setBackgroundColor(0);
 					artistInfo.setBackgroundResource(R.drawable.color_transparent_white);
 					artistInfo.setVisibility(WebView.VISIBLE);
 				}
