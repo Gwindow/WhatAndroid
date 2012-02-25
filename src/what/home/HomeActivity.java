@@ -62,8 +62,9 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 
 		loadSearchBar();
 		loadStats();
-
-		new LoadSubscriptions().execute();
+		if (Settings.getSubscriptionsEnabled()) {
+			new LoadSubscriptions().execute();
+		}
 	}
 
 	private void showFirstRunDialog() {

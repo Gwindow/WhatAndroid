@@ -3,14 +3,19 @@ package what.forum;
 import what.gui.MyActivity;
 import what.gui.R;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class ThreadInfoActivity extends MyActivity implements OnCheckedChangeListener {
+	private static final int RESULT_UNSUBSCRIBE = 0;
+	private static final int RESULT_SUBSCRIBE = 1;
+	private static final int RESULT_REFRESH = 2;
 	private CheckBox subscribed;
 	private boolean isSubscribed;
 	private int id;
+	private int resultCode = -1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -20,8 +25,8 @@ public class ThreadInfoActivity extends MyActivity implements OnCheckedChangeLis
 		getBundle();
 
 		subscribed = (CheckBox) this.findViewById(R.id.subscribed);
-		subscribed.setOnCheckedChangeListener(this);
 		subscribed.setChecked(isSubscribed);
+		subscribed.setOnCheckedChangeListener(this);
 
 	}
 
@@ -31,11 +36,29 @@ public class ThreadInfoActivity extends MyActivity implements OnCheckedChangeLis
 		isSubscribed = b.getBoolean("subscribed");
 	}
 
+	public void refresh(View v) {
+		resultCode = RESULT_SUBSCRIBE;
+		sendResult();
+	}
+
 	@Override
 	public void onCheckedChanged(CompoundButton v, boolean isChecked) {
 		if (v.getId() == subscribed.getId()) {
 			if (isChecked) {
+				resultCode = RESULT_SUBSCRIBE;
+				sendResult();
+
+			}
+			if (!isChecked) {
+				resultCode = RESULT_UNSUBSCRIBE;
+				sendResult();
 			}
 		}
 	}
+
+	private void sendResult() {
+		this.setResult(resultCode);
+		finish();
+	}
+
 }

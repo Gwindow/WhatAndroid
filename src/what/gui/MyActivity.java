@@ -51,7 +51,11 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 
 		setDisplayMetrics();
 
-		isGesturesEnabled = Settings.getGesturesEnabled();
+		try {
+			isGesturesEnabled = Settings.getGesturesEnabled();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

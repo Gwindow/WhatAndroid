@@ -14,11 +14,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import api.search.requests.CrossReference;
+import api.search.crossreference.CrossReference;
 import api.search.requests.RequestsSearch;
 import api.search.torrents.TorrentSearch;
 import api.util.Triple;
-import api.util.Tuple;
 
 public class ScannerActivity extends MyActivity implements OnClickListener, DialogInterface.OnClickListener {
 	private static final String ZXING_MARKETPLACE_URL = "market://details?id=com.google.zxing.client.android";
@@ -26,8 +25,10 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 	private String contents;
 	private ProgressDialog dialog;
 	private String upc, searchTerm;
-	private Tuple<TorrentSearch, RequestsSearch> searches;
+	private TorrentSearch torrentSearch;
+	private RequestsSearch requestsSearch;
 	private Button torrentsButton, requestsButton;
+	private SearchType searchType;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,11 +41,35 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 		setButtonState(requestsButton, false);
 	}
 
-	public void scan(View v) {
+	public void scanRequests(View v) {
 		try {
 			intent = new Intent("com.google.zxing.client.android.SCAN");
 			intent.setPackage("com.google.zxing.client.android");
 			intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+			searchType = SearchType.REQUESTSSEARCH;
+			startActivityForResult(intent, 0);
+		} catch (Exception e) {
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+			alert.setTitle("Barcode Scanner not found");
+			alert.setMessage("The Zxing Barcode Scanner is required to use the scanning features, would you like to install it?");
+			alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					openMarketPlaceUrl(ZXING_MARKETPLACE_URL);
+				}
+			});
+			alert.setNegativeButton("No", null);
+			alert.setCancelable(true);
+			alert.create().show();
+		}
+	}
+
+	public void scanTorrents(View v) {
+		try {
+			intent = new Intent("com.google.zxing.client.android.SCAN");
+			intent.setPackage("com.google.zxing.client.android");
+			intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+			searchType = SearchType.TORRENTSEARCH;
 			startActivityForResult(intent, 0);
 		} catch (Exception e) {
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -97,7 +122,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 			if (resultCode == RESULT_OK) {
 				contents = intent.getStringExtra("SCAN_RESULT");
 				upc = contents;
-				new LoadSearchResults().execute();
+				new LoadSearchResults().execute(new SearchType[] { searchType });
 			} else if (resultCode == RESULT_CANCELED) {
 				Toast.makeText(this, "Scan failed", Toast.LENGTH_LONG).show();
 			}
@@ -220,7 +245,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 
 	}
 
-	private class LoadSearchResults extends AsyncTask<Void, Void, Triple<Boolean, Integer, Integer>> {
+	private class LoadSearchResults extends AsyncTask<SearchType, Void, Triple<Boolean, Integer, Integer>> {
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
@@ -231,17 +256,22 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 		}
 
 		@Override
-		protected Triple<Boolean, Integer, Integer> doInBackground(Void... params) {
-			searches = CrossReference.crossReferenceTorrentsAndRequestsByUPC(upc);
-			int torrentsFound = 0, requestsFound = 0;
+		protected Triple<Boolean, Integer, Integer> doInBackground(SearchType... params) {
 			boolean status = false;
-			if (searches.getB().getResponse().getResults() != null && !searches.getB().getResponse().getResults().isEmpty()) {
-				requestsFound = searches.getB().getResponse().getResults().size();
+			int torrentsFound = 0, requestsFound = 0;
+			switch (params[0]) {
+			case TORRENTSEARCH:
+				torrentSearch = CrossReference.crossReferenceTorrentsByUPC(upc);
+				if (torrentSearch.getResponse().getResults() != null && !torrentSearch.getResponse().getResults().isEmpty())
+					torrentsFound = torrentSearch.getResponse().getResults().size();
 				status = true;
-			}
-			if (searches.getA().getResponse().getResults() != null && !searches.getA().getResponse().getResults().isEmpty()) {
-				torrentsFound = searches.getA().getResponse().getResults().size();
+				break;
+			case REQUESTSSEARCH:
+				requestsSearch = CrossReference.crossReferenceRequestsByUPC(upc);
+				if (requestsSearch.getResponse().getResults() != null && !requestsSearch.getResponse().getResults().isEmpty())
+					requestsFound = requestsSearch.getResponse().getResults().size();
 				status = true;
+				break;
 			}
 			return new Triple<Boolean, Integer, Integer>(status, torrentsFound, requestsFound);
 		}
@@ -261,4 +291,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 		}
 	}
 
+	enum SearchType {
+		TORRENTSEARCH, REQUESTSSEARCH, TORRENTANDREQUESTSSEARCH;
+	}
 }

@@ -17,7 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnLongClickListener;
+import android.view.View.OnClickListener;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -32,7 +32,10 @@ import api.forum.thread.Posts;
 import api.forum.thread.Thread;
 import api.util.Triple;
 
-public class ThreadActivity extends MyActivity implements OnLongClickListener {
+public class ThreadActivity extends MyActivity implements OnClickListener {
+	private static final int RESULT_UNSUBSCRIBE = 0;
+	private static final int RESULT_SUBSCRIBE = 1;
+	private static final int RESULT_REFRESH = 2;
 	private ScrollView scrollView;
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
@@ -43,6 +46,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	private Button backButton, nextButton, lastButton, replyButton;
 	private ArrayList<RelativeLayout> listOfPosts = new ArrayList<RelativeLayout>();
 	private boolean hasAvatarsEnabled;
+	private boolean subscribed;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -124,7 +128,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			listOfPosts.add(layout);
 			listOfPosts.get(i).setId(i);
 			listOfPosts.get(i).setClickable(true);
-			listOfPosts.get(i).setOnLongClickListener(this);
+			listOfPosts.get(i).setOnClickListener(this);
 			scrollLayout.addView(listOfPosts.get(i));
 			if (hasAvatarsEnabled) {
 				new LoadAvatar().execute(new Triple<Integer, Integer, String>(i, posts.get(i).getAuthor().getAuthorId()
@@ -132,9 +136,11 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			} else {
 				listOfPosts.get(i).findViewById(R.id.avatar).setVisibility(ImageView.GONE);
 			}
-			/* ImageView a; a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar); if (a.getHeight() >
+			/*
+			 * ImageView a; a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar); if (a.getHeight() >
 			 * body.getHeight()) { LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, a.getHeight());
-			 * body.setLayoutParams(lp); } */
+			 * body.setLayoutParams(lp); }
+			 */
 		}
 	}
 
@@ -145,7 +151,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		b.putString("post", thread.getResponse().getPosts().get(i).getQuotableBody());
 		b.putInt("userId", thread.getResponse().getPosts().get(i).getAuthor().getAuthorId().intValue());
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void back(View v) {
@@ -155,7 +161,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			b.putInt("id", id);
 			b.putInt("page", page - 1);
 			intent.putExtras(b);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 		} else {
 			finish();
 		}
@@ -168,7 +174,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			b.putInt("id", id);
 			b.putInt("page", page + 1);
 			intent.putExtras(b);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 		}
 	}
 
@@ -179,14 +185,44 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 			b.putInt("id", id);
 			b.putInt("page", thread.getLastPage());
 			intent.putExtras(b);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 		}
 	}
 
 	public void showThreadInfo(View v) {
-		/* Bundle b = new Bundle(); intent = new Intent(ThreadActivity.this, what.forum.ThreadInfoActivity.class);
-		 * b.putInt("id", id); b.putBoolean("subscribed", thread.getResponse().isSubscribed()); intent.putExtras(b);
-		 * startActivityForResult(intent, 0); */
+		Bundle b = new Bundle();
+		intent = new Intent(ThreadActivity.this, what.forum.ThreadInfoActivity.class);
+		b.putInt("id", id);
+		b.putBoolean("subscribed", subscribed);
+		intent.putExtras(b);
+		startActivityForResult(intent, 0);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		if (requestCode == 0) {
+			if (resultCode == RESULT_SUBSCRIBE) {
+				try {
+					thread.subscribe();
+					subscribed = true;
+					Toast.makeText(this, "Subscribed", Toast.LENGTH_SHORT).show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (resultCode == RESULT_UNSUBSCRIBE) {
+				try {
+					thread.unsubscribe();
+					subscribed = false;
+					Toast.makeText(this, "Unsubscribed", Toast.LENGTH_SHORT).show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (resultCode == RESULT_REFRESH) {
+				refresh();
+			}
+		}
 	}
 
 	@Override
@@ -206,13 +242,12 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 	}
 
 	@Override
-	public boolean onLongClick(View v) {
+	public void onClick(View v) {
 		for (int i = 0; i < listOfPosts.size(); i++) {
 			if (v.getId() == listOfPosts.get(i).getId()) {
 				openOptions(i);
 			}
 		}
-		return false;
 
 	}
 
@@ -271,8 +306,10 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 					return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
 				}
 			}
-			/* } else { Log.v("cache", "Image loaded"); return new Triple<Boolean, Integer, Bitmap>(true, pos,
-			 * ImageCache.getImage(id)); } */
+			/*
+			 * } else { Log.v("cache", "Image loaded"); return new Triple<Boolean, Integer, Bitmap>(true, pos,
+			 * ImageCache.getImage(id)); }
+			 */
 			return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
 		}
 
@@ -324,6 +361,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		protected void onPostExecute(Boolean status) {
 			if (status == true) {
 				page = thread.getResponse().getCurrentPage().intValue();
+				subscribed = thread.getResponse().isSubscribed();
 				populateLayout();
 			}
 			dialog.dismiss();
@@ -350,6 +388,7 @@ public class ThreadActivity extends MyActivity implements OnLongClickListener {
 		input.setMinHeight(this.getHeight() / 3);
 		input.setMinWidth(this.getWidth() / 2);
 		input.setText(QuoteBuffer.getBuffer());
+		input.setSelection(input.getSelectionEnd());
 		alert.setView(input);
 		showSoftKeyboard(input);
 

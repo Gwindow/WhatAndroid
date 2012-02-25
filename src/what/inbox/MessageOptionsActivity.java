@@ -88,6 +88,7 @@ public class MessageOptionsActivity extends MyActivity {
 		input.setMinHeight(this.getHeight() / 3);
 		input.setMinWidth(this.getWidth() / 2);
 		input.setText(QuoteBuffer.getBuffer());
+		input.setSelection(input.getSelectionEnd());
 		alert.setView(input);
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);

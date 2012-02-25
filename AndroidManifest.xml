@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="what.gui" android:versionCode="0" android:versionName="0.1" android:installLocation="auto">  
+	package="what.gui" android:versionCode="0" android:versionName="0.1"
+	android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="8" />
 	<uses-permission android:name="android.permission.INTERNET"
 		android:screenOrientation="portrait" />
@@ -56,6 +57,12 @@
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.forum.ThreadActivity" android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.forum.ThreadInfoActivity" android:theme="@style/Theme.NoTitleDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 			</intent-filter>

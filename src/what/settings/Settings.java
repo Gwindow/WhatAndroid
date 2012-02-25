@@ -81,6 +81,10 @@ public class Settings {
 		return settings.getBoolean("gesturesEnabled_preference", true);
 	}
 
+	public static boolean getSubscriptionsEnabled() {
+		return settings.getBoolean("subscriptionsEnabled_preference", true);
+	}
+
 	public static void saveNumberOfAnnouncements(int i) {
 		settingsEditor.putInt("numberOfA", i);
 	}

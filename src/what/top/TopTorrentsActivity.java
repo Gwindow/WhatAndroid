@@ -57,6 +57,7 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 			}
 			pastDay.get(i).setText(getTitle(0, i));
 			pastDay.get(i).setOnClickListener(this);
+			pastDay.get(i).setId(counter);
 			idMap.put(counter, getId(0, i));
 			counter++;
 			scrollLayout.addView(pastDay.get(i));
@@ -74,6 +75,7 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 			}
 			pastWeek.get(i).setText(getTitle(1, i));
 			pastWeek.get(i).setOnClickListener(this);
+			pastWeek.get(i).setId(counter);
 			idMap.put(counter, getId(1, i));
 			counter++;
 			scrollLayout.addView(pastWeek.get(i));
@@ -91,6 +93,7 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 			}
 			allTime.get(i).setText(getTitle(2, i));
 			allTime.get(i).setOnClickListener(this);
+			allTime.get(i).setId(counter);
 			idMap.put(counter, getId(2, i));
 			counter++;
 			scrollLayout.addView(allTime.get(i));
@@ -108,6 +111,7 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 			}
 			snatched.get(i).setText(getTitle(3, i));
 			snatched.get(i).setOnClickListener(this);
+			snatched.get(i).setId(counter);
 			idMap.put(counter, getId(3, i));
 			counter++;
 			scrollLayout.addView(snatched.get(i));
@@ -125,6 +129,7 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 			}
 			transferred.get(i).setText(getTitle(4, i));
 			transferred.get(i).setOnClickListener(this);
+			transferred.get(i).setId(counter);
 			idMap.put(counter, getId(4, i));
 			counter++;
 			scrollLayout.addView(transferred.get(i));
@@ -142,6 +147,7 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 			}
 			seeded.get(i).setText(getTitle(5, i));
 			seeded.get(i).setOnClickListener(this);
+			seeded.get(i).setId(counter);
 			idMap.put(counter, getId(5, i));
 			counter++;
 			scrollLayout.addView(seeded.get(i));
@@ -158,6 +164,15 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 
 	private int getId(int j, int i) {
 		return top.getResponse().get(j).getResults().get(i).getGroupId().intValue();
+	}
+
+	@Override
+	public void onClick(View v) {
+		try {
+			openTorrent(idMap.get(v.getId()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private class LoadTopTorrents extends AsyncTask<Void, Void, Boolean> {
@@ -196,12 +211,4 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 		startActivityForResult(intent, 0);
 	}
 
-	@Override
-	public void onClick(View v) {
-		try {
-			openTorrent(idMap.get(v.getId()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }
