@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,13 +18,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class ImageCache extends Activity {
-	private static Map<Integer, Bitmap> imageMap;
+	private static Map<Integer, SoftReference<Bitmap>> imageMap;
 	private static Map<Integer, String> urlMap;
 	private static String extStorageDirectory = null;
 
 	@SuppressWarnings("unchecked") // readObject() is safe here, honest.
 	public static void init(Context mCtx) {
-		imageMap = new WeakHashMap<Integer, Bitmap>();
+		imageMap = new HashMap<Integer, SoftReference<Bitmap>>();
 		extStorageDirectory = mCtx.getExternalCacheDir().toString();
 		try {
 			ObjectInputStream ois = new ObjectInputStream(
@@ -58,7 +58,7 @@ public class ImageCache extends Activity {
 		try {
 			outStream = new FileOutputStream(file);
 			bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-			imageMap.put(id, bitmap);
+			imageMap.put(id, new SoftReference<Bitmap>(bitmap));
 			urlMap.put(id, url);
 			outStream.flush();
 			outStream.close();
@@ -84,21 +84,26 @@ public class ImageCache extends Activity {
 	}
 
 	public static Bitmap getImage(int id) {
+		Bitmap avatar = null;
 		if (imageMap.containsKey(id)) {
-			return imageMap.get(id);
+			avatar = imageMap.get(id).get();
 		}
-		else {
+		if (avatar == null) {
 			try {
-				File file = new File(extStorageDirectory, String.valueOf(id));
-				FileInputStream in = new FileInputStream(file);
-				Bitmap avatar = BitmapFactory.decodeStream(in);
-				imageMap.put(id, avatar);
-				return avatar;
+				avatar = loadImage(id);
 			} catch (FileNotFoundException e) {
-				// Shouldn't occur since we already checked for its existence...
 				e.printStackTrace();
-				return null;
+				// Shouldn't occur since we already checked for its existence...
 			}
 		}
+		return avatar;
+	}
+
+	public static Bitmap loadImage(int id) throws FileNotFoundException {
+			File file = new File(extStorageDirectory, String.valueOf(id));
+			FileInputStream in = new FileInputStream(file);
+			Bitmap avatar = BitmapFactory.decodeStream(in);
+			imageMap.put(id, new SoftReference<Bitmap>(avatar));
+			return avatar;
 	}
 }
