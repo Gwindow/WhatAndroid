@@ -69,6 +69,9 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 		setButtonState(lastButton, false);
 		setButtonState(replyButton, false);
 
+		Thread.setPostsPerPage(25);
+		Thread.setOverridePostsPerPage(true);
+
 		getBundle();
 
 		new LoadThread().execute();
