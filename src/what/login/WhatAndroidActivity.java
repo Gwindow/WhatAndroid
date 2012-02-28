@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import what.cache.ImageCache;
 import what.gui.MyActivity;
 import what.gui.R;
 import what.home.HomeActivity;
@@ -54,7 +55,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		super.setContentView(R.layout.login, false);
 
 		Settings.init(this);
-		// ImageCache.init();
+		ImageCache.init(this);
 		INSTALLED_VERSION = getInstalledVersion();
 		MySoup.setSite(SITE);
 
