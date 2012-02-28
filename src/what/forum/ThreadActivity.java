@@ -280,6 +280,7 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 				e.printStackTrace();
 			}
 		}
+		ImageCache.syncMap();
 		super.onPause();
 	}
 
