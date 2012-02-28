@@ -3,6 +3,7 @@ package what.forum;
 import java.util.ArrayList;
 import java.util.List;
 
+import what.cache.ImageCache;
 import what.gui.ImageLoader;
 import what.gui.MyActivity;
 import what.gui.R;
@@ -294,22 +295,26 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 			int pos = params[0].getA().intValue();
 			int id = params[0].getB();
 			String url = params[0].getC();
-			// if (!ImageCache.hasImage(id, url)) {
-			if (url.length() > 0) {
-				try {
-					bitmap = ImageLoader.loadBitmap(url);
-					// ImageCache.saveImage(id, url, bitmap);
-					// Log.v("cache", "Image saved");
-					return new Triple<Boolean, Integer, Bitmap>(true, pos, bitmap);
-				} catch (Exception e) {
-					e.printStackTrace();
-					return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
+			if (!ImageCache.hasImage(id, url)) {
+				if (url.length() > 0) {
+					try {
+						bitmap = ImageLoader.loadBitmap(url);
+						ImageCache.saveImage(id, url, bitmap);
+						Log.v("cache", "Image saved");
+						return new Triple<Boolean, Integer, Bitmap>(true, pos, bitmap);
+					} catch (Exception e) {
+						e.printStackTrace();
+						return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
+					}
 				}
+
+			} else {
+				Log.v("cache", "Image loaded");
+				return new Triple<Boolean, Integer, Bitmap>(
+						true,
+						pos,
+						ImageCache.getImage(id));
 			}
-			/*
-			 * } else { Log.v("cache", "Image loaded"); return new Triple<Boolean, Integer, Bitmap>(true, pos,
-			 * ImageCache.getImage(id)); }
-			 */
 			return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
 		}
 
