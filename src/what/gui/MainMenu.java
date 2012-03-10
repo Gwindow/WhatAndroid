@@ -38,18 +38,18 @@ public class MainMenu extends MyActivity {
 
 	public void search(View v) {
 		intent = new Intent(MainMenu.this, what.gui.SearchMenu.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void forum(View v) {
 		intent = new Intent(MainMenu.this, what.forum.ForumSectionsListActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void notifications(View v) {
 		if (MySoup.canNotifications()) {
 			intent = new Intent(MainMenu.this, what.notifications.NotificationsActivity.class);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 		} else {
 			Toast.makeText(this, "You need to be a power user or higher to access notifications", Toast.LENGTH_LONG).show();
 		}
@@ -57,12 +57,12 @@ public class MainMenu extends MyActivity {
 
 	public void inbox(View v) {
 		intent = new Intent(MainMenu.this, what.inbox.InboxActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void bookmarks(View v) {
 		intent = new Intent(MainMenu.this, what.bookmarks.TorrentBookmarksActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void settings(View v) {
@@ -72,22 +72,24 @@ public class MainMenu extends MyActivity {
 
 	public void home(View v) {
 		intent = new Intent(MainMenu.this, what.home.HomeActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void status(View v) {
 		intent = new Intent(MainMenu.this, what.status.WhatStatusActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void topten(View v) {
 		intent = new Intent(MainMenu.this, what.top.TopTorrentsActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void donate(View v) {
-		/* intent = new Intent(MainMenu.this, what.donate.FlattrDonationActivity.class); startActivityForResult(intent,
-		 * 0); */
+		/*
+		 * intent = new Intent(MainMenu.this, what.donate.FlattrDonationActivity.class); startActivityForResult(intent,
+		 * 0);
+		 */
 		Toast.makeText(MainMenu.this, "I don't know yet", Toast.LENGTH_SHORT).show();
 	}
 }

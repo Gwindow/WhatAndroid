@@ -22,16 +22,14 @@ public class ImageCache extends Activity {
 	private static Map<Integer, String> urlMap;
 	private static String extStorageDirectory = null;
 
-	@SuppressWarnings("unchecked") // readObject() is safe here, honest.
-	public static void init(Context mCtx) {
+	@SuppressWarnings("unchecked")
+	// readObject() is safe here, honest.
+			public static
+			void init(Context mCtx) {
 		imageMap = new HashMap<Integer, SoftReference<Bitmap>>();
 		extStorageDirectory = mCtx.getExternalCacheDir().toString();
 		try {
-			ObjectInputStream ois = new ObjectInputStream(
-					new FileInputStream(
-							new File(extStorageDirectory, "urlmap")
-							)
-					);
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(extStorageDirectory, "urlmap")));
 			urlMap = (HashMap<Integer, String>) ois.readObject();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -41,11 +39,7 @@ public class ImageCache extends Activity {
 
 	public static void syncMap() {
 		try {
-			ObjectOutputStream oos = new ObjectOutputStream(
-					new FileOutputStream(
-							new File(extStorageDirectory, "urlmap")
-							)
-					);
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(extStorageDirectory, "urlmap")));
 			oos.writeObject(urlMap);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -73,8 +67,7 @@ public class ImageCache extends Activity {
 		if (imageMap.containsKey(id)) {
 			if (urlMap.containsKey(id) && urlMap.get(id).equals(url))
 				return true;
-		}
-		else {
+		} else {
 			File file = new File(extStorageDirectory, String.valueOf(id));
 			if (file.exists()) {
 				return true;
@@ -100,10 +93,10 @@ public class ImageCache extends Activity {
 	}
 
 	public static Bitmap loadImage(int id) throws FileNotFoundException {
-			File file = new File(extStorageDirectory, String.valueOf(id));
-			FileInputStream in = new FileInputStream(file);
-			Bitmap avatar = BitmapFactory.decodeStream(in);
-			imageMap.put(id, new SoftReference<Bitmap>(avatar));
-			return avatar;
+		File file = new File(extStorageDirectory, String.valueOf(id));
+		FileInputStream in = new FileInputStream(file);
+		Bitmap avatar = BitmapFactory.decodeStream(in);
+		imageMap.put(id, new SoftReference<Bitmap>(avatar));
+		return avatar;
 	}
 }

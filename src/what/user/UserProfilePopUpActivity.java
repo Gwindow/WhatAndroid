@@ -83,7 +83,7 @@ public class UserProfilePopUpActivity extends MyActivity {
 		intent = new Intent(UserProfilePopUpActivity.this, what.inbox.NewConversationActivity.class);
 		b.putInt("userId", userId);
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 
 	}
 
@@ -92,7 +92,7 @@ public class UserProfilePopUpActivity extends MyActivity {
 		intent = new Intent(UserProfilePopUpActivity.this, what.user.UserProfileActivity.class);
 		b.putInt("userId", userId);
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	@Override

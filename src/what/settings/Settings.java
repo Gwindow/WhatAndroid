@@ -64,6 +64,15 @@ public class Settings {
 		return settings.getString("customBackground_path", "");
 	}
 
+	public static void saveQuickScannerFirstRun(boolean b) {
+		settingsEditor.putBoolean("quickScannerFirstRun", b);
+		commit();
+	}
+
+	public static boolean getQuickScannerFirstRun() {
+		return settings.getBoolean("quickScannerFirstRun", true);
+	}
+
 	public static void saveFirstRun(boolean b) {
 		settingsEditor.putBoolean("firstRun", b);
 		commit();
@@ -194,6 +203,10 @@ public class Settings {
 	 */
 	public static SharedPreferences.Editor getSettingsEditor() {
 		return settingsEditor;
+	}
+
+	public static float getGestureSensitivity() {
+		return settings.getFloat("gestureSensitivity_preference", 2.5f);
 	}
 
 }

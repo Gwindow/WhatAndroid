@@ -61,7 +61,7 @@ public class TorrentBookmarksActivity extends MyActivity implements OnClickListe
 		intent = new Intent(TorrentBookmarksActivity.this, what.torrents.torrents.TorrentTabActivity.class);
 		b.putInt("torrentGroupId", bookmarks.getResponse().getTorrents().get(i).getId().intValue());
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	@Override

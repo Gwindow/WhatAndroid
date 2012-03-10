@@ -157,7 +157,7 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 		Intent intent = new Intent(TorrentSearchActivity.this, TorrentTabActivity.class);
 		b.putInt("torrentGroupId", id);
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	@Override
@@ -177,7 +177,7 @@ public class TorrentSearchActivity extends MyActivity implements OnClickListener
 			b.putString("searchTerm", searchTerm);
 			b.putString("tagSearchTerm", tagSearchTerm);
 			intent.putExtras(b);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 		}
 	}
 

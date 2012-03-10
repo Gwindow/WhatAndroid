@@ -72,7 +72,7 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 		b.putInt("id", id);
 		b.putInt("page", 1);
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	@Override

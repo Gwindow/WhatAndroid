@@ -69,7 +69,7 @@ public class PostOptionsActivity extends MyActivity {
 		intent = new Intent(PostOptionsActivity.this, what.user.UserProfilePopUpActivity.class);
 		b.putInt("userId", userId);
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void reply(View v) {

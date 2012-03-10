@@ -67,7 +67,7 @@ public class TorrentListActivity extends MyActivity implements OnClickListener {
 		intent = new Intent(TorrentListActivity.this, what.torrents.torrents.TorrentTabActivity.class);
 		b.putInt("torrentGroupId", (artist.getResponse().getTorrentgroup().get(i).getGroupId().intValue()));
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	@Override

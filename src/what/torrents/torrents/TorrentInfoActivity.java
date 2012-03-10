@@ -44,12 +44,12 @@ public class TorrentInfoActivity extends MyActivity {
 		intent = new Intent(TorrentInfoActivity.this, what.torrents.ListActivity.class);
 		b.putString("type", "torrent_tags");
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void openStats(View v) {
 		intent = new Intent(TorrentInfoActivity.this, what.torrents.torrents.TorrentStatsActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class ArtistActivity extends MyActivity {
 		intent = new Intent(ArtistActivity.this, what.torrents.ListActivity.class);
 		b.putString("type", "artist_similiar");
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void openTags(View v) {
@@ -53,12 +53,12 @@ public class ArtistActivity extends MyActivity {
 		intent = new Intent(ArtistActivity.this, what.torrents.ListActivity.class);
 		b.putString("type", "artist_tags");
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void openStats(View v) {
 		intent = new Intent(ArtistActivity.this, what.torrents.artist.ArtistStatsActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	@Override

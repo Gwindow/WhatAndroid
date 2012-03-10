@@ -24,6 +24,14 @@
 		android:layout_margin="10dip" android:layout_marginLeft="10dip"
 		android:layout_marginTop="5dip"
 		android:layout_marginBottom="5dip"></Button>
+	<Button android:id="@+id/quickscan" android:background="@drawable/btn_black"
+		android:layout_below="@+id/scanbutton_torrents"
+		style="@style/ButtonText" 
+		android:text="Quick Scan" android:onClick="quickScan" android:padding="5dip"
+		android:layout_height="wrap_content" android:layout_width="fill_parent"
+		android:layout_margin="10dip" android:layout_marginLeft="10dip"
+		android:layout_marginTop="5dip"
+		android:layout_marginBottom="5dip"></Button>
 	<Button android:id="@+id/manualbutton" android:background="@drawable/btn_black"
 		android:visibility="invisible"
 		style="@style/ButtonText" android:layout_below="@+id/scanbutton"

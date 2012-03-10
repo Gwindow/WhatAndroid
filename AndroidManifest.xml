@@ -38,6 +38,12 @@
 			</intent-filter>
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.barcode.QuickScannerActivity" android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+			</intent-filter>
+		</activity>
+		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.home.HomeActivity" android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />

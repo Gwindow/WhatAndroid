@@ -136,7 +136,7 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 			b.putInt("page", page + 1);
 			b.putString("searchTerm", searchTerm);
 			intent.putExtras(b);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 		}
 	}
 

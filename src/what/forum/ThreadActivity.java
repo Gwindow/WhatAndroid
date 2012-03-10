@@ -34,9 +34,9 @@ import api.forum.thread.Thread;
 import api.util.Triple;
 
 public class ThreadActivity extends MyActivity implements OnClickListener {
-	private static final int RESULT_UNSUBSCRIBE = 0;
-	private static final int RESULT_SUBSCRIBE = 1;
-	private static final int RESULT_REFRESH = 2;
+	private static final int RESULT_UNSUBSCRIBE = 1;
+	private static final int RESULT_SUBSCRIBE = 2;
+	private static final int RESULT_REFRESH = 3;
 	private ScrollView scrollView;
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
@@ -226,6 +226,7 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 			if (resultCode == RESULT_REFRESH) {
 				refresh();
 			}
+
 		}
 	}
 
@@ -314,10 +315,7 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 
 			} else {
 				Log.v("cache", "Image loaded");
-				return new Triple<Boolean, Integer, Bitmap>(
-						true,
-						pos,
-						ImageCache.getImage(id));
+				return new Triple<Boolean, Integer, Bitmap>(true, pos, ImageCache.getImage(id));
 			}
 			return new Triple<Boolean, Integer, Bitmap>(false, pos, null);
 		}

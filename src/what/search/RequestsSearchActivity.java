@@ -128,8 +128,10 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 					resultList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_odd, null));
 				}
 				// TODO renable
-				/* resultList.get(i).setText( results.get(i).getArtist() + " - " + results.get(i).getTitle() + " [" +
-				 * results.get(i).getYear().toString() + "]"); */
+				/*
+				 * resultList.get(i).setText( results.get(i).getArtist() + " - " + results.get(i).getTitle() + " [" +
+				 * results.get(i).getYear().toString() + "]");
+				 */
 				resultList.get(i).setTextSize(18);
 				resultList.get(i).setId(i);
 				resultList.get(i).setOnClickListener(this);
@@ -155,7 +157,7 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 		Intent intent = new Intent(RequestsSearchActivity.this, RequestTabActivity.class);
 		b.putInt("requestId", id);
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	@Override
@@ -175,7 +177,7 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 			b.putString("searchTerm", searchTerm);
 			b.putString("tagSearchTerm", tagSearchTerm);
 			intent.putExtras(b);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 		}
 	}
 

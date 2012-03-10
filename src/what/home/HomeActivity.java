@@ -41,6 +41,9 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 	private Intent notificationService;
 	private Intent annoucementService;
 
+	private static String up, down, ratio, buffer;
+	private static boolean isCached;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -120,12 +123,26 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 	}
 
 	private void loadStats() {
-		username.setText(MySoup.getUsername());
-		uploadedValue.setText("U: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getUploaded().toString()) + "GB");
-		downloadedValue.setText("D: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getDownloaded().toString())
-				+ "GB");
-		ratioValue.setText("R: " + MySoup.getIndex().getResponse().getUserstats().getRatio());
-		bufferValue.setText("B: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getBuffer().toString()) + "GB");
+		if (isCached) {
+			username.setText(MySoup.getUsername());
+			uploadedValue.setText(up);
+			downloadedValue.setText(down);
+			ratioValue.setText(ratio);
+			bufferValue.setText(buffer);
+		} else {
+			up = "U: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getUploaded().toString()) + "GB";
+			down = "D: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getDownloaded().toString()) + "GB";
+			ratio = "R: " + MySoup.getIndex().getResponse().getUserstats().getRatio();
+			buffer = "B: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getBuffer().toString()) + "GB";
+
+			username.setText(MySoup.getUsername());
+			uploadedValue.setText(up);
+			downloadedValue.setText(down);
+			ratioValue.setText(ratio);
+			bufferValue.setText(buffer);
+
+			isCached = true;
+		}
 	}
 
 	private void loadSearchBar() {
@@ -139,22 +156,22 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 		intent = new Intent(HomeActivity.this, what.user.UserProfileActivity.class);
 		b.putInt("userId", (MySoup.getUserId()));
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void openTorrents(View v) {
 		Intent intent = new Intent(this, what.search.TorrentSearchActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void openForum(View v) {
 		intent = new Intent(HomeActivity.this, what.forum.ForumSectionsListActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void openInbox(View v) {
 		intent = new Intent(HomeActivity.this, what.inbox.InboxActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void openTopTen(View v) {
@@ -170,7 +187,7 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 			b.putString("searchTerm", searchBar.getText().toString());
 			b.putString("tagSearchTerm", " ");
 			intent.putExtras(b);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 			hideSoftKeyboard(searchBar);
 		}
 		return true;
@@ -201,7 +218,7 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 		b.putInt("id", subscriptions.getResponse().getThreads().get(i).getThreadId().intValue());
 		b.putInt("postId", subscriptions.getResponse().getThreads().get(i).getLastPostId().intValue());
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 		scrollLayout.removeViewAt(i);
 		threadList.remove(i);
 		subscriptions.getResponse().getThreads().remove(i);

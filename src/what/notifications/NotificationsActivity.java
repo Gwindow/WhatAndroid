@@ -100,7 +100,7 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 		intent = new Intent(NotificationsActivity.this, what.torrents.torrents.TorrentTabActivity.class);
 		b.putInt("torrentGroupId", notifications.getResponse().getResults().get(i).getGroupId().intValue());
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void clear(View v) {
@@ -117,7 +117,7 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 		intent = new Intent(NotificationsActivity.this, what.notifications.NotificationsActivity.class);
 		b.putInt("page", page + 1);
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void back(View v) {
@@ -125,7 +125,7 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 		intent = new Intent(NotificationsActivity.this, what.notifications.NotificationsActivity.class);
 		b.putInt("page", page - 1);
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	@Override

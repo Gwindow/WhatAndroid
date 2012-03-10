@@ -113,7 +113,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 			b.putInt("page", 1);
 		}
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	private void openAuthor(int i) {
@@ -121,7 +121,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 		intent = new Intent(SectionActivity.this, what.user.UserProfilePopUpActivity.class);
 		b.putInt("userId", section.getResponse().getThreads().get(i).getAuthorId().intValue());
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void back(View v) {
@@ -131,7 +131,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 			b.putInt("id", id);
 			b.putInt("page", page - 1);
 			intent.putExtras(b);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 		} else {
 			finish();
 		}
@@ -144,7 +144,7 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 			b.putInt("id", id);
 			b.putInt("page", page + 1);
 			intent.putExtras(b);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 		}
 	}
 
@@ -153,7 +153,8 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 		intent = new Intent(SectionActivity.this, what.forum.NewThreadActivity.class);
 		b.putInt("sectionId", Section.getId());
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
+
 	}
 
 	@Override

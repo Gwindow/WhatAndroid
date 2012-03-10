@@ -34,21 +34,21 @@ public class SearchMenu extends MyActivity {
 
 	public void torrents(View v) {
 		intent = new Intent(SearchMenu.this, what.search.TorrentSearchActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void requests(View v) {
 		intent = new Intent(SearchMenu.this, what.search.RequestsSearchActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void barcode(View v) {
 		intent = new Intent(SearchMenu.this, what.barcode.ScannerActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void users(View v) {
 		intent = new Intent(SearchMenu.this, what.search.UserSearchActivity.class);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 }

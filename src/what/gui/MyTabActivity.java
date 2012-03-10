@@ -32,6 +32,10 @@ public class MyTabActivity extends TabActivity {
 		@SuppressWarnings("unused")
 		ReportSender sender = new ReportSender(this);
 		setDisplayMetrics();
+
+		if (Settings.getSettings() == null | Settings.getSettingsEditor() == null) {
+			Settings.init(this);
+		}
 	}
 
 	/**
@@ -43,6 +47,7 @@ public class MyTabActivity extends TabActivity {
 	 *            the enable background
 	 */
 	public void setContentView(int layoutResID, boolean enableBackground) {
+
 		super.setContentView(layoutResID);
 		if (enableBackground) {
 			v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
@@ -55,6 +60,7 @@ public class MyTabActivity extends TabActivity {
 	}
 
 	private void loadDefaultBackground() {
+
 		try {
 			setAndResizeBackground(R.drawable.bricks_background);
 		} catch (Exception e) {
@@ -121,7 +127,7 @@ public class MyTabActivity extends TabActivity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			Intent intent = new Intent(this, what.gui.MainMenu.class);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);

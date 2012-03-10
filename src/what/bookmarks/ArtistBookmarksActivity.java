@@ -55,7 +55,7 @@ public class ArtistBookmarksActivity extends MyActivity implements OnClickListen
 		intent = new Intent(ArtistBookmarksActivity.this, what.torrents.artist.ArtistTabActivity.class);
 		b.putInt("artistId", bookmarks.getResponse().getArtists().get(i).getArtistId().intValue());
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	@Override

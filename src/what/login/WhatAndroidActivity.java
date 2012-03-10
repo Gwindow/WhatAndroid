@@ -24,6 +24,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
@@ -38,7 +41,7 @@ import api.util.Updater;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
-	private final static double VERSION = 0.24;
+	private final static double VERSION = 0.25;
 	private final static String SITE = "http://what.cd/";
 	private final static String UPDATE_SITE = "https://raw.github.com/Gwindow/WhatAndroid/gh-pages/index.html";
 	public static double INSTALLED_VERSION;
@@ -54,7 +57,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.login, false);
 
-		Settings.init(this);
 		ImageCache.init(this);
 		INSTALLED_VERSION = getInstalledVersion();
 		MySoup.setSite(SITE);
@@ -84,6 +86,35 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		return false;
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.loginmenu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.scannerItem:
+			intent = new Intent(WhatAndroidActivity.this, what.barcode.QuickScannerActivity.class);
+			startActivity(intent);
+			break;
+		case R.id.statusItem:
+			intent = new Intent(WhatAndroidActivity.this, what.status.WhatStatusActivity.class);
+			startActivity(intent);
+			break;
+		default:
+			break;
+		}
+		return true;
 	}
 
 	private void checkForUpdates() throws CouldNotLoadException {

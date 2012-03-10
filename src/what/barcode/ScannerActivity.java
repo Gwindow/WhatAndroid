@@ -20,7 +20,8 @@ import api.search.torrents.TorrentSearch;
 import api.util.Triple;
 
 public class ScannerActivity extends MyActivity implements OnClickListener, DialogInterface.OnClickListener {
-	private static final String ZXING_MARKETPLACE_URL = "market://details?id=com.google.zxing.client.android";
+	private static final String ZXING_MARKETPLACE_URL =
+			"https://play.google.com/store/apps/details?id=com.google.zxing.client.android";
 	private Intent intent;
 	private String contents;
 	private ProgressDialog dialog;
@@ -42,34 +43,25 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 	}
 
 	public void scanRequests(View v) {
-		try {
-			intent = new Intent("com.google.zxing.client.android.SCAN");
-			intent.setPackage("com.google.zxing.client.android");
-			intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
-			searchType = SearchType.REQUESTSSEARCH;
-			startActivityForResult(intent, 0);
-		} catch (Exception e) {
-			AlertDialog.Builder alert = new AlertDialog.Builder(this);
-			alert.setTitle("Barcode Scanner not found");
-			alert.setMessage("The Zxing Barcode Scanner is required to use the scanning features, would you like to install it?");
-			alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					openMarketPlaceUrl(ZXING_MARKETPLACE_URL);
-				}
-			});
-			alert.setNegativeButton("No", null);
-			alert.setCancelable(true);
-			alert.create().show();
-		}
+		searchType = SearchType.REQUESTSSEARCH;
+		startScanner();
 	}
 
 	public void scanTorrents(View v) {
+		searchType = SearchType.TORRENTSEARCH;
+		startScanner();
+	}
+
+	public void quickScan(View v) {
+		Intent i = new Intent(ScannerActivity.this, QuickScannerActivity.class);
+		startActivity(i);
+	}
+
+	private void startScanner() {
 		try {
 			intent = new Intent("com.google.zxing.client.android.SCAN");
 			intent.setPackage("com.google.zxing.client.android");
 			intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
-			searchType = SearchType.TORRENTSEARCH;
 			startActivityForResult(intent, 0);
 		} catch (Exception e) {
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);

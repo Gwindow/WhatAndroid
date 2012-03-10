@@ -42,6 +42,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 	private GestureOverlayView gestureOverlayView;
 	private static InputMethodManager mgr;
 	private static boolean isGesturesEnabled;
+	private float gestureSensitivity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,10 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 		ReportSender sender = new ReportSender(this);
 
 		setDisplayMetrics();
+
+		if (Settings.getSettings() == null | Settings.getSettingsEditor() == null) {
+			Settings.init(this);
+		}
 
 		try {
 			isGesturesEnabled = Settings.getGesturesEnabled();
@@ -90,6 +95,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 		gestureOverlayView.setGestureVisible(true);
 		gestureOverlayView.setGestureStrokeWidth(3.0f);
 		gestureLib = GestureLibraries.fromRawResource(this, R.raw.gestures);
+		gestureSensitivity = Settings.getGestureSensitivity();
 		if (!gestureLib.load()) {
 			finish();
 		}
@@ -181,7 +187,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			Intent intent = new Intent(this, what.gui.MainMenu.class);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
@@ -258,7 +264,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 		if (isGesturesEnabled) {
 			ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
 			for (Prediction prediction : predictions) {
-				if (prediction.score > 2.5) {
+				if (prediction.score > gestureSensitivity) {
 					if (prediction.name.trim().equals(Gestures.UP)) {
 						onUpGesturePerformed();
 					}
@@ -278,7 +284,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 						onHomeGesturePerformed();
 					}
 				}
-				if (prediction.score > 3.5) {
+				if (prediction.score > 9 || prediction.score > (gestureSensitivity + 1)) {
 					if (prediction.name.trim().equals(Gestures.MENU)) {
 						onMenuGesturePerformed();
 					}

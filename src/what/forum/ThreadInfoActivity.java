@@ -9,9 +9,9 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class ThreadInfoActivity extends MyActivity implements OnCheckedChangeListener {
-	private static final int RESULT_UNSUBSCRIBE = 0;
-	private static final int RESULT_SUBSCRIBE = 1;
-	private static final int RESULT_REFRESH = 2;
+	private static final int RESULT_UNSUBSCRIBE = 1;
+	private static final int RESULT_SUBSCRIBE = 2;
+	private static final int RESULT_REFRESH = 3;
 	private CheckBox subscribed;
 	private boolean isSubscribed;
 	private int id;

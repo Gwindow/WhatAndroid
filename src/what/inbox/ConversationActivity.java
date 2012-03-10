@@ -101,7 +101,7 @@ public class ConversationActivity extends MyActivity implements OnLongClickListe
 		b.putInt("userId", conversation.getResponse().getMessages().get(i).getSenderId().intValue());
 		b.putInt("convId", conversation.getResponse().getConvId().intValue());
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	public void back(View v) {

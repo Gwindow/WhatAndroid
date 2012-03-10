@@ -50,7 +50,7 @@ public class RequestListActivity extends MyActivity implements OnClickListener {
 		intent = new Intent(RequestListActivity.this, what.requests.RequestTabActivity.class);
 		b.putInt("requestId", artist.getResponse().getRequests().get(i).getRequestId().intValue());
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	@Override

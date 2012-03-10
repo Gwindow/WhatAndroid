@@ -83,7 +83,7 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 			intent = new Intent(InboxActivity.this, what.inbox.InboxActivity.class);
 			b.putInt("page", page + 1);
 			intent.putExtras(b);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 		}
 	}
 
@@ -93,7 +93,7 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 			intent = new Intent(InboxActivity.this, what.inbox.InboxActivity.class);
 			b.putInt("page", page - 1);
 			intent.putExtras(b);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 		} else {
 			finish();
 		}
@@ -131,7 +131,7 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 		intent = new Intent(InboxActivity.this, what.inbox.ConversationActivity.class);
 		b.putInt("id", inbox.getResponse().getMessages().get(i).getConvId().intValue());
 		intent.putExtras(b);
-		startActivityForResult(intent, 0);
+		startActivity(intent);
 	}
 
 	@Override
