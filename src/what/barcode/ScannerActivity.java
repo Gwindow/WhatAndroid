@@ -120,8 +120,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 		}
 	}
 
-	/*
-	 * public void displayEditTextPopup() { AlertDialog.Builder alert = new AlertDialog.Builder(this);
+	/* public void displayEditTextPopup() { AlertDialog.Builder alert = new AlertDialog.Builder(this);
 	 * 
 	 * alert.setTitle(""); alert.setMessage("Enter UPC code");
 	 * 
@@ -139,8 +138,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 	 * 
 	 * } });
 	 * 
-	 * alert.show(); }
-	 */
+	 * alert.show(); } */
 
 	public void displayNotFoundPopup() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -298,7 +296,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 			dialog.dismiss();
 			searchTerm = CrossReference.getDeterminedSearchTerm();
 			if (status.getA() == true) {
-				if (status.getB() > 0 || status.getC() > 0) {
+				if ((status.getB() > 0) || (status.getC() > 0)) {
 					displayFoundPopup(status.getB(), status.getC());
 					unlockScreenRotation();
 				} else {
@@ -307,7 +305,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 				}
 			}
 			if (status.getA() == false) {
-				Toast.makeText(ScannerActivity.this, "scan failed", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ScannerActivity.this, "Scan Failed", Toast.LENGTH_SHORT).show();
 				// displayNotFoundPopup();
 				unlockScreenRotation();
 			}
