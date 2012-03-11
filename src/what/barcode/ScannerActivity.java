@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 import api.search.crossreference.CrossReference;
 import api.search.requests.RequestsSearch;
@@ -97,7 +96,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 	}
 
 	public void manual(View v) {
-		displayEditTextPopup();
+		// displayEditTextPopup();
 	}
 
 	public void torrents(View v) {
@@ -114,43 +113,34 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 			if (resultCode == RESULT_OK) {
 				contents = intent.getStringExtra("SCAN_RESULT");
 				upc = contents;
-				new LoadSearchResults().execute(new SearchType[] { searchType });
+				new LoadSearchResults().execute();
 			} else if (resultCode == RESULT_CANCELED) {
-				Toast.makeText(this, "Scan failed", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Scan canceled", Toast.LENGTH_LONG).show();
 			}
 		}
 	}
 
-	public void displayEditTextPopup() {
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-		alert.setTitle("");
-		alert.setMessage("Enter UPC code");
-
-		final EditText input = new EditText(this);
-		alert.setView(input);
-
-		alert.setPositiveButton("Search", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int whichButton) {
-				upc = input.getText().toString();
-				if (upc.length() > 0) {
-					new LoadSearchResults().execute();
-				} else {
-					Toast.makeText(ScannerActivity.this, "UPC not entered", Toast.LENGTH_LONG).show();
-				}
-			}
-		});
-
-		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int whichButton) {
-
-			}
-		});
-
-		alert.show();
-	}
+	/*
+	 * public void displayEditTextPopup() { AlertDialog.Builder alert = new AlertDialog.Builder(this);
+	 * 
+	 * alert.setTitle(""); alert.setMessage("Enter UPC code");
+	 * 
+	 * final EditText input = new EditText(this); alert.setView(input);
+	 * 
+	 * alert.setPositiveButton("Search", new DialogInterface.OnClickListener() {
+	 * 
+	 * @Override public void onClick(DialogInterface dialog, int whichButton) { upc = input.getText().toString(); if
+	 * (upc.length() > 0) { new LoadSearchResults().execute(new SearchType[] { searchType }); } else {
+	 * Toast.makeText(ScannerActivity.this, "UPC not entered", Toast.LENGTH_LONG).show(); } } });
+	 * 
+	 * alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	 * 
+	 * @Override public void onClick(DialogInterface dialog, int whichButton) {
+	 * 
+	 * } });
+	 * 
+	 * alert.show(); }
+	 */
 
 	public void displayNotFoundPopup() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -192,43 +182,70 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 	}
 
 	public void displayFoundPopup(int torrents, int requests) {
-		AlertDialog alert = new AlertDialog.Builder(this).create();
+		AlertDialog alert = new AlertDialog.Builder(ScannerActivity.this).create();
 
 		alert.setTitle("Results Found");
 
 		if ((torrents > 0) && (requests > 0)) {
 			alert.setMessage("Found " + torrents + " torrents and " + requests + " requests");
-			alert.setButton(AlertDialog.BUTTON1, "Torrents", this);
-			alert.setButton(AlertDialog.BUTTON2, "Requests", this);
-			alert.setButton(AlertDialog.BUTTON3, "Buy it", this);
+			alert.setButton(AlertDialog.BUTTON1, "Torrents", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					openTorrentSearch();
+				}
+			});
+			alert.setButton(AlertDialog.BUTTON2, "Requests", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					openRequestSearch();
+				}
+			});
+			alert.setButton(AlertDialog.BUTTON3, "Buy", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					buy();
+				}
+			});
 		}
 
 		if ((torrents > 0) && (requests == 0)) {
 			alert.setMessage("Found " + torrents + " torrents");
-			alert.setButton(AlertDialog.BUTTON1, "Torrents", this);
-			alert.setButton(AlertDialog.BUTTON3, "Buy it", this);
+			alert.setButton(AlertDialog.BUTTON1, "Torrents", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					openTorrentSearch();
+				}
+			});
+			alert.setButton(AlertDialog.BUTTON2, "Buy", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					buy();
+				}
+			});
 		}
 
 		if ((torrents == 0) && (requests > 0)) {
 			alert.setMessage("Found " + requests + " requests");
-			alert.setButton(AlertDialog.BUTTON2, "Requests", this);
-			alert.setButton(AlertDialog.BUTTON3, "Buy it", this);
+			alert.setButton(AlertDialog.BUTTON1, "Requests", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					openRequestSearch();
+				}
+			});
+			alert.setButton(AlertDialog.BUTTON2, "Buy", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					buy();
+				}
+			});
 		}
 
+		alert.setCancelable(true);
 		alert.show();
 	}
 
 	@Override
 	public void onClick(DialogInterface dialog, int item) {
-		if (item == AlertDialog.BUTTON1) {
-			openTorrentSearch();
-		}
-		if (item == AlertDialog.BUTTON2) {
-			openRequestSearch();
-		}
-		if (item == AlertDialog.BUTTON3) {
-			buy();
-		}
 
 	}
 
@@ -237,7 +254,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 
 	}
 
-	private class LoadSearchResults extends AsyncTask<SearchType, Void, Triple<Boolean, Integer, Integer>> {
+	private class LoadSearchResults extends AsyncTask<Void, Void, Triple<Boolean, Integer, Integer>> {
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
@@ -248,22 +265,30 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 		}
 
 		@Override
-		protected Triple<Boolean, Integer, Integer> doInBackground(SearchType... params) {
+		protected Triple<Boolean, Integer, Integer> doInBackground(Void... params) {
 			boolean status = false;
 			int torrentsFound = 0, requestsFound = 0;
-			switch (params[0]) {
-			case TORRENTSEARCH:
-				torrentSearch = CrossReference.crossReferenceTorrentsByUPC(upc);
-				if (torrentSearch.getResponse().getResults() != null && !torrentSearch.getResponse().getResults().isEmpty())
-					torrentsFound = torrentSearch.getResponse().getResults().size();
-				status = true;
-				break;
-			case REQUESTSSEARCH:
-				requestsSearch = CrossReference.crossReferenceRequestsByUPC(upc);
-				if (requestsSearch.getResponse().getResults() != null && !requestsSearch.getResponse().getResults().isEmpty())
-					requestsFound = requestsSearch.getResponse().getResults().size();
-				status = true;
-				break;
+			if (searchType == SearchType.TORRENTSEARCH) {
+				try {
+					torrentSearch = CrossReference.crossReferenceTorrentsByUPC(upc);
+					if (torrentSearch.getResponse().getResults() != null) {
+						torrentsFound = torrentSearch.getResponse().getResults().size();
+						status = true;
+					}
+				} catch (Exception e) {
+					status = false;
+				}
+			}
+			if (searchType == SearchType.REQUESTSSEARCH) {
+				try {
+					requestsSearch = CrossReference.crossReferenceRequestsByUPC(upc);
+					if (requestsSearch.getResponse().getResults() != null) {
+						requestsFound = requestsSearch.getResponse().getResults().size();
+						status = true;
+					}
+				} catch (Exception e) {
+					status = false;
+				}
 			}
 			return new Triple<Boolean, Integer, Integer>(status, torrentsFound, requestsFound);
 		}
@@ -273,11 +298,17 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 			dialog.dismiss();
 			searchTerm = CrossReference.getDeterminedSearchTerm();
 			if (status.getA() == true) {
-				displayFoundPopup(status.getB(), status.getC());
-				unlockScreenRotation();
+				if (status.getB() > 0 || status.getC() > 0) {
+					displayFoundPopup(status.getB(), status.getC());
+					unlockScreenRotation();
+				} else {
+					displayNotFoundPopup();
+					unlockScreenRotation();
+				}
 			}
 			if (status.getA() == false) {
-				displayNotFoundPopup();
+				Toast.makeText(ScannerActivity.this, "scan failed", Toast.LENGTH_SHORT).show();
+				// displayNotFoundPopup();
 				unlockScreenRotation();
 			}
 		}
