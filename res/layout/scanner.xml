@@ -33,8 +33,7 @@
 		android:layout_marginTop="5dip"
 		android:layout_marginBottom="5dip"></Button>
 	<Button android:id="@+id/manualbutton" android:background="@drawable/btn_black"
-		android:visibility="invisible"
-		style="@style/ButtonText" android:layout_below="@+id/scanbutton"
+		style="@style/ButtonText" android:layout_below="@+id/quickscan"
 		android:text="Enter UPC" android:onClick="manual" android:padding="5dip"
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
 		android:layout_margin="10dip" android:layout_marginLeft="10dip"
