@@ -3,7 +3,6 @@ package what.barcode;
 import what.gui.MyActivity;
 import what.gui.R;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 import api.search.crossreference.CrossReference;
 import api.search.requests.RequestsSearch;
@@ -125,14 +123,16 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 
 	public void displayEditTextPopup() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-		alert.setTitle(""); alert.setMessage("Enter UPC code");
-		final EditText input = new EditText(this); alert.setView(input);
+		alert.setTitle("");
+		alert.setMessage("Enter UPC code");
+		final EditText input = new EditText(this);
+		alert.setView(input);
 		alert.setPositiveButton("Search", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
 				upc = input.getText().toString();
 				if (upc.length() > 0) {
-					//new LoadSearchResults().execute();
+					// new LoadSearchResults().execute();
 					displayManualSearchTypePopup();
 				} else {
 					Toast.makeText(ScannerActivity.this, "UPC not entered", Toast.LENGTH_LONG).show();
@@ -152,7 +152,8 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 
 	public void displayManualSearchTypePopup() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-		alert.setTitle(""); alert.setMessage("Select a Search Type");
+		alert.setTitle("");
+		alert.setMessage("Select a Search Type");
 
 		alert.setPositiveButton("Torrents", new DialogInterface.OnClickListener() {
 			@Override

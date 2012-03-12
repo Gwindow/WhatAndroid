@@ -41,7 +41,7 @@ import api.util.Updater;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
-	private final static double VERSION = 0.27;
+	private final static double VERSION = 0.28;
 	private final static String SITE = "http://what.cd/";
 	private final static String UPDATE_SITE = "https://raw.github.com/Gwindow/WhatAndroid/gh-pages/index.html";
 	public static double INSTALLED_VERSION;
@@ -95,11 +95,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/* (non-Javadoc)
 	 * 
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
-	 */
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem) */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
