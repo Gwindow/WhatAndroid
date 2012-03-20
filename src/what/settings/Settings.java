@@ -138,6 +138,14 @@ public class Settings {
 		}
 	}
 
+	public static void saveUserId(int id) {
+		settingsEditor.putInt("userId", id);
+	}
+
+	public static int getUserId() {
+		return settings.getInt("userId", 0);
+	}
+
 	public static void saveUsername(String username) {
 		settingsEditor.putString("username", username);
 	}
@@ -161,14 +169,6 @@ public class Settings {
 
 	public static boolean getRememberMe() {
 		return settings.getBoolean("rememberMe", false);
-	}
-
-	public static void saveSSL(boolean b) {
-		settingsEditor.putBoolean("useSSL", b);
-	}
-
-	public static Boolean getSSL() {
-		return settings.getBoolean("useSSL", false);
 	}
 
 	public static void saveSessionId(String id) {

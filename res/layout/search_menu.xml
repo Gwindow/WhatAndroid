@@ -28,11 +28,19 @@
 			android:background="@drawable/btn_black" style="@style/ButtonText"
 			android:onClick="barcode" android:layout_height="wrap_content"
 			android:layout_weight="1" android:layout_width="0dp"></Button>
-
+	</LinearLayout>
+	<LinearLayout android:id="@+id/buttons100"
+		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
+		android:layout_below="@+id/buttons3" android:layout_height="wrap_content"
+		android:layout_width="fill_parent">
+		<Button android:layout_height="wrap_content"
+			android:background="@drawable/btn_black" style="@style/ButtonText"
+			android:layout_weight="1" android:text="Goggles" android:id="@+id/button101"
+			android:onClick="goggles" android:layout_width="0dp"></Button>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/buttons4"
 		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
-		android:layout_below="@+id/buttons3" android:layout_height="wrap_content"
+		android:layout_below="@+id/buttons100" android:layout_height="wrap_content"
 		android:layout_width="fill_parent">
 		<Button android:layout_height="wrap_content"
 			android:background="@drawable/btn_black" style="@style/ButtonText"

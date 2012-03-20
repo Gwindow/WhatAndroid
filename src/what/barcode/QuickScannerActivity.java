@@ -130,8 +130,15 @@ public class QuickScannerActivity extends MyActivity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (MySoup.isLoggedIn()) {
-			super.onKeyDown(keyCode, event);
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			finish();
+		}
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			if (MySoup.isLoggedIn()) {
+				super.onKeyDown(keyCode, event);
+			} else {
+				Toast.makeText(QuickScannerActivity.this, "Login to access menu", Toast.LENGTH_SHORT).show();
+			}
 		}
 		return false;
 	}

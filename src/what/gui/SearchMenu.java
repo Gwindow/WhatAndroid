@@ -51,4 +51,9 @@ public class SearchMenu extends MyActivity {
 		intent = new Intent(SearchMenu.this, what.search.UserSearchActivity.class);
 		startActivity(intent);
 	}
+
+	public void goggles(View v) {
+		intent = new Intent(SearchMenu.this, what.goggles.GogglesSearchActivity.class);
+		startActivity(intent);
+	}
 }

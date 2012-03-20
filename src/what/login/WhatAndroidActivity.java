@@ -42,7 +42,7 @@ import api.util.Updater;
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
 	private final static double VERSION = 0.28;
-	private final static String SITE = "http://what.cd/";
+	private final static String SITE = "ssl.what.cd";
 	private final static String UPDATE_SITE = "https://raw.github.com/Gwindow/WhatAndroid/gh-pages/index.html";
 	public static double INSTALLED_VERSION;
 	private TextView username, password;
@@ -85,6 +85,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			finish();
+		}
 		return false;
 	}
 
@@ -95,9 +98,11 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem) */
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -206,10 +211,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		protected Boolean doInBackground(String... params) {
 			String username = params[0];
 			String password = params[1];
-			if (ssl.isChecked()) {
-				MySoup.enableSSL();
-				Settings.saveSSL(true);
-			}
 			if (rememberme.isChecked()) {
 				Settings.saveRememberMe(true);
 				Settings.saveUsername(username);
@@ -230,6 +231,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 			dialog.dismiss();
 			unlockScreenRotation();
 			if (status == true) {
+				Settings.saveUserId(MySoup.getUserId());
 				intent = new Intent(WhatAndroidActivity.this, HomeActivity.class);
 				startActivity(intent);
 			}

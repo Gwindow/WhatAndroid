@@ -9,6 +9,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.RemoteViews;
 import api.soup.MySoup;
 import api.user.User;
@@ -17,7 +18,7 @@ import api.util.CouldNotLoadException;
 public class UserStatsWidgetProvider extends AppWidgetProvider {
 	private RemoteViews remoteViews;
 	private ComponentName userStatsWidget;
-	private int id = (MySoup.getIndex().getResponse().getId().intValue());
+	private int id = Settings.getUserId();
 	private String username;
 	private String up, down, ratio;
 	private String seeding, leeching;
@@ -49,6 +50,7 @@ public class UserStatsWidgetProvider extends AppWidgetProvider {
 		remoteViews.setTextViewText(R.id.ratiovalue, ratio);
 		remoteViews.setTextViewText(R.id.seedingvalue, seeding);
 		remoteViews.setTextViewText(R.id.leechingvalue, leeching);
+		Log.v("widget", "ppuplated");
 	}
 
 	private String toGBString(Double d) {
