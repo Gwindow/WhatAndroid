@@ -69,9 +69,8 @@ public class ImageCache extends Activity {
 				return true;
 		} else {
 			File file = new File(extStorageDirectory, String.valueOf(id));
-			if (file.exists()) {
+			if (file.exists())
 				return true;
-			}
 		}
 		return false;
 	}

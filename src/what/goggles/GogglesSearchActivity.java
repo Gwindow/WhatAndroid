@@ -15,11 +15,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
 import android.view.View;
 import android.widget.Toast;
+import api.goggles.GoogleGogglesSearch;
 
 public class GogglesSearchActivity extends MyActivity {
 	private static final int TAKE_PHOTO_CODE = 1;
@@ -34,7 +34,7 @@ public class GogglesSearchActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.goggles, true);
-		extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+		extStorageDirectory = getExternalCacheDir().toString();
 
 	}
 
@@ -45,7 +45,7 @@ public class GogglesSearchActivity extends MyActivity {
 	}
 
 	private File getTempFile(Context context) {
-		return new File(extStorageDirectory, "image.tmp");
+		return new File(extStorageDirectory, "image.jpg");
 	}
 
 	@Override
@@ -55,13 +55,13 @@ public class GogglesSearchActivity extends MyActivity {
 				File file = getTempFile(this);
 				try {
 					bitmap = Media.getBitmap(getContentResolver(), Uri.fromFile(file));
-					double width = 200;
-					double height = bitmap.getHeight() / (bitmap.getWidth() / 200);
-					bitmap = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
+					int width = 640;
+					int height = 480;
+					bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
 					OutputStream fOut = null;
-					file = new File(extStorageDirectory, "image_compressed.tmp");
+					file = new File(extStorageDirectory, "image_resized.jpg");
 					fOut = new FileOutputStream(file);
-					bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+					bitmap.compress(Bitmap.CompressFormat.JPEG, 40, fOut);
 					fOut.flush();
 					fOut.close();
 					new LoadSearchResults().execute();
