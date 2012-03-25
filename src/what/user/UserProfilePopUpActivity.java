@@ -61,12 +61,12 @@ public class UserProfilePopUpActivity extends MyActivity {
 		username.setText(user.getProfile().getUsername());
 		userclass.setText(user.getProfile().getPersonal().getUserClass());
 		if (user.getProfile().getRanks().getUploaded().toString() != null) {
-			uploaded.setText("Up: " + toGBString(user.getProfile().getRanks().getUploaded().doubleValue()) + "GB");
+			uploaded.setText("Up: " + toGBString(user.getProfile().getStats().getUploaded().doubleValue()) + "GB");
 		} else {
 			uploaded.setText("Up: " + "Hidden");
 		}
 		if (user.getProfile().getRanks().getDownloaded().toString() != null) {
-			downloaded.setText("Down: " + toGBString(user.getProfile().getRanks().getDownloaded().doubleValue()) + "GB");
+			downloaded.setText("Down: " + toGBString(user.getProfile().getStats().getDownloaded().doubleValue()) + "GB");
 		} else {
 			downloaded.setText("Download: " + "Hidden");
 		}

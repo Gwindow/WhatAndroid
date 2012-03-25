@@ -254,19 +254,7 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			AlertDialog.Builder alert = new AlertDialog.Builder(this);
-			alert.setTitle("Sign out?");
-			alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					System.exit(0);
-				}
-			});
-			alert.setNegativeButton("No", null);
-			alert.setCancelable(true);
-			alert.create().show();
-		} else {
-			super.onKeyDown(keyCode, event);
+
 		}
 		return false;
 	}
@@ -291,12 +279,13 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 		protected void onPostExecute(Boolean status) {
 			if (status == true) {
 				populateLayout();
+				unlockScreenRotation();
 			}
 			dialog.dismiss();
 			if (status == false) {
 				Toast.makeText(HomeActivity.this, "Could not load subscriptions", Toast.LENGTH_LONG).show();
+				unlockScreenRotation();
 			}
-			unlockScreenRotation();
 		}
 	}
 
