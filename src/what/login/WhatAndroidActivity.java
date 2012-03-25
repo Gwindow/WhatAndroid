@@ -69,8 +69,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 
 		username = (TextView) this.findViewById(R.id.username);
 		password = (TextView) this.findViewById(R.id.password);
-		username.setText("gazelle");
-		password.setText("123456");
 		rememberme = (CheckBox) this.findViewById(R.id.remember_checkbox);
 		rememberme.setChecked(Settings.getRememberMe());
 		rememberme.setOnClickListener(this);
@@ -100,9 +98,11 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem) */
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

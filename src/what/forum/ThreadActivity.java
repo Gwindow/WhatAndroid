@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 import api.forum.thread.Posts;
 import api.forum.thread.Thread;
 import api.util.Triple;
@@ -37,6 +38,8 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 	private static final int RESULT_UNSUBSCRIBE = 1;
 	private static final int RESULT_SUBSCRIBE = 2;
 	private static final int RESULT_REFRESH = 3;
+	private static final int VIEW_ONE = 0;
+	private static final int VIEW_TWO = 0;
 	private ScrollView scrollView;
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
@@ -45,7 +48,7 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 	private int id, page, postId;
 	private TextView threadTitle;
 	private Button backButton, nextButton, lastButton, replyButton;
-	private ArrayList<RelativeLayout> listOfPosts = new ArrayList<RelativeLayout>();
+	private ArrayList<LinearLayout> listOfPosts = new ArrayList<LinearLayout>();
 	private boolean hasAvatarsEnabled;
 	private boolean subscribed;
 
@@ -102,10 +105,13 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 		setButtonState(replyButton, !thread.getResponse().isLocked());
 		threadTitle.setText(thread.getResponse().getThreadTitle() + ", page " + thread.getResponse().getCurrentPage());
 		List<Posts> posts = thread.getResponse().getPosts();
+		LinearLayout postFlipper;
 		RelativeLayout layout;
 		TextView username, time;
 		WebView body;
 		for (int i = 0; i < posts.size(); i++) {
+			postFlipper = (LinearLayout) getLayoutInflater().inflate(R.layout.post_flipper, null);
+			ViewFlipper viewFlipper = (ViewFlipper) postFlipper.findViewById(R.id.viewFlipper);
 			layout = (RelativeLayout) getLayoutInflater().inflate(R.layout.post, null);
 			RelativeLayout relativeLayout = (RelativeLayout) layout.findViewById(R.id.content);
 
@@ -128,8 +134,8 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 				relativeLayout.setBackgroundResource(R.drawable.color_transparent_light_gray);
 				body.setBackgroundColor(0);
 			}
-
-			listOfPosts.add(layout);
+			viewFlipper.addView(layout, VIEW_ONE);
+			listOfPosts.add(postFlipper);
 			listOfPosts.get(i).setId(i);
 			listOfPosts.get(i).setClickable(true);
 			listOfPosts.get(i).setOnClickListener(this);
