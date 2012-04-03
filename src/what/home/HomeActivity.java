@@ -256,6 +256,9 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 
 		}
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			super.onKeyDown(keyCode, event);
+		}
 		return false;
 	}
 
