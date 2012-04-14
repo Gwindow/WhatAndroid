@@ -32,6 +32,7 @@ import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.soup.MySoup;
@@ -42,7 +43,7 @@ import api.util.Updater;
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
 	private final static double VERSION = 0.30;
-	private final static String SITE = "ssl.what.cd";
+	private static String SITE = "ssl.what.cd";
 	private final static String UPDATE_SITE = "https://raw.github.com/Gwindow/WhatAndroid/gh-pages/index.html";
 	public static double INSTALLED_VERSION;
 	private TextView username, password;
@@ -98,9 +99,11 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem) */
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -111,6 +114,31 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		case R.id.statusItem:
 			intent = new Intent(WhatAndroidActivity.this, what.status.WhatStatusActivity.class);
 			startActivity(intent);
+			break;
+		case R.id.overrideItem:
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+			alert.setTitle("Gazelle Site URL");
+			final EditText input = new EditText(this);
+			alert.setView(input);
+			alert.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int whichButton) {
+					String url = input.getText().toString();
+					if (url.length() > 0) {
+						SITE = url;
+						MySoup.setSite(SITE);
+					} else {
+						Toast.makeText(WhatAndroidActivity.this, "URL not entered", Toast.LENGTH_LONG).show();
+					}
+				}
+			});
+			alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int whichButton) {
+
+				}
+			});
+			alert.create().show();
 			break;
 		default:
 			break;
@@ -184,6 +212,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == login.getId()) {
+
 			if ((username.length() > 0) && (password.length() > 0)) {
 				new Login().execute(new String[] { username.getText().toString().trim(), password.getText().toString() });
 			} else {

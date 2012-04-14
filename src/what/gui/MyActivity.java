@@ -18,6 +18,7 @@ import android.gesture.Prediction;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -104,7 +105,10 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 
 	private void loadDefaultBackground() {
 		try {
-			setAndResizeBackground(R.drawable.bricks_background);
+			BitmapDrawable bd = new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.renzler));
+			bd.setTileModeX(Shader.TileMode.REPEAT);
+			bd.setTileModeY(Shader.TileMode.REPEAT);
+			v.setBackgroundDrawable(bd);
 		} catch (Exception e) {
 			e.printStackTrace();
 			v.setBackgroundColor(R.color.black);
