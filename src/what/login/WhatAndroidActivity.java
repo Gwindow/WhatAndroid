@@ -99,11 +99,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/* (non-Javadoc)
 	 * 
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
-	 */
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem) */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
