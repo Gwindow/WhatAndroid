@@ -63,7 +63,7 @@ public class NewConversationActivity extends MyActivity {
 		@Override
 		protected Boolean doInBackground(Tuple<String, String>... params) {
 			try {
-				api.inbox.PrivateMessage pm = new PrivateMessage(userId, params[0].getA(), params[0].getB());
+				PrivateMessage pm = new PrivateMessage(userId, params[0].getA(), params[0].getB());
 				pm.sendMessage();
 				return true;
 			} catch (Exception e) {
