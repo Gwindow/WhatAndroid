@@ -262,6 +262,11 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 		return false;
 	}
 
+	@Override
+	public void onLeftGesturePerformed() {
+
+	}
+
 	private class LoadSubscriptions extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPreExecute() {
