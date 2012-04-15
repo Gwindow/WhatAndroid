@@ -12,7 +12,7 @@
 		<item name="android:background">@drawable/table_header_dark</item>
 		<item name="android:textColor">@color/white</item>
 		<item name="android:textStyle">bold</item>
-		<item name="android:textSize">24dip</item>
+		<item name="android:textSize">18dip</item>
 	</style>
 
 	<style name="TopTorrentSectionTitle">

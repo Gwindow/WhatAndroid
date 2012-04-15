@@ -42,7 +42,7 @@ import api.util.Updater;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
-	private final static double VERSION = 0.30;
+	private final static double VERSION = 0.31;
 	private static String SITE = "ssl.what.cd";
 	private final static String UPDATE_SITE = "https://raw.github.com/Gwindow/WhatAndroid/gh-pages/index.html";
 	public static double INSTALLED_VERSION;
