@@ -149,7 +149,6 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 		intent.setType("*/*");
 		intent.addCategory(Intent.CATEGORY_OPENABLE);
-
 		try {
 			startActivityForResult(Intent.createChooser(intent, "Select an image as a background"), FILE_SELECT_CODE);
 		} catch (android.content.ActivityNotFoundException ex) {

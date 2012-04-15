@@ -32,7 +32,7 @@
 		<!-- <CheckBoxPreference android:key="donateButton_preference" android:summaryOn="Enabled" 
 			android:summaryOff="Disabled" android:title="Donate Button" android:summary="Enable/Disable 
 			Donate Button" android:defaultValue="false" /> -->
-		
+
 	</PreferenceCategory>
 	<PreferenceCategory android:title="Services">
 		<CheckBoxPreference android:key="announcementsService_preference"
@@ -64,5 +64,16 @@
 			android:dialogMessage="Set the refresh rate in minutes, minimum is 30, default is 180."
 			android:defaultValue="180" />
 
+	</PreferenceCategory>
+	<PreferenceCategory android:title="pyWA">
+		<EditTextPreference android:defaultValue=""
+			android:dialogTitle="Host" android:dialogMessage="Set the Host"
+			android:key="host_preference" android:title="Host" android:summary="Begins with http:// or https://"/>
+		<EditTextPreference android:defaultValue=""
+			android:dialogTitle="Port" android:dialogMessage="Set the Port"
+			android:key="port_preference" android:title="Port" />
+		<EditTextPreference android:defaultValue=""
+			android:dialogTitle="Password" android:dialogMessage="Set the Password"
+			android:key="password_preference" android:title="Password" />
 	</PreferenceCategory>
 </PreferenceScreen>

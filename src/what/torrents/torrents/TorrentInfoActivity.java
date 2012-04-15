@@ -1,12 +1,10 @@
 package what.torrents.torrents;
 
-import java.net.URL;
-
+import what.gui.ImageLoader;
 import what.gui.MyActivity;
 import what.gui.R;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -74,12 +72,10 @@ public class TorrentInfoActivity extends MyActivity {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			URL url;
-			String u = torrentGroup.getResponse().getGroup().getWikiImage();
-			if (u.length() > 0) {
+			String url = torrentGroup.getResponse().getGroup().getWikiImage();
+			if (url.length() > 0) {
 				try {
-					url = new URL(torrentGroup.getResponse().getGroup().getWikiImage());
-					bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+					bmp = ImageLoader.loadBitmap(url);
 					return true;
 				} catch (Exception e) {
 					return false;
@@ -105,12 +101,10 @@ public class TorrentInfoActivity extends MyActivity {
 						torrentInfo.getSettings().setSupportZoom(true);
 						torrentInfo.setVerticalScrollBarEnabled(true);
 						torrentInfo.setVerticalScrollbarOverlay(true);
-
 						torrentInfo.loadData(body, "text/html", "utf-8");
 						torrentInfo.setBackgroundColor(0);
 						torrentInfo.setBackgroundResource(R.drawable.color_transparent_white);
 						torrentInfo.setVisibility(WebView.VISIBLE);
-
 					}
 					if (status == true) {
 						torrentImage.setImageBitmap(bmp);

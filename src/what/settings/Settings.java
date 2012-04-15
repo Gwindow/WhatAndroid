@@ -103,6 +103,18 @@ public class Settings {
 		commit();
 	}
 
+	public static String getHostPreference() {
+		return settings.getString("host_preference", "");
+	}
+
+	public static String getPortPreference() {
+		return settings.getString("port_preference", "");
+	}
+
+	public static String getPasswordPreference() {
+		return settings.getString("password_preference", "");
+	}
+
 	public static int getNumberOfAnnouncements() {
 		try {
 			return settings.getInt("numberOfA", 0);

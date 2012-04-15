@@ -13,6 +13,10 @@ import android.graphics.BitmapFactory;
 public class ImageLoader {
 	public static Bitmap loadBitmap(String s) throws IOException {
 		URL url = new URL(s);
+		return loadBitmap(url);
+	}
+
+	public static Bitmap loadBitmap(URL url) throws IOException {
 		Bitmap b = BitmapFactory.decodeStream(new PatchInputStream(url.openStream()));
 		return b;
 	}

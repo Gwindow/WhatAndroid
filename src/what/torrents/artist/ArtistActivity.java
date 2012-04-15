@@ -1,13 +1,11 @@
 package what.torrents.artist;
 
-import java.net.URL;
-
+import what.gui.ImageLoader;
 import what.gui.MyActivity;
 import what.gui.R;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -83,12 +81,10 @@ public class ArtistActivity extends MyActivity {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			URL url;
-			String s = ArtistTabActivity.getArtist().getResponse().getImage();
-			if (s.length() > 0) {
+			String url = ArtistTabActivity.getArtist().getResponse().getImage();
+			if (url.length() > 0) {
 				try {
-					url = new URL(s);
-					bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+					bmp = ImageLoader.loadBitmap(url);
 					return true;
 				} catch (Exception e) {
 					return false;
