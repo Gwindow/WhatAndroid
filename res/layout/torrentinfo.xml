@@ -8,8 +8,8 @@
 	android:layout_height="fill_parent">
 	<RelativeLayout android:id="@+id/buttons"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_marginTop="5dip" android:layout_marginRight="10dip"
-		android:layout_marginLeft="10dip" android:layout_below="@+id/torrentTitle"
+		 
+		 android:layout_below="@+id/torrentTitle"
 		android:layout_toRightOf="@+id/torrentImage">
 		<Button android:text="More" android:layout_height="wrap_content"
 			android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
@@ -24,24 +24,24 @@
 	<ImageView android:id="@+id/torrentImage"
 		android:adjustViewBounds="true" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:maxWidth="120px"
-		android:maxHeight="370px"  android:layout_marginLeft="10dip"
-		android:layout_marginTop="5dip" android:layout_below="@+id/torrentTitle"
+		android:maxHeight="370px"  
+		 android:layout_below="@+id/torrentTitle"
 		android:layout_alignParentLeft="true" android:layout_alignBottom="@+id/buttons">
 	</ImageView>
 	<TextView android:id="@+id/torrentTitle" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_alignParentTop="true"
-		android:layout_alignParentLeft="true" android:layout_marginLeft="10dip"
-		android:padding="5dip" android:layout_marginTop="10dip"
-		android:layout_marginRight="10dip" android:text="" android:textColor="@color/white"
+		android:layout_alignParentLeft="true" 
+		android:padding="5dip" 
+		 android:text="" android:textColor="@color/white"
 		android:textStyle="bold" android:textSize="20dip"
 		android:background="@drawable/table_header_dark">
 	</TextView>
 	<WebView android:id="@+id/torrentInfo" android:layout_width="fill_parent"
 		android:visibility="gone" android:cursorVisible="false"
 		android:layout_below="@+id/buttons" android:scrollbars="vertical"
-		android:layout_height="fill_parent" android:layout_marginLeft="10dip"
+		android:layout_height="fill_parent" 
 		android:layout_marginBottom="5dip" android:padding="5dip"
-		android:layout_marginTop="5dip" android:layout_marginRight="10dip"
+		 
 		android:background="@color/lightGray" android:textColor="@color/black"
 		android:textSize="15dip">
 	</WebView>

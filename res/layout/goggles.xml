@@ -4,9 +4,9 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent">
 	<TextView android:id="@+id/title" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_alignParentTop="true"
-		android:layout_alignParentLeft="true" android:layout_marginLeft="10dip"
-		android:padding="5dip" android:layout_marginTop="10dip"
-		android:layout_marginRight="10dip" android:text="Goggles"
+		android:layout_alignParentLeft="true" 
+		android:padding="5dip" 
+		 android:text="Goggles"
 		android:textColor="@color/white" android:textStyle="bold"
 		android:textSize="20dip" android:background="@drawable/table_header_dark">
 	</TextView>
@@ -15,7 +15,7 @@
 		android:layout_below="@+id/title" android:text="Take Photo"
 		android:onClick="takePhoto" android:padding="5dip"
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
-		android:layout_margin="10dip" android:layout_marginTop="5dip"
+		android:layout_margin="10dip" 
 		android:layout_marginBottom="5dip"></Button>
 
 </RelativeLayout>

@@ -10,18 +10,18 @@
 			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:id="@+id/username" android:layout_width="wrap_content"
 			android:text="" android:layout_alignParentLeft="true"
-			android:layout_marginLeft="5dip"></TextView>
+			></TextView>
 		<TextView android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:textColor="#458B00" android:id="@+id/seedingvalue"
 			android:layout_width="wrap_content" android:text=""
-			android:layout_marginLeft="5dip" android:layout_below="@+id/username">
+			 android:layout_below="@+id/username">
 		</TextView>
 		<TextView android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:textColor="#458B00" android:id="@+id/leechingvalue"
 			android:layout_width="wrap_content" android:text=""
-			android:layout_marginLeft="5dip" android:layout_below="@+id/seedingvalue">
+			 android:layout_below="@+id/seedingvalue">
 		</TextView>
 		<LinearLayout android:layout_height="wrap_content"
 			android:layout_width="wrap_content" android:orientation="vertical"

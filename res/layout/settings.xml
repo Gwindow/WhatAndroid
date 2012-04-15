@@ -11,14 +11,14 @@
 	<RelativeLayout android:layout_height="wrap_content"
 		android:id="@+id/relative" android:layout_width="fill_parent"
 		android:layout_marginLeft="25dip" android:layout_marginRight="25dip"
-		android:layout_marginTop="5dip" android:layout_marginBottom="5dip">
+		 android:layout_marginBottom="5dip">
 		<Button android:id="@+id/rssButton" android:layout_height="wrap_content"
 			android:onClick="openRssSettings" android:text="RSS Settings"
 			android:layout_alignParentLeft="true" android:layout_width="fill_parent"></Button>
 		<Button android:id="@+id/forumButton" android:layout_height="wrap_content"
 			android:layout_below="@+id/rssButton" android:onClick="openForumSettings"
 			android:text="Forum Settings" android:layout_alignParentLeft="true"
-			android:layout_width="fill_parent" android:layout_marginTop="5dip"></Button>
+			android:layout_width="fill_parent" ></Button>
 		<CheckBox android:text="Enable/Disable Dave the Cat" android:id="@+id/catBox"
 			android:visibility="gone"
 			android:layout_below="@+id/forumButton" android:layout_width="wrap_content"

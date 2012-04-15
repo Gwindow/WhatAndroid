@@ -5,12 +5,12 @@
 	android:layout_height="wrap_content">
 	<CheckBox android:id="@+id/bookmark" android:layout_width="wrap_content"
 		android:layout_alignParentLeft="true" android:layout_height="wrap_content"
-		android:layout_marginRight="5dip" android:layout_marginLeft="5dip"
+		 
 		android:layout_marginBottom="5dip" android:text="Bookmark"></CheckBox>
 	<ImageButton android:src="@drawable/spotify"
-		android:layout_below="@+id/bookmark" android:layout_marginRight="5dip"
+		android:layout_below="@+id/bookmark" 
 		android:clickable="true" android:onClick="openSpotify"
-		android:layout_marginBottom="5dip" android:layout_marginLeft="5dip"
+		android:layout_marginBottom="5dip" 
 		android:background="@android:color/transparent" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:id="@+id/spotify"
 		android:layout_alignParentLeft="true"></ImageButton>
@@ -22,8 +22,8 @@
 		android:layout_toRightOf="@+id/spotify"></TextView>
 	<ImageButton android:src="@drawable/lastfm"
 		android:layout_marginBottom="5dip" android:layout_below="@+id/spotify"
-		android:layout_marginRight="5dip" android:clickable="true"
-		android:onClick="openLastFM" android:layout_marginLeft="5dip"
+		 android:clickable="true"
+		android:onClick="openLastFM" 
 		android:background="@android:color/transparent" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:id="@+id/lastfm"
 		android:layout_alignParentLeft="true"></ImageButton>

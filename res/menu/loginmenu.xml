@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Quick Scanner" android:id="@+id/scannerItem"></item><item android:id="@+id/statusItem" android:title="WhatStatus"></item>     
-    
+	<item android:title="Quick Scanner" android:id="@+id/scannerItem"></item>
+	<item android:id="@+id/statusItem" android:title="WhatStatus"></item>
+		<item android:id="@+id/overrideItem" android:title="Developer Override"></item>
+	
 </menu>

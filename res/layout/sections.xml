@@ -2,22 +2,18 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	 android:orientation="vertical">
+	android:orientation="vertical">
 
 	<TextView android:id="@+id/titleText" android:layout_width="fill_parent"
 		android:text="Forums" android:layout_height="wrap_content"
 		android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-		android:layout_marginLeft="10dip" android:padding="5dip"
-		android:layout_marginTop="10dip" android:layout_marginRight="10dip"
-		android:textColor="@color/white" android:textStyle="bold"
-		android:textSize="22dip" android:background="@drawable/table_header_dark"/>
+		android:padding="5dip" android:textColor="@color/white"
+		android:textStyle="bold" android:textSize="20dip"
+		android:background="@drawable/table_header_dark" />
 	<ScrollView android:id="@+id/scrollView"
 		android:layout_width="fill_parent" android:layout_height="0dip"
-		android:layout_weight="1" android:layout_marginLeft="10dip"
-		android:layout_marginRight="10dip" android:layout_marginBottom="10dip"
-		android:paddingLeft="10dip" android:paddingRight="10dip"
-		android:paddingTop="10dip" android:paddingBottom="0dip">
-
+		android:layout_weight="1" android:layout_marginBottom="5dip"
+		android:paddingTop="5dip">
 		<LinearLayout android:id="@+id/scrollLayout"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
 			android:orientation="vertical" />

@@ -6,7 +6,7 @@
 		android:text="Please describe the bug, include what happens, when it happens, and your phone model. This will be sent as a private message to Gwindow."
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceSmall"
-		android:id="@+id/textView1" android:layout_margin="10dip"
+		android:id="@+id/textView1" android:layout_marginBottom="5dip"
 		android:background="@color/transparentBlack" android:layout_gravity="center_horizontal"></TextView>
 	<TextView android:id="@+id/title" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_alignParentTop="true"
@@ -14,20 +14,18 @@
 		android:text="Body" android:textColor="@color/white"
 		android:textStyle="bold" android:textSize="20dip"
 		android:background="@drawable/table_header_dark"
-		android:layout_marginLeft="10dip" android:layout_marginRight="10dip"
-		android:layout_marginBottom="10dip">
+		android:layout_marginBottom="5dip">
 	</TextView>
 	<EditText android:id="@+id/messageBody" android:maxLines="7"
 		android:minLines="7" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_marginLeft="10dip"
-		android:layout_marginRight="10dip" android:layout_marginBottom="10dip">
+		android:layout_height="wrap_content" android:layout_marginBottom="5dip">
 	</EditText>
 	<LinearLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:orientation="horizontal"
 		android:layout_alignParentBottom="true" android:id="@+id/linearLayout1">
 		<RelativeLayout android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:orientation="horizontal"
-			android:layout_margin="5dip">
+			android:layout_marginBottom="5dip">
 			<Button android:layout_gravity="right" android:layout_width="wrap_content"
 				android:onClick="send" android:layout_alignParentLeft="true"
 				android:text="Send" android:background="@drawable/btn_black" style="@style/ButtonTextSmall"

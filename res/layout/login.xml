@@ -19,7 +19,7 @@
 		<EditText android:id="@+id/username" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:inputType="textPersonName"
 			android:hint="Username" android:layout_marginLeft="30dip"
-			android:layout_marginRight="30dip" android:layout_marginTop="5dip"
+			android:layout_marginRight="30dip" 
 			android:layout_marginBottom="5dip">
 			<requestFocus></requestFocus>
 		</EditText>
@@ -28,7 +28,7 @@
 			android:layout_height="wrap_content" android:inputType="textPassword"
 			android:hint="Password" android:imeOptions="actionGo"
 			android:layout_marginLeft="30dip" android:layout_marginRight="30dip"
-			android:layout_marginTop="5dip" android:layout_marginBottom="5dip" />
+			 android:layout_marginBottom="5dip" />
 
 		<View android:layout_height="0dip" android:layout_width="fill_parent"
 			android:layout_weight="1" />
@@ -54,7 +54,7 @@
 
 			<Button android:id="@+id/login" android:layout_width="100dip"
 				android:text="@string/login" android:layout_height="wrap_content"
-				android:layout_gravity="center_vertical" android:layout_marginLeft="10dip"
+				android:layout_gravity="center_vertical" 
 				android:layout_marginRight="15dip" />
 
 		</LinearLayout>

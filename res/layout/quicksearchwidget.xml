@@ -6,7 +6,7 @@
   android:layout_height="fill_parent">
    <EditText android:layout_width="fill_parent"
 		android:layout_marginLeft="15dip" android:padding="10dip"
-		android:layout_marginTop="5dip" android:layout_marginRight="15dip"
+		 android:layout_marginRight="15dip"
 		android:hint="Quick search" android:layout_height="wrap_content"
 		android:id="@+id/searchBar">
 	</EditText>

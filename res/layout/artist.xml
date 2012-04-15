@@ -4,8 +4,7 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent">
 	<RelativeLayout android:id="@+id/buttons"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_marginTop="5dip" android:layout_marginRight="10dip"
-		android:layout_marginLeft="10dip" android:layout_below="@+id/artistTitle"
+		android:layout_marginBottom="5dip" android:layout_below="@+id/artistTitle"
 		android:layout_toRightOf="@+id/artistImage">
 		<Button android:text="Similar" android:layout_height="wrap_content"
 			android:background="@drawable/btn_black" style="@style/ButtonText"
@@ -21,27 +20,23 @@
 			android:onClick="openTags" android:id="@+id/tagsButton"></Button>
 	</RelativeLayout>
 	<ImageView android:id="@+id/artistImage"
-		android:layout_height="wrap_content" android:layout_marginLeft="10dip"
-		android:maxWidth="120px" android:maxHeight="370px"
-		android:adjustViewBounds="true" android:layout_marginTop="5dip"
+		android:layout_height="wrap_content" android:maxWidth="120px"
+		android:maxHeight="370px" android:adjustViewBounds="true"
 		android:layout_below="@+id/artistTitle"
 		android:layout_alignParentLeft="true" android:layout_alignBottom="@+id/buttons">
 	</ImageView>
 	<TextView android:id="@+id/artistTitle" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_alignParentTop="true"
-		android:layout_alignParentLeft="true" android:layout_marginLeft="10dip"
-		android:padding="5dip" android:layout_marginTop="10dip"
-		android:layout_marginRight="10dip" android:text="" android:textColor="@color/white"
+		android:layout_alignParentLeft="true" android:padding="5dip"
+		android:layout_marginBottom="5dip" android:textColor="@color/white"
 		android:textStyle="bold" android:textSize="20dip"
 		android:background="@drawable/table_header_dark">
 	</TextView>
 	<WebView android:id="@+id/artistInfo" android:layout_width="fill_parent"
 		android:visibility="gone" android:cursorVisible="false"
-		android:scrollbars="vertical" android:layout_marginTop="10dip"
-		android:layout_height="fill_parent" android:layout_marginLeft="10dip"
+		android:scrollbars="vertical" android:layout_height="fill_parent"
 		android:layout_marginBottom="5dip" android:padding="5dip"
-		android:layout_marginRight="10dip" android:background="@color/lightGray"
-		android:layout_below="@+id/buttons" android:textColor="@color/black"
-		android:textSize="15dip">
+		android:background="@color/lightGray" android:layout_below="@+id/buttons"
+		android:textColor="@color/black" android:textSize="15dip">
 	</WebView>
 </RelativeLayout>

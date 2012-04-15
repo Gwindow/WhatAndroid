@@ -5,16 +5,16 @@
 	android:layout_height="fill_parent">
 	<TextView android:id="@+id/title" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_alignParentTop="true"
-		android:layout_alignParentLeft="true" android:layout_marginLeft="10dip"
-		android:padding="5dip" android:layout_marginTop="10dip"
-		android:layout_marginRight="10dip" android:text="" android:textColor="@color/white"
+		android:layout_alignParentLeft="true" 
+		android:padding="5dip" 
+		 android:text="" android:textColor="@color/white"
 		android:textStyle="bold" android:textSize="18dip"
 		android:background="@drawable/table_header_dark">
 	</TextView>
 	<ScrollView android:id="@+id/scrollView"
 		android:layout_below="@+id/title" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:layout_marginTop="5dip"
-		android:layout_marginLeft="10dip" android:layout_marginRight="10dip"
+		android:layout_height="fill_parent" 
+		 
 		android:layout_marginBottom="5dip" android:paddingLeft="5dip"
 		android:paddingRight="5dip" android:paddingTop="5dip">
 		<LinearLayout android:id="@+id/scrollLayout"
