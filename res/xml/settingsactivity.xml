@@ -39,7 +39,7 @@
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Announcements Service"
 			android:summary="Enable/Disable Announcements Service. Periodically notifies you of new announcements and blog posts."
-			android:defaultValue="true" />
+			android:defaultValue="false" />
 		<EditTextPreference android:key="announcementsService_interval"
 			android:title="Refresh Interval"
 			android:dialogMessage="Set the refresh rate in minutes, minimum is 30, default is 180."
@@ -49,7 +49,7 @@
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Inbox Service"
 			android:summary="Enable/Disable Inbox Service. Periodically notifies you of new message in your inbox."
-			android:defaultValue="true" />
+			android:defaultValue="false" />
 		<EditTextPreference android:key="inboxService_interval"
 			android:title="Refresh Interval"
 			android:dialogMessage="Set the refresh rate in minutes, minimum is 30, default is 60."

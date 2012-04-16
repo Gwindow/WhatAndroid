@@ -138,6 +138,10 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 	public void onClick(View v) {
 		for (int i = 0; i < (messageList.size()); i++) {
 			if (v.getId() == messageList.get(i).getId()) {
+				if (messages.get(i).isUnread()) {
+					messageList.get(i).setTextColor(R.color.textview_colors);
+					messageList.get(i).setTextSize(14);
+				}
 				openMessage(i);
 			}
 		}

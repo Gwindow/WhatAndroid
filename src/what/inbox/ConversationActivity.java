@@ -25,9 +25,9 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import api.inbox.PrivateMessage;
 import api.inbox.conversation.Conversation;
 import api.inbox.conversation.Messages;
-import api.user.PrivateMessage;
 
 public class ConversationActivity extends MyActivity implements OnLongClickListener {
 	private ScrollView scrollView;

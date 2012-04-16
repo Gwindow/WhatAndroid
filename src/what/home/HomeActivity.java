@@ -50,9 +50,9 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 		super.setContentView(R.layout.home, true);
 
 		// TODO reenable
-		// startServices();
+		startServices();
 
-		// showFirstRunDialog();
+		showFirstRunDialog();
 
 		username = (TextView) this.findViewById(R.id.username);
 		uploadedValue = (TextView) this.findViewById(R.id.upvalue);
@@ -91,23 +91,24 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 	}
 
 	private void startServices() {
-		annoucementService = new Intent(this, AnnouncementService.class);
 		inboxService = new Intent(this, InboxService.class);
+		annoucementService = new Intent(this, AnnouncementService.class);
 		notificationService = new Intent(this, NotificationService.class);
+
+		if ((Settings.getInboxService() == true) && !InboxService.isRunning()) {
+			try {
+				startService(inboxService);
+			} catch (Exception e) {
+				Toast.makeText(this, "Could not start inbox service", Toast.LENGTH_SHORT).show();
+				e.printStackTrace();
+			}
+		}
 
 		if ((Settings.getAnnouncementsService() == true) && !AnnouncementService.isRunning()) {
 			try {
 				startService(annoucementService);
 			} catch (Exception e) {
 				Toast.makeText(this, "Could not start announcements service", Toast.LENGTH_SHORT).show();
-				e.printStackTrace();
-			}
-		}
-		if ((Settings.getInboxService() == true) && !InboxService.isRunning()) {
-			try {
-				startService(inboxService);
-			} catch (Exception e) {
-				Toast.makeText(this, "Could not start inbox service", Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
 			}
 		}
@@ -120,6 +121,7 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 				e.printStackTrace();
 			}
 		}
+
 	}
 
 	private void loadStats() {

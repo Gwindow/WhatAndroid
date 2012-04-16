@@ -17,7 +17,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
-import api.user.PrivateMessage;
+import api.inbox.PrivateMessage;
 
 public class MessageOptionsActivity extends MyActivity {
 	private ProgressDialog dialog;

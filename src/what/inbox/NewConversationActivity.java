@@ -9,7 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import api.user.PrivateMessage;
+import api.inbox.PrivateMessage;
 import api.util.Tuple;
 
 public class NewConversationActivity extends MyActivity {
@@ -63,7 +63,7 @@ public class NewConversationActivity extends MyActivity {
 		@Override
 		protected Boolean doInBackground(Tuple<String, String>... params) {
 			try {
-				PrivateMessage pm = new PrivateMessage(userId, params[0].getA(), params[0].getB());
+				api.inbox.PrivateMessage pm = new PrivateMessage(userId, params[0].getA(), params[0].getB());
 				pm.sendMessage();
 				return true;
 			} catch (Exception e) {
