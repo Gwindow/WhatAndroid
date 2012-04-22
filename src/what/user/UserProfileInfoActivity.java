@@ -34,7 +34,7 @@ public class UserProfileInfoActivity extends MyActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.torrentinfo, false);
+		super.setContentView(R.layout.userinfo, false);
 
 		username = (TextView) this.findViewById(R.id.username);
 		avatar = (ImageView) this.findViewById(R.id.userAvatar);

@@ -24,19 +24,18 @@
 	<LinearLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:orientation="horizontal"
 		android:layout_alignParentBottom="true" android:id="@+id/linearLayout1">
-		<RelativeLayout android:layout_width="fill_parent"
+		<LinearLayout android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:orientation="horizontal"
 			android:layout_margin="5dip">
-			<Button android:layout_gravity="right" android:layout_width="wrap_content"
-				android:onClick="back" android:layout_alignParentLeft="true"
+			<Button android:layout_gravity="right" android:onClick="back" android:layout_alignParentLeft="true"
 				android:text="Previous" android:background="@drawable/btn_black"
 				style="@style/ButtonTextSmall" android:layout_height="wrap_content"
-				android:id="@+id/previousButton"></Button>
+				android:id="@+id/previousButton" android:layout_weight="1" android:layout_width="0dp"></Button>
 			<Button android:text="Next" android:id="@+id/nextButton"
 				android:onClick="next" android:background="@drawable/btn_black"
 				style="@style/ButtonTextSmall" android:layout_alignParentRight="true"
-				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:layout_gravity="right"></Button>
-		</RelativeLayout>
+				android:layout_height="wrap_content"
+				android:layout_gravity="right" android:layout_weight="1" android:layout_width="0dp"></Button>
+		</LinearLayout>
 	</LinearLayout>
 </RelativeLayout>

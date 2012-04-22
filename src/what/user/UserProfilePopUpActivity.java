@@ -87,7 +87,7 @@ public class UserProfilePopUpActivity extends MyActivity {
 
 	}
 
-	public void more(View v) {
+	public void openProfile(View v) {
 		Bundle b = new Bundle();
 		intent = new Intent(UserProfilePopUpActivity.this, what.user.UserProfileTabActivity.class);
 		b.putInt("userId", userId);

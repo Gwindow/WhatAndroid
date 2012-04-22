@@ -4,9 +4,8 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent">
 	<RelativeLayout android:id="@+id/buttons"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		 
-		 android:layout_below="@+id/username"
-		android:layout_toRightOf="@+id/userImage">
+
+		android:layout_below="@+id/username" android:layout_toRightOf="@+id/userImage">
 		<TextView android:text="User class: " android:layout_height="wrap_content"
 			style="@style/ButtonText" android:layout_width="fill_parent"
 			android:id="@+id/userclass"></TextView>
@@ -19,34 +18,28 @@
 		<TextView android:text="Ratio: " android:layout_height="wrap_content"
 			android:layout_below="@+id/downloaded" style="@style/ButtonText"
 			android:layout_width="fill_parent" android:id="@+id/ratio"></TextView>
-		<TextView android:text="Posts: "
-			android:layout_height="wrap_content" android:layout_below="@+id/ratio"
-			style="@style/ButtonText" android:layout_width="fill_parent"
-			android:id="@+id/posts"></TextView>
+		<TextView android:text="Posts: " android:layout_height="wrap_content"
+			android:layout_below="@+id/ratio" style="@style/ButtonText"
+			android:layout_width="fill_parent" android:id="@+id/posts"></TextView>
 		<Button android:text="Message" android:layout_height="wrap_content"
 			android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
 			android:layout_below="@+id/posts" android:layout_width="fill_parent"
 			android:onClick="message" android:id="@+id/messageButton"></Button>
-		<Button android:text="More" android:layout_height="wrap_content"
-			
+		<Button android:text="Profile" android:layout_height="wrap_content"
 			android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
 			android:layout_below="@+id/messageButton" android:layout_width="fill_parent"
-			android:onClick="more" android:id="@+id/moreButton"></Button>
+			android:onClick="openProfile" android:id="@+id/profileButton"></Button>
 	</RelativeLayout>
 	<ImageView android:id="@+id/userImage"
 		android:adjustViewBounds="true" android:layout_width="wrap_content"
 		android:background="#FFFFFF" android:layout_height="wrap_content"
-		 
-		 android:padding="2dip"
-		android:maxWidth="110px" android:maxHeight="400px"
-		android:layout_alignBaseline="@+id/moreButton"
+		android:padding="2dip" android:maxWidth="110px" android:maxHeight="400px"
+		android:layout_alignBaseline="@+id/profileButton"
 		android:layout_below="@+id/username" android:layout_alignParentLeft="true">
 	</ImageView>
 	<TextView android:id="@+id/username" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_alignParentTop="true"
-		android:layout_alignParentLeft="true" 
-		android:padding="5dip" 
-		 android:text=""
+		android:layout_alignParentLeft="true" android:padding="5dip"
 		android:textColor="@color/white" android:textStyle="bold"
 		android:textSize="20dip" android:background="@drawable/table_header_dark">
 	</TextView>

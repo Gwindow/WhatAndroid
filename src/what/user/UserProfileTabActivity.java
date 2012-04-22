@@ -53,8 +53,7 @@ public class UserProfileTabActivity extends MyTabActivity {
 
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
-		// userId = b.getInt("userId");
-		userId = 195001;
+		userId = b.getInt("userId");
 	}
 
 	private class LoadUser extends AsyncTask<Void, Void, Boolean> {

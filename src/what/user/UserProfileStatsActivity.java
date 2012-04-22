@@ -33,6 +33,43 @@ public class UserProfileStatsActivity extends MyActivity {
 	private void populateLayout() {
 		username.setText(user.getProfile().getUsername());
 
+		addToListSection("Stats");
+		addToList("Class : " + user.getProfile().getPersonal().getUserClass());
+		addToList("Joined: " + user.getProfile().getStats().getJoinedDate());
+		addToList("Last Seen: " + user.getProfile().getStats().getLastAccess());
+		addToList("Uploaded: " + toGBString(user.getProfile().getStats().getUploaded().toString()) + " GB");
+		addToList("Downloaded: " + toGBString(user.getProfile().getStats().getDownloaded().toString()) + " GB");
+		addToList("Ratio: " + user.getProfile().getStats().getRatio().toString());
+		addToList("Required Ratio: " + user.getProfile().getStats().getRequiredRatio().toString());
+
+		addToListSection("Percentile Rankings");
+		addToList("Data Uploaded: " + user.getProfile().getRanks().getUploaded());
+		addToList("Data Downloaded: " + user.getProfile().getRanks().getDownloaded());
+		addToList("Requests Filled: " + user.getProfile().getRanks().getRequests());
+		addToList("Bounty Spent: " + user.getProfile().getRanks().getBounty());
+		addToList("Posts Made: " + user.getProfile().getRanks().getPosts());
+		addToList("Artists Added: " + user.getProfile().getRanks().getArtists());
+		addToList("Overall Rank: " + user.getProfile().getRanks().getOverall());
+
+		addToListSection("Personal");
+		addToList("Class: " + user.getProfile().getPersonal().getParanoiaText());
+
+		addToListSection("Community");
+		addToList("Forum Posts: " + user.getProfile().getCommunity().getPosts());
+		addToList("Torrent Comments : " + user.getProfile().getCommunity().getTorrentComments());
+		addToList("Collages Started: " + user.getProfile().getCommunity().getCollagesStarted());
+		addToList("Collages Contributed To : " + user.getProfile().getCommunity().getCollagesContrib());
+		addToList("Requests Filled: " + user.getProfile().getCommunity().getRequestsFilled());
+		addToList("Requests Voted: " + user.getProfile().getCommunity().getRequestsVoted());
+		addToList("Uploaded: " + user.getProfile().getCommunity().getUploaded());
+		addToList("Unique Groups: " + user.getProfile().getCommunity().getGroups());
+		// TODO add to json
+		// addToList("Perfect Flacs: " + user.getProfile().getCommunity());
+		addToList("Seeding: " + user.getProfile().getCommunity().getSeeding());
+		addToList("Leeching: " + user.getProfile().getCommunity().getLeeching());
+		addToList("Snatched: " + user.getProfile().getCommunity().getSnatched());
+		addToList("Invited: " + user.getProfile().getCommunity().getInvited());
+
 	}
 
 	private void addToList(String s) {
