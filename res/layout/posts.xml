@@ -19,31 +19,31 @@
 			android:orientation="vertical">
 		</LinearLayout>
 	</ScrollView>
-	<LinearLayout android:layout_width="fill_parent"
+	<RelativeLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:orientation="horizontal">
-		<RelativeLayout android:layout_width="fill_parent"
-			android:layout_margin="5dip" android:layout_height="wrap_content"
-			android:orientation="horizontal">
-			<Button android:layout_gravity="right" android:layout_width="wrap_content"
-				android:onClick="back" android:background="@drawable/btn_black"
-				style="@style/ButtonTextSmall" android:layout_alignParentLeft="true"
-				android:text="Previous" android:layout_height="wrap_content"
-				android:id="@+id/previousButton"></Button>
-			<Button android:layout_width="wrap_content"
-				android:layout_centerHorizontal="true" android:onClick="reply"
+		<LinearLayout android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:orientation="horizontal">
+			<Button android:onClick="back" android:background="@drawable/btn_black"
+				style="@style/ButtonTextSmall" android:text="Prev"
+				android:layout_height="wrap_content" android:id="@+id/previousButton"
+				android:layout_weight="1" android:layout_width="0dp"></Button>
+			<Button android:onClick="reply" android:background="@drawable/btn_black"
+				style="@style/ButtonTextSmall" android:text="Reply"
+				android:layout_height="wrap_content" android:id="@+id/replyButton"
+				android:layout_weight="1" android:layout_width="0dp"></Button>
+			<Button android:text="Jump" android:id="@+id/jumpButton"
+				android:layout_height="wrap_content" android:onClick="jump"
 				android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
-				android:text="Reply" android:layout_height="wrap_content"
-				android:id="@+id/replyButton"></Button>
+				android:layout_weight="1" android:layout_width="0dp"></Button>
 			<Button android:text="Next" android:id="@+id/nextButton"
-				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:onClick="next" android:background="@drawable/btn_black"
-				style="@style/ButtonTextSmall" android:layout_toLeftOf="@+id/lastButton"></Button>
+				android:layout_height="wrap_content" android:onClick="next"
+				android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
+				android:layout_toLeftOf="@+id/lastButton" android:layout_weight="1"
+				android:layout_width="0dp"></Button>
 			<Button android:text="Last" android:id="@+id/lastButton"
 				android:onClick="last" android:background="@drawable/btn_black"
-				style="@style/ButtonTextSmall" android:layout_alignParentRight="true"
-				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:layout_gravity="right"></Button>
-
-		</RelativeLayout>
-	</LinearLayout>
+				style="@style/ButtonTextSmall" android:layout_height="wrap_content"
+				android:layout_weight="1" android:layout_width="0dp"></Button>
+		</LinearLayout>
+	</RelativeLayout>
 </LinearLayout>

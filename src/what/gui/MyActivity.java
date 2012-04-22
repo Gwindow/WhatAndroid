@@ -48,9 +48,6 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		@SuppressWarnings("unused")
-		ReportSender sender = new ReportSender(this);
-
 		setDisplayMetrics();
 
 		if (Settings.getSettings() == null | Settings.getSettingsEditor() == null) {
@@ -295,6 +292,10 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 				}
 			}
 		}
+	}
+
+	public void enableGestures(boolean b) {
+		gestureOverlayView.setEnabled(b);
 	}
 
 	public void onMenuGesturePerformed() {

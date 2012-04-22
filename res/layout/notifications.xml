@@ -1,27 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@+id/widget30"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	 android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
 	<TextView android:id="@+id/title" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_alignParentTop="true"
-		android:layout_alignParentLeft="true" 
-		android:padding="5dip" 
-		 android:text="Notifications"
-		android:textColor="@color/white" android:textStyle="bold"
-		android:textSize="20dip" android:background="@drawable/table_header_dark">
+		android:layout_alignParentLeft="true" android:padding="5dip"
+		android:text="Notifications" android:textColor="@color/white"
+		android:textStyle="bold" android:textSize="20dip"
+		android:background="@drawable/table_header_dark">
 	</TextView>
-	<Button android:layout_width="wrap_content"
-		android:layout_below="@+id/title" android:onClick="clear"
-		android:layout_alignParentRight="true" android:text="Clear"
-		android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
-		android:layout_height="wrap_content" android:id="@+id/clearButton"
-		android:layout_margin="10dip" ></Button>
 	<ScrollView android:id="@+id/scrollView"
 		android:layout_below="@+id/clearButton" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" 
-		 
-		android:padding="5dip" android:layout_above="@+id/linearLayout1">
+		android:layout_height="fill_parent" android:padding="5dip"
+		android:layout_above="@+id/linearLayout1">
 		<LinearLayout android:id="@+id/scrollLayout"
 			android:layout_height="fill_parent" android:layout_width="fill_parent"
 			android:orientation="vertical">
@@ -30,19 +21,17 @@
 	<LinearLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:orientation="horizontal"
 		android:layout_alignParentBottom="true" android:id="@+id/linearLayout1">
-		<RelativeLayout android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:orientation="horizontal"
-			android:layout_margin="5dip">
-			<Button android:layout_gravity="right" android:layout_width="wrap_content"
-				android:onClick="back" android:layout_alignParentLeft="true"
-				android:text="Previous" android:background="@drawable/btn_black"
-				style="@style/ButtonTextSmall" android:layout_height="wrap_content"
-				android:id="@+id/previousButton"></Button>
-			<Button android:text="Next" android:id="@+id/nextButton"
-				android:onClick="next" android:background="@drawable/btn_black"
-				style="@style/ButtonTextSmall" android:layout_alignParentRight="true"
-				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:layout_gravity="right"></Button>
-		</RelativeLayout>
+		<Button android:onClick="back" android:text="Previous"
+			android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
+			android:layout_height="wrap_content" android:id="@+id/previousButton"
+			android:layout_width="0dp" android:layout_weight="1"></Button>
+		<Button android:onClick="clear" android:text="Clear"
+			android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
+			android:layout_height="wrap_content" android:id="@+id/clearButton"
+			android:layout_weight="1" android:layout_width="0dp"></Button>
+		<Button android:text="Next" android:id="@+id/nextButton"
+			android:onClick="next" android:background="@drawable/btn_black"
+			style="@style/ButtonTextSmall" android:layout_height="wrap_content"
+			android:layout_width="0dp" android:layout_weight="1"></Button>
 	</LinearLayout>
 </RelativeLayout>

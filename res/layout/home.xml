@@ -9,7 +9,7 @@
 		<TextView android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:clickable="true" android:onClick="openProfile" android:id="@+id/username"
-			android:layout_width="wrap_content" android:text=""
+			android:layout_width="wrap_content" android:textStyle="bold"
 			android:layout_alignParentLeft="true" ></TextView>
 		<TextView android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="Bug Report/Suggestion">
+		<Preference android:summary="Send Report" android:title="Bug/Suggestion Report"
+			android:key="report_preference"></Preference>
+	</PreferenceCategory>
 	<PreferenceCategory android:title="UI">
 		<CheckBoxPreference android:key="customBackground_preference"
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
@@ -32,7 +36,6 @@
 		<!-- <CheckBoxPreference android:key="donateButton_preference" android:summaryOn="Enabled" 
 			android:summaryOff="Disabled" android:title="Donate Button" android:summary="Enable/Disable 
 			Donate Button" android:defaultValue="false" /> -->
-
 	</PreferenceCategory>
 	<PreferenceCategory android:title="Services">
 		<CheckBoxPreference android:key="announcementsService_preference"
@@ -67,7 +70,8 @@
 	<PreferenceCategory android:title="pyWA">
 		<EditTextPreference android:defaultValue=""
 			android:dialogTitle="Host" android:dialogMessage="Set the Host"
-			android:key="host_preference" android:title="Host" android:summary="Begins with http:// or https://"/>
+			android:key="host_preference" android:title="Host"
+			android:summary="Begins with http:// or https://" />
 		<EditTextPreference android:defaultValue=""
 			android:dialogTitle="Port" android:dialogMessage="Set the Port"
 			android:key="port_preference" android:title="Port" />

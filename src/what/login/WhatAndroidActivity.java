@@ -58,7 +58,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.login, false);
-
+		enableGestures(false);
 		ImageCache.init(this);
 		INSTALLED_VERSION = getInstalledVersion();
 		MySoup.setSite(SITE);
@@ -347,38 +347,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 						Toast.LENGTH_LONG).show();
 			}
 		}
-	}
-
-	@Override
-	public void onMenuGesturePerformed() {
-	}
-
-	@Override
-	public void onRefreshGesturePerformed() {
-
-	}
-
-	@Override
-	public void onHomeGesturePerformed() {
-	}
-
-	@Override
-	public void onRightGesturePerformed() {
-
-	}
-
-	@Override
-	public void onLeftGesturePerformed() {
-
-	}
-
-	@Override
-	public void onDownGesturePerformed() {
-	}
-
-	@Override
-	public void onUpGesturePerformed() {
-
 	}
 
 }

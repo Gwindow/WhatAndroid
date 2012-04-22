@@ -63,8 +63,7 @@ public class UserProfileStatsActivity extends MyActivity {
 		addToList("Requests Voted: " + user.getProfile().getCommunity().getRequestsVoted());
 		addToList("Uploaded: " + user.getProfile().getCommunity().getUploaded());
 		addToList("Unique Groups: " + user.getProfile().getCommunity().getGroups());
-		// TODO add to json
-		// addToList("Perfect Flacs: " + user.getProfile().getCommunity());
+		addToList("Perfect Flacs: " + user.getProfile().getCommunity().getPerfectFlacs());
 		addToList("Seeding: " + user.getProfile().getCommunity().getSeeding());
 		addToList("Leeching: " + user.getProfile().getCommunity().getLeeching());
 		addToList("Snatched: " + user.getProfile().getCommunity().getSnatched());

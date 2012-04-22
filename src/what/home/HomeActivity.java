@@ -132,8 +132,8 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 			ratioValue.setText(ratio);
 			bufferValue.setText(buffer);
 		} else {
-			up = "U: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getUploaded().toString()) + "GB";
-			down = "D: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getDownloaded().toString()) + "GB";
+			up = "U: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getUploaded().toString()) + "GB ";
+			down = "D: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getDownloaded().toString()) + "GB ";
 			ratio = "R: " + MySoup.getIndex().getResponse().getUserstats().getRatio();
 			buffer = "B: " + toGBString(MySoup.getIndex().getResponse().getUserstats().getBuffer().toString()) + "GB";
 

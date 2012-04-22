@@ -1,41 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" >
-	<TextView
-		android:text="Please describe the bug, include what happens, when it happens, and your phone model. This will be sent as a private message to Gwindow."
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		android:id="@+id/textView1" android:layout_marginBottom="5dip"
-		android:background="@color/transparentBlack" android:layout_gravity="center_horizontal"></TextView>
+	android:layout_height="fill_parent">
 	<TextView android:id="@+id/title" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_alignParentTop="true"
 		android:layout_alignParentLeft="true" android:padding="5dip"
-		android:text="Body" android:textColor="@color/white"
+		android:text="Bug/Suggestion Report" android:textColor="@color/white"
 		android:textStyle="bold" android:textSize="20dip"
 		android:background="@drawable/table_header_dark"
 		android:layout_marginBottom="5dip">
 	</TextView>
+	<TextView android:layout_below="@+id/title"
+		android:text="Please describe the bug or suggestions in detail. This will be sent as a private message to Gwindow."
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:background="@drawable/color_transparent_white"
+		android:textColor="@color/textview_colors" android:id="@+id/textView1"
+		android:layout_marginBottom="5dip" android:padding="5dip"
+		android:layout_gravity="center_horizontal"></TextView>
 	<EditText android:id="@+id/messageBody" android:maxLines="7"
+		android:gravity="top|left" android:layout_below="@+id/textView1"
 		android:minLines="7" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_marginBottom="5dip">
-	</EditText>
+		android:layout_height="fill_parent" android:layout_above="@+id/linearLayout1"></EditText>
 	<LinearLayout android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:orientation="horizontal"
-		android:layout_alignParentBottom="true" android:id="@+id/linearLayout1">
-		<RelativeLayout android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:orientation="horizontal"
-			android:layout_marginBottom="5dip">
-			<Button android:layout_gravity="right" android:layout_width="wrap_content"
-				android:onClick="send" android:layout_alignParentLeft="true"
-				android:text="Send" android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
-				android:layout_height="wrap_content" android:id="@+id/postButton"></Button>
-			<Button android:text="Cancel" android:id="@+id/cancelButton"
-				android:onClick="cancel" android:background="@drawable/btn_black"
-				style="@style/ButtonTextSmall" android:layout_alignParentRight="true"
-				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:layout_gravity="right"></Button>
-		</RelativeLayout>
+		android:layout_alignParentBottom="true" android:layout_height="wrap_content"
+		android:orientation="horizontal" android:id="@+id/linearLayout1">
+		<Button android:layout_gravity="right" android:onClick="send"
+			android:layout_alignParentLeft="true" android:text="Send"
+			android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
+			android:layout_height="wrap_content" android:id="@+id/postButton"
+			android:layout_weight="1" android:layout_width="0dp"></Button>
+		<Button android:text="Cancel" android:id="@+id/cancelButton"
+			android:onClick="cancel" android:background="@drawable/btn_black"
+			style="@style/ButtonTextSmall" android:layout_alignParentRight="true"
+			android:layout_height="wrap_content" android:layout_gravity="right"
+			android:layout_weight="1" android:layout_width="0dp"></Button>
 	</LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

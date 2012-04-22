@@ -3,6 +3,7 @@ package what.settings;
 import java.net.URISyntaxException;
 
 import what.gui.R;
+import what.inbox.BugReportActivity;
 import what.login.WhatAndroidActivity;
 import what.services.AnnouncementService;
 import what.services.InboxService;
@@ -35,6 +36,9 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	private Preference announcementsService_interval, inboxService_interval, notificationsService_interval;
 	// Developer
 	private Preference debug_preference;
+	// Report
+	private Preference report_preference;
+
 	private SharedPreferences sharedPreferences;
 
 	private Intent inboxService;
@@ -79,6 +83,9 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 
 		debug_preference = findPreference("debug_preference");
 		debug_preference.setOnPreferenceClickListener(this);
+
+		report_preference = findPreference("report_preference");
+		report_preference.setOnPreferenceClickListener(this);
 	}
 
 	/*
@@ -95,6 +102,8 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 		}
 		if (pref == announcementsService_preference) {
 			if (sharedPreferences.getBoolean("announcementsService_preference", true) == true && !AnnouncementService.isRunning()) {
+				Toast.makeText(SettingsActivity.this, "Services are very expieremtnal, prepare yourself for bugs",
+						Toast.LENGTH_LONG).show();
 				try {
 					startService(annoucementService);
 				} catch (Exception e) {
@@ -111,6 +120,8 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 			}
 		}
 		if (pref == inboxService_preference) {
+			Toast.makeText(SettingsActivity.this, "Services are very expieremtnal, prepare yourself for bugs", Toast.LENGTH_LONG)
+					.show();
 			if (sharedPreferences.getBoolean("inboxService_preference", true) == true && !InboxService.isRunning()) {
 				try {
 					startService(inboxService);
@@ -132,6 +143,8 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 		if (pref == notificationsService_preference) {
 			if (sharedPreferences.getBoolean("notificationsService_preference", true) == true && !NotificationService.isRunning()
 					&& MySoup.canNotifications()) {
+				Toast.makeText(SettingsActivity.this, "Services are very expieremtnal, prepare yourself for bugs",
+						Toast.LENGTH_LONG).show();
 				try {
 					startService(notificationService);
 				} catch (Exception e) {
@@ -153,6 +166,10 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 			} else {
 				MySon.setDebugEnabled(false);
 			}
+		}
+		if (pref == report_preference) {
+			Intent intent = new Intent(SettingsActivity.this, BugReportActivity.class);
+			startActivity(intent);
 		}
 		return false;
 	}

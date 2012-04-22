@@ -1,7 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/LinearLayout01" android:layout_width="wrap_content"
-	android:layout_height="wrap_content" android:background="@drawable/userstatswidgetbackground"
-	android:layout_margin="8dip">
+	android:layout_height="wrap_content" android:background="@drawable/userstatswidgetbackground">
 	<RelativeLayout android:layout_height="wrap_content"
 		android:id="@+id/titlebar"
 		android:layout_width="fill_parent" android:background="@color/transparentBlack"
