@@ -21,6 +21,7 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
 import android.widget.Toast;
+import api.son.MySon;
 import api.soup.MySoup;
 
 public class SettingsActivity extends PreferenceActivity implements OnPreferenceClickListener {
@@ -32,7 +33,8 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	private Preference announcementsService_preference, inboxService_preference, notificationsService_preference;
 	// Refresh Intervals
 	private Preference announcementsService_interval, inboxService_interval, notificationsService_interval;
-
+	// Developer
+	private Preference debug_preference;
 	private SharedPreferences sharedPreferences;
 
 	private Intent inboxService;
@@ -74,6 +76,9 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 		annoucementService = new Intent(this, AnnouncementService.class);
 		inboxService = new Intent(this, InboxService.class);
 		notificationService = new Intent(this, NotificationService.class);
+
+		debug_preference = findPreference("debug_preference");
+		debug_preference.setOnPreferenceClickListener(this);
 	}
 
 	/*
@@ -140,6 +145,13 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 					Toast.makeText(this, "Could not stop service", Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
 				}
+			}
+		}
+		if (pref == debug_preference) {
+			if (sharedPreferences.getBoolean("debug_preference", true)) {
+				MySon.setDebugEnabled(true);
+			} else {
+				MySon.setDebugEnabled(false);
 			}
 		}
 		return false;

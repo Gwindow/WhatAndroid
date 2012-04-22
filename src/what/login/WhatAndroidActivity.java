@@ -35,6 +35,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import api.son.MySon;
 import api.soup.MySoup;
 import api.util.CouldNotLoadException;
 import api.util.Triple;
@@ -61,6 +62,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		ImageCache.init(this);
 		INSTALLED_VERSION = getInstalledVersion();
 		MySoup.setSite(SITE);
+		MySon.setDebugEnabled(Settings.getDebugPreference());
 
 		try {
 			checkForUpdates();

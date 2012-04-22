@@ -22,175 +22,175 @@
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name=".MainMenu" android:theme="@style/Theme.MenuDialog"
 			android:noHistory="true">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name=".SearchMenu" android:theme="@style/Theme.MenuDialog"
 			android:noHistory="true">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.barcode.ScannerActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.goggles.GogglesSearchActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.barcode.QuickScannerActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.home.HomeActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.forum.ForumSectionsListActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.forum.SectionActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.forum.ThreadActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.forum.ThreadInfoActivity" android:theme="@style/Theme.NoTitleDialog">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.status.WhatStatusActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:theme="@android:style/Theme.NoTitleBar" android:name="what.top.TopTorrentsActivity">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:theme="@android:style/Theme.NoTitleBar" android:name="what.subscriptions.SubscriptionsActivity">
-		
+
 		</activity>
 
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.search.UserSearchActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.search.RequestsSearchActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.search.TorrentSearchActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.torrents.artist.ArtistTabActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.torrents.ListActivity" android:theme="@style/Theme.NoTitleDialog">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.torrents.artist.ArtistActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.torrents.artist.ArtistStatsActivity"
 			android:theme="@style/Theme.NoTitleDialog">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.torrents.artist.RequestListActivity"
 			android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.requests.RequestTabActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.requests.RequestActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.requests.RequestDetailsActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.torrents.artist.TorrentListActivity"
 			android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.torrents.torrents.TorrentTabActivity"
 			android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.torrents.torrents.TorrentStatsActivity"
 			android:theme="@style/Theme.NoTitleDialog">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.torrents.torrents.TorrentInfoActivity"
 			android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.torrents.torrents.TorrentFormatsActivity"
 			android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.settings.SettingsActivity" android:theme="@android:style/Theme.NoTitleBar"
 			android:noHistory="false">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:theme="@android:style/Theme.NoTitleBar" android:name="what.donate.FlattrDonationActivity">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.forum.PostOptionsActivity" android:theme="@style/Theme.MenuDialog">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.inbox.MessageOptionsActivity" android:theme="@style/Theme.MenuDialog">
-		
+
 		</activity>
 
 		<activity android:windowSoftInputMode="adjustPan"
 			android:theme="@android:style/Theme.NoTitleBar" android:name="what.inbox.InboxActivity">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:theme="@android:style/Theme.NoTitleBar" android:name="what.bookmarks.BookmarksTabActivity">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:theme="@android:style/Theme.NoTitleBar" android:name="what.bookmarks.ArtistBookmarksActivity">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:theme="@android:style/Theme.NoTitleBar" android:name="what.bookmarks.TorrentBookmarksActivity">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:theme="@android:style/Theme.NoTitleBar" android:name="what.announcements.AnnouncementActivity">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.announcements.BlogActivity" android:theme="@android:style/Theme.NoTitleBar">
-		
+
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:theme="@android:style/Theme.NoTitleBar" android:name="what.notifications.NotificationsActivity">
-		
+
 		</activity>
 
 		<service android:name="what.services.NotificationService" />
@@ -200,32 +200,42 @@
 
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.user.UserProfilePopUpActivity" android:theme="@style/Theme.NoTitleDialog">
-		
 		</activity>
 
 		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@android:style/Theme.NoTitleBar" android:name="what.user.UserProfileActivity">
-		
+			android:theme="@android:style/Theme.NoTitleBar" android:name="what.user.UserProfileTabActivity">
 		</activity>
+
+		<activity android:windowSoftInputMode="adjustPan"
+			android:theme="@android:style/Theme.NoTitleBar" android:name="what.user.UserProfileInfoActivity">
+		</activity>
+		
+		<activity android:windowSoftInputMode="adjustPan"
+			android:theme="@android:style/Theme.NoTitleBar" android:name="what.user.UserProfileStatsActivity">
+		</activity>
+
+		<activity android:windowSoftInputMode="adjustPan"
+			android:theme="@android:style/Theme.NoTitleBar" android:name="what.debug.DebugActivity">
+		</activity>
+
 
 		<activity android:windowSoftInputMode="adjustPan"
 			android:theme="@android:style/Theme.NoTitleBar" android:name="what.inbox.BugReportActivity">
-		
 		</activity>
 
 		<activity android:windowSoftInputMode="adjustPan"
 			android:theme="@android:style/Theme.NoTitleBar" android:name="what.inbox.ConversationActivity">
-		
+
 		</activity>
 
 		<activity android:windowSoftInputMode="adjustPan"
 			android:theme="@android:style/Theme.NoTitleBar" android:name="what.inbox.NewConversationActivity">
-		
+
 		</activity>
 
 		<activity android:windowSoftInputMode="adjustPan"
 			android:theme="@android:style/Theme.NoTitleBar" android:name="what.forum.NewThreadActivity">
-		
+
 		</activity>
 
 		<receiver android:name="what.widget.UserStatsWidgetProvider"

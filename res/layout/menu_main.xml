@@ -61,7 +61,6 @@
 		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
 		android:layout_below="@+id/buttons4" android:layout_height="wrap_content"
 		android:layout_width="fill_parent">
-
 		<Button android:text="Settings" android:id="@+id/button9"
 			android:onClick="settings" android:layout_height="wrap_content"
 			android:layout_weight="1" android:layout_width="0dp"
@@ -70,6 +69,16 @@
 			android:onClick="donate" android:layout_height="wrap_content"
 			android:layout_weight="1" android:layout_width="0dp"
 			android:background="@drawable/btn_black" style="@style/ButtonText"></Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/buttons6"
+		android:layout_marginLeft="15dip" android:layout_marginRight="15dip"
+		android:layout_below="@+id/buttons5" android:layout_height="wrap_content"
+		android:layout_width="fill_parent">
+		<Button android:text="Debug" android:id="@+id/button11"
+			android:visibility="gone" android:onClick="debug"
+			android:layout_height="wrap_content" android:layout_weight="1"
+			android:layout_width="0dp" android:background="@drawable/btn_black"
+			style="@style/ButtonText"></Button>
 	</LinearLayout>
 
 </RelativeLayout>

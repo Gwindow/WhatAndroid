@@ -50,7 +50,7 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 		super.setContentView(R.layout.home, true);
 
 		// TODO reenable
-		startServices();
+		// startServices();
 
 		showFirstRunDialog();
 
@@ -155,8 +155,8 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 
 	public void openProfile(View v) {
 		Bundle b = new Bundle();
-		intent = new Intent(HomeActivity.this, what.user.UserProfileActivity.class);
-		b.putInt("userId", (MySoup.getUserId()));
+		intent = new Intent(HomeActivity.this, what.user.UserProfileTabActivity.class);
+		b.putInt("userId", MySoup.getUserId());
 		intent.putExtras(b);
 		startActivity(intent);
 	}

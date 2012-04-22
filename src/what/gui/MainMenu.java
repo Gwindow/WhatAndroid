@@ -3,11 +3,13 @@
  */
 package what.gui;
 
+import what.settings.Settings;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 import api.soup.MySoup;
 
@@ -15,7 +17,8 @@ import api.soup.MySoup;
  * 
  */
 public class MainMenu extends MyActivity {
-	Intent intent;
+	private Intent intent;
+	private Button debugButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,11 @@ public class MainMenu extends MyActivity {
 		lp.dimAmount = 0.0f;
 		getWindow().setAttributes(lp);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
+		debugButton = (Button) this.findViewById(R.id.button11);
+		if (Settings.getDebugPreference()) {
+			debugButton.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override
@@ -82,6 +90,11 @@ public class MainMenu extends MyActivity {
 
 	public void topten(View v) {
 		intent = new Intent(MainMenu.this, what.top.TopTorrentsActivity.class);
+		startActivity(intent);
+	}
+
+	public void debug(View v) {
+		intent = new Intent(MainMenu.this, what.debug.DebugActivity.class);
 		startActivity(intent);
 	}
 

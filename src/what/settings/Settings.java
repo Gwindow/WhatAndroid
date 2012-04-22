@@ -20,6 +20,10 @@ public class Settings {
 
 	}
 
+	public static boolean getDebugPreference() {
+		return settings.getBoolean("debug_preference", false);
+	}
+
 	public static boolean getQuickSearch() {
 		return settings.getBoolean("quickSearch_preference", true);
 	}

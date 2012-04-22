@@ -63,7 +63,6 @@
 			android:title="Refresh Interval" android:dialogTitle="Notifications Refresh Interval"
 			android:dialogMessage="Set the refresh rate in minutes, minimum is 30, default is 180."
 			android:defaultValue="180" />
-
 	</PreferenceCategory>
 	<PreferenceCategory android:title="pyWA">
 		<EditTextPreference android:defaultValue=""
@@ -75,5 +74,11 @@
 		<EditTextPreference android:defaultValue=""
 			android:dialogTitle="Password" android:dialogMessage="Set the Password"
 			android:key="password_preference" android:title="Password" />
+	</PreferenceCategory>
+	<PreferenceCategory android:title="Developer">
+		<CheckBoxPreference android:key="debug_preference"
+			android:summaryOn="Enabled" android:summaryOff="Disabled"
+			android:title="Debug Mode" android:summary="Enable/Disable Debug Mode"
+			android:defaultValue="false" />
 	</PreferenceCategory>
 </PreferenceScreen>

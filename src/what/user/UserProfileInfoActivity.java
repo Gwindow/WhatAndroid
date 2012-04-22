@@ -1,11 +1,10 @@
-package what.torrents.torrents;
+package what.user;
 
 import what.gui.ImageLoader;
 import what.gui.MyActivity;
 import what.gui.R;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -15,18 +14,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
-import api.torrents.torrents.TorrentGroup;
+import api.user.User;
 
-public class TorrentInfoActivity extends MyActivity {
-	private static String IMAGE_STATE_STRING = "Album Art";
-	private static String DESCRIPTION_STATE_STRING = "Description";
+public class UserProfileInfoActivity extends MyActivity {
+	private static String AVATAR_STATE_STRING = "Avatar";
+	private static String PROFILE_STATE_STRING = "Profile";
+
 	private ViewFlipper viewFlipper;
-	private TextView torrentTitle;
-	private ImageView torrentImage;
+	private TextView username;
+	private ImageView avatar;
 	private Button flipViewButton;
-	private WebView torrentInfo;
+	private WebView profile;
 	private Bitmap bmp;
-	private TorrentGroup torrentGroup;
+	private User user;
 	private Intent intent;
 	// false is state 1, true is state 2
 	private boolean viewFlipperState = false;
@@ -36,12 +36,12 @@ public class TorrentInfoActivity extends MyActivity {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.torrentinfo, false);
 
-		torrentTitle = (TextView) this.findViewById(R.id.torrentTitle);
-		torrentImage = (ImageView) this.findViewById(R.id.torrentImage);
-		torrentInfo = (WebView) this.findViewById(R.id.torrentInfo);
+		username = (TextView) this.findViewById(R.id.username);
+		avatar = (ImageView) this.findViewById(R.id.userAvatar);
+		profile = (WebView) this.findViewById(R.id.userProfile);
 		viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 		flipViewButton = (Button) this.findViewById(R.id.flipViewButton);
-		torrentGroup = TorrentTabActivity.getTorrentGroup();
+		user = UserProfileTabActivity.getUser();
 
 		populateLayout();
 
@@ -49,24 +49,20 @@ public class TorrentInfoActivity extends MyActivity {
 	}
 
 	private void populateLayout() {
-		if (torrentGroup.getStatus()) {
-			if (torrentGroup.hasFreeLeech()) {
-				torrentTitle.setText("Freeleech! " + torrentGroup.getResponse().getGroup().getName());
-				torrentTitle.setTextColor(Color.YELLOW);
-			} else {
-				torrentTitle.setText(torrentGroup.getResponse().getGroup().getName());
-			}
-			String body = torrentGroup.getResponse().getGroup().getWikiBody();
-			torrentInfo.getSettings().setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
-			torrentInfo.getSettings().setSupportZoom(true);
-			torrentInfo.setVerticalScrollBarEnabled(true);
-			torrentInfo.setVerticalScrollbarOverlay(true);
-			torrentInfo.setBackgroundColor(0);
-			torrentInfo.setBackgroundResource(R.drawable.color_transparent_white);
+		if (user.getStatus()) {
+			username.setText(user.getProfile().getUsername());
+
+			String body = user.getProfile().getProfileText();
+			profile.getSettings().setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
+			profile.getSettings().setSupportZoom(true);
+			profile.setVerticalScrollBarEnabled(true);
+			profile.setVerticalScrollbarOverlay(true);
+			profile.setBackgroundColor(0);
+			profile.setBackgroundResource(R.drawable.color_transparent_white);
 			if (body.length() > 0) {
-				torrentInfo.loadData(body, "text/html", "utf-8");
+				profile.loadData(body, "text/html", "utf-8");
 			} else {
-				torrentInfo.loadData("No description", "text/html", "utf-8");
+				profile.loadData("No profile text", "text/html", "utf-8");
 			}
 		}
 	}
@@ -74,26 +70,20 @@ public class TorrentInfoActivity extends MyActivity {
 	public void flipView(View v) {
 		if (viewFlipperState == true) {
 			viewFlipper.showNext();
-			flipViewButton.setText(DESCRIPTION_STATE_STRING);
+			flipViewButton.setText(PROFILE_STATE_STRING);
 			viewFlipperState = false;
 		} else {
 			viewFlipper.showPrevious();
-			flipViewButton.setText(IMAGE_STATE_STRING);
+			flipViewButton.setText(AVATAR_STATE_STRING);
 			viewFlipperState = true;
 		}
 	}
 
-	// TODO add in php, disabled at the moment
-	public void openTags(View v) {
+	public void message(View v) {
 		Bundle b = new Bundle();
-		intent = new Intent(TorrentInfoActivity.this, what.torrents.ListActivity.class);
-		b.putString("type", "torrent_tags");
+		intent = new Intent(UserProfileInfoActivity.this, what.inbox.NewConversationActivity.class);
+		b.putInt("userId", UserProfileTabActivity.getUserId());
 		intent.putExtras(b);
-		startActivity(intent);
-	}
-
-	public void openStats(View v) {
-		intent = new Intent(TorrentInfoActivity.this, what.torrents.torrents.TorrentStatsActivity.class);
 		startActivity(intent);
 	}
 
@@ -119,7 +109,7 @@ public class TorrentInfoActivity extends MyActivity {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			String url = torrentGroup.getResponse().getGroup().getWikiImage();
+			String url = user.getProfile().getAvatar();
 			if (url.length() > 0) {
 				try {
 					bmp = ImageLoader.loadBitmap(url);
@@ -135,9 +125,9 @@ public class TorrentInfoActivity extends MyActivity {
 		protected void onPostExecute(Boolean status) {
 			// dialog.dismiss();
 			if (status == true) {
-				torrentImage.setImageBitmap(bmp);
+				avatar.setImageBitmap(bmp);
 			} else {
-				torrentImage.setImageResource(R.drawable.noartwork);
+				avatar.setImageResource(R.drawable.dne);
 			}
 			unlockScreenRotation();
 		}
