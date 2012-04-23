@@ -43,7 +43,7 @@ import api.util.Updater;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
-	private final static double VERSION = 0.42;
+	private final static double VERSION = 0.50;
 	private static String SITE = "ssl.what.cd";
 	private final static String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
 	public static double INSTALLED_VERSION;
@@ -173,7 +173,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 			webView.loadData(message.getB(), "text/html", "UTF-8");
 			dialog.setView(webView);
 			// dialog.setMessage(message.getB() + "\n\n" + message.getC());
-			dialog.setPositiveButton(message.getB(), null);
+			dialog.setPositiveButton(message.getC(), null);
 			dialog.setCancelable(true);
 			dialog.create().show();
 			Settings.saveMessageHashCode(message.getB().hashCode());

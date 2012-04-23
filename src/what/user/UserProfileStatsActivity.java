@@ -34,11 +34,17 @@ public class UserProfileStatsActivity extends MyActivity {
 		username.setText(user.getProfile().getUsername());
 
 		addToListSection("Stats");
+
 		addToList("Class : " + user.getProfile().getPersonal().getUserClass());
 		addToList("Joined: " + user.getProfile().getStats().getJoinedDate());
 		addToList("Last Seen: " + user.getProfile().getStats().getLastAccess());
-		addToList("Uploaded: " + toGBString(user.getProfile().getStats().getUploaded().toString()) + " GB");
-		addToList("Downloaded: " + toGBString(user.getProfile().getStats().getDownloaded().toString()) + " GB");
+		try {
+			addToList("Uploaded: " + toGBString(user.getProfile().getStats().getUploaded().toString()) + " GB");
+			addToList("Downloaded: " + toGBString(user.getProfile().getStats().getDownloaded().toString()) + " GB");
+		} catch (Exception e) {
+			addToList("Uploaded: Paranoid");
+			addToList("Downloaded: Paranoid");
+		}
 		addToList("Ratio: " + user.getProfile().getStats().getRatio().toString());
 		addToList("Required Ratio: " + user.getProfile().getStats().getRequiredRatio().toString());
 
