@@ -31,7 +31,7 @@
 				style="@style/ButtonTextSmall" android:text="Reply"
 				android:layout_height="wrap_content" android:id="@+id/replyButton"
 				android:layout_weight="1" android:layout_width="0dp"></Button>
-			<Button android:text="Jump" android:id="@+id/jumpButton"
+			<Button android:text="Down" android:id="@+id/jumpButton"
 				android:layout_height="wrap_content" android:onClick="jump"
 				android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
 				android:layout_weight="1" android:layout_width="0dp"></Button>

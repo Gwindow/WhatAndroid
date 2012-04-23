@@ -214,7 +214,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == login.getId()) {
-
 			if ((username.length() > 0) && (password.length() > 0)) {
 				new Login().execute(new String[] { username.getText().toString().trim(), password.getText().toString() });
 			} else {

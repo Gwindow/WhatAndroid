@@ -1,7 +1,5 @@
 package what.inbox;
 
-import java.util.Calendar;
-
 import what.gui.ErrorReporter;
 import what.gui.MyActivity;
 import what.gui.R;
@@ -9,21 +7,30 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import api.inbox.PrivateMessage;
 
-public class BugReportActivity extends MyActivity {
+public class ReportActivity extends MyActivity {
+	private static final String SUBJECT_ONE = "Bug Report";
+	private static final String SUBJECT_TWO = "Suggestion Report";
+	private static final String SUBJECT_THREE = "Bug/Suggestion Report";
+
 	private EditText messageBody;
 	private String subject;
 	private String body;
 	private ErrorReporter errorReporter;
 	private String report;
+	private CheckBox bugCheckBox, suggestionCheckBox;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.bugreport, true);
+		super.setContentView(R.layout.report, true);
+		bugCheckBox = (CheckBox) this.findViewById(R.id.bugCheckBox);
+		suggestionCheckBox = (CheckBox) this.findViewById(R.id.suggestionCheckBox);
+
 		errorReporter = new ErrorReporter();
 		errorReporter.init(this);
 		report = "[hide]" + errorReporter.CreateInformationString() + "[/hide]";
@@ -31,15 +38,32 @@ public class BugReportActivity extends MyActivity {
 	}
 
 	public void send(View v) {
-		Calendar calendar = Calendar.getInstance();
-		subject = "Bug Report, " + calendar.get(Calendar.DATE);
 		body = messageBody.getText().toString();
-		if (body.length() > 0) {
-			body += "\n" + report;
-			new SendMessage().execute();
+		if (bugCheckBox.isChecked() || suggestionCheckBox.isChecked()) {
+			subject = getSubject();
+			if (body.length() > 0) {
+				body += "\n\n" + report;
+				new SendMessage().execute();
+			} else {
+				Toast.makeText(this, "Please fill out form", Toast.LENGTH_LONG).show();
+			}
 		} else {
-			Toast.makeText(this, "Please fill out form", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Please select at least one checkbox", Toast.LENGTH_LONG).show();
 		}
+	}
+
+	private String getSubject() {
+		String s = "";
+		if (bugCheckBox.isChecked() && !suggestionCheckBox.isChecked()) {
+			s = SUBJECT_ONE;
+		}
+		if (!bugCheckBox.isChecked() && suggestionCheckBox.isChecked()) {
+			s = SUBJECT_TWO;
+		}
+		if (bugCheckBox.isChecked() && suggestionCheckBox.isChecked()) {
+			s = SUBJECT_THREE;
+		}
+		return s;
 	}
 
 	public void cancel(View v) {
@@ -52,7 +76,7 @@ public class BugReportActivity extends MyActivity {
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
-			dialog = new ProgressDialog(BugReportActivity.this);
+			dialog = new ProgressDialog(ReportActivity.this);
 			dialog.setIndeterminate(true);
 			dialog.setMessage("Sending...");
 			dialog.show();
@@ -74,10 +98,10 @@ public class BugReportActivity extends MyActivity {
 		protected void onPostExecute(Boolean status) {
 			dialog.dismiss();
 			if (status == true) {
-				Toast.makeText(BugReportActivity.this, "Message sent", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ReportActivity.this, "Message sent", Toast.LENGTH_SHORT).show();
 				finish();
 			} else {
-				Toast.makeText(BugReportActivity.this, "Could not send mesasge", Toast.LENGTH_LONG).show();
+				Toast.makeText(ReportActivity.this, "Could not send mesasge", Toast.LENGTH_LONG).show();
 			}
 			unlockScreenRotation();
 		}

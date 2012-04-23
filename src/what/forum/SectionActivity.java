@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -20,7 +21,10 @@ import api.forum.section.Section;
 import api.forum.section.Threads;
 
 //TODO reenable author names at some point?
-public class SectionActivity extends MyActivity implements OnClickListener {
+public class SectionActivity extends MyActivity implements OnClickListener, OnLongClickListener {
+	private static final String JUMP_UP_STRING = "Up";
+	private static final String JUMP_DOWN_STRING = "Down";
+
 	private ScrollView scrollView;
 	private LinearLayout scrollLayout;
 	private int counter;
@@ -31,6 +35,9 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 	private Section section;
 	private int id, page;
 	private Button backButton, nextButton;
+	private Button jumpButton;
+	// false is down, true is up
+	private boolean isJumped = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,10 +46,11 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
+		jumpButton = (Button) this.findViewById(R.id.jumpButton);
+		jumpButton.setOnLongClickListener(this);
 		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) findViewById(R.id.scrollLayout);
 		sectionTitle = (TextView) findViewById(R.id.titleText);
-
 		setButtonState(backButton, false);
 		setButtonState(nextButton, false);
 		getBundle();
@@ -154,7 +162,20 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 		b.putInt("sectionId", Section.getId());
 		intent.putExtras(b);
 		startActivity(intent);
+	}
 
+	public void jump(View v) {
+		int dy = scrollView.getHeight();
+		int y = scrollView.getScrollY() + dy;
+		scrollView.scrollBy(0, dy);
+	}
+
+	@Override
+	public boolean onLongClick(View v) {
+		if (v.getId() == jumpButton.getId()) {
+			scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+		}
+		return false;
 	}
 
 	@Override
@@ -173,11 +194,15 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 
 	@Override
 	public void onDownGesturePerformed() {
+		jumpButton.setText(JUMP_UP_STRING);
+		isJumped = true;
 		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 	}
 
 	@Override
 	public void onUpGesturePerformed() {
+		scrollView.fullScroll(ScrollView.FOCUS_UP);
+		isJumped = false;
 		scrollView.fullScroll(ScrollView.FOCUS_UP);
 
 	}
@@ -210,4 +235,5 @@ public class SectionActivity extends MyActivity implements OnClickListener {
 			unlockScreenRotation();
 		}
 	}
+
 }

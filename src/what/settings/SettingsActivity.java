@@ -3,7 +3,7 @@ package what.settings;
 import java.net.URISyntaxException;
 
 import what.gui.R;
-import what.inbox.BugReportActivity;
+import what.inbox.ReportActivity;
 import what.login.WhatAndroidActivity;
 import what.services.AnnouncementService;
 import what.services.InboxService;
@@ -168,7 +168,7 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 			}
 		}
 		if (pref == report_preference) {
-			Intent intent = new Intent(SettingsActivity.this, BugReportActivity.class);
+			Intent intent = new Intent(SettingsActivity.this, ReportActivity.class);
 			startActivity(intent);
 		}
 		return false;

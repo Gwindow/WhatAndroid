@@ -17,8 +17,19 @@
 		android:textColor="@color/textview_colors" android:id="@+id/textView1"
 		android:layout_marginBottom="5dip" android:padding="5dip"
 		android:layout_gravity="center_horizontal"></TextView>
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_below="@+id/textView1" android:layout_height="wrap_content"
+		android:orientation="horizontal" android:layout_marginBottom="5dip"
+		android:id="@+id/checkBoxes">
+		<CheckBox android:text="Bug" android:layout_height="wrap_content"
+			android:id="@+id/bugCheckBox" android:layout_alignTop="@+id/textView1"
+			android:layout_weight="1" android:layout_width="0dp"></CheckBox>
+		<CheckBox android:text="Suggestion" android:layout_height="wrap_content"
+			android:id="@+id/suggestionCheckBox" android:layout_alignTop="@+id/textView1"
+			android:layout_weight="1" android:layout_width="0dp"></CheckBox>
+	</LinearLayout>
 	<EditText android:id="@+id/messageBody" android:maxLines="7"
-		android:gravity="top|left" android:layout_below="@+id/textView1"
+		android:gravity="top|left" android:layout_below="@+id/checkBoxes"
 		android:minLines="7" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:layout_above="@+id/linearLayout1"></EditText>
 	<LinearLayout android:layout_width="fill_parent"
@@ -35,4 +46,5 @@
 			android:layout_height="wrap_content" android:layout_gravity="right"
 			android:layout_weight="1" android:layout_width="0dp"></Button>
 	</LinearLayout>
+
 </RelativeLayout>

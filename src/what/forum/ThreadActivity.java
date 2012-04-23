@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -34,7 +35,10 @@ import api.forum.thread.Posts;
 import api.forum.thread.Thread;
 import api.util.Triple;
 
-public class ThreadActivity extends MyActivity implements OnClickListener {
+public class ThreadActivity extends MyActivity implements OnClickListener, OnLongClickListener {
+	private static final String JUMP_UP_STRING = "Up";
+	private static final String JUMP_DOWN_STRING = "Down";
+
 	private static final int RESULT_UNSUBSCRIBE = 1;
 	private static final int RESULT_SUBSCRIBE = 2;
 	private static final int RESULT_REFRESH = 3;
@@ -52,6 +56,10 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 	private boolean hasAvatarsEnabled;
 	private boolean subscribed;
 
+	private Button jumpButton;
+	// false is down, true is up
+	private boolean isJumped = false;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,6 +74,8 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 		nextButton = (Button) this.findViewById(R.id.nextButton);
 		lastButton = (Button) this.findViewById(R.id.lastButton);
 		replyButton = (Button) this.findViewById(R.id.replyButton);
+		jumpButton = (Button) this.findViewById(R.id.jumpButton);
+		jumpButton.setOnLongClickListener(this);
 
 		setButtonState(backButton, false);
 		setButtonState(nextButton, false);
@@ -236,6 +246,20 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 		}
 	}
 
+	public void jump(View v) {
+		int dy = scrollView.getHeight();
+		int y = scrollView.getScrollY() + dy;
+		scrollView.scrollBy(0, dy);
+	}
+
+	@Override
+	public boolean onLongClick(View v) {
+		if (v.getId() == jumpButton.getId()) {
+			scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+		}
+		return false;
+	}
+
 	@Override
 	public void onRightGesturePerformed() {
 		next(null);
@@ -249,7 +273,6 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onUpGesturePerformed() {
 		scrollView.fullScroll(ScrollView.FOCUS_UP);
-
 	}
 
 	@Override
@@ -259,7 +282,6 @@ public class ThreadActivity extends MyActivity implements OnClickListener {
 				openOptions(i);
 			}
 		}
-
 	}
 
 	@Override
