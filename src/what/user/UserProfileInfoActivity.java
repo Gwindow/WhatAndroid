@@ -35,7 +35,6 @@ public class UserProfileInfoActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.userinfo, false);
-
 		username = (TextView) this.findViewById(R.id.username);
 		avatar = (ImageView) this.findViewById(R.id.userAvatar);
 		profile = (WebView) this.findViewById(R.id.userProfile);
@@ -71,10 +70,12 @@ public class UserProfileInfoActivity extends MyActivity {
 		if (viewFlipperState == true) {
 			viewFlipper.showNext();
 			flipViewButton.setText(PROFILE_STATE_STRING);
+			enableGestures(false);
 			viewFlipperState = false;
 		} else {
 			viewFlipper.showPrevious();
 			flipViewButton.setText(AVATAR_STATE_STRING);
+			enableGestures(true);
 			viewFlipperState = true;
 		}
 	}
@@ -133,11 +134,9 @@ public class UserProfileInfoActivity extends MyActivity {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
+	/* (non-Javadoc)
 	 * 
-	 * @see android.app.Activity#onStop()
-	 */
+	 * @see android.app.Activity#onStop() */
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub

@@ -55,17 +55,11 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 		setButtonState(nextButton, false);
 		getBundle();
 
-		if (page == 1) {
-			if (InboxService.isRunning()) {
-				inbox = InboxService.inbox;
-				populateLayout();
-			}
-			if (!InboxService.isRunning()) {
-				new LoadInbox().execute();
-			}
-		} else {
-			new LoadInbox().execute();
-		}
+		new LoadInbox().execute();
+
+		// TODO renable
+		/* if (page == 1) { if (InboxService.isRunning()) { inbox = InboxService.inbox; populateLayout(); } if
+		 * (!InboxService.isRunning()) { new LoadInbox().execute(); } } else { new LoadInbox().execute(); } */
 	}
 
 	private void getBundle() {
@@ -114,7 +108,6 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 			} else {
 				messageList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
 			}
-
 			messageList.get(i).setText("Subject: " + messages.get(i).getSubject() + "\nSender: " + messages.get(i).getUsername());
 			messageList.get(i).setId(i);
 			messageList.get(i).setOnClickListener(this);

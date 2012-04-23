@@ -35,17 +35,17 @@
 	</ScrollView>
 	<RelativeLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:orientation="horizontal"
-		android:id="@+id/linearLayout1">
+		android:layout_alignParentBottom="true" android:id="@+id/linearLayout1">
 		<LinearLayout android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:orientation="horizontal"
-			android:layout_alignParentBottom="true">
-			<Button android:onClick="back"
-				android:text="Previous" android:background="@drawable/btn_black"
-				style="@style/ButtonTextSmall" android:layout_height="wrap_content"
-				android:id="@+id/previousButton" android:layout_weight="1" android:layout_width="0dp"></Button>
+			android:layout_height="wrap_content" android:orientation="horizontal">
+			<Button android:layout_width="wrap_content" android:text="Previous"
+				android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
+				android:layout_height="wrap_content" android:id="@+id/previousButton"
+				android:layout_weight="1"></Button>
 			<Button android:text="Next" android:id="@+id/nextButton"
 				android:onClick="next" android:background="@drawable/btn_black"
-				style="@style/ButtonTextSmall" android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="0dp"></Button>
+				style="@style/ButtonTextSmall" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:layout_weight="1"></Button>
 		</LinearLayout>
 	</RelativeLayout>
 </RelativeLayout>

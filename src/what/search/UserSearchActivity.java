@@ -89,7 +89,6 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 		List<Results> results = userSearch.getResponse().getResults();
 
 		if (!results.isEmpty()) {
-
 			for (int i = 0; i < results.size(); i++) {
 				if ((i % 2) == 0) {
 					resultList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
@@ -117,14 +116,18 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 	}
 
 	private void openUser(int i) {
-		Toast.makeText(this, String.valueOf(i), Toast.LENGTH_SHORT).show();
+		Bundle b = new Bundle();
+		intent = new Intent(UserSearchActivity.this, what.user.UserProfileTabActivity.class);
+		b.putInt("userId", i);
+		intent.putExtras(b);
+		startActivity(intent);
 	}
 
 	@Override
 	public void onClick(View v) {
 		for (int i = 0; i < (resultList.size()); i++) {
 			if (v.getId() == resultList.get(i).getId()) {
-				openUser(i);
+				openUser(userSearch.getResponse().getResults().get(i).getUserId().intValue());
 			}
 		}
 	}

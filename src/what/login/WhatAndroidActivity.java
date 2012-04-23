@@ -9,10 +9,10 @@ import java.net.URL;
 
 import what.cache.ImageCache;
 import what.gui.MyActivity;
+import what.gui.R;
 import what.home.HomeActivity;
 import what.settings.Settings;
 import what.status.WhatStatusActivity;
-import what.gui.R;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -43,7 +43,7 @@ import api.util.Updater;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
-	private final static double VERSION = 0.40;
+	private final static double VERSION = 0.42;
 	private static String SITE = "ssl.what.cd";
 	private final static String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
 	public static double INSTALLED_VERSION;
@@ -173,7 +173,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 			webView.loadData(message.getB(), "text/html", "UTF-8");
 			dialog.setView(webView);
 			// dialog.setMessage(message.getB() + "\n\n" + message.getC());
-			dialog.setPositiveButton("Okay", null);
+			dialog.setPositiveButton(message.getB(), null);
 			dialog.setCancelable(true);
 			dialog.create().show();
 			Settings.saveMessageHashCode(message.getB().hashCode());
