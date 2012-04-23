@@ -98,6 +98,7 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 		if (pref == customBackground_preference) {
 			if (sharedPreferences.getBoolean("customBackground_preference", true)) {
 				showFileChooser();
+				Toast.makeText(this, "Changes will take effect next time you open a page", Toast.LENGTH_LONG).show();
 			}
 		}
 		if (pref == announcementsService_preference) {

@@ -9,6 +9,10 @@
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Custom Background" android:summary="Enable/Disable Custom Background"
 			android:defaultValue="false" />
+		<CheckBoxPreference android:key="tileBackground_preference"
+			android:summaryOn="Enabled" android:summaryOff="Disabled"
+			android:title="Tile Background" android:summary="Enable/Disable Tiling"
+			android:defaultValue="true" />
 		<CheckBoxPreference android:key="avatarsEnabled_preference"
 			android:summaryOn="Enabled" android:summaryOff="Disabled"
 			android:title="Avatars in forum" android:summary="Enable/Disable Avatars"

@@ -201,7 +201,8 @@
 
 
 		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.user.UserProfilePopUpActivity" android:theme="@style/Theme.NoTitleDialog">
+			android:noHistory="true" android:name="what.user.UserProfilePopUpActivity"
+			android:theme="@style/Theme.NoTitleDialog">
 		</activity>
 
 		<activity android:windowSoftInputMode="adjustPan"

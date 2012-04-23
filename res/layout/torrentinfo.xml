@@ -15,7 +15,7 @@
 		<ImageView android:id="@+id/torrentImage"
 			android:src="@drawable/noartwork"
 			android:adjustViewBounds="true" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:layout_gravity="center_horizontal">
+			android:layout_height="wrap_content" android:layout_gravity="center">
 		</ImageView>
 		<WebView android:id="@+id/torrentInfo" android:layout_width="fill_parent"
 			android:cursorVisible="false" android:scrollbars="vertical"

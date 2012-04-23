@@ -26,24 +26,28 @@
 			<Button android:onClick="back" android:background="@drawable/btn_black"
 				style="@style/ButtonTextSmall" android:text="Prev"
 				android:layout_height="wrap_content" android:id="@+id/previousButton"
-				android:layout_weight="1" android:layout_width="0dp"></Button>
+				android:layout_weight="1" android:layout_width="0dp"
+				android:singleLine="true"></Button>
 			<Button android:onClick="reply" android:background="@drawable/btn_black"
 				style="@style/ButtonTextSmall" android:text="Reply"
 				android:layout_height="wrap_content" android:id="@+id/replyButton"
-				android:layout_weight="1" android:layout_width="0dp"></Button>
+				android:layout_weight="1" android:layout_width="0dp"
+				android:singleLine="true"></Button>
 			<Button android:text="Down" android:id="@+id/jumpButton"
 				android:layout_height="wrap_content" android:onClick="jump"
 				android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
-				android:layout_weight="1" android:layout_width="0dp"></Button>
+				android:layout_weight="1" android:layout_width="0dp"
+				android:singleLine="true"></Button>
 			<Button android:text="Next" android:id="@+id/nextButton"
 				android:layout_height="wrap_content" android:onClick="next"
 				android:background="@drawable/btn_black" style="@style/ButtonTextSmall"
 				android:layout_toLeftOf="@+id/lastButton" android:layout_weight="1"
-				android:layout_width="0dp"></Button>
+				android:layout_width="0dp" android:singleLine="true"></Button>
 			<Button android:text="Last" android:id="@+id/lastButton"
 				android:onClick="last" android:background="@drawable/btn_black"
 				style="@style/ButtonTextSmall" android:layout_height="wrap_content"
-				android:layout_weight="1" android:layout_width="0dp"></Button>
+				android:layout_weight="1" android:layout_width="0dp"
+				android:singleLine="true"></Button>
 		</LinearLayout>
 	</RelativeLayout>
 </LinearLayout>

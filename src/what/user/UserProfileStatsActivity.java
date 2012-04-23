@@ -52,7 +52,7 @@ public class UserProfileStatsActivity extends MyActivity {
 		addToList("Overall Rank: " + user.getProfile().getRanks().getOverall());
 
 		addToListSection("Personal");
-		addToList("Class: " + user.getProfile().getPersonal().getParanoiaText());
+		addToList("Paranoia: " + user.getProfile().getPersonal().getParanoiaText());
 
 		addToListSection("Community");
 		addToList("Forum Posts: " + user.getProfile().getCommunity().getPosts());

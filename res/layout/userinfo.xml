@@ -15,7 +15,7 @@
 		<ImageView android:id="@+id/userAvatar"
 			android:src="@drawable/dne"
 			android:adjustViewBounds="true" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:layout_gravity="center_horizontal">
+			android:layout_height="wrap_content" android:layout_gravity="center">
 		</ImageView>
 		<WebView android:id="@+id/userProfile" android:layout_width="fill_parent"
 			android:cursorVisible="false" android:scrollbars="vertical"

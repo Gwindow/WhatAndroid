@@ -64,6 +64,10 @@ public class Settings {
 		return settings.getBoolean("customBackground_preference", false);
 	}
 
+	public static boolean getTileBackground() {
+		return settings.getBoolean("tileBackground_preference", true);
+	}
+
 	public static String getCustomBackgroundPath() {
 		return settings.getString("customBackground_path", "");
 	}

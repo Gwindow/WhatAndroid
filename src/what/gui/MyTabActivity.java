@@ -68,52 +68,38 @@ public class MyTabActivity extends TabActivity {
 			e.printStackTrace();
 			v.setBackgroundColor(R.color.black);
 			Toast.makeText(this, "default background failed", Toast.LENGTH_SHORT).show();
-
 		}
 	}
 
 	private void loadCustomBackground() {
 		try {
-			if (!customBackgroundPath.equalsIgnoreCase(Settings.getCustomBackgroundPath())) {
-				String path = (Settings.getCustomBackgroundPath());
-				setAndResizeBackground(path);
-				customBackgroundPath = path;
+			Bitmap bitmap = BitmapFactory.decodeFile(Settings.getCustomBackgroundPath());
+			BitmapDrawable bd = new BitmapDrawable(bitmap);
+			if (Settings.getTileBackground()) {
+				bd.setTileModeX(Shader.TileMode.REPEAT);
+				bd.setTileModeY(Shader.TileMode.REPEAT);
 			}
+			v.setBackgroundDrawable(bd);
 		} catch (Exception e) {
 			e.printStackTrace();
 			v.setBackgroundColor(R.color.black);
-			Toast.makeText(this, "custom background failed", Toast.LENGTH_SHORT).show();
-
+			Toast.makeText(this, "default background failed", Toast.LENGTH_SHORT).show();
 		}
 	}
 
-	private void setAndResizeBackground(String new_id) {
-		if (!image_id.equals(new_id)) {
-			Bitmap bitmap = BitmapFactory.decodeFile(new_id);
-			bitmap = Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(), true);
-			if (resizeBackgroundEnabled) {
-				resizedBackground = new BitmapDrawable(bitmap);
-				v.setBackgroundDrawable(resizedBackground);
-			}
-			image_id = new_id;
-		} else {
-			v.setBackgroundDrawable(resizedBackground);
-		}
-	}
-
-	private void setAndResizeBackground(int new_id) {
-		if (!image_id.equals(String.valueOf(new_id))) {
-			Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), new_id);
-			if (resizeBackgroundEnabled) {
-				bitmap = Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(), true);
-			}
-			resizedBackground = new BitmapDrawable(bitmap);
-			v.setBackgroundDrawable(resizedBackground);
-			image_id = String.valueOf(new_id);
-		} else {
-			v.setBackgroundDrawable(resizedBackground);
-		}
-	}
+	/*
+	 * private void setAndResizeBackground(String new_id) { if (!image_id.equals(new_id)) { Bitmap bitmap =
+	 * BitmapFactory.decodeFile(new_id); bitmap = Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(),
+	 * true); if (resizeBackgroundEnabled) { resizedBackground = new BitmapDrawable(bitmap);
+	 * v.setBackgroundDrawable(resizedBackground); } image_id = new_id; } else {
+	 * v.setBackgroundDrawable(resizedBackground); } }
+	 * 
+	 * private void setAndResizeBackground(int new_id) { if (!image_id.equals(String.valueOf(new_id))) { Bitmap bitmap =
+	 * BitmapFactory.decodeResource(this.getResources(), new_id); if (resizeBackgroundEnabled) { bitmap =
+	 * Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(), true); } resizedBackground = new
+	 * BitmapDrawable(bitmap); v.setBackgroundDrawable(resizedBackground); image_id = String.valueOf(new_id); } else {
+	 * v.setBackgroundDrawable(resizedBackground); } }
+	 */
 
 	public void setButtonState(Button button, boolean b) {
 		button.setEnabled(b);
@@ -166,18 +152,4 @@ public class MyTabActivity extends TabActivity {
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 	}
 
-	/**
-	 * @return the resizeBackgroundEnabled
-	 */
-	public static boolean isResizeBackgroundEnabled() {
-		return resizeBackgroundEnabled;
-	}
-
-	/**
-	 * @param resizeBackgroundEnabled
-	 *            the resizeBackgroundEnabled to set
-	 */
-	public static void setResizeBackgroundEnabled(boolean resizeBackgroundEnabled) {
-		MyTabActivity.resizeBackgroundEnabled = resizeBackgroundEnabled;
-	}
 }

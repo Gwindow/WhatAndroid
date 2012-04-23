@@ -32,8 +32,7 @@ import android.widget.Toast;
 public class MyActivity extends Activity implements OnGesturePerformedListener {
 
 	private static DisplayMetrics displaymetrics = null;
-	private static boolean resizeBackgroundEnabled = true;
-	private static BitmapDrawable resizedBackground;
+	private static BitmapDrawable customBackground;
 	private static String customBackgroundPath = "";
 	private static int screenHeight, screenWidth;
 	private GestureLibrary gestureLib;
@@ -110,52 +109,40 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 			e.printStackTrace();
 			v.setBackgroundColor(R.color.black);
 			Toast.makeText(this, "default background failed", Toast.LENGTH_SHORT).show();
-
 		}
 	}
 
 	private void loadCustomBackground() {
 		try {
-			if (!customBackgroundPath.equalsIgnoreCase(Settings.getCustomBackgroundPath())) {
-				String path = (Settings.getCustomBackgroundPath());
-				setAndResizeBackground(path);
-				customBackgroundPath = path;
+			Bitmap bitmap = BitmapFactory.decodeFile(Settings.getCustomBackgroundPath());
+			BitmapDrawable bd = new BitmapDrawable(bitmap);
+			if (Settings.getTileBackground()) {
+				bd.setTileModeX(Shader.TileMode.REPEAT);
+				bd.setTileModeY(Shader.TileMode.REPEAT);
 			}
+			v.setBackgroundDrawable(bd);
 		} catch (Exception e) {
 			e.printStackTrace();
 			v.setBackgroundColor(R.color.black);
-			Toast.makeText(this, "custom background failed", Toast.LENGTH_SHORT).show();
-
+			Toast.makeText(this, "default background failed", Toast.LENGTH_SHORT).show();
 		}
 	}
 
-	private void setAndResizeBackground(String new_id) {
-		if (!image_id.equals(new_id)) {
-			Bitmap bitmap = BitmapFactory.decodeFile(new_id);
-			bitmap = Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(), true);
-			if (resizeBackgroundEnabled) {
-				resizedBackground = new BitmapDrawable(bitmap);
-				v.setBackgroundDrawable(resizedBackground);
-			}
-			image_id = new_id;
-		} else {
-			v.setBackgroundDrawable(resizedBackground);
-		}
-	}
-
-	private void setAndResizeBackground(int new_id) {
-		if (!image_id.equals(String.valueOf(new_id))) {
-			Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), new_id);
-			if (resizeBackgroundEnabled) {
-				bitmap = Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(), true);
-			}
-			resizedBackground = new BitmapDrawable(bitmap);
-			v.setBackgroundDrawable(resizedBackground);
-			image_id = String.valueOf(new_id);
-		} else {
-			v.setBackgroundDrawable(resizedBackground);
-		}
-	}
+	/*
+	 * private void loadCustomBackground() { try { if
+	 * (!customBackgroundPath.equalsIgnoreCase(Settings.getCustomBackgroundPath())) { String path =
+	 * (Settings.getCustomBackgroundPath()); setCustomBackground(path); customBackgroundPath = path; } } catch
+	 * (Exception e) { e.printStackTrace(); v.setBackgroundColor(R.color.black); Toast.makeText(this,
+	 * "custom background failed", Toast.LENGTH_SHORT).show(); } }
+	 * 
+	 * private void setCustomBackground(String new_id) { if (!image_id.equals(new_id)) { Bitmap bitmap =
+	 * BitmapFactory.decodeFile(new_id); customBackground = new BitmapDrawable(bitmap); if
+	 * (Settings.getTileBackground()) { customBackground.setTileModeX(Shader.TileMode.REPEAT);
+	 * customBackground.setTileModeY(Shader.TileMode.REPEAT); Toast.makeText(this, "background tiled",
+	 * Toast.LENGTH_LONG).show(); } Toast.makeText(this, "background set", Toast.LENGTH_LONG).show();
+	 * v.setBackgroundDrawable(customBackground); image_id = new_id; } else { v.setBackgroundDrawable(customBackground);
+	 * } }
+	 */
 
 	public void setButtonState(Button button, boolean b) {
 		button.setEnabled(b);
@@ -243,21 +230,6 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 
 	public String cleanTags(String post) {
 		return post.replace("[img]", "").replace("[/img]", "");
-	}
-
-	/**
-	 * @return the resizeBackgroundEnabled
-	 */
-	public static boolean isResizeBackgroundEnabled() {
-		return resizeBackgroundEnabled;
-	}
-
-	/**
-	 * @param resizeBackgroundEnabled
-	 *            the resizeBackgroundEnabled to set
-	 */
-	public static void setResizeBackgroundEnabled(boolean resizeBackgroundEnabled) {
-		MyActivity.resizeBackgroundEnabled = resizeBackgroundEnabled;
 	}
 
 	@Override

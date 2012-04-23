@@ -132,4 +132,15 @@ public class UserProfileInfoActivity extends MyActivity {
 			unlockScreenRotation();
 		}
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+	}
 }
