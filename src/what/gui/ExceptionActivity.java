@@ -3,7 +3,6 @@ package what.gui;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -27,7 +26,7 @@ public class ExceptionActivity extends MyActivity {
 		super.onCreate(savedInstanceState);
 		@SuppressWarnings("unused")
 		ReportSender reportSender = new ReportSender(this);
-		setContentView(R.layout.dave);
+		setContentView(R.layout.debug);
 
 		imageView = (ImageView) this.findViewById(R.id.imageView1);
 		textView = (TextView) this.findViewById(R.id.textView1);
