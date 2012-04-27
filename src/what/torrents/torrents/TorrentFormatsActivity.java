@@ -86,7 +86,7 @@ public class TorrentFormatsActivity extends MyActivity implements OnClickListene
 				String host = Settings.getHostPreference();
 				String port = Settings.getPortPreference();
 				String password = Settings.getPasswordPreference();
-				if (host.length() > 0 && port.length() > 0 && password.length() > 0) {
+				if ((host.length() > 0) && (port.length() > 0) && (password.length() > 0)) {
 					String pyWaUrl = host + ":" + port + "/dl.pywa?pass=" + password + "&site=whatcd&id=" + torrentId;
 					try {
 						MySoup.scrapeOther(pyWaUrl);
