@@ -12,11 +12,7 @@ import android.widget.Toast;
 import api.soup.MySoup;
 import api.util.CouldNotLoadException;
 
-/**
- * 
- *
- */
-public class SherlockActivity extends MyActivity {
+public class SherlockBotActivity extends MyActivity {
 	private WebView webView;
 
 	@Override
@@ -32,7 +28,7 @@ public class SherlockActivity extends MyActivity {
 	}
 
 	public void add(View v) {
-		final AlertDialog alert = new AlertDialog.Builder(SherlockActivity.this).create();
+		final AlertDialog alert = new AlertDialog.Builder(SherlockBotActivity.this).create();
 		alert.setMessage("Do you want to be added to Sherlock? Your stats on What.CD will be tracked. Make sure your paranoia is disabled in your user profile. After being added you can login with your username and the password What?CD");
 		alert.setButton(AlertDialog.BUTTON1, "Add me to Sherlock", new DialogInterface.OnClickListener() {
 			@Override
@@ -40,9 +36,9 @@ public class SherlockActivity extends MyActivity {
 				try {
 					MySoup.scrapeOther("http://sherlock.whatbarco.de/adduser.php?username=" + MySoup.getUsername() + "&userid="
 							+ MySoup.getUserId());
-					Toast.makeText(SherlockActivity.this, "You have been added", Toast.LENGTH_SHORT).show();
+					Toast.makeText(SherlockBotActivity.this, "You have been added", Toast.LENGTH_SHORT).show();
 				} catch (CouldNotLoadException e) {
-					Toast.makeText(SherlockActivity.this, "Error, could not add", Toast.LENGTH_SHORT).show();
+					Toast.makeText(SherlockBotActivity.this, "Error, could not add", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -58,7 +54,7 @@ public class SherlockActivity extends MyActivity {
 	}
 
 	public void help(View v) {
-		final AlertDialog alert = new AlertDialog.Builder(SherlockActivity.this).create();
+		final AlertDialog alert = new AlertDialog.Builder(SherlockBotActivity.this).create();
 		alert.setMessage("If you have been added to Sherlock you can login with your username and the password What?CD. Stats are refreshed at the top of each hour.");
 		alert.setButton(AlertDialog.BUTTON1, "Close", new DialogInterface.OnClickListener() {
 			@Override

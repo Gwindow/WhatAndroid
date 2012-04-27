@@ -15,7 +15,7 @@
 
 
 		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.login.WhatAndroidActivity" android:theme="@android:style/Theme.NoTitleBar">
+			android:name="what.login.WhatAndroidActivity" android:theme="@style/Theme.Sherlock">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />

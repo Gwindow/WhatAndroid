@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import what.settings.Settings;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -29,7 +28,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class MyActivity extends Activity implements OnGesturePerformedListener {
+import com.actionbarsherlock.app.SherlockActivity;
+
+public class MyActivity extends SherlockActivity implements OnGesturePerformedListener {
 
 	private static DisplayMetrics displaymetrics = null;
 	private static BitmapDrawable customBackground;
@@ -49,7 +50,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 		super.onCreate(savedInstanceState);
 		setDisplayMetrics();
 
-		if (Settings.getSettings() == null | Settings.getSettingsEditor() == null) {
+		if ((Settings.getSettings() == null) | (Settings.getSettingsEditor() == null)) {
 			Settings.init(this);
 		}
 
@@ -128,8 +129,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 		}
 	}
 
-	/*
-	 * private void loadCustomBackground() { try { if
+	/* private void loadCustomBackground() { try { if
 	 * (!customBackgroundPath.equalsIgnoreCase(Settings.getCustomBackgroundPath())) { String path =
 	 * (Settings.getCustomBackgroundPath()); setCustomBackground(path); customBackgroundPath = path; } } catch
 	 * (Exception e) { e.printStackTrace(); v.setBackgroundColor(R.color.black); Toast.makeText(this,
@@ -141,8 +141,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 	 * customBackground.setTileModeY(Shader.TileMode.REPEAT); Toast.makeText(this, "background tiled",
 	 * Toast.LENGTH_LONG).show(); } Toast.makeText(this, "background set", Toast.LENGTH_LONG).show();
 	 * v.setBackgroundDrawable(customBackground); image_id = new_id; } else { v.setBackgroundDrawable(customBackground);
-	 * } }
-	 */
+	 * } } */
 
 	public void setButtonState(Button button, boolean b) {
 		button.setEnabled(b);
@@ -257,7 +256,7 @@ public class MyActivity extends Activity implements OnGesturePerformedListener {
 						onHomeGesturePerformed();
 					}
 				}
-				if (prediction.score > 9 || prediction.score > (gestureSensitivity + 1)) {
+				if ((prediction.score > 9) || (prediction.score > (gestureSensitivity + 1))) {
 					if (prediction.name.trim().equals(Gestures.MENU)) {
 						onMenuGesturePerformed();
 					}
