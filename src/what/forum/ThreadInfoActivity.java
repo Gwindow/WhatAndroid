@@ -14,25 +14,33 @@ public class ThreadInfoActivity extends MyActivity implements OnCheckedChangeLis
 	private static final int RESULT_REFRESH = 3;
 	private CheckBox subscribed;
 	private boolean isSubscribed;
-	private int id;
 	private int resultCode = -1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.threadinfo);
+	}
 
-		getBundle();
+	@Override
+	public void init() {
 
+	}
+
+	@Override
+	public void load() {
 		subscribed = (CheckBox) this.findViewById(R.id.subscribed);
-		subscribed.setChecked(isSubscribed);
 		subscribed.setOnCheckedChangeListener(this);
+	}
 
+	@Override
+	public void prepare() {
+		getBundle();
+		subscribed.setChecked(isSubscribed);
 	}
 
 	private void getBundle() {
 		Bundle b = this.getIntent().getExtras();
-		id = b.getInt("id");
 		isSubscribed = b.getBoolean("subscribed");
 	}
 

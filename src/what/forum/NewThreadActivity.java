@@ -22,15 +22,23 @@ public class NewThreadActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.newthread, true);
+	}
 
-		getBundle();
+	@Override
+	public void init() {
+
+	}
+
+	@Override
+	public void load() {
 		threadTitle = (EditText) this.findViewById(R.id.threadTitle);
 		threadBody = (EditText) this.findViewById(R.id.threadBody);
 		threadBody.setGravity(Gravity.TOP);
 		threadBody.setGravity(Gravity.LEFT);
 	}
 
-	private void getBundle() {
+	@Override
+	public void prepare() {
 		Bundle b = this.getIntent().getExtras();
 		sectionId = b.getInt("sectionId");
 	}

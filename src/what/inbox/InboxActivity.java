@@ -28,8 +28,7 @@ import api.inbox.inbox.Messages;
 
 public class InboxActivity extends MyActivity implements OnClickListener {
 	private ScrollView scrollView;
-
-	private ArrayList<TextView> messageList = new ArrayList<TextView>();
+	private ArrayList<TextView> messageList;
 	private LinearLayout scrollLayout;
 	private Intent intent;
 	private ProgressDialog dialog;
@@ -44,13 +43,25 @@ public class InboxActivity extends MyActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.inbox, true);
+	}
+
+	@Override
+	public void init() {
+	}
+
+	@Override
+	public void load() {
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		myNotificationManager.cancel(InboxService.ID);
 		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		title = (TextView) this.findViewById(R.id.title);
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
+	}
+
+	@Override
+	public void prepare() {
+		myNotificationManager.cancel(InboxService.ID);
 		setButtonState(backButton, false);
 		setButtonState(nextButton, false);
 		getBundle();

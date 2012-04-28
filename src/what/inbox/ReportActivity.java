@@ -28,13 +28,26 @@ public class ReportActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.report, true);
-		bugCheckBox = (CheckBox) this.findViewById(R.id.bugCheckBox);
-		suggestionCheckBox = (CheckBox) this.findViewById(R.id.suggestionCheckBox);
+	}
 
+	@Override
+	public void init() {
 		errorReporter = new ErrorReporter();
 		errorReporter.init(this);
 		report = "[hide]" + errorReporter.CreateInformationString() + "[/hide]";
+	}
+
+	@Override
+	public void load() {
+		bugCheckBox = (CheckBox) this.findViewById(R.id.bugCheckBox);
+		suggestionCheckBox = (CheckBox) this.findViewById(R.id.suggestionCheckBox);
 		messageBody = (EditText) this.findViewById(R.id.messageBody);
+	}
+
+	@Override
+	public void prepare() {
+		// TODO Auto-generated method stub
+
 	}
 
 	public void send(View v) {

@@ -18,8 +18,8 @@ import android.widget.ViewFlipper;
 import api.torrents.torrents.TorrentGroup;
 
 public class TorrentInfoActivity extends MyActivity {
-	private static String IMAGE_STATE_STRING = "Album Art";
-	private static String DESCRIPTION_STATE_STRING = "Description";
+	private static final String IMAGE_STATE_STRING = "Album Art";
+	private static final String DESCRIPTION_STATE_STRING = "Description";
 	private ViewFlipper viewFlipper;
 	private TextView torrentTitle;
 	private ImageView torrentImage;
@@ -35,16 +35,27 @@ public class TorrentInfoActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.torrentinfo, false);
+	}
 
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void load() {
 		torrentTitle = (TextView) this.findViewById(R.id.torrentTitle);
 		torrentImage = (ImageView) this.findViewById(R.id.torrentImage);
 		torrentInfo = (WebView) this.findViewById(R.id.torrentInfo);
 		viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 		flipViewButton = (Button) this.findViewById(R.id.flipViewButton);
 		torrentGroup = TorrentTabActivity.getTorrentGroup();
+	}
 
+	@Override
+	public void prepare() {
 		populateLayout();
-
 		new LoadImage().execute();
 	}
 

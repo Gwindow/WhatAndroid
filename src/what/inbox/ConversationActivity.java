@@ -37,18 +37,29 @@ public class ConversationActivity extends MyActivity implements OnLongClickListe
 	private Intent intent;
 	private int userId, convId;
 	private TextView conversationTitle;
-	private ArrayList<RelativeLayout> listOfMessages = new ArrayList<RelativeLayout>();
+	private ArrayList<RelativeLayout> listOfMessages;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.conversation, true);
+	}
 
+	@Override
+	public void init() {
+		listOfMessages = new ArrayList<RelativeLayout>();
+	}
+
+	@Override
+	public void load() {
 		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		conversationTitle = (TextView) findViewById(R.id.titleText);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
-		getBundle();
+	}
 
+	@Override
+	public void prepare() {
+		getBundle();
 		new LoadConversation().execute();
 	}
 

@@ -15,12 +15,21 @@ public class RequestActivity extends MyActivity {
 	private ImageView requestImage;
 	private WebView requestInfo;
 	private Bitmap bmp;
-	private api.requests.Request request = RequestTabActivity.getRequest();
+	private api.requests.Request request;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.request, false);
+	}
+
+	@Override
+	public void init() {
+		request = RequestTabActivity.getRequest();
+	}
+
+	@Override
+	public void load() {
 		requestTitle = (TextView) this.findViewById(R.id.requestTitle);
 		bounty = (TextView) this.findViewById(R.id.bounty);
 		bitrate = (TextView) this.findViewById(R.id.bitrate);
@@ -28,6 +37,10 @@ public class RequestActivity extends MyActivity {
 		media = (TextView) this.findViewById(R.id.media);
 		requestImage = (ImageView) this.findViewById(R.id.requestImage);
 		requestInfo = (WebView) this.findViewById(R.id.requestInfo);
+	}
+
+	@Override
+	public void prepare() {
 		new LoadImage().execute();
 		populateLayout();
 	}

@@ -4,7 +4,6 @@ import what.gui.MyActivity;
 import what.gui.R;
 import android.os.Bundle;
 import android.webkit.WebView;
-import android.widget.Toast;
 import api.son.MySon;
 
 /**
@@ -18,12 +17,24 @@ public class DebugActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.debug, false);
+	}
+
+	@Override
+	public void init() {
+	}
+
+	@Override
+	public void load() {
+		webView = (WebView) this.findViewById(R.id.webView);
+	}
+
+	@Override
+	public void prepare() {
 		enableGestures(false);
 		try {
-			webView = (WebView) this.findViewById(R.id.webView);
 			webView.loadData(MySon.getDebugString(), "text/html", "utf-8");
 		} catch (Exception e) {
-			Toast.makeText(this, "Could not load", Toast.LENGTH_LONG).show();
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

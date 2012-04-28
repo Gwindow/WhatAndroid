@@ -15,22 +15,34 @@ import api.bookmarks.Artist;
 import api.bookmarks.Bookmarks;
 
 public class ArtistBookmarksActivity extends MyActivity implements OnClickListener {
-	private ArrayList<TextView> bookmarksList = new ArrayList<TextView>();
+	private ArrayList<TextView> bookmarksList;
 	private LinearLayout scrollLayout;
 	private Intent intent;
 	private TextView title;
-	private Bookmarks bookmarks = BookmarksTabActivity.getArtists();
+	private Bookmarks bookmarks;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.bookmarks, true);
+	}
+
+	@Override
+	public void init() {
+		bookmarksList = new ArrayList<TextView>();
+		bookmarks = BookmarksTabActivity.getArtists();
+	}
+
+	@Override
+	public void load() {
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		title = (TextView) this.findViewById(R.id.title);
+	}
+
+	@Override
+	public void prepare() {
 		title.setText("Artist Bookmarks");
-
 		populateLayout();
-
 	}
 
 	private void populateLayout() {
@@ -65,18 +77,6 @@ public class ArtistBookmarksActivity extends MyActivity implements OnClickListen
 				openBookmark(i);
 			}
 		}
-	}
-
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void loadResources() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

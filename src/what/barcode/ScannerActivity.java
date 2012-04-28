@@ -35,23 +35,23 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.scanner, true);
-		torrentsButton = (Button) this.findViewById(R.id.torrentsbutton);
-		requestsButton = (Button) this.findViewById(R.id.requestsbutton);
-
-		setButtonState(torrentsButton, false);
-		setButtonState(requestsButton, false);
 	}
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void loadResources() {
-		// TODO Auto-generated method stub
+	public void load() {
+		torrentsButton = (Button) this.findViewById(R.id.torrentsbutton);
+		requestsButton = (Button) this.findViewById(R.id.requestsbutton);
+	}
 
+	@Override
+	public void prepare() {
+		setButtonState(torrentsButton, false);
+		setButtonState(requestsButton, false);
 	}
 
 	public void scanRequests(View v) {

@@ -30,12 +30,25 @@ public class ArtistActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.artist, false);
+	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void load() {
 		artistTitle = (TextView) this.findViewById(R.id.artistTitle);
 		artistImage = (ImageView) this.findViewById(R.id.artistImage);
 		artistInfo = (WebView) this.findViewById(R.id.artistInfo);
 
-		new PopulateLayout().execute();
+	}
 
+	@Override
+	public void prepare() {
+		new PopulateLayout().execute();
 	}
 
 	public void openSimilar(View v) {
@@ -118,17 +131,5 @@ public class ArtistActivity extends MyActivity {
 			unlockScreenRotation();
 			// dialog.dismiss();
 		}
-	}
-
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void loadResources() {
-		// TODO Auto-generated method stub
-
 	}
 }

@@ -25,18 +25,30 @@ public class ForumSectionsListActivity extends MyActivity implements OnClickList
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
 	private ForumSections forumSections;
-	private LinkedList<TextView> sectionList = new LinkedList<TextView>();
-	private HashMap<Integer, Integer> idMap = new HashMap<Integer, Integer>();
+	private LinkedList<TextView> sectionList;
+	private HashMap<Integer, Integer> idMap;
 	private Intent intent;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.sections, true);
+	}
 
+	@Override
+	public void init() {
+		sectionList = new LinkedList<TextView>();
+		idMap = new HashMap<Integer, Integer>();
+	}
+
+	@Override
+	public void load() {
 		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
+	}
 
+	@Override
+	public void prepare() {
 		new LoadForumSections().execute();
 	}
 

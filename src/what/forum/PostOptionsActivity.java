@@ -29,11 +29,23 @@ public class PostOptionsActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.postoptions);
+	}
 
+	@Override
+	public void init() {
+
+	}
+
+	@Override
+	public void load() {
+	}
+
+	@Override
+	public void prepare() {
 		WindowManager.LayoutParams lp = getWindow().getAttributes();
 		lp.dimAmount = 0.0f;
 		getWindow().setAttributes(lp);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
 		getBundle();
 	}
@@ -52,7 +64,6 @@ public class PostOptionsActivity extends MyActivity {
 		userId = b.getInt("userId");
 		threadId = b.getInt("threadId");
 		post = b.getString("post");
-
 	}
 
 	public void quote(View v) {

@@ -10,22 +10,30 @@ import android.widget.Toast;
 import api.whatstatus.WhatStatus;
 
 public class WhatStatusActivity extends MyActivity {
-	// LinearLayout twitterScroll;
-	ImageView siteStatus, trackerStatus, ircStatus;
-	// ArrayList<TextView> tweetList = new ArrayList<TextView>();
-	WhatStatus whatStatus;
-	ProgressDialog dialog;
+	private ImageView siteStatus, trackerStatus, ircStatus;
+	private WhatStatus whatStatus;
+	private ProgressDialog dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.whatstatus, true);
-		// twitterScroll = (LinearLayout) this.findViewById(R.id.twitterScroll);
-		// twitterScroll.setOrientation(LinearLayout.VERTICAL);
+	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void load() {
 		siteStatus = (ImageView) this.findViewById(R.id.sitestatus);
 		trackerStatus = (ImageView) this.findViewById(R.id.trackerstatus);
 		ircStatus = (ImageView) this.findViewById(R.id.ircstatus);
+	}
 
+	@Override
+	public void prepare() {
 		new LoadStatus().execute();
 	}
 
@@ -66,23 +74,17 @@ public class WhatStatusActivity extends MyActivity {
 			ircStatus.setImageResource((R.drawable.site_up));
 			break;
 		}
-		/*
-		 * try { for (int i = 0; i < status.getTweets().size(); i++) { tweetList.add(new TextView(this));
+		/* try { for (int i = 0; i < status.getTweets().size(); i++) { tweetList.add(new TextView(this));
 		 * tweetList.get(i).setTextSize(18); tweetList.get(i).setText(status.getTweets().get(i).getA() + "\n \t" +
 		 * status.getTweets().get(i).getB()); twitterScroll.addView(tweetList.get(i)); } } catch (TwitterException e) {
-		 * Toast.makeText(this, "Could not load tweets", Toast.LENGTH_LONG).show(); e.printStackTrace(); }
-		 */
+		 * Toast.makeText(this, "Could not load tweets", Toast.LENGTH_LONG).show(); e.printStackTrace(); } */
 	}
 
-	/*
-	 * public void openTwitter(View v) { String url = "http://twitter.com/#!/whatcd"; Intent i = new
-	 * Intent(Intent.ACTION_VIEW); i.setData(Uri.parse(url)); startActivity(i); }
-	 */
+	/* public void openTwitter(View v) { String url = "http://twitter.com/#!/whatcd"; Intent i = new
+	 * Intent(Intent.ACTION_VIEW); i.setData(Uri.parse(url)); startActivity(i); } */
 
-	/*
-	 * public void openWhatStatus(View v) { String url = "http://whatstatus.info/"; Intent i = new
-	 * Intent(Intent.ACTION_VIEW); i.setData(Uri.parse(url)); startActivity(i); }
-	 */
+	/* public void openWhatStatus(View v) { String url = "http://whatstatus.info/"; Intent i = new
+	 * Intent(Intent.ACTION_VIEW); i.setData(Uri.parse(url)); startActivity(i); } */
 
 	private class LoadStatus extends AsyncTask<Void, Void, Boolean> {
 		@Override

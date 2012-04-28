@@ -17,9 +17,8 @@ import android.widget.ViewFlipper;
 import api.user.User;
 
 public class UserProfileInfoActivity extends MyActivity {
-	private static String AVATAR_STATE_STRING = "Avatar";
-	private static String PROFILE_STATE_STRING = "Profile";
-
+	private static final String AVATAR_STATE_STRING = "Avatar";
+	private static final String PROFILE_STATE_STRING = "Profile";
 	private ViewFlipper viewFlipper;
 	private TextView username;
 	private ImageView avatar;
@@ -35,15 +34,26 @@ public class UserProfileInfoActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.userinfo, false);
+	}
+
+	@Override
+	public void init() {
+		user = UserProfileTabActivity.getUser();
+
+	}
+
+	@Override
+	public void load() {
 		username = (TextView) this.findViewById(R.id.username);
 		avatar = (ImageView) this.findViewById(R.id.userAvatar);
 		profile = (WebView) this.findViewById(R.id.userProfile);
 		viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 		flipViewButton = (Button) this.findViewById(R.id.flipViewButton);
-		user = UserProfileTabActivity.getUser();
+	}
 
+	@Override
+	public void prepare() {
 		populateLayout();
-
 		new LoadImage().execute();
 	}
 

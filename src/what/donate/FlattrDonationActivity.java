@@ -10,4 +10,17 @@ public class FlattrDonationActivity extends MyActivity {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.flattr, true);
 	}
+
+	@Override
+	public void init() {
+
+	}
+
+	@Override
+	public void load() {
+	}
+
+	@Override
+	public void prepare() {
+	}
 }

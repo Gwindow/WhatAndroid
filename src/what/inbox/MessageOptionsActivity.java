@@ -29,13 +29,26 @@ public class MessageOptionsActivity extends MyActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.postoptions);
+		super.setContentView(R.layout.postoptions);
 
+	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void prepare() {
 		WindowManager.LayoutParams lp = getWindow().getAttributes();
 		lp.dimAmount = 0.0f;
 		getWindow().setAttributes(lp);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		getBundle();
 	}
 

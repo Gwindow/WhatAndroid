@@ -63,11 +63,10 @@ public abstract class MyActivity extends SherlockActivity implements OnGesturePe
 		init();
 	}
 
+	/**
+	 * Initialize variables and anything that must be done first.
+	 */
 	public abstract void init();
-
-	public abstract void load();
-
-	public abstract void prepare();
 
 	/**
 	 * Sets the content view with background
@@ -94,6 +93,16 @@ public abstract class MyActivity extends SherlockActivity implements OnGesturePe
 		load();
 		prepare();
 	}
+
+	/**
+	 * Find resources, setting additional properties such as gravity or listeners should be done here.
+	 */
+	public abstract void load();
+
+	/**
+	 * Prepare the activity for the user, run any code necessary to do that here.
+	 */
+	public abstract void prepare();
 
 	private GestureOverlayView loadGestureOverLayView(int layoutResID) {
 		gestureOverlayView = new GestureOverlayView(this);

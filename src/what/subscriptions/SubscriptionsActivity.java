@@ -6,7 +6,6 @@ import java.util.List;
 import what.gui.MyActivity;
 import what.gui.R;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -18,10 +17,9 @@ import api.subscriptions.Subscriptions;
 import api.subscriptions.Threads;
 
 public class SubscriptionsActivity extends MyActivity implements OnClickListener {
-	private ArrayList<TextView> threadList = new ArrayList<TextView>();
+	private ArrayList<TextView> threadList;
 	private LinearLayout scrollLayout;
 	private Subscriptions subscriptions;
-	private Intent intent;
 	private ProgressDialog dialog;
 	private int counter;
 
@@ -29,8 +27,20 @@ public class SubscriptionsActivity extends MyActivity implements OnClickListener
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.subscriptions, true);
-		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
+	}
 
+	@Override
+	public void init() {
+		threadList = new ArrayList<TextView>();
+	}
+
+	@Override
+	public void load() {
+		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
+	}
+
+	@Override
+	public void prepare() {
 		new LoadSubscriptions().execute();
 	}
 

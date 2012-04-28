@@ -21,18 +21,32 @@ import api.torrents.torrents.TorrentGroup;
 import api.util.CouldNotLoadException;
 
 public class TorrentFormatsActivity extends MyActivity implements OnClickListener {
-	private ArrayList<TextView> torrentList = new ArrayList<TextView>();
 	private LinearLayout scrollLayout;
 	private TorrentGroup torrentGroup;
 	private Intent intent;
 	private TextView title;
+	private ArrayList<TextView> torrentList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.formatlist, false);
+	}
+
+	@Override
+	public void init() {
+		torrentList = new ArrayList<TextView>();
+
+	}
+
+	@Override
+	public void load() {
 		title = (TextView) this.findViewById(R.id.title);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
+	}
+
+	@Override
+	public void prepare() {
 		populateLayout();
 	}
 

@@ -23,16 +23,28 @@ public class MainMenu extends MyActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.menu_main);
-		WindowManager.LayoutParams lp = getWindow().getAttributes();
-		lp.dimAmount = 0.0f;
-		getWindow().setAttributes(lp);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+		super.setContentView(R.layout.menu_main);
+	}
 
+	@Override
+	public void init() {
+	}
+
+	@Override
+	public void load() {
 		debugButton = (Button) this.findViewById(R.id.button11);
+	}
+
+	@Override
+	public void prepare() {
 		if (Settings.getDebugPreference()) {
 			debugButton.setVisibility(View.VISIBLE);
 		}
+
+		WindowManager.LayoutParams lp = getWindow().getAttributes();
+		lp.dimAmount = 0.0f;
+		getWindow().setAttributes(lp);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 	}
 
 	@Override
@@ -99,10 +111,8 @@ public class MainMenu extends MyActivity {
 	}
 
 	public void donate(View v) {
-		/*
-		 * intent = new Intent(MainMenu.this, what.donate.FlattrDonationActivity.class); startActivityForResult(intent,
-		 * 0);
-		 */
+		/* intent = new Intent(MainMenu.this, what.donate.FlattrDonationActivity.class); startActivityForResult(intent,
+		 * 0); */
 		Toast.makeText(MainMenu.this, "I don't know yet", Toast.LENGTH_SHORT).show();
 	}
 }

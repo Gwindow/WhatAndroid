@@ -68,21 +68,25 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		} catch (CouldNotLoadException e) {
 			e.printStackTrace();
 		}
-
-		enableGestures(false);
 		ImageCache.init(this);
 	}
 
 	@Override
-	public void loadResources() {
+	public void load() {
 		username = (TextView) this.findViewById(R.id.username);
 		password = (TextView) this.findViewById(R.id.password);
 		rememberme = (CheckBox) this.findViewById(R.id.remember_checkbox);
-		rememberme.setChecked(Settings.getRememberMe());
 		rememberme.setOnClickListener(this);
 
 		login = (Button) this.findViewById(R.id.login);
 		login.setOnClickListener(this);
+	}
+
+	@Override
+	public void prepare() {
+		enableGestures(false);
+		rememberme.setChecked(Settings.getRememberMe());
+		tryAutoLogin();
 	}
 
 	@Override

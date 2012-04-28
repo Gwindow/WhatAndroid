@@ -29,7 +29,7 @@ public class SectionActivity extends MyActivity implements OnClickListener, OnLo
 	private LinearLayout scrollLayout;
 	private int counter;
 	private ProgressDialog dialog;
-	private ArrayList<TextView> threadList = new ArrayList<TextView>();
+	private ArrayList<TextView> threadList;
 	private TextView sectionTitle;
 	private Intent intent;
 	private Section section;
@@ -37,13 +37,21 @@ public class SectionActivity extends MyActivity implements OnClickListener, OnLo
 	private Button backButton, nextButton;
 	private Button jumpButton;
 	// false is down, true is up
-	private boolean isJumped = false;
+	private boolean isJumped;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.threads, true);
+	}
 
+	@Override
+	public void init() {
+		threadList = new ArrayList<TextView>();
+	}
+
+	@Override
+	public void load() {
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
 		jumpButton = (Button) this.findViewById(R.id.jumpButton);
@@ -51,6 +59,10 @@ public class SectionActivity extends MyActivity implements OnClickListener, OnLo
 		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) findViewById(R.id.scrollLayout);
 		sectionTitle = (TextView) findViewById(R.id.titleText);
+	}
+
+	@Override
+	public void prepare() {
 		setButtonState(backButton, false);
 		setButtonState(nextButton, false);
 		getBundle();

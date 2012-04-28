@@ -24,7 +24,7 @@ import api.notifications.Notifications;
 public class NotificationsActivity extends MyActivity implements OnClickListener {
 	private ScrollView scrollView;
 	private TextView title;
-	private ArrayList<TextView> torrentList = new ArrayList<TextView>();
+	private ArrayList<TextView> torrentList;
 	private LinearLayout scrollLayout;
 	private Intent intent;
 	private Notifications notifications;
@@ -37,14 +37,27 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.notifications, true);
+	}
 
+	@Override
+	public void init() {
+		torrentList = new ArrayList<TextView>();
+	}
+
+	@Override
+	public void load() {
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		myNotificationManager.cancel(NotificationService.ID);
 		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		title = (TextView) this.findViewById(R.id.title);
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
+	}
+
+	@Override
+	public void prepare() {
+		myNotificationManager.cancel(NotificationService.ID);
+
 		setButtonState(backButton, false);
 		setButtonState(nextButton, false);
 		getBundle();
@@ -60,7 +73,6 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 		} else {
 			new LoadNotifications().execute();
 		}
-
 	}
 
 	private void getBundle() {
@@ -139,8 +151,9 @@ public class NotificationsActivity extends MyActivity implements OnClickListener
 
 	@Override
 	public void onRightGesturePerformed() {
-		if (notifications.hasNextPage())
+		if (notifications.hasNextPage()) {
 			next(null);
+		}
 	}
 
 	@Override

@@ -22,7 +22,7 @@ import api.search.user.UserSearch;
 
 public class UserSearchActivity extends MyActivity implements OnClickListener {
 	private ScrollView scrollView;
-	private ArrayList<TextView> resultList = new ArrayList<TextView>();
+	private ArrayList<TextView> resultList;
 	private LinearLayout scrollLayout;
 	private UserSearch userSearch;
 	private Intent intent;
@@ -37,13 +37,25 @@ public class UserSearchActivity extends MyActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.usersearch, true);
+	}
+
+	@Override
+	public void init() {
+		resultList = new ArrayList<TextView>();
+	}
+
+	@Override
+	public void load() {
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
 		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
 		title = (TextView) this.findViewById(R.id.title);
+	}
 
+	@Override
+	public void prepare() {
 		setButtonState(backButton, false);
 		setButtonState(nextButton, false);
 

@@ -15,18 +15,31 @@ import api.user.User;
  */
 public class UserProfileStatsActivity extends MyActivity {
 	private TextView username;
-	private LinkedList<TextView> detailList = new LinkedList<TextView>();
 	private LinearLayout scrollLayout;
 	private int counter;
 	private User user;
+	private LinkedList<TextView> detailList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.generic_list, false);
+	}
+
+	@Override
+	public void init() {
+		detailList = new LinkedList<TextView>();
+		user = UserProfileTabActivity.getUser();
+	}
+
+	@Override
+	public void load() {
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		username = (TextView) this.findViewById(R.id.title);
-		user = UserProfileTabActivity.getUser();
+	}
+
+	@Override
+	public void prepare() {
 		populateLayout();
 	}
 

@@ -20,18 +20,34 @@ import api.torrents.artist.Artist;
  * 
  */
 public class TorrentListActivity extends MyActivity implements OnClickListener {
-	private ArrayList<TextView> sectionList = new ArrayList<TextView>();
-	private ArrayList<TextView> torrentList = new ArrayList<TextView>();
 	private LinearLayout scrollLayout;
 	private Artist artist;
 	private Intent intent;
+	private ArrayList<TextView> torrentList;
+	private ArrayList<TextView> sectionList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.torrentlist, false);
+	}
+
+	@Override
+	public void init() {
+		sectionList = new ArrayList<TextView>();
+		torrentList = new ArrayList<TextView>();
+
+	}
+
+	@Override
+	public void load() {
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
+	}
+
+	@Override
+	public void prepare() {
 		populateLayout();
+
 	}
 
 	private void populateLayout() {

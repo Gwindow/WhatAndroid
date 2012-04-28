@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import what.gui.MyActivity;
 import what.gui.R;
-import what.gui.ReportSender;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -21,25 +20,42 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
 	private Intent intent;
-	private ArrayList<TextView> sectionTitle = new ArrayList<TextView>();
-	private ArrayList<TextView> pastDay = new ArrayList<TextView>();
-	private ArrayList<TextView> pastWeek = new ArrayList<TextView>();
-	private ArrayList<TextView> allTime = new ArrayList<TextView>();
-	private ArrayList<TextView> snatched = new ArrayList<TextView>();
-	private ArrayList<TextView> transferred = new ArrayList<TextView>();
-	private ArrayList<TextView> seeded = new ArrayList<TextView>();
 	private Top top;
-	private HashMap<Integer, Integer> idMap = new HashMap<Integer, Integer>();
+	private ArrayList<TextView> sectionTitle;
+	private ArrayList<TextView> pastDay;
+	private ArrayList<TextView> pastWeek;
+	private ArrayList<TextView> allTime;
+	private ArrayList<TextView> snatched;
+	private ArrayList<TextView> transferred;
+	private ArrayList<TextView> seeded;
+	private HashMap<Integer, Integer> idMap;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.toptorrents, true);
-		@SuppressWarnings("unused")
-		ReportSender sender = new ReportSender(this);
+	}
 
+	@Override
+	public void init() {
+		sectionTitle = new ArrayList<TextView>();
+		pastDay = new ArrayList<TextView>();
+		pastWeek = new ArrayList<TextView>();
+		allTime = new ArrayList<TextView>();
+		snatched = new ArrayList<TextView>();
+		transferred = new ArrayList<TextView>();
+		seeded = new ArrayList<TextView>();
+		idMap = new HashMap<Integer, Integer>();
+	}
+
+	@Override
+	public void load() {
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 
+	}
+
+	@Override
+	public void prepare() {
 		new LoadTopTorrents().execute();
 	}
 

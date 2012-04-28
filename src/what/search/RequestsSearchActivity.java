@@ -24,7 +24,8 @@ import api.search.requests.Results;
 
 public class RequestsSearchActivity extends MyActivity implements OnClickListener {
 	private ScrollView scrollView;
-	private ArrayList<TextView> resultList = new ArrayList<TextView>();
+	private ArrayList<TextView> resultList;
+	private HashMap<Integer, Integer> idMap;
 	private LinearLayout scrollLayout;
 	private RequestsSearch requestsSearch;
 	private Intent intent;
@@ -33,19 +34,32 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 	private EditText searchBar, tagSearchBar;
 	private Button backButton, nextButton;
 	private int page;
-	private HashMap<Integer, Integer> idMap = new HashMap<Integer, Integer>();
 	private boolean searchBarsVisible = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.requestsearch, true);
+	}
+
+	@Override
+	public void init() {
+		resultList = new ArrayList<TextView>();
+		idMap = new HashMap<Integer, Integer>();
+	}
+
+	@Override
+	public void load() {
 		backButton = (Button) this.findViewById(R.id.previousButton);
 		nextButton = (Button) this.findViewById(R.id.nextButton);
 		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
 		tagSearchBar = (EditText) this.findViewById(R.id.tagsearchBar);
+	}
+
+	@Override
+	public void prepare() {
 		setButtonState(backButton, false);
 		setButtonState(nextButton, false);
 		getBundle();
@@ -128,10 +142,8 @@ public class RequestsSearchActivity extends MyActivity implements OnClickListene
 					resultList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_odd, null));
 				}
 				// TODO renable
-				/*
-				 * resultList.get(i).setText( results.get(i).getArtist() + " - " + results.get(i).getTitle() + " [" +
-				 * results.get(i).getYear().toString() + "]");
-				 */
+				/* resultList.get(i).setText( results.get(i).getArtist() + " - " + results.get(i).getTitle() + " [" +
+				 * results.get(i).getYear().toString() + "]"); */
 				resultList.get(i).setTextSize(18);
 				resultList.get(i).setId(i);
 				resultList.get(i).setOnClickListener(this);

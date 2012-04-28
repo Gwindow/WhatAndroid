@@ -22,12 +22,25 @@ public class NewConversationActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.newmessage, true);
+	}
 
-		getBundle();
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void load() {
 		messageSubject = (EditText) this.findViewById(R.id.messageSubject);
 		messageBody = (EditText) this.findViewById(R.id.messageBody);
 		messageBody.setGravity(Gravity.TOP);
 		messageBody.setGravity(Gravity.LEFT);
+	}
+
+	@Override
+	public void prepare() {
+		getBundle();
 	}
 
 	private void getBundle() {

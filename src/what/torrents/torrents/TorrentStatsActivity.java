@@ -24,14 +24,29 @@ public class TorrentStatsActivity extends MyActivity implements OnCheckedChangeL
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.torrentstats);
-		bookmark = (CheckBox) this.findViewById(R.id.bookmark);
+		super.setContentView(R.layout.torrentstats);
+	}
 
+	@Override
+	public void init() {
+
+	}
+
+	@Override
+	public void load() {
+		bookmark = (CheckBox) this.findViewById(R.id.bookmark);
 		spotifyImage = (ImageButton) this.findViewById(R.id.spotify);
 		lastfmImage = (ImageButton) this.findViewById(R.id.lastfm);
 		spotifyText = (TextView) this.findViewById(R.id.spotifyText);
 		lastfmText = (TextView) this.findViewById(R.id.lastfmText);
 
+		// TODO see why bookmarks arent working?
+		bookmark.setVisibility(CheckBox.GONE);
+		bookmark.setOnCheckedChangeListener(this);
+	}
+
+	@Override
+	public void prepare() {
 		if (Settings.getSpotifyButton() == false) {
 			spotifyImage.setVisibility(View.GONE);
 			spotifyText.setVisibility(View.GONE);
@@ -42,10 +57,8 @@ public class TorrentStatsActivity extends MyActivity implements OnCheckedChangeL
 			lastfmText.setVisibility(View.GONE);
 		}
 
-		// TODO see why bookmarks arent working?
-		bookmark.setVisibility(CheckBox.GONE);
-		bookmark.setOnCheckedChangeListener(this);
 		populateLayout();
+
 	}
 
 	private void populateLayout() {

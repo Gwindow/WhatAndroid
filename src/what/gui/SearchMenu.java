@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 /**
- * @author Tim
+ * @author Gwindow
  * 
  */
 public class SearchMenu extends MyActivity {
@@ -16,11 +16,27 @@ public class SearchMenu extends MyActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.search_menu);
+		super.setContentView(R.layout.search_menu);
+	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void prepare() {
 		WindowManager.LayoutParams lp = getWindow().getAttributes();
 		lp.dimAmount = 0.0f;
 		getWindow().setAttributes(lp);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 	}
 
 	@Override

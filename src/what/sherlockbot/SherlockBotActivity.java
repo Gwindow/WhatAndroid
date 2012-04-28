@@ -19,11 +19,23 @@ public class SherlockBotActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.sherlock, true);
-		enableGestures(false);
+	}
+
+	@Override
+	public void init() {
+	}
+
+	@Override
+	public void load() {
 		webView = (WebView) this.findViewById(R.id.webView);
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.getSettings().setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
 		webView.getSettings().setLoadWithOverviewMode(true);
+	}
+
+	@Override
+	public void prepare() {
+		enableGestures(false);
 		webView.loadUrl("http://sherlock.whatbarco.de/");
 	}
 

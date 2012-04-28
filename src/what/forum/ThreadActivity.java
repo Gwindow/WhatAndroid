@@ -36,9 +36,9 @@ import api.forum.thread.Thread;
 import api.util.Triple;
 
 public class ThreadActivity extends MyActivity implements OnClickListener, OnLongClickListener {
+	private static final int POSTS_PER_PAGE = 25;
 	private static final String JUMP_UP_STRING = "Up";
 	private static final String JUMP_DOWN_STRING = "Down";
-
 	private static final int RESULT_UNSUBSCRIBE = 1;
 	private static final int RESULT_SUBSCRIBE = 2;
 	private static final int RESULT_REFRESH = 3;
@@ -52,21 +52,29 @@ public class ThreadActivity extends MyActivity implements OnClickListener, OnLon
 	private int id, page, postId;
 	private TextView threadTitle;
 	private Button backButton, nextButton, lastButton, replyButton;
-	private ArrayList<LinearLayout> listOfPosts = new ArrayList<LinearLayout>();
+	private ArrayList<LinearLayout> listOfPosts;
 	private boolean hasAvatarsEnabled;
 	private boolean subscribed;
-
 	private Button jumpButton;
 	// false is down, true is up
-	private boolean isJumped = false;
+	private boolean isJumped;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.posts, true);
+	}
 
+	@Override
+	public void init() {
+		listOfPosts = new ArrayList<LinearLayout>();
 		hasAvatarsEnabled = Settings.getAvatarsEnabled();
+		Thread.setPostsPerPage(POSTS_PER_PAGE);
+		Thread.setOverridePostsPerPage(true);
+	}
 
+	@Override
+	public void load() {
 		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		threadTitle = (TextView) this.findViewById(R.id.titleText);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
@@ -76,14 +84,14 @@ public class ThreadActivity extends MyActivity implements OnClickListener, OnLon
 		replyButton = (Button) this.findViewById(R.id.replyButton);
 		jumpButton = (Button) this.findViewById(R.id.jumpButton);
 		jumpButton.setOnLongClickListener(this);
+	}
 
+	@Override
+	public void prepare() {
 		setButtonState(backButton, false);
 		setButtonState(nextButton, false);
 		setButtonState(lastButton, false);
 		setButtonState(replyButton, false);
-
-		Thread.setPostsPerPage(25);
-		Thread.setOverridePostsPerPage(true);
 
 		getBundle();
 
@@ -156,11 +164,9 @@ public class ThreadActivity extends MyActivity implements OnClickListener, OnLon
 			} else {
 				listOfPosts.get(i).findViewById(R.id.avatar).setVisibility(ImageView.GONE);
 			}
-			/*
-			 * ImageView a; a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar); if (a.getHeight() >
+			/* ImageView a; a = (ImageView) listOfPosts.get(i).findViewById(R.id.avatar); if (a.getHeight() >
 			 * body.getHeight()) { LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, a.getHeight());
-			 * body.setLayoutParams(lp); }
-			 */
+			 * body.setLayoutParams(lp); } */
 		}
 	}
 

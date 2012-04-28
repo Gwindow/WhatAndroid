@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 public class RequestDetailsActivity extends MyActivity {
 	private TextView requestTitle;
-	private api.requests.Request request = RequestTabActivity.getRequest();
-	private LinkedList<TextView> detailList = new LinkedList<TextView>();
+	private api.requests.Request request;
+	private LinkedList<TextView> detailList;
 	private LinearLayout scrollLayout;
 	private int counter;
 
@@ -19,8 +19,22 @@ public class RequestDetailsActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.generic_list, false);
+	}
+
+	@Override
+	public void init() {
+		request = RequestTabActivity.getRequest();
+		detailList = new LinkedList<TextView>();
+	}
+
+	@Override
+	public void load() {
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		requestTitle = (TextView) this.findViewById(R.id.title);
+	}
+
+	@Override
+	public void prepare() {
 		populateLayout();
 	}
 

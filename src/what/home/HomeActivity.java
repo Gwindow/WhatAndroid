@@ -32,15 +32,13 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 	private Subscriptions subscriptions;
 	private TextView username, uploadedValue, downloadedValue, ratioValue, bufferValue;
 	private EditText searchBar;
-	private String searchTerm;
-	private ArrayList<TextView> threadList = new ArrayList<TextView>();
+	private ArrayList<TextView> threadList;
 	private LinearLayout scrollLayout;
 	private ProgressDialog dialog;
 	private Intent intent;
 	private Intent inboxService;
 	private Intent notificationService;
 	private Intent annoucementService;
-
 	private static String up, down, ratio, buffer;
 	private static boolean isCached;
 
@@ -48,12 +46,15 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home, true);
+	}
 
-		// TODO reenable
-		// startServices();
+	@Override
+	public void init() {
+		threadList = new ArrayList<TextView>();
+	}
 
-		showFirstRunDialog();
-
+	@Override
+	public void load() {
 		username = (TextView) this.findViewById(R.id.username);
 		uploadedValue = (TextView) this.findViewById(R.id.upvalue);
 		downloadedValue = (TextView) this.findViewById(R.id.downvalue);
@@ -62,6 +63,14 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		searchBar = (EditText) this.findViewById(R.id.searchBar);
 		searchBar.setOnEditorActionListener(this);
+	}
+
+	@Override
+	public void prepare() {
+		// TODO reenable?
+		// startServices();
+
+		showFirstRunDialog();
 
 		loadSearchBar();
 		loadStats();

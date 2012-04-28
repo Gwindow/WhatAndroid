@@ -16,13 +16,26 @@ public class RequestListActivity extends MyActivity implements OnClickListener {
 	private LinearLayout scrollLayout;
 	private Artist artist;
 	private Intent intent;
-	private ArrayList<TextView> requestList = new ArrayList<TextView>();
+	private ArrayList<TextView> requestList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.request_list, false);
+	}
+	
+	@Override
+	public void init() {
+	 requestList = new ArrayList<TextView>();
+	}
+
+	@Override
+	public void load() {
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
+	}
+
+	@Override
+	public void prepare() {
 		populateLayout();
 	}
 

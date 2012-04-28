@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class MyTabActivity extends TabActivity {
+public abstract class MyTabActivity extends TabActivity {
 	private static DisplayMetrics displaymetrics = null;
 	private static int screenHeight, screenWidth;
 	private static String customBackgroundPath = "";
@@ -32,9 +32,10 @@ public class MyTabActivity extends TabActivity {
 		super.onCreate(savedInstanceState);
 		setDisplayMetrics();
 
-		if (Settings.getSettings() == null | Settings.getSettingsEditor() == null) {
+		if ((Settings.getSettings() == null) | (Settings.getSettingsEditor() == null)) {
 			Settings.init(this);
 		}
+
 	}
 
 	/**
@@ -46,7 +47,6 @@ public class MyTabActivity extends TabActivity {
 	 *            the enable background
 	 */
 	public void setContentView(int layoutResID, boolean enableBackground) {
-
 		super.setContentView(layoutResID);
 		if (enableBackground) {
 			v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
@@ -87,8 +87,7 @@ public class MyTabActivity extends TabActivity {
 		}
 	}
 
-	/*
-	 * private void setAndResizeBackground(String new_id) { if (!image_id.equals(new_id)) { Bitmap bitmap =
+	/* private void setAndResizeBackground(String new_id) { if (!image_id.equals(new_id)) { Bitmap bitmap =
 	 * BitmapFactory.decodeFile(new_id); bitmap = Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(),
 	 * true); if (resizeBackgroundEnabled) { resizedBackground = new BitmapDrawable(bitmap);
 	 * v.setBackgroundDrawable(resizedBackground); } image_id = new_id; } else {
@@ -98,8 +97,7 @@ public class MyTabActivity extends TabActivity {
 	 * BitmapFactory.decodeResource(this.getResources(), new_id); if (resizeBackgroundEnabled) { bitmap =
 	 * Bitmap.createScaledBitmap(bitmap, this.getWidth(), this.getHeight(), true); } resizedBackground = new
 	 * BitmapDrawable(bitmap); v.setBackgroundDrawable(resizedBackground); image_id = String.valueOf(new_id); } else {
-	 * v.setBackgroundDrawable(resizedBackground); } }
-	 */
+	 * v.setBackgroundDrawable(resizedBackground); } } */
 
 	public void setButtonState(Button button, boolean b) {
 		button.setEnabled(b);

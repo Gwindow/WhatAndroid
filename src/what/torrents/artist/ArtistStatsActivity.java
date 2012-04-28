@@ -29,13 +29,20 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.artiststats);
+		super.setContentView(R.layout.artiststats);
+	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void load() {
 		bookmark = (CheckBox) this.findViewById(R.id.bookmark);
 		bookmark.setOnCheckedChangeListener(this);
 		notifications = (CheckBox) this.findViewById(R.id.notify);
-		if (MySoup.canNotifications() == false) {
-			notifications.setVisibility(CheckBox.INVISIBLE);
-		}
 		notifications.setOnCheckedChangeListener(this);
 
 		numGroups = (TextView) this.findViewById(R.id.groups);
@@ -49,6 +56,13 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 		spotifyText = (TextView) this.findViewById(R.id.spotifyText);
 		lastfmText = (TextView) this.findViewById(R.id.lastfmText);
 
+	}
+
+	@Override
+	public void prepare() {
+		if (MySoup.canNotifications() == false) {
+			notifications.setVisibility(CheckBox.INVISIBLE);
+		}
 		if (Settings.getSpotifyButton() == false) {
 			spotifyImage.setVisibility(View.GONE);
 			spotifyText.setVisibility(View.GONE);
@@ -136,17 +150,5 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 				}
 			}
 		}
-	}
-
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void loadResources() {
-		// TODO Auto-generated method stub
-
 	}
 }

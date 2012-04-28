@@ -20,7 +20,7 @@ import api.bookmarks.Torrents;
 
 public class TorrentBookmarksActivity extends MyActivity implements OnClickListener {
 	private ScrollView scrollView;
-	private ArrayList<TextView> bookmarksList = new ArrayList<TextView>();
+	private ArrayList<TextView> bookmarksList;
 	private LinearLayout scrollLayout;
 	private Intent intent;
 	private TextView title;
@@ -31,11 +31,23 @@ public class TorrentBookmarksActivity extends MyActivity implements OnClickListe
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.bookmarks, true);
+	}
+
+	@Override
+	public void init() {
+		bookmarksList = new ArrayList<TextView>();
+	}
+
+	@Override
+	public void load() {
 		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 		title = (TextView) this.findViewById(R.id.title);
-		title.setText("Torrent Bookmarks");
+	}
 
+	@Override
+	public void prepare() {
+		title.setText("Torrent Bookmarks");
 		new LoadBookmarks().execute();
 	}
 

@@ -34,7 +34,22 @@ public class GogglesSearchActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.goggles, true);
+	}
+
+	@Override
+	public void init() {
 		extStorageDirectory = getExternalCacheDir().toString();
+	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void prepare() {
+		// TODO Auto-generated method stub
 
 	}
 
@@ -111,4 +126,5 @@ public class GogglesSearchActivity extends MyActivity {
 			}
 		}
 	}
+
 }

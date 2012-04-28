@@ -29,19 +29,33 @@ public class UserProfilePopUpActivity extends MyActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.userprofilepopup);
-		WindowManager.LayoutParams lp = getWindow().getAttributes();
-		lp.dimAmount = 0.0f;
-		getWindow().setAttributes(lp);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
+	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void load() {
 		userImage = (ImageView) this.findViewById(R.id.userImage);
-
 		username = (TextView) this.findViewById(R.id.username);
 		userclass = (TextView) this.findViewById(R.id.userclass);
 		uploaded = (TextView) this.findViewById(R.id.uploaded);
 		downloaded = (TextView) this.findViewById(R.id.downloaded);
 		ratio = (TextView) this.findViewById(R.id.ratio);
 		posts = (TextView) this.findViewById(R.id.posts);
+
+	}
+
+	@Override
+	public void prepare() {
+		WindowManager.LayoutParams lp = getWindow().getAttributes();
+		lp.dimAmount = 0.0f;
+		getWindow().setAttributes(lp);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
 		getBundle();
 		new LoadUser().execute();
