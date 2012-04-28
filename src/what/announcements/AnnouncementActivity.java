@@ -21,7 +21,7 @@ import api.announcements.Announcements;
 import api.announcements.AnnouncementsList;
 
 public class AnnouncementActivity extends MyActivity implements OnClickListener {
-	private ArrayList<TextView> list = new ArrayList<TextView>();
+	private ArrayList<TextView> list;
 	private LinearLayout scrollLayout;
 	private Announcements announcements;
 	private Intent intent;
@@ -32,9 +32,21 @@ public class AnnouncementActivity extends MyActivity implements OnClickListener 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.announcements, true);
-		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
+	}
+
+	@Override
+	public void init() {
+		list = new ArrayList<TextView>();
+	}
+
+	@Override
+	public void load() {
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		myNotificationManager.cancel(AnnouncementService.IDA);
+	}
+
+	@Override
+	public void prepare() {
 		if (AnnouncementService.isRunning()) {
 			announcements = AnnouncementService.announcements;
 			populateLayout();

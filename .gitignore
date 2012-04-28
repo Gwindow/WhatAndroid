@@ -1,4 +1,2 @@
-bin/classes.dex
-bin/resources.ap_
-bin/what/
-gen/
+bin/classes
+bin/res

@@ -42,6 +42,18 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 		setButtonState(requestsButton, false);
 	}
 
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void loadResources() {
+		// TODO Auto-generated method stub
+
+	}
+
 	public void scanRequests(View v) {
 		searchType = SearchType.REQUESTSSEARCH;
 		startScanner();

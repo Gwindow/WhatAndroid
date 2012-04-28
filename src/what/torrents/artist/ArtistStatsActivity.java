@@ -87,11 +87,9 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 			Toast.makeText(this, "Could not open Spotify, is it installed?", Toast.LENGTH_LONG).show();
 		}
 
-		/*
-		 * try { String spotifyUri = artist.getSpotifyUrl(); Intent intent = new Intent(Intent.ACTION_VIEW,
+		/* try { String spotifyUri = artist.getSpotifyUrl(); Intent intent = new Intent(Intent.ACTION_VIEW,
 		 * Uri.parse(spotifyUri)); startActivity(intent); } catch (Exception e) { Toast.makeText(this,
-		 * "Could not open Spotify, is it installed?", Toast.LENGTH_LONG).show(); }
-		 */
+		 * "Could not open Spotify, is it installed?", Toast.LENGTH_LONG).show(); } */
 	}
 
 	public void openLastFM(View v) {
@@ -138,5 +136,17 @@ public class ArtistStatsActivity extends MyActivity implements OnCheckedChangeLi
 				}
 			}
 		}
+	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void loadResources() {
+		// TODO Auto-generated method stub
+
 	}
 }

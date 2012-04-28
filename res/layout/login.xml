@@ -41,9 +41,6 @@
 				android:layout_height="wrap_content" android:orientation="vertical"
 				android:layout_marginLeft="15dip">
 
-				<CheckBox android:id="@+id/ssl_checkbox"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"
-					android:layout_gravity="left" android:text="@string/usessl" />
 				<CheckBox android:id="@+id/remember_checkbox"
 					android:layout_width="wrap_content" android:layout_height="wrap_content"
 					android:layout_gravity="left" android:text="Remember Me" />

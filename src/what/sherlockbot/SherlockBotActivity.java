@@ -1,4 +1,4 @@
-package what.sherlock;
+package what.sherlockbot;
 
 import what.gui.MyActivity;
 import what.gui.R;

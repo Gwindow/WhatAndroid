@@ -44,7 +44,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	private final static String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
 	public static double INSTALLED_VERSION;
 	private TextView username, password;
-	private CheckBox ssl, rememberme;
+	private CheckBox rememberme;
 	private Button login;
 	private Intent intent;
 	private Updater updater;
@@ -54,32 +54,35 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.login, false);
-		enableGestures(false);
-		ImageCache.init(this);
+
+		tryAutoLogin();
+	}
+
+	@Override
+	public void init() {
 		INSTALLED_VERSION = getInstalledVersion();
 		MySoup.setSite(SITE);
 		MySon.setDebugEnabled(Settings.getDebugPreference());
-
 		try {
 			checkForUpdates();
 		} catch (CouldNotLoadException e) {
 			e.printStackTrace();
 		}
 
+		enableGestures(false);
+		ImageCache.init(this);
+	}
+
+	@Override
+	public void loadResources() {
 		username = (TextView) this.findViewById(R.id.username);
 		password = (TextView) this.findViewById(R.id.password);
 		rememberme = (CheckBox) this.findViewById(R.id.remember_checkbox);
 		rememberme.setChecked(Settings.getRememberMe());
 		rememberme.setOnClickListener(this);
-		ssl = (CheckBox) this.findViewById(R.id.ssl_checkbox);
-		ssl.setOnClickListener(this);
-		// TODO remove
 
-		ssl.setVisibility(CheckBox.INVISIBLE);
 		login = (Button) this.findViewById(R.id.login);
 		login.setOnClickListener(this);
-
-		tryAutoLogin();
 	}
 
 	@Override

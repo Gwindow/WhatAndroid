@@ -67,4 +67,16 @@ public class ArtistBookmarksActivity extends MyActivity implements OnClickListen
 		}
 	}
 
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void loadResources() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

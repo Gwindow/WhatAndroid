@@ -241,7 +241,7 @@
 		</activity>
 
 		<activity android:theme="@android:style/Theme.NoTitleBar"
-			android:windowSoftInputMode="adjustResize" android:name="what.sherlock.SherlockActivity">
+			android:windowSoftInputMode="adjustResize" android:name="what.sherlockbot.SherlockActivity">
 		</activity>
 
 		<receiver android:name="what.widget.UserStatsWidgetProvider"

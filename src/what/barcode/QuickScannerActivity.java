@@ -40,6 +40,21 @@ public class QuickScannerActivity extends MyActivity {
 			showInstructions();
 			Settings.saveQuickScannerFirstRun(false);
 		}
+	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void prepare() {
 
 	}
 
@@ -158,4 +173,5 @@ public class QuickScannerActivity extends MyActivity {
 			startActivity(intent);
 		}
 	}
+
 }

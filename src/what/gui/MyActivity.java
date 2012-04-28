@@ -30,7 +30,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
-public class MyActivity extends SherlockActivity implements OnGesturePerformedListener {
+public abstract class MyActivity extends SherlockActivity implements OnGesturePerformedListener {
 
 	private static DisplayMetrics displaymetrics = null;
 	private static BitmapDrawable customBackground;
@@ -59,7 +59,15 @@ public class MyActivity extends SherlockActivity implements OnGesturePerformedLi
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		init();
 	}
+
+	public abstract void init();
+
+	public abstract void load();
+
+	public abstract void prepare();
 
 	/**
 	 * Sets the content view with background
@@ -83,6 +91,8 @@ public class MyActivity extends SherlockActivity implements OnGesturePerformedLi
 				loadDefaultBackground();
 			}
 		}
+		load();
+		prepare();
 	}
 
 	private GestureOverlayView loadGestureOverLayView(int layoutResID) {

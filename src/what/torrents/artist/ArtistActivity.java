@@ -119,4 +119,16 @@ public class ArtistActivity extends MyActivity {
 			// dialog.dismiss();
 		}
 	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void loadResources() {
+		// TODO Auto-generated method stub
+
+	}
 }
