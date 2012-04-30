@@ -23,12 +23,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.son.MySon;
@@ -37,7 +37,14 @@ import api.util.CouldNotLoadException;
 import api.util.Triple;
 import api.util.Updater;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
+	private static final String MENU_ITEM_DEVELOPER = "Developer";
+	private static final String MENU_ITEM_SCANNER = "Quick Scanner";
+	private static final String MENU_ITEM_WHAT_STATUS = "WhatStatus";
+
 	// TODO remove
 	private final static double VERSION = 0.50;
 	private static String SITE = "ssl.what.cd";
@@ -53,8 +60,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		super.setTheme(com.actionbarsherlock.R.style.Theme_Sherlock_ForceOverflow);
 		super.setContentView(R.layout.login, false);
-
 		tryAutoLogin();
 	}
 
@@ -83,6 +90,11 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	}
 
 	@Override
+	public void actionbar() {
+		getSupportActionBar().setTitle("What.CD Android App");
+	}
+
+	@Override
 	public void prepare() {
 		enableGestures(false);
 		rememberme.setChecked(Settings.getRememberMe());
@@ -90,35 +102,55 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			finish();
-		}
-		return false;
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(MENU_ITEM_SCANNER);
+		menu.add(MENU_ITEM_WHAT_STATUS);
+		menu.add(MENU_ITEM_DEVELOPER);
+		return super.onCreateOptionsMenu(menu);
 	}
 
-	/* @Override public boolean onCreateOptionsMenu(Menu menu) { MenuInflater inflater = getMenuInflater();
-	 * inflater.inflate(R.menu.loginmenu, menu); return super.onCreateOptionsMenu(menu); }
-	 * 
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
-	 * 
-	 * @Override public boolean onOptionsItemSelected(MenuItem item) { switch (item.getItemId()) { case
-	 * R.id.scannerItem: intent = new Intent(WhatAndroidActivity.this, what.barcode.QuickScannerActivity.class);
-	 * startActivity(intent); break; case R.id.statusItem: intent = new Intent(WhatAndroidActivity.this,
-	 * what.status.WhatStatusActivity.class); startActivity(intent); break; case R.id.overrideItem: AlertDialog.Builder
-	 * alert = new AlertDialog.Builder(this); alert.setTitle("Gazelle Site URL"); final EditText input = new
-	 * EditText(this); alert.setView(input); alert.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
-	 * 
-	 * @Override public void onClick(DialogInterface dialog, int whichButton) { String url = input.getText().toString();
-	 * if (url.length() > 0) { SITE = url; MySoup.setSite(SITE); } else { Toast.makeText(WhatAndroidActivity.this,
-	 * "URL not entered", Toast.LENGTH_LONG).show(); } } }); alert.setNegativeButton("Cancel", new
-	 * DialogInterface.OnClickListener() {
-	 * 
-	 * @Override public void onClick(DialogInterface dialog, int whichButton) {
-	 * 
-	 * } }); alert.create().show(); break; default: break; } return true; } */
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		if (item.getTitle().toString().equals(MENU_ITEM_SCANNER)) {
+			intent = new Intent(WhatAndroidActivity.this, what.barcode.QuickScannerActivity.class);
+			startActivity(intent);
+		}
+		if (item.getTitle().toString().equals(MENU_ITEM_WHAT_STATUS)) {
+			intent = new Intent(WhatAndroidActivity.this, what.status.WhatStatusActivity.class);
+			startActivity(intent);
+		}
+		if (item.getTitle().toString().equals(MENU_ITEM_DEVELOPER)) {
+			developerOverride();
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
+
+	private void developerOverride() {
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		alert.setTitle("Gazelle Site URL");
+		final EditText input = new EditText(this);
+		alert.setView(input);
+		alert.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String url = input.getText().toString();
+				if (url.length() > 0) {
+					SITE = url;
+					MySoup.setSite(SITE);
+				} else {
+					Toast.makeText(WhatAndroidActivity.this, "URL not entered", Toast.LENGTH_LONG).show();
+				}
+			}
+		});
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+
+			}
+		});
+		alert.create().show();
+	}
+
 	private void checkForUpdates() throws CouldNotLoadException {
 		updater = new Updater(UPDATE_SITE);
 		final Triple<String, String, String> message = updater.getMessage();

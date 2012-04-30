@@ -48,7 +48,7 @@ public class SherlockBotActivity extends MyActivity {
 				try {
 					MySoup.scrapeOther("http://sherlock.whatbarco.de/adduser.php?username=" + MySoup.getUsername() + "&userid="
 							+ MySoup.getUserId());
-					Toast.makeText(SherlockBotActivity.this, "You have been added, you can login at the top of the hour,",
+					Toast.makeText(SherlockBotActivity.this, "You have been added, you can login at the top of the hour",
 							Toast.LENGTH_SHORT).show();
 				} catch (CouldNotLoadException e) {
 					Toast.makeText(SherlockBotActivity.this, "Error, could not add", Toast.LENGTH_SHORT).show();

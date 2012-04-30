@@ -31,7 +31,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
 
 public abstract class MyActivity extends SherlockActivity implements OnGesturePerformedListener {
-
+	private static int DEFAULT_THEME = com.actionbarsherlock.R.style.Theme_Sherlock_ForceOverflow;
 	private static DisplayMetrics displaymetrics = null;
 	private static BitmapDrawable customBackground;
 	private static String customBackgroundPath = "";
@@ -77,6 +77,7 @@ public abstract class MyActivity extends SherlockActivity implements OnGesturePe
 	 *            the enable background
 	 */
 	public void setContentView(int layoutResID, boolean enableBackground) {
+
 		if (isGesturesEnabled) {
 			super.setContentView(loadGestureOverLayView(layoutResID));
 		} else {
@@ -91,6 +92,7 @@ public abstract class MyActivity extends SherlockActivity implements OnGesturePe
 			}
 		}
 		load();
+		actionbar();
 		prepare();
 	}
 
@@ -98,6 +100,13 @@ public abstract class MyActivity extends SherlockActivity implements OnGesturePe
 	 * Find resources, setting additional properties such as gravity or listeners should be done here.
 	 */
 	public abstract void load();
+
+	/**
+	 * Prepare the actionbar for the user.
+	 */
+	public void actionbar() {
+
+	}
 
 	/**
 	 * Prepare the activity for the user, run any code necessary to do that here.
@@ -148,7 +157,8 @@ public abstract class MyActivity extends SherlockActivity implements OnGesturePe
 		}
 	}
 
-	/* private void loadCustomBackground() { try { if
+	/*
+	 * private void loadCustomBackground() { try { if
 	 * (!customBackgroundPath.equalsIgnoreCase(Settings.getCustomBackgroundPath())) { String path =
 	 * (Settings.getCustomBackgroundPath()); setCustomBackground(path); customBackgroundPath = path; } } catch
 	 * (Exception e) { e.printStackTrace(); v.setBackgroundColor(R.color.black); Toast.makeText(this,
@@ -160,7 +170,8 @@ public abstract class MyActivity extends SherlockActivity implements OnGesturePe
 	 * customBackground.setTileModeY(Shader.TileMode.REPEAT); Toast.makeText(this, "background tiled",
 	 * Toast.LENGTH_LONG).show(); } Toast.makeText(this, "background set", Toast.LENGTH_LONG).show();
 	 * v.setBackgroundDrawable(customBackground); image_id = new_id; } else { v.setBackgroundDrawable(customBackground);
-	 * } } */
+	 * } }
+	 */
 
 	public void setButtonState(Button button, boolean b) {
 		button.setEnabled(b);
