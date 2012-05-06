@@ -69,7 +69,6 @@ public class HomeActivity extends MyActivity implements OnClickListener, OnEdito
 	public void prepare() {
 		// TODO reenable?
 		// startServices();
-
 		showFirstRunDialog();
 
 		loadSearchBar();

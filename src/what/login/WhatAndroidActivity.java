@@ -8,9 +8,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import what.cache.ImageCache;
+import what.forum.thread.ThreadActivity2;
 import what.gui.MyActivity;
 import what.gui.R;
-import what.home.HomeActivity;
 import what.settings.Settings;
 import what.status.WhatStatusActivity;
 import android.app.AlertDialog;
@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
@@ -41,14 +42,15 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
+	// TODO remove
+	private static final double VERSION = 0.50;
+	private static String SITE = "67.183.192.159";
+	private static boolean USE_SSL = false;
+	private final static String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
+
 	private static final String MENU_ITEM_DEVELOPER = "Developer";
 	private static final String MENU_ITEM_SCANNER = "Quick Scanner";
 	private static final String MENU_ITEM_WHAT_STATUS = "WhatStatus";
-
-	// TODO remove
-	private final static double VERSION = 0.50;
-	private static String SITE = "ssl.what.cd";
-	private final static String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
 	public static double INSTALLED_VERSION;
 	private TextView username, password;
 	private CheckBox rememberme;
@@ -68,7 +70,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	@Override
 	public void init() {
 		INSTALLED_VERSION = getInstalledVersion();
-		MySoup.setSite(SITE);
+		MySoup.setSite(SITE, USE_SSL);
 		MySon.setDebugEnabled(Settings.getDebugPreference());
 		try {
 			checkForUpdates();
@@ -91,7 +93,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 
 	@Override
 	public void actionbar() {
-		getSupportActionBar().setTitle("What.CD Android App");
+		getSupportActionBar().setTitle("The What.CD Android App");
 	}
 
 	@Override
@@ -128,15 +130,22 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	private void developerOverride() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		alert.setTitle("Gazelle Site URL");
-		final EditText input = new EditText(this);
-		alert.setView(input);
+
+		LayoutInflater inflater = LayoutInflater.from(this);
+		View view = inflater.inflate(R.layout.developer_override, null);
+		final EditText input = (EditText) view.findViewById(R.id.url_field);
+		final CheckBox checkbox = (CheckBox) view.findViewById(R.id.ssl_checkbox);
+		alert.setView(view);
 		alert.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String url = input.getText().toString();
 				if (url.length() > 0) {
 					SITE = url;
-					MySoup.setSite(SITE);
+					USE_SSL = checkbox.isChecked();
+					MySoup.setSite(SITE, USE_SSL);
+					Toast.makeText(WhatAndroidActivity.this, MySoup.getSite(), Toast.LENGTH_LONG).show();
+
 				} else {
 					Toast.makeText(WhatAndroidActivity.this, "URL not entered", Toast.LENGTH_LONG).show();
 				}
@@ -263,7 +272,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 			unlockScreenRotation();
 			if (status == true) {
 				Settings.saveUserId(MySoup.getUserId());
-				intent = new Intent(WhatAndroidActivity.this, HomeActivity.class);
+				intent = new Intent(WhatAndroidActivity.this, ThreadActivity2.class);
 				startActivity(intent);
 			}
 			if (status == false) {

@@ -15,7 +15,7 @@
 
 
 		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.login.WhatAndroidActivity" android:theme="@style/Theme.Sherlock">
+			android:name="what.forum.thread.ThreadActivity2" android:theme="@style/Theme.Sherlock">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -59,6 +59,11 @@
 			android:name="what.forum.ThreadActivity" android:theme="@style/Theme.Sherlock">
 
 		</activity>
+		
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.forum.ThreadActivity2" android:theme="@style/Theme.Sherlock">
+		</activity>
+		
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.forum.ThreadInfoActivity" android:theme="@style/Theme.NoTitleDialog">
 

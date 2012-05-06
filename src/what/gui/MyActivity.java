@@ -28,9 +28,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public abstract class MyActivity extends SherlockActivity implements OnGesturePerformedListener {
+public abstract class MyActivity extends SherlockFragmentActivity implements OnGesturePerformedListener {
 	private static int DEFAULT_THEME = com.actionbarsherlock.R.style.Theme_Sherlock_ForceOverflow;
 	private static DisplayMetrics displaymetrics = null;
 	private static BitmapDrawable customBackground;
@@ -44,6 +44,7 @@ public abstract class MyActivity extends SherlockActivity implements OnGesturePe
 	private static InputMethodManager mgr;
 	private static boolean isGesturesEnabled;
 	private float gestureSensitivity;
+	protected Bundle myBundle;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,16 @@ public abstract class MyActivity extends SherlockActivity implements OnGesturePe
 			e.printStackTrace();
 		}
 
+		myBundle = getIntent().getExtras();
 		init();
+	}
+
+	public void bundle() {
+	}
+
+	@Override
+	public void setTheme(int resid) {
+		super.setTheme(resid);
 	}
 
 	/**
@@ -94,6 +104,11 @@ public abstract class MyActivity extends SherlockActivity implements OnGesturePe
 		load();
 		actionbar();
 		prepare();
+	}
+
+	@Override
+	public void setContentView(int layoutResID) {
+		setContentView(layoutResID, false);
 	}
 
 	/**
@@ -156,22 +171,6 @@ public abstract class MyActivity extends SherlockActivity implements OnGesturePe
 			Toast.makeText(this, "default background failed", Toast.LENGTH_SHORT).show();
 		}
 	}
-
-	/*
-	 * private void loadCustomBackground() { try { if
-	 * (!customBackgroundPath.equalsIgnoreCase(Settings.getCustomBackgroundPath())) { String path =
-	 * (Settings.getCustomBackgroundPath()); setCustomBackground(path); customBackgroundPath = path; } } catch
-	 * (Exception e) { e.printStackTrace(); v.setBackgroundColor(R.color.black); Toast.makeText(this,
-	 * "custom background failed", Toast.LENGTH_SHORT).show(); } }
-	 * 
-	 * private void setCustomBackground(String new_id) { if (!image_id.equals(new_id)) { Bitmap bitmap =
-	 * BitmapFactory.decodeFile(new_id); customBackground = new BitmapDrawable(bitmap); if
-	 * (Settings.getTileBackground()) { customBackground.setTileModeX(Shader.TileMode.REPEAT);
-	 * customBackground.setTileModeY(Shader.TileMode.REPEAT); Toast.makeText(this, "background tiled",
-	 * Toast.LENGTH_LONG).show(); } Toast.makeText(this, "background set", Toast.LENGTH_LONG).show();
-	 * v.setBackgroundDrawable(customBackground); image_id = new_id; } else { v.setBackgroundDrawable(customBackground);
-	 * } }
-	 */
 
 	public void setButtonState(Button button, boolean b) {
 		button.setEnabled(b);
