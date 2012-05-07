@@ -1,7 +1,8 @@
 package what.forum.section;
 
-import android.support.v4.app.FragmentManager;
 import what.fragments.MyFragmentPagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 /**
  * @author Gwindow
@@ -16,6 +17,15 @@ public class SectionFragment extends MyFragmentPagerAdapter {
 	public SectionFragment(String[] content, FragmentManager fm) {
 		super(content, fm);
 		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Fragment getItem(int position) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

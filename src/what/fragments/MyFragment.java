@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -59,4 +60,14 @@ public final class MyFragment extends SherlockFragment {
 		super.onSaveInstanceState(outState);
 		outState.putString(KEY_CONTENT, mContent);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onResume() {
+		Toast.makeText(getActivity(), String.valueOf(System.currentTimeMillis() / 1000), Toast.LENGTH_SHORT).show();
+		super.onResume();
+	}
+
 }

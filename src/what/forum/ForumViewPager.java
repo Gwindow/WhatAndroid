@@ -19,7 +19,6 @@ public class ForumViewPager extends ViewPager {
 		if (this.enabled) {
 			return super.onTouchEvent(event);
 		}
-
 		return false;
 	}
 
@@ -35,4 +34,5 @@ public class ForumViewPager extends ViewPager {
 	public void setPagingEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
 }

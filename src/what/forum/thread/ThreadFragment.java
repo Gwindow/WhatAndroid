@@ -1,49 +1,66 @@
 package what.forum.thread;
 
-import what.forum.ThreadActivity;
-import what.fragments.MyFragment;
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
-import api.forum.thread.Thread;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
 /**
+ * The Class ThreadFragment.
  * 
- *
+ * @author Gwindow
+ * @since May 6, 2012 1:43:19 PM
  */
 public class ThreadFragment extends SherlockFragment {
+
+	/** The Constant KEY_CONTENT. */
 	private static final String KEY_CONTENT = "ThreadFragment:Content";
+
+	/** The m content. */
 	private String mContent = "???";
 
-	protected static ThreadFragment newInstance(String content) {
-		ThreadFragment fragment = new ThreadFragment();
-		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < 20; i++) {
-			builder.append(content).append(" ");
-		}
-		builder.deleteCharAt(builder.length() - 1);
-		fragment.mContent = builder.toString();
+	private int threadId;
+	private int threadPage;
+	private int postId;
 
+	private int fragmentId;
+
+	/**
+	 * @param threadId
+	 * @param threadPage
+	 * @param postId
+	 */
+	public ThreadFragment(int threadId, int threadPage) {
+		this.threadId = threadId;
+		this.threadPage = threadPage;
+	}
+
+	public ThreadFragment(int fragmentId) {
+		this.fragmentId = fragmentId;
+	}
+
+	public static Fragment newInstance(int fragmentId) {
+		ThreadFragment fragment = new ThreadFragment(fragmentId);
+		fragment.mContent = String.valueOf(fragmentId);
 		return fragment;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
 			mContent = savedInstanceState.getString(KEY_CONTENT);
 		}
-		this.getSherlockActivity().getActionBar().setTitle("asdasdasjdkajsdasd");
+		this.getSherlockActivity().getActionBar().setTitle("this is a thread");
 		TextView text = new TextView(getActivity());
 		text.setGravity(Gravity.CENTER);
 		text.setText(mContent);
@@ -58,9 +75,13 @@ public class ThreadFragment extends SherlockFragment {
 		return layout;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString(KEY_CONTENT, mContent);
 	}
+
 }

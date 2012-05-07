@@ -7,8 +7,6 @@ import what.gui.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import api.forum.thread.Thread;
 
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -36,7 +34,7 @@ public class ThreadActivity2 extends MyActivity {
 
 	@Override
 	public void init() {
-		adapter = new ThreadFragmentPageAdapter(CONTENT, getSupportFragmentManager());
+		adapter = new ThreadFragmentPageAdapter(contentFromPageNumbers(50), getSupportFragmentManager());
 		threadId = 68;
 		// threadId = myBundle.getInt("id");
 		/**
@@ -64,7 +62,15 @@ public class ThreadActivity2 extends MyActivity {
 		enableGestures(false);
 	}
 
-	private class ThreadFragmentPageAdapter extends MyFragmentPagerAdapter {
+	private String[] contentFromPageNumbers(int pages) {
+		String[] content = new String[pages];
+		for (int i = 0; i < content.length; i++) {
+			content[i] = String.valueOf(i);
+		}
+		return content;
+	}
+
+	private static class ThreadFragmentPageAdapter extends MyFragmentPagerAdapter {
 
 		/**
 		 * @param content
@@ -74,10 +80,14 @@ public class ThreadActivity2 extends MyActivity {
 			super(content, fm);
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public Fragment getItem(int position) {
-			return ThreadFragment.newInstance(content[position % content.length]);
+			return ThreadFragment.newInstance(position);
 		}
+
 	}
 
 }
