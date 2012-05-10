@@ -71,51 +71,6 @@
 
 <p>The app will work with a default setup of Gazelle, just change the url to point to your site and enjoy.</p>
 
-<script type="text/javascript">
-// Author: ricocheting.com
-// Description: slideshow that allows visitors to flip through a series of images on your website
-
-var x_slideshow=0;
-
-function rotate_slideshow(num){
-fs=document.ff_slideshow.slide;
-x_slideshow=num%fs.length;
-if(x_slideshow<0) x_slideshow=fs.length-1;
-document.images.show_slideshow.src=fs.options[x_slideshow].value;
-fs.selectedIndex=x_slideshow;}
-
-function auto_slideshow() {
-if(document.ff_slideshow.fa.value == "Stop"){
-rotate_slideshow(++x_slideshow);setTimeout("auto_slideshow()", 4000);}}
-</script>
-
-<form name="ff_slideshow">
-<table cellpadding="3" style="border:1px black solid;border-collapse:collapse;">
-<tr><th align="center"></th></tr>
-
-<tr><td align="center">
-<img src="http://dl.dropbox.com/u/31377518/WhatAndroid/tkkfj-resized.png" name="show_slideshow">
-</td></tr>
-
-<tr><td align="center" style="border:1px black solid;">
-<select name="slide" onChange="rotate_slideshow(this.selectedIndex);">
-<option value="http://dl.dropbox.com/u/31377518/WhatAndroid/tkkfj-resized.png"></option>
-<option value="http://dl.dropbox.com/u/31377518/WhatAndroid/0jqf6-resized.png"></option>
-<option value="http://dl.dropbox.com/u/31377518/WhatAndroid/vusdw-resized.png"></option>
-<option value="http://dl.dropbox.com/u/31377518/WhatAndroid/xtdlz-resized.png"></option>
-<option value="http://dl.dropbox.com/u/31377518/WhatAndroid/nxj1z-resized.png"></option>
-<option value="http://dl.dropbox.com/u/31377518/WhatAndroid/o3deo-resized.png"></option>
-</select>
-</td></tr>
-
-<tr><td align="center" style="border:1px black solid;">
-<input type="button" onclick="rotate_slideshow(0);" value="ll&lt;&lt;" title="Jump to beginning" />
-<input type="button" onclick="rotate_slideshow(x_slideshow-1);" value="&lt;&lt;" title="Last Picture" />
-<input type="button" name="fa" onClick="this.value=((this.value=='Stop')?'Start':'Stop');auto_slideshow();" value="Start" title="Autoplay" style="width:75px;" />
-<input type="button" onclick="rotate_slideshow(x_slideshow+1);" value="&gt;&gt;" title="Next Picture" />
-<input type="button" onclick="rotate_slideshow(this.form.slide.length-1);" value="&gt;&gt;ll" title="Jump to end" />
-</td></tr></table></form>
-
 <h3>Support or Contact</h3>
 
 <p>Have questions? Contact <a href="https://github.com/Gwindow" class="user-mention">@Gwindow</a> through GitHub, What.CD, or in #whatAndroid.</p>
