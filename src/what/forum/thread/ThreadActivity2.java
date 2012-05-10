@@ -1,5 +1,8 @@
 package what.forum.thread;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import what.forum.ForumViewPager;
 import what.fragments.MyFragmentPagerAdapter;
 import what.gui.MyActivity;
@@ -7,6 +10,7 @@ import what.gui.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -15,15 +19,16 @@ import com.viewpagerindicator.TitlePageIndicator;
  *
  */
 public class ThreadActivity2 extends MyActivity {
-	private static final String[] CONTENT = new String[] { "test", "test2" };
-
 	private ThreadFragmentPageAdapter adapter;
 	private ForumViewPager pager;
 	private TitlePageIndicator indicator;
+	private Map<Integer, ThreadFragment> fragmentMap;
 
 	private int threadId;
 	private int threadPage;
 	private int postId;
+
+	private String threadTitle;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,13 +39,22 @@ public class ThreadActivity2 extends MyActivity {
 
 	@Override
 	public void init() {
-		adapter = new ThreadFragmentPageAdapter(contentFromPageNumbers(50), getSupportFragmentManager());
-		threadId = 68;
-		// threadId = myBundle.getInt("id");
-		/**
-		 * try { page = myBundle.getInt("page"); } catch (Exception e) { page = 0; e.printStackTrace(); } try { postId =
-		 * myBundle.getInt("postId"); } catch (Exception e) { postId = 0; e.printStackTrace(); }
-		 */
+		threadId = myBundle.getInt("threadId");
+		threadTitle = myBundle.getString("threadTitle");
+
+		try {
+			threadPage = myBundle.getInt("threadPage");
+		} catch (Exception e) {
+			threadPage = 0;
+		}
+		try {
+			postId = myBundle.getInt("postId");
+		} catch (Exception e) {
+			postId = 0;
+		}
+
+		adapter = new ThreadFragmentPageAdapter(ThreadFragmentPageAdapter.contentFromPageNumbers(5), getSupportFragmentManager());
+
 	}
 
 	@Override
@@ -50,11 +64,25 @@ public class ThreadActivity2 extends MyActivity {
 		pager.setPagingEnabled(false);
 		indicator = (TitlePageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
+		indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				fragmentMap.get(position).test();
+			}
+
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+			}
+		});
 	}
 
 	@Override
 	public void actionbar() {
-		getSupportActionBar().setTitle("one");
+		getSupportActionBar().setTitle("ThreadTitle");
 	}
 
 	@Override
@@ -62,22 +90,14 @@ public class ThreadActivity2 extends MyActivity {
 		enableGestures(false);
 	}
 
-	private String[] contentFromPageNumbers(int pages) {
-		String[] content = new String[pages];
-		for (int i = 0; i < content.length; i++) {
-			content[i] = String.valueOf(i);
-		}
-		return content;
-	}
-
-	private static class ThreadFragmentPageAdapter extends MyFragmentPagerAdapter {
-
+	private class ThreadFragmentPageAdapter extends MyFragmentPagerAdapter {
 		/**
 		 * @param content
 		 * @param fm
 		 */
 		public ThreadFragmentPageAdapter(String[] content, FragmentManager fm) {
 			super(content, fm);
+			fragmentMap = new HashMap<Integer, ThreadFragment>();
 		}
 
 		/**
@@ -85,9 +105,10 @@ public class ThreadActivity2 extends MyActivity {
 		 */
 		@Override
 		public Fragment getItem(int position) {
-			return ThreadFragment.newInstance(position);
+			Fragment fragment = ThreadFragment.newInstance(position + 1);
+			fragmentMap.put(position + 1, (ThreadFragment) fragment);
+			return fragment;
 		}
-
 	}
 
 }

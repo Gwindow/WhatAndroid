@@ -44,7 +44,7 @@ import com.actionbarsherlock.view.MenuItem;
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
 	private static final double VERSION = 0.50;
-	private static String SITE = "67.183.192.159";
+	private static String SITE = "";
 	private static boolean USE_SSL = false;
 	private final static String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
 

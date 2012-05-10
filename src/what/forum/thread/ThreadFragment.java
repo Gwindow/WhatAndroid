@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -60,7 +61,6 @@ public class ThreadFragment extends SherlockFragment {
 		if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
 			mContent = savedInstanceState.getString(KEY_CONTENT);
 		}
-		this.getSherlockActivity().getActionBar().setTitle("this is a thread");
 		TextView text = new TextView(getActivity());
 		text.setGravity(Gravity.CENTER);
 		text.setText(mContent);
@@ -73,6 +73,10 @@ public class ThreadFragment extends SherlockFragment {
 		layout.addView(text);
 
 		return layout;
+	}
+
+	public void test() {
+		Toast.makeText(getActivity(), "I'm a fragment with an id of " + String.valueOf(fragmentId), Toast.LENGTH_SHORT).show();
 	}
 
 	/**

@@ -20,6 +20,8 @@ public abstract class MyFragmentPagerAdapter extends FragmentPagerAdapter implem
 	/** The count. */
 	private int mCount;
 
+	protected FragmentManager fragmentManager;
+
 	/**
 	 * Instantiates a new my fragment pager adapter.
 	 * 
@@ -31,7 +33,16 @@ public abstract class MyFragmentPagerAdapter extends FragmentPagerAdapter implem
 	public MyFragmentPagerAdapter(String[] content, FragmentManager fm) {
 		super(fm);
 		this.content = content;
+		this.fragmentManager = fm;
 		this.mCount = content.length;
+	}
+
+	public static String[] contentFromPageNumbers(int pages) {
+		String[] content = new String[pages];
+		for (int i = 0; i < content.length; i++) {
+			content[i] = String.valueOf(i + 1);
+		}
+		return content;
 	}
 
 	/**
