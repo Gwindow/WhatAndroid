@@ -74,6 +74,7 @@ public class SectionActivity2 extends MyActivity {
 	@Override
 	public void actionbar() {
 		getSupportActionBar().setTitle(section.getResponse().getForumName());
+
 	}
 
 	@Override
@@ -81,7 +82,6 @@ public class SectionActivity2 extends MyActivity {
 		enableGestures(false);
 
 		fragmentMap.get(sectionPage).populate(section.getResponse().getThreads());
-
 		indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
@@ -93,7 +93,12 @@ public class SectionActivity2 extends MyActivity {
 				} catch (ExecutionException e) {
 					e.printStackTrace();
 				}
-				fragmentMap.get(position + 1).populate(section.getResponse().getThreads());
+				if (section.getStatus()) {
+					fragmentMap.get(position + 1).populate(section.getResponse().getThreads());
+				} else {
+					ErrorToast.show(SectionActivity2.this, SectionActivity2.class);
+					finish();
+				}
 			}
 
 			@Override

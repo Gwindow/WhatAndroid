@@ -2,6 +2,7 @@ package what.forum.section;
 
 import java.util.List;
 
+import what.gui.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -26,15 +27,13 @@ public class SectionFragment extends SherlockFragment {
 	/** The Constant KEY_CONTENT. */
 	private static final String KEY_CONTENT = "SectionFragment:Content";
 
-	/** The m content. */
-	private String mContent = "???";
+	private View rootView;
 
 	private int sectionId;
 	private int fragmentId;
 
 	public static Fragment newInstance(int fragmentId, int sectionId) {
 		SectionFragment fragment = new SectionFragment();
-		fragment.mContent = String.valueOf(fragmentId);
 		fragment.fragmentId = fragmentId;
 		fragment.sectionId = sectionId;
 		return fragment;
@@ -46,8 +45,9 @@ public class SectionFragment extends SherlockFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-			mContent = savedInstanceState.getString(KEY_CONTENT);
+			// mContent = savedInstanceState.getString(KEY_CONTENT);
 		}
+		rootView = inflater.inflate(R.layout.section, container, false);
 		TextView text = new TextView(getActivity());
 		text.setGravity(Gravity.CENTER);
 		text.setText(mContent);
@@ -74,7 +74,7 @@ public class SectionFragment extends SherlockFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putString(KEY_CONTENT, mContent);
+		// outState.putString(KEY_CONTENT, mContent);
 	}
 
 }
