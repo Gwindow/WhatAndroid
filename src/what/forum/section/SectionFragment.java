@@ -1,31 +1,80 @@
 package what.forum.section;
 
-import what.fragments.MyFragmentPagerAdapter;
+import java.util.List;
+
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
+import api.forum.section.Threads;
+
+import com.actionbarsherlock.app.SherlockFragment;
 
 /**
+ * The Class ThreadFragment.
+ * 
  * @author Gwindow
- * @since May 5, 2012 5:57:16 PM
+ * @since May 6, 2012 1:43:19 PM
  */
-public class SectionFragment extends MyFragmentPagerAdapter {
+public class SectionFragment extends SherlockFragment {
 
-	/**
-	 * @param content
-	 * @param fm
-	 */
-	public SectionFragment(String[] content, FragmentManager fm) {
-		super(content, fm);
-		// TODO Auto-generated constructor stub
+	/** The Constant KEY_CONTENT. */
+	private static final String KEY_CONTENT = "SectionFragment:Content";
+
+	/** The m content. */
+	private String mContent = "???";
+
+	private int sectionId;
+	private int fragmentId;
+
+	public static Fragment newInstance(int fragmentId, int sectionId) {
+		SectionFragment fragment = new SectionFragment();
+		fragment.mContent = String.valueOf(fragmentId);
+		fragment.fragmentId = fragmentId;
+		fragment.sectionId = sectionId;
+		return fragment;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Fragment getItem(int position) {
-		// TODO Auto-generated method stub
-		return null;
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
+			mContent = savedInstanceState.getString(KEY_CONTENT);
+		}
+		TextView text = new TextView(getActivity());
+		text.setGravity(Gravity.CENTER);
+		text.setText(mContent);
+		text.setTextSize(20 * getResources().getDisplayMetrics().density);
+		text.setPadding(20, 20, 20, 20);
+
+		LinearLayout layout = new LinearLayout(getActivity());
+		layout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		layout.setGravity(Gravity.CENTER);
+		layout.addView(text);
+
+		return layout;
+	}
+
+	public void populate(List<Threads> list) {
+		if (list != null && !list.isEmpty()) {
+
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(KEY_CONTENT, mContent);
 	}
 
 }
