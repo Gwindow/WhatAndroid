@@ -1,36 +1,38 @@
 package what.forum.section;
 
-import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
+import java.util.LinkedList;
+import java.util.List;
 
-import what.forum.ForumViewPager;
-import what.fragments.MyFragmentPagerAdapter;
 import what.gui.ErrorToast;
 import what.gui.MyActivity;
+import what.gui.MyScrollView;
 import what.gui.R;
+import what.gui.Scrollable;
+import what.gui.ViewSlider;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import api.forum.section.Section;
-
-import com.viewpagerindicator.TitlePageIndicator;
+import api.forum.section.Threads;
 
 /**
  * @author Gwindow
  * @since May 5, 2012 5:55:53 PM
  */
-public class SectionActivity2 extends MyActivity {
-	private SectionFragmentPageAdapter adapter;
-	private ForumViewPager pager;
-	private TitlePageIndicator indicator;
-	public HashMap<Integer, SectionFragment> fragmentMap;
+public class SectionActivity2 extends MyActivity implements Scrollable {
+	private MyScrollView scrollView;
+	private LinearLayout scrollLayout;
+
 	private Section section;
 	private int sectionId;
 	private int sectionPage;
+	private LinkedList<ViewSlider> threadList;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,101 +40,78 @@ public class SectionActivity2 extends MyActivity {
 		super.setContentView(R.layout.section, false);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void init() {
-		sectionId = myBundle.getInt("sectionId");
+		sectionId = 1;
+		// sectionId = myBundle.getInt("sectionId");
 		sectionPage = 1;
 
-		try {
-			section = new SectionLoader().get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-
-		if (section.getStatus()) {
-			adapter =
-					new SectionFragmentPageAdapter(SectionFragmentPageAdapter.contentFromPageNumbers(section.getLastPage()),
-							getSupportFragmentManager());
-		} else {
-			ErrorToast.show(this, getClass());
-			finish();
-		}
+		threadList = new LinkedList<ViewSlider>();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void load() {
-		pager = (ForumViewPager) findViewById(R.id.pager);
-		pager.setAdapter(adapter);
-		pager.setPagingEnabled(false);
-		indicator = (TitlePageIndicator) findViewById(R.id.indicator);
-		indicator.setViewPager(pager);
-		indicator.setCurrentItem(sectionPage - 1);
+		scrollView = (MyScrollView) this.findViewById(R.id.scrollView);
+		scrollView.attachScrollable(this);
+		scrollLayout = (LinearLayout) findViewById(R.id.scrollLayout);
 	}
 
-	@Override
-	public void actionbar() {
-		getSupportActionBar().setTitle(section.getResponse().getForumName());
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void prepare() {
 		enableGestures(false);
-
-		fragmentMap.get(sectionPage).populate(section.getResponse().getThreads());
-		indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				sectionPage = position + 1;
-				try {
-					section = new SectionLoader().get();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				}
-				if (section.getStatus()) {
-					fragmentMap.get(position + 1).populate(section.getResponse().getThreads());
-				} else {
-					ErrorToast.show(SectionActivity2.this, SectionActivity2.class);
-					finish();
-				}
-			}
-
-			@Override
-			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-			}
-
-			@Override
-			public void onPageScrollStateChanged(int state) {
-			}
-		});
+		new LoadSection().execute();
 	}
 
-	private class SectionFragmentPageAdapter extends MyFragmentPagerAdapter {
-		/**
-		 * @param content
-		 * @param fm
-		 */
-		public SectionFragmentPageAdapter(String[] content, FragmentManager fm) {
-			super(content, fm);
-			fragmentMap = new HashMap<Integer, SectionFragment>();
-		}
+	/**
+	 * Populate section with threads.
+	 */
+	private void populate() {
+		getSupportActionBar().setTitle(section.getResponse().getForumName() + ", " + sectionPage);
 
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public Fragment getItem(int position) {
-			Fragment fragment = SectionFragment.newInstance(position + 1, sectionId);
-			fragmentMap.put(position + 1, (SectionFragment) fragment);
-			return fragment;
+		List<Threads> threads = section.getResponse().getThreads();
+		if (threads != null) {
+			for (int i = 0; i < threads.size(); i++) {
+				int background_color = i % 2 == 0 ? R.drawable.color_transparent_white : R.drawable.color_transparent_light_gray;
+				ViewSlider thread_layout = (ViewSlider) getLayoutInflater().inflate(R.layout.section_thread, null);
+				thread_layout.setBackgroundResource(background_color);
+				TextView thread_title = (TextView) thread_layout.findViewById(R.id.threadTitle);
+				thread_title.setText(threads.get(i).getTitle());
+				TextView thread_author = (TextView) thread_layout.findViewById(R.id.threadAuthor);
+				thread_author.setText("Author: " + threads.get(i).getAuthorName());
+				threadList.add(thread_layout);
+				scrollLayout.addView(threadList.getLast());
+			}
 		}
 	}
 
-	private class SectionLoader extends AsyncTask<Void, Void, Section> {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void scrolledToBottom() {
+		nextPage();
+	}
+
+	/**
+	 * Load the next page while currentPage < totalPages.
+	 */
+	private void nextPage() {
+		if (sectionPage < section.getLastPage()) {
+			sectionPage++;
+			new LoadSection().execute();
+		}
+	}
+
+	private class LoadSection extends AsyncTask<Void, Void, Boolean> {
 		private ProgressDialog dialog;
 
 		@Override
@@ -145,16 +124,20 @@ public class SectionActivity2 extends MyActivity {
 		}
 
 		@Override
-		protected Section doInBackground(Void... params) {
-			return Section.sectionFromIdAndPage(sectionId, sectionPage);
+		protected Boolean doInBackground(Void... params) {
+			section = Section.sectionFromIdAndPage(sectionId, sectionPage);
+			return section.getStatus();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
-		protected void onPostExecute(Section result) {
+		protected void onPostExecute(Boolean status) {
+			if (status) {
+				populate();
+			}
 			dialog.dismiss();
+			if (!status) {
+				ErrorToast.show(SectionActivity2.this, SectionActivity2.class);
+			}
 			unlockScreenRotation();
 		}
 	}

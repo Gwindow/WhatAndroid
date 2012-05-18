@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import what.cache.ImageCache;
-import what.forum.thread.ThreadActivity2;
+import what.forum.section.SectionActivity2;
 import what.gui.MyActivity;
 import what.gui.R;
 import what.settings.Settings;
@@ -44,7 +44,7 @@ import com.actionbarsherlock.view.MenuItem;
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
 	private static final double VERSION = 0.50;
-	private static String SITE = "67.183.192.159";
+	private static String SITE = "";
 	private static boolean USE_SSL = false;
 	private final static String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
 
@@ -89,6 +89,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 
 		login = (Button) this.findViewById(R.id.login);
 		login.setOnClickListener(this);
+
+		username.setText("gazelle");
+		password.setText("123456");
 	}
 
 	@Override
@@ -272,7 +275,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 			unlockScreenRotation();
 			if (status == true) {
 				Settings.saveUserId(MySoup.getUserId());
-				intent = new Intent(WhatAndroidActivity.this, ThreadActivity2.class);
+				intent = new Intent(WhatAndroidActivity.this, SectionActivity2.class);
 				startActivity(intent);
 			}
 			if (status == false) {

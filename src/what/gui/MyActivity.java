@@ -78,10 +78,6 @@ public abstract class MyActivity extends SherlockFragmentActivity implements OnG
 	 */
 	public abstract void init();
 
-	public void postAsync() {
-
-	}
-
 	/**
 	 * Sets the content view with background
 	 * 
@@ -106,8 +102,8 @@ public abstract class MyActivity extends SherlockFragmentActivity implements OnG
 			}
 		}
 		load();
-		actionbar();
 		prepare();
+		actionbar();
 	}
 
 	@Override

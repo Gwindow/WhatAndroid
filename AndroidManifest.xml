@@ -12,10 +12,8 @@
 	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
 	<uses-permission android:name="com.flattr4android.permission.READ_THING" />
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
-
-
 		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.forum.thread.ThreadActivity2" android:theme="@style/Theme.Sherlock">
+			android:name="what.login.WhatAndroidActivity" android:theme="@style/Theme.Sherlock">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -53,6 +51,10 @@
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.forum.SectionActivity" android:theme="@style/Theme.Sherlock">
+
+		</activity>
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.forum.section.SectionActivity2" android:theme="@style/Theme.Sherlock">
 
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"

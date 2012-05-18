@@ -3,14 +3,20 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    <com.viewpagerindicator.TitlePageIndicator
-        android:id="@+id/indicator"
+
+    <what.gui.MyScrollView
+        android:id="@+id/scrollView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dip" />
-    <what.forum.ForumViewPager
-        android:id="@+id/pager"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="0dip"
+        android:layout_marginBottom="5dip"
+        android:layout_weight="1"
+        android:paddingTop="5dip" >
+
+        <LinearLayout
+            android:id="@+id/scrollLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" />
+    </what.gui.MyScrollView>
+
 </LinearLayout>
