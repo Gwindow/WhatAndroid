@@ -10,5 +10,4 @@ public interface Scrollable {
 	 */
 	public void scrolledToBottom();
 
-	// public void onScrollChanged(int currentX, int currentY, int previousX, int previousY);
 }

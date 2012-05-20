@@ -10,6 +10,7 @@ import android.widget.ScrollView;
  */
 public class MyScrollView extends ScrollView {
 	private Scrollable scrollable;
+	private int pages = 1;
 
 	/**
 	 * @param context
@@ -42,8 +43,10 @@ public class MyScrollView extends ScrollView {
 	@Override
 	protected void onScrollChanged(int l, int t, int oldl, int oldt) {
 		int bottomY = getBottomY();
-		boolean hitBottom = getChildAt(getChildCount() - 1).getBottom() - bottomY == 0;
+		int calc = getChildAt(getChildCount() - 1).getBottom() - bottomY;
+		boolean hitBottom = calc == 0;
 		if (hitBottom) {
+			pages++;
 			scrollable.scrolledToBottom();
 			hitBottom = false;
 		}
@@ -53,4 +56,9 @@ public class MyScrollView extends ScrollView {
 	public int getBottomY() {
 		return getHeight() + getScrollY();
 	}
+
+	public int getPages() {
+		return pages;
+	}
+
 }
