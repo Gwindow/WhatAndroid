@@ -9,6 +9,7 @@ import java.net.URL;
 
 import what.cache.ImageCache;
 import what.forum.section.SectionActivity2;
+import what.gui.MenuItems;
 import what.gui.MyActivity;
 import what.gui.R;
 import what.settings.Settings;
@@ -45,7 +46,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
 	private static final double VERSION = 0.50;
 	private static String SITE = "";
-	private static boolean USE_SSL = false;
+	private static boolean USE_SSL = true;
 	private final static String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
 
 	private static final String MENU_ITEM_DEVELOPER = "Developer";
@@ -72,11 +73,13 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		INSTALLED_VERSION = getInstalledVersion();
 		MySoup.setSite(SITE, USE_SSL);
 		MySon.setDebugEnabled(Settings.getDebugPreference());
+		MySon.setPath("master/");
 		try {
 			checkForUpdates();
 		} catch (CouldNotLoadException e) {
 			e.printStackTrace();
 		}
+		MenuItems.init();
 		ImageCache.init(this);
 	}
 
@@ -90,8 +93,8 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		login = (Button) this.findViewById(R.id.login);
 		login.setOnClickListener(this);
 
-		username.setText("gazelle");
-		password.setText("123456");
+		username.setText("");
+		password.setText("");
 	}
 
 	@Override
@@ -261,10 +264,9 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 			}
 			Settings.commit();
 			try {
-				MySoup.login("login.php", username, password);
+				MySoup.login("master/login.php", username, password);
 				return true;
 			} catch (CouldNotLoadException e) {
-				e.printStackTrace();
 				return false;
 			}
 		}

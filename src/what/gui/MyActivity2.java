@@ -1,6 +1,7 @@
 package what.gui;
 
 import what.settings.Settings;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -13,10 +14,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.SubMenu;
 
 public abstract class MyActivity2 extends SherlockActivity {
 	private View v;
 	protected Bundle myBundle;
+	private String activityName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -137,4 +142,45 @@ public abstract class MyActivity2 extends SherlockActivity {
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 	}
 
+	/**
+	 * @return the activityName
+	 */
+	public String getActivityName() {
+		if (activityName == null) {
+			activityName = "";
+		}
+		return activityName;
+	}
+
+	/**
+	 * @param activityName
+	 *            the activityName to set
+	 */
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		SubMenu submenu = menu.addSubMenu(getActivityName());
+		submenu.addSubMenu(MenuItems.HOME.toString());
+		submenu.addSubMenu(MenuItems.FORUM.toString());
+		submenu.addSubMenu(MenuItems.SUBMENU.toString()).addSubMenu(MenuItems.TEST.toString());
+
+		MenuItem subMenuItem = submenu.getItem();
+		// subMenuItem.setIcon(R.drawable.ic_title_share_default);
+		subMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		MenuItems mi = MenuItems.valueOf(item.getTitle().toString().toUpperCase());
+		if (MenuItems.containsKey(mi)) {
+			Intent intent = new Intent(this, MenuItems.get(mi));
+			startActivity(intent);
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }

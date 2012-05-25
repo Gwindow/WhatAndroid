@@ -15,8 +15,8 @@ import android.widget.ViewFlipper;
  * @since May 17, 2012 10:56:17 PM
  */
 public class ViewSlider extends ViewFlipper implements OnGestureListener {
-	private static final int SWIPE_MIN_DISTANCE = 10;
-	private static final int SWIPE_THRESHOLD_VELOCITY = 50;
+	private static final int SWIPE_MIN_DISTANCE = 50;
+	private static final int SWIPE_THRESHOLD_VELOCITY = 75;
 	private static final int ANIMATION_SPEED = 300;
 	private GestureDetector gestureDetector;
 

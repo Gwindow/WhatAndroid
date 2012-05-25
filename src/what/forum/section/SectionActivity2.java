@@ -46,6 +46,7 @@ public class SectionActivity2 extends MyActivity2 implements Scrollable, OnClick
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.setTheme(com.actionbarsherlock.R.style.Theme_Sherlock_Light_ForceOverflow);
+		super.setActivityName("Forum");
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.section, false);
 	}
@@ -55,7 +56,7 @@ public class SectionActivity2 extends MyActivity2 implements Scrollable, OnClick
 	 */
 	@Override
 	public void init() {
-		sectionId = 1;
+		sectionId = 13;
 		// sectionId = myBundle.getInt("sectionId");
 		sectionPage = 1;
 		threadList = new LinkedList<ViewSlider>();
