@@ -25,6 +25,48 @@
         <item name="android:textSize">17dip</item>
     </style>
 
+    <style name="ForumCategory">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">27dip</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ForumSection">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">25dip</item>
+    </style>
+    
+    
+     <style name="InboxMessageTitle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:textSize">22dip</item>
+    </style>
+
+    <style name="InboxMessageSecondary">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:textSize">17dip</item>
+    </style>
+    
+    
+
     <style name="NotificationText">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>

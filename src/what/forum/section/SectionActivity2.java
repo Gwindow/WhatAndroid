@@ -1,15 +1,17 @@
 package what.forum.section;
 
-import java.util.LinkedList;
 import java.util.List;
 
+import what.gui.ActivityNames;
 import what.gui.ErrorToast;
+import what.gui.JumpToPageDialog;
 import what.gui.MyActivity2;
 import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.Scrollable;
 import what.gui.ViewSlider;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import api.forum.section.Section;
 import api.forum.section.Threads;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * @author Gwindow
@@ -35,8 +41,7 @@ public class SectionActivity2 extends MyActivity2 implements Scrollable, OnClick
 
 	private Section section;
 	private int sectionId;
-	private int sectionPage;
-	private LinkedList<ViewSlider> threadList;
+	private int sectionPage = 1;
 
 	private boolean isLoaded;
 
@@ -45,8 +50,7 @@ public class SectionActivity2 extends MyActivity2 implements Scrollable, OnClick
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.setTheme(com.actionbarsherlock.R.style.Theme_Sherlock_Light_ForceOverflow);
-		super.setActivityName("Forum");
+		super.setActivityName(ActivityNames.FORUM);
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.section, false);
 	}
@@ -56,10 +60,8 @@ public class SectionActivity2 extends MyActivity2 implements Scrollable, OnClick
 	 */
 	@Override
 	public void init() {
-		sectionId = 13;
-		// sectionId = myBundle.getInt("sectionId");
-		sectionPage = 1;
-		threadList = new LinkedList<ViewSlider>();
+		Bundle bundle = getIntent().getExtras();
+		sectionId = bundle.getInt("sectionId");
 	}
 
 	/**
@@ -109,8 +111,7 @@ public class SectionActivity2 extends MyActivity2 implements Scrollable, OnClick
 				thread_author.setId(threads.get(i).getAuthorId().intValue());
 				thread_author.setTag(AUTHOR_TAG);
 
-				threadList.add(thread_layout);
-				scrollLayout.addView(threadList.getLast());
+				scrollLayout.addView(thread_layout);
 			}
 		}
 	}
@@ -153,6 +154,49 @@ public class SectionActivity2 extends MyActivity2 implements Scrollable, OnClick
 			default:
 				break;
 		}
+	}
+
+	private void jumpToPage() {
+		new JumpToPageDialog(this, section.getResponse().getPages().intValue()) {
+			@Override
+			public void jumpToPage() {
+				if (getPage() != -1) {
+					Intent intent = new Intent(SectionActivity2.this, SectionActivity2.class);
+					Bundle bundle = new Bundle();
+					bundle.putInt("sectionPage", getPage());
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
+			}
+		}.create().show();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.section_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.new_thread_item:
+				break;
+			case R.id.jump_page_item:
+				jumpToPage();
+				break;
+			case R.id.refresh_item:
+				refresh();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private class LoadSection extends AsyncTask<Void, Void, Boolean> {

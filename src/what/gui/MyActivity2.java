@@ -19,25 +19,22 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 
 public abstract class MyActivity2 extends SherlockActivity {
+	private static final int THEME = com.actionbarsherlock.R.style.Theme_Sherlock_ForceOverflow;
+	private static final int MENU_PLACEHOLDER_ID = 1;
+	private static final int MENU_ITEM_ID = 2;
 	private View v;
-	protected Bundle myBundle;
 	private String activityName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		super.setTheme(THEME);
 		super.onCreate(savedInstanceState);
 
 		if ((Settings.getSettings() == null) | (Settings.getSettingsEditor() == null)) {
 			Settings.init(this);
 		}
 
-		myBundle = getIntent().getExtras();
 		init();
-	}
-
-	@Override
-	public void setTheme(int resid) {
-		super.setTheme(resid);
 	}
 
 	/**
@@ -152,6 +149,10 @@ public abstract class MyActivity2 extends SherlockActivity {
 		return activityName;
 	}
 
+	public void setActivityName(ActivityNames activityName) {
+		setActivityName(activityName.toString());
+	}
+
 	/**
 	 * @param activityName
 	 *            the activityName to set
@@ -162,10 +163,18 @@ public abstract class MyActivity2 extends SherlockActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		SubMenu submenu = menu.addSubMenu(getActivityName());
-		submenu.addSubMenu(MenuItems.HOME.toString());
-		submenu.addSubMenu(MenuItems.FORUM.toString());
-		submenu.addSubMenu(MenuItems.SUBMENU.toString()).addSubMenu(MenuItems.TEST.toString());
+		// this first item is a dummy menu item used to identify the currently selected item
+		SubMenu submenu = menu.addSubMenu(Menu.NONE, MENU_PLACEHOLDER_ID, Menu.NONE, activityName);
+		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.HOME.toString());
+		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.FORUM.toString());
+
+		SubMenu searchmenu = submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.SEARCH.toString());
+		searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.TORRENTS.toString());
+		searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.REQUESTS.toString());
+		searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.USERS.toString());
+
+		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.INBOX.toString());
+		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.BARCODE_SCANNER.toString());
 
 		MenuItem subMenuItem = submenu.getItem();
 		// subMenuItem.setIcon(R.drawable.ic_title_share_default);
@@ -176,11 +185,14 @@ public abstract class MyActivity2 extends SherlockActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		MenuItems mi = MenuItems.valueOf(item.getTitle().toString().toUpperCase());
-		if (MenuItems.containsKey(mi)) {
-			Intent intent = new Intent(this, MenuItems.get(mi));
-			startActivity(intent);
+		if (item.getItemId() == MENU_ITEM_ID) {
+			MenuItems mi = MenuItems.valueOf(item.getTitle().toString().toUpperCase().replace(" ", "_"));
+			if (MenuItems.containsKey(mi)) {
+				Intent intent = new Intent(this, MenuItems.get(mi));
+				startActivity(intent);
+			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 }

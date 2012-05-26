@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <what.gui.MyScrollView
+    <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
@@ -16,7 +16,9 @@
             android:id="@+id/scrollLayout"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical" />
-    </what.gui.MyScrollView>
+            android:orientation="vertical"
+            android:padding="15dip" >
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

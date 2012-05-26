@@ -1,199 +1,257 @@
-/**
- * 
- */
 package what.inbox;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import what.gui.MyActivity;
+import what.gui.ActivityNames;
+import what.gui.ErrorToast;
+import what.gui.JumpToPageDialog;
+import what.gui.MyActivity2;
+import what.gui.MyScrollView;
 import what.gui.R;
-import what.services.InboxService;
-import android.app.NotificationManager;
+import what.gui.Scrollable;
+import what.gui.ViewSlider;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.inbox.inbox.Inbox;
 import api.inbox.inbox.Messages;
 
-public class InboxActivity extends MyActivity implements OnClickListener {
-	private ScrollView scrollView;
-	private ArrayList<TextView> messageList;
-	private LinearLayout scrollLayout;
-	private Intent intent;
-	private ProgressDialog dialog;
-	private List<Messages> messages;
-	private NotificationManager myNotificationManager;
-	private Inbox inbox;
-	private Button backButton, nextButton;
-	private int page;
-	private TextView title;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
+/**
+ * @author Gwindow
+ * @since May 25, 2012 5:08:29 PM
+ */
+public class InboxActivity extends MyActivity2 implements Scrollable, OnClickListener {
+	private static final int MESSAGE_TAG = 0;
+	private static final int SENDER_TAG = 1;
+
+	private MyScrollView scrollView;
+	private LinearLayout scrollLayout;
+
+	private Inbox inbox;
+	private int inboxPage = 1;
+
+	private boolean isLoaded;
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		super.setActivityName(ActivityNames.INBOX);
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.inbox, true);
+		super.setContentView(R.layout.inbox, false);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void init() {
+		Bundle bundle = getIntent().getExtras();
+
+		try {
+			inboxPage = bundle.getInt("inboxPage");
+		} catch (Exception e) {
+		}
+
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void load() {
-		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
-		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
-		title = (TextView) this.findViewById(R.id.title);
-		backButton = (Button) this.findViewById(R.id.previousButton);
-		nextButton = (Button) this.findViewById(R.id.nextButton);
+		scrollView = (MyScrollView) this.findViewById(R.id.scrollView);
+		scrollView.attachScrollable(this);
+		scrollLayout = (LinearLayout) findViewById(R.id.scrollLayout);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void prepare() {
-		myNotificationManager.cancel(InboxService.ID);
-		setButtonState(backButton, false);
-		setButtonState(nextButton, false);
-		getBundle();
-
-		new LoadInbox().execute();
-
-		// TODO renable
-		/* if (page == 1) { if (InboxService.isRunning()) { inbox = InboxService.inbox; populateLayout(); } if
-		 * (!InboxService.isRunning()) { new LoadInbox().execute(); } } else { new LoadInbox().execute(); } */
+		new Load().execute();
 	}
 
-	private void getBundle() {
-		Bundle b = this.getIntent().getExtras();
-		try {
-			page = b.getInt("page");
-		} catch (Exception e) {
-			page = 1;
-		}
-	}
+	/**
+	 * Populate section with threads.
+	 */
+	private void populate() {
+		getSupportActionBar().setTitle("Inbox, " + inboxPage + "/" + inbox.getResponse().getPages());
 
-	public void next(View v) {
-		if (inbox.hasNextPage()) {
-			Bundle b = new Bundle();
-			intent = new Intent(InboxActivity.this, what.inbox.InboxActivity.class);
-			b.putInt("page", page + 1);
-			intent.putExtras(b);
-			startActivity(intent);
-		}
-	}
+		List<Messages> messages = inbox.getResponse().getMessages();
 
-	public void back(View v) {
-		if (inbox.hasPreviousPage()) {
-			Bundle b = new Bundle();
-			intent = new Intent(InboxActivity.this, what.inbox.InboxActivity.class);
-			b.putInt("page", page - 1);
-			intent.putExtras(b);
-			startActivity(intent);
-		} else {
-			finish();
-		}
-	}
+		if (messages != null) {
+			for (int i = 0; i < messages.size(); i++) {
+				ViewSlider message_layout = (ViewSlider) getLayoutInflater().inflate(R.layout.inbox_message, null);
 
-	private void populateLayout() {
-		title.setText("Inbox, page " + page);
-		setButtonState(backButton, inbox.hasPreviousPage());
-		setButtonState(nextButton, inbox.hasNextPage());
+				TextView message_title = (TextView) message_layout.findViewById(R.id.messageTitle);
+				message_title.setText(messages.get(i).getSubject());
+				message_title.setId(messages.get(i).getConvId().intValue());
+				message_title.setTag(MESSAGE_TAG);
+				message_title.setOnClickListener(this);
 
-		backButton.setEnabled(inbox.hasPreviousPage());
-		nextButton.setEnabled(inbox.hasNextPage());
+				TextView sender = (TextView) message_layout.findViewById(R.id.messageSender);
+				sender.setText("Sender: " + messages.get(i).getUsername());
+				sender.setId(messages.get(i).getSenderId().intValue());
+				sender.setTag(SENDER_TAG);
+				sender.setOnClickListener(this);
 
-		messages = inbox.getResponse().getMessages();
-		for (int i = 0; i < messages.size(); i++) {
-			if ((i % 2) == 0) {
-				messageList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
-			} else {
-				messageList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
+				TextView date = (TextView) message_layout.findViewById(R.id.messageDate);
+				date.setText("Date: " + messages.get(i).getDate());
+
+				scrollLayout.addView(message_layout);
 			}
-			messageList.get(i).setText("Subject: " + messages.get(i).getSubject() + "\nSender: " + messages.get(i).getUsername());
-			messageList.get(i).setId(i);
-			messageList.get(i).setOnClickListener(this);
-			if (messages.get(i).isUnread()) {
-				messageList.get(i).setTextColor(Color.RED);
-				messageList.get(i).setTextSize(17);
-			}
-			scrollLayout.addView(messageList.get(i));
 		}
 	}
 
-	private void openMessage(int i) {
-		Bundle b = new Bundle();
-		intent = new Intent(InboxActivity.this, what.inbox.ConversationActivity.class);
-		b.putInt("id", inbox.getResponse().getMessages().get(i).getConvId().intValue());
-		intent.putExtras(b);
-		startActivity(intent);
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void scrolledToBottom() {
+		nextPage();
 	}
 
+	/**
+	 * Load the next page while currentPage < totalPages.
+	 */
+	private void nextPage() {
+		if (isLoaded) {
+			if (inboxPage < inbox.getLastPage()) {
+				inboxPage++;
+				new Load(true).execute();
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onClick(View v) {
-		for (int i = 0; i < (messageList.size()); i++) {
-			if (v.getId() == messageList.get(i).getId()) {
-				if (messages.get(i).isUnread()) {
-					messageList.get(i).setTextColor(R.color.textview_colors);
-					messageList.get(i).setTextSize(14);
-				}
-				openMessage(i);
-			}
+		switch (Integer.valueOf(v.getTag().toString())) {
+			case MESSAGE_TAG:
+				Toast.makeText(this, String.valueOf(v.getId()), Toast.LENGTH_SHORT).show();
+				break;
+			case SENDER_TAG:
+				Toast.makeText(this, String.valueOf(v.getId()), Toast.LENGTH_SHORT).show();
+				break;
+			default:
+				break;
 		}
 	}
 
-	@Override
-	public void onRightGesturePerformed() {
-		next(null);
+	private void jumpToPage() {
+		new JumpToPageDialog(this, inbox.getResponse().getPages().intValue()) {
+			@Override
+			public void jumpToPage() {
+				if (getPage() != -1) {
+					Intent intent = new Intent(InboxActivity.this, InboxActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putInt("inboxPage", getPage());
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
+			}
+		}.create().show();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void onDownGesturePerformed() {
-		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.inbox_menu, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void onUpGesturePerformed() {
-		scrollView.fullScroll(ScrollView.FOCUS_UP);
-
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.new_thread_item:
+				break;
+			case R.id.jump_page_item:
+				jumpToPage();
+				break;
+			case R.id.refresh_item:
+				refresh();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
-	private class LoadInbox extends AsyncTask<Void, Void, Boolean> {
+	private class Load extends AsyncTask<Void, Void, Boolean> {
+		private ProgressDialog dialog;
+		private ProgressBar bar;
+		private boolean useEmbeddedDialog;
+
+		public Load() {
+			super();
+		}
+
+		public Load(boolean useEmbeddedDialog) {
+			this.useEmbeddedDialog = useEmbeddedDialog;
+		}
+
 		@Override
 		protected void onPreExecute() {
-			lockScreenRotation();
-			dialog = new ProgressDialog(InboxActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Loading...");
-			dialog.show();
+			isLoaded = false;
+			if (useEmbeddedDialog) {
+				bar = new ProgressBar(InboxActivity.this);
+				bar.setIndeterminate(true);
+				scrollLayout.addView(bar);
+			} else {
+				lockScreenRotation();
+				dialog = new ProgressDialog(InboxActivity.this);
+				dialog.setIndeterminate(true);
+				dialog.setMessage("Loading...");
+				dialog.show();
+			}
 		}
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			inbox = Inbox.inboxFromPage(page);
+			inbox = Inbox.inboxFromPage(inboxPage);
 			return inbox.getStatus();
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			if (status == true) {
-				populateLayout();
+			isLoaded = true;
+			if (useEmbeddedDialog) {
+				hideProgressBar();
+			} else {
+				dialog.dismiss();
+				unlockScreenRotation();
 			}
-			dialog.dismiss();
-			if (status == false) {
-				Toast.makeText(InboxActivity.this, "Could not load inbox", Toast.LENGTH_LONG).show();
+
+			if (status) {
+				populate();
 			}
-			unlockScreenRotation();
+			if (!status) {
+				ErrorToast.show(InboxActivity.this, InboxActivity.class);
+			}
+		}
+
+		private void hideProgressBar() {
+			scrollLayout.removeViewAt(scrollLayout.getChildCount() - 1);
 		}
 	}
-
 }

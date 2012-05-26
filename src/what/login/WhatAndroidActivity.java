@@ -8,10 +8,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import what.cache.ImageCache;
-import what.forum.section.SectionActivity2;
 import what.gui.MenuItems;
 import what.gui.MyActivity;
 import what.gui.R;
+import what.inbox.InboxActivity;
 import what.settings.Settings;
 import what.status.WhatStatusActivity;
 import android.app.AlertDialog;
@@ -44,8 +44,9 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
+	private static final Class<?> REDIRECT_CLASS = InboxActivity.class;
 	private static final double VERSION = 0.50;
-	private static String SITE = "";
+	private static String SITE = "ssl.what.cd";
 	private static boolean USE_SSL = true;
 	private final static String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
 
@@ -73,7 +74,6 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 		INSTALLED_VERSION = getInstalledVersion();
 		MySoup.setSite(SITE, USE_SSL);
 		MySon.setDebugEnabled(Settings.getDebugPreference());
-		MySon.setPath("master/");
 		try {
 			checkForUpdates();
 		} catch (CouldNotLoadException e) {
@@ -264,7 +264,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 			}
 			Settings.commit();
 			try {
-				MySoup.login("master/login.php", username, password);
+				MySoup.login("login.php", username, password);
 				return true;
 			} catch (CouldNotLoadException e) {
 				return false;
@@ -277,7 +277,7 @@ public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 			unlockScreenRotation();
 			if (status == true) {
 				Settings.saveUserId(MySoup.getUserId());
-				intent = new Intent(WhatAndroidActivity.this, SectionActivity2.class);
+				intent = new Intent(WhatAndroidActivity.this, REDIRECT_CLASS);
 				startActivity(intent);
 			}
 			if (status == false) {

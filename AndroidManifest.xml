@@ -47,8 +47,12 @@
 		</activity>
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.forum.ForumSectionsListActivity" android:theme="@style/Theme.Sherlock">
-
 		</activity>
+		
+		<activity android:windowSoftInputMode="adjustPan"
+			android:name="what.forum.ForumActivity" android:theme="@style/Theme.Sherlock">
+		</activity>
+		
 		<activity android:windowSoftInputMode="adjustPan"
 			android:name="what.forum.SectionActivity" android:theme="@style/Theme.Sherlock">
 
