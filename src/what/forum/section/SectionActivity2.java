@@ -86,8 +86,7 @@ public class SectionActivity2 extends MyActivity2 implements Scrollable, OnClick
 	 * Populate section with threads.
 	 */
 	private void populate() {
-		getSupportActionBar().setTitle(
-				section.getResponse().getForumName() + ", " + sectionPage + "/" + section.getResponse().getPages());
+		setActionBarTitle(section.getResponse().getForumName() + ", " + sectionPage + "/" + section.getResponse().getPages());
 
 		List<Threads> threads = section.getResponse().getThreads();
 		if (threads != null) {

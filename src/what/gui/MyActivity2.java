@@ -1,6 +1,7 @@
 package what.gui;
 
 import what.settings.Settings;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -9,8 +10,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -24,6 +27,7 @@ public abstract class MyActivity2 extends SherlockActivity {
 	private static final int MENU_ITEM_ID = 2;
 	private View v;
 	private String activityName;
+	private TextView actionBarTitle;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,16 @@ public abstract class MyActivity2 extends SherlockActivity {
 		}
 
 		init();
+
+		getSupportActionBar().setDisplayShowHomeEnabled(false);
+		this.getSupportActionBar().setDisplayShowCustomEnabled(true);
+		this.getSupportActionBar().setDisplayShowTitleEnabled(false);
+		LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		View v = inflator.inflate(R.layout.actionbar_title, null);
+		actionBarTitle = ((TextView) v.findViewById(R.id.title));
+
+		getSupportActionBar().setCustomView(v);
 	}
 
 	/**
@@ -80,6 +94,10 @@ public abstract class MyActivity2 extends SherlockActivity {
 	 */
 	public void actionbar() {
 
+	}
+
+	public void setActionBarTitle(String title) {
+		actionBarTitle.setText(title);
 	}
 
 	/**

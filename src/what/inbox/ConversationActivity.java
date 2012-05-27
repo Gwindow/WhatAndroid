@@ -1,152 +1,175 @@
 package what.inbox;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import what.forum.QuoteBuffer;
-import what.gui.MyActivity;
+import what.gui.ActivityNames;
+import what.gui.AsyncImageGetter;
+import what.gui.BundleKeys;
+import what.gui.ErrorToast;
+import what.gui.MyActivity2;
 import what.gui.R;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.text.Html;
 import android.view.View;
-import android.view.View.OnLongClickListener;
-import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebSettings.LayoutAlgorithm;
-import android.webkit.WebView;
-import android.widget.EditText;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
-import api.inbox.PrivateMessage;
 import api.inbox.conversation.Conversation;
 import api.inbox.conversation.Messages;
 
-public class ConversationActivity extends MyActivity implements OnLongClickListener {
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+/**
+ * The Class ConversationActivity.
+ * 
+ * @author Gwindow
+ * @since May 26, 2012 9:50:18 AM
+ */
+public class ConversationActivity extends MyActivity2 implements OnClickListener {
+	private static final int REPLY_TAG = 0;
+	private static final int QUOTE_TAG = 1;
+	private static final int USER_TAG = 2;
+
 	private ScrollView scrollView;
 	private LinearLayout scrollLayout;
-	private ProgressDialog dialog;
-	private Conversation conversation;
-	private Intent intent;
-	private int userId, convId;
-	private TextView conversationTitle;
-	private ArrayList<RelativeLayout> listOfMessages;
 
+	private Conversation conversation;
+	private int conversationId;
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		super.setActivityName(ActivityNames.INBOX);
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.conversation, true);
+		super.setContentView(R.layout.generic_scrollview, false);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void init() {
-		listOfMessages = new ArrayList<RelativeLayout>();
+		Bundle bundle = getIntent().getExtras();
+		conversationId = bundle.getInt(BundleKeys.CONVERSATION_ID);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void load() {
 		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
-		conversationTitle = (TextView) findViewById(R.id.titleText);
-		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
+		scrollLayout = (LinearLayout) findViewById(R.id.scrollLayout);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void prepare() {
-		getBundle();
-		new LoadConversation().execute();
+		new Load().execute();
 	}
 
-	private void getBundle() {
-		Bundle b = this.getIntent().getExtras();
-		userId = b.getInt("id");
-	}
+	/**
+	 * Populate with messages.
+	 */
+	private void populate() {
+		setActionBarTitle(conversation.getResponse().getSubject());
 
-	private void populateLayout() {
-		convId = conversation.getResponse().getConvId().intValue();
-		conversationTitle.setText(conversation.getResponse().getSubject());
 		List<Messages> messages = conversation.getResponse().getMessages();
-		RelativeLayout layout;
-		TextView username;
-		WebView body;
-		for (int i = 0; i < messages.size(); i++) {
-			layout = (RelativeLayout) getLayoutInflater().inflate(R.layout.message, null);
-			RelativeLayout relativeLayout = (RelativeLayout) layout.findViewById(R.id.content);
 
-			username = (TextView) layout.findViewById(R.id.username);
-			username.setText(messages.get(i).getSenderName());
-			body = (WebView) layout.findViewById(R.id.body);
-			body.loadData(messages.get(i).getBody().trim(), "text/html", "utf-8");
+		if (messages != null) {
+			for (int i = 0; i < messages.size(); i++) {
+				LinearLayout message_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.conversation_message, null);
 
-			body.getSettings().setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
-			body.getSettings().setSupportZoom(true);
-			body.setVerticalScrollBarEnabled(true);
-			body.setVerticalScrollbarOverlay(true);
+				TextView author = (TextView) message_layout.findViewById(R.id.author);
+				author.setText(messages.get(i).getSenderName());
 
-			if ((i % 2) == 0) {
-				relativeLayout.setBackgroundResource(R.drawable.color_transparent_white);
-				body.setBackgroundColor(0);
-			} else {
-				relativeLayout.setBackgroundResource(R.drawable.color_transparent_light_gray);
-				body.setBackgroundColor(0);
+				TextView date = (TextView) message_layout.findViewById(R.id.date);
+				date.setText(messages.get(i).getSentDate());
+
+				TextView body = (TextView) message_layout.findViewById(R.id.body);
+				body.setText(Html.fromHtml(messages.get(i).getBody(), new AsyncImageGetter(body, this), null));
+
+				ImageView reply = (ImageView) message_layout.findViewById(R.id.replyIcon);
+				reply.setTag(REPLY_TAG);
+				reply.setId(i);
+				reply.setOnClickListener(this);
+
+				ImageView quote = (ImageView) message_layout.findViewById(R.id.quoteIcon);
+				quote.setTag(QUOTE_TAG);
+				quote.setId(i);
+				quote.setOnClickListener(this);
+
+				ImageView user = (ImageView) message_layout.findViewById(R.id.userIcon);
+				user.setTag(USER_TAG);
+				user.setId(i);
+				user.setOnClickListener(this);
+				scrollLayout.addView(message_layout);
 			}
+		}
+	}
 
-			listOfMessages.add(layout);
-			listOfMessages.get(i).setId(i);
-			listOfMessages.get(i).setClickable(true);
-			listOfMessages.get(i).setOnLongClickListener(this);
-			scrollLayout.addView(listOfMessages.get(i));
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onClick(View v) {
+		switch (Integer.valueOf(v.getTag().toString())) {
+			case REPLY_TAG:
+				break;
+			case QUOTE_TAG:
+				QuoteBuffer.add(conversationId, Html.fromHtml(conversation.getResponse().getMessages().get(v.getId()).getBody())
+						.toString());
+				break;
+			case USER_TAG:
+				break;
+			default:
+				break;
 		}
 	}
 
-	private void openOptions(int i) {
-		Bundle b = new Bundle();
-		intent = new Intent(ConversationActivity.this, what.inbox.MessageOptionsActivity.class);
-		b.putString("post", conversation.getResponse().getMessages().get(i).getQuotableBody());
-		b.putInt("userId", conversation.getResponse().getMessages().get(i).getSenderId().intValue());
-		b.putInt("convId", conversation.getResponse().getConvId().intValue());
-		intent.putExtras(b);
-		startActivity(intent);
-	}
-
-	public void back(View v) {
-		finish();
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void onDownGesturePerformed() {
-		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.conversation_menu, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void onUpGesturePerformed() {
-		scrollView.fullScroll(ScrollView.FOCUS_UP);
-
-	}
-
-	@Override
-	public boolean onLongClick(View v) {
-		for (int i = 0; i < (listOfMessages.size()); i++) {
-			if (v.getId() == listOfMessages.get(i).getId()) {
-				openOptions(i);
-			}
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.reply_item:
+				break;
+			case R.id.refresh_item:
+				refresh();
+				break;
 		}
-		return false;
+		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onDestroy() {
-		QuoteBuffer.clear();
-		super.onDestroy();
-	}
+	private class Load extends AsyncTask<Void, Void, Boolean> {
+		private ProgressDialog dialog;
 
-	private class LoadConversation extends AsyncTask<Void, Void, Boolean> {
+		public Load() {
+			super();
+		}
+
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
@@ -158,97 +181,20 @@ public class ConversationActivity extends MyActivity implements OnLongClickListe
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			conversation = Conversation.conversationFromId(userId);
+			conversation = Conversation.conversationFromId(conversationId);
 			return conversation.getStatus();
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			if (status == true) {
-				populateLayout();
-			}
 			dialog.dismiss();
-			if (status == false) {
-				Toast.makeText(ConversationActivity.this, "Could not load conversation", Toast.LENGTH_LONG).show();
-			}
 			unlockScreenRotation();
+
+			if (status) {
+				populate();
+			} else
+				ErrorToast.show(ConversationActivity.this, ConversationActivity.class);
 		}
 	}
 
-	public void reply(View v) {
-		replyDialog();
-	}
-
-	private void replyDialog() {
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-		alert.setTitle("");
-		alert.setMessage("Reply");
-
-		final EditText input = new EditText(this);
-		input.setGravity(Gravity.TOP);
-		input.setGravity(Gravity.LEFT);
-		input.setMinHeight(this.getHeight() / 3);
-		input.setMinWidth(this.getWidth() / 2);
-		input.setText(QuoteBuffer.getBuffer());
-		input.setSelection(input.getSelectionEnd());
-		alert.setView(input);
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-		alert.setPositiveButton("Post", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int whichButton) {
-				if (input.getText().length() > 0) {
-					new PostReply().execute(input.getText().toString());
-				} else {
-					Toast.makeText(ConversationActivity.this, "Enter a reply", Toast.LENGTH_LONG).show();
-				}
-			}
-		});
-
-		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int whichButton) {
-
-			}
-		});
-
-		alert.show();
-	}
-
-	private class PostReply extends AsyncTask<String, Void, Boolean> {
-		@Override
-		protected void onPreExecute() {
-			lockScreenRotation();
-			dialog = new ProgressDialog(ConversationActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Sending...");
-			dialog.show();
-		}
-
-		@Override
-		protected Boolean doInBackground(String... params) {
-			try {
-				PrivateMessage pm = new PrivateMessage(userId, convId, params[0]);
-				pm.replyMessage();
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(Boolean status) {
-			dialog.dismiss();
-			if (status == true) {
-				Toast.makeText(ConversationActivity.this, "Reply sent", Toast.LENGTH_SHORT).show();
-			}
-			if (status == false) {
-				Toast.makeText(ConversationActivity.this, "Could not send reply", Toast.LENGTH_LONG).show();
-			}
-			unlockScreenRotation();
-		}
-	}
 }

@@ -44,6 +44,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
+	// TODO fix blocking when remeber is checked
 	private static final Class<?> REDIRECT_CLASS = InboxActivity.class;
 	private static final double VERSION = 0.50;
 	private static String SITE = "ssl.what.cd";

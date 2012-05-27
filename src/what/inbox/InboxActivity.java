@@ -3,6 +3,7 @@ package what.inbox;
 import java.util.List;
 
 import what.gui.ActivityNames;
+import what.gui.BundleKeys;
 import what.gui.ErrorToast;
 import what.gui.JumpToPageDialog;
 import what.gui.MyActivity2;
@@ -59,12 +60,10 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 	@Override
 	public void init() {
 		Bundle bundle = getIntent().getExtras();
-
 		try {
-			inboxPage = bundle.getInt("inboxPage");
+			inboxPage = bundle.getInt(BundleKeys.INBOX_PAGE);
 		} catch (Exception e) {
 		}
-
 	}
 
 	/**
@@ -86,10 +85,10 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 	}
 
 	/**
-	 * Populate section with threads.
+	 * Populate inbox with messages.
 	 */
 	private void populate() {
-		getSupportActionBar().setTitle("Inbox, " + inboxPage + "/" + inbox.getResponse().getPages());
+		setActionBarTitle("Inbox, " + inboxPage + "/" + inbox.getResponse().getPages());
 
 		List<Messages> messages = inbox.getResponse().getMessages();
 
@@ -144,7 +143,7 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 	public void onClick(View v) {
 		switch (Integer.valueOf(v.getTag().toString())) {
 			case MESSAGE_TAG:
-				Toast.makeText(this, String.valueOf(v.getId()), Toast.LENGTH_SHORT).show();
+				openMessage(v.getId());
 				break;
 			case SENDER_TAG:
 				Toast.makeText(this, String.valueOf(v.getId()), Toast.LENGTH_SHORT).show();
@@ -154,6 +153,15 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 		}
 	}
 
+	private void openMessage(int id) {
+		Intent intent = new Intent(this, ConversationActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt(BundleKeys.CONVERSATION_ID, id);
+		intent.putExtras(bundle);
+		startActivity(intent);
+
+	}
+
 	private void jumpToPage() {
 		new JumpToPageDialog(this, inbox.getResponse().getPages().intValue()) {
 			@Override
@@ -161,7 +169,7 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 				if (getPage() != -1) {
 					Intent intent = new Intent(InboxActivity.this, InboxActivity.class);
 					Bundle bundle = new Bundle();
-					bundle.putInt("inboxPage", getPage());
+					bundle.putInt(BundleKeys.INBOX_PAGE, getPage());
 					intent.putExtras(bundle);
 					startActivity(intent);
 				}
@@ -185,8 +193,6 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.new_thread_item:
-				break;
 			case R.id.jump_page_item:
 				jumpToPage();
 				break;

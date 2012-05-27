@@ -65,7 +65,7 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 	 * Populate section with threads.
 	 */
 	private void populate() {
-		getSupportActionBar().setTitle("Forum");
+		setActionBarTitle("Forum");
 
 		List<Categories> categories = forumSections.getResponse().getCategories();
 
