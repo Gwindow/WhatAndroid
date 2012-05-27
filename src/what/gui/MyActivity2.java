@@ -22,7 +22,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 
 public abstract class MyActivity2 extends SherlockActivity {
-	private static final int THEME = com.actionbarsherlock.R.style.Theme_Sherlock_ForceOverflow;
+	private static final int THEME = com.actionbarsherlock.R.style.Theme_Sherlock_Light_ForceOverflow;
 	private static final int MENU_PLACEHOLDER_ID = 1;
 	private static final int MENU_ITEM_ID = 2;
 	private View v;

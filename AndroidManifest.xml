@@ -1,267 +1,330 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="what.gui" android:versionCode="0" android:versionName="0.1"
-	android:installLocation="preferExternal">
-	<uses-sdk android:minSdkVersion="8" />
-	<uses-permission android:name="android.permission.INTERNET"
-		android:screenOrientation="portrait" />
+    package="what.gui"
+    android:installLocation="preferExternal"
+    android:versionCode="0"
+    android:versionName="0.1" >
 
-	<uses-permission android:name="android.permission.CAMERA" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
-	<uses-permission android:name="com.flattr4android.permission.READ_THING" />
-	<application android:icon="@drawable/icon" android:label="@string/app_name">
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.login.WhatAndroidActivity" android:theme="@style/Theme.Sherlock">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name=".MainMenu" android:theme="@style/Theme.MenuDialog"
-			android:noHistory="true">
+    <uses-sdk android:minSdkVersion="8" />
 
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name=".SearchMenu" android:theme="@style/Theme.MenuDialog"
-			android:noHistory="true">
+    <uses-permission
+        android:name="android.permission.INTERNET"
+        android:screenOrientation="portrait" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" >
+    </uses-permission>
+    <uses-permission android:name="com.flattr4android.permission.READ_THING" />
 
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.barcode.ScannerActivity" android:theme="@style/Theme.Sherlock">
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <activity
+            android:name="what.login.WhatAndroidActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.goggles.GogglesSearchActivity" android:theme="@style/Theme.Sherlock">
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainMenu"
+            android:noHistory="true"
+            android:theme="@style/Theme.MenuDialog"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name=".SearchMenu"
+            android:noHistory="true"
+            android:theme="@style/Theme.MenuDialog"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.barcode.ScannerActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.goggles.GogglesSearchActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.barcode.QuickScannerActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.home.HomeActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.forum.ForumSectionsListActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.gui.ReplyActivity"
+            android:noHistory="true"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity
+            android:name="what.forum.ForumActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.forum.SectionActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.forum.section.SectionActivity2"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.forum.ThreadActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.forum.ThreadActivity2"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.forum.ThreadInfoActivity"
+            android:theme="@style/Theme.NoTitleDialog"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.status.WhatStatusActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.top.TopTorrentsActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.subscriptions.SubscriptionsActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.search.UserSearchActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.search.RequestsSearchActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.search.TorrentSearchActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.torrents.artist.ArtistTabActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.torrents.ListActivity"
+            android:theme="@style/Theme.NoTitleDialog"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.torrents.artist.ArtistActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.torrents.artist.ArtistStatsActivity"
+            android:theme="@style/Theme.NoTitleDialog"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.torrents.artist.RequestListActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.requests.RequestTabActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.requests.RequestActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.requests.RequestDetailsActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.torrents.artist.TorrentListActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.torrents.torrents.TorrentTabActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.torrents.torrents.TorrentStatsActivity"
+            android:theme="@style/Theme.NoTitleDialog"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.torrents.torrents.TorrentInfoActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.torrents.torrents.TorrentFormatsActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.settings.SettingsActivity"
+            android:noHistory="false"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.donate.FlattrDonationActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.forum.PostOptionsActivity"
+            android:theme="@style/Theme.MenuDialog"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.inbox.MessageOptionsActivity"
+            android:theme="@style/Theme.MenuDialog"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.inbox.InboxActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.bookmarks.BookmarksTabActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.bookmarks.ArtistBookmarksActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.bookmarks.TorrentBookmarksActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.announcements.AnnouncementActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.announcements.BlogActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.notifications.NotificationsActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
 
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.barcode.QuickScannerActivity" android:theme="@style/Theme.Sherlock">
+        <service android:name="what.services.NotificationService" />
+        <service android:name="what.services.InboxService" />
+        <service android:name="what.services.AnnouncementService" />
 
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.home.HomeActivity" android:theme="@style/Theme.Sherlock">
+        <activity
+            android:name="what.user.UserProfilePopUpActivity"
+            android:noHistory="true"
+            android:theme="@style/Theme.NoTitleDialog"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.user.UserProfileTabActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.user.UserProfileInfoActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.user.UserProfileStatsActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.debug.DebugActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.inbox.ReportActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.inbox.ConversationActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.inbox.NewConversationActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.forum.NewThreadActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.sherlockbot.SherlockActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
 
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.forum.ForumSectionsListActivity" android:theme="@style/Theme.Sherlock">
-		</activity>
-		
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.forum.ForumActivity" android:theme="@style/Theme.Sherlock">
-		</activity>
-		
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.forum.SectionActivity" android:theme="@style/Theme.Sherlock">
+        <receiver
+            android:name="what.widget.UserStatsWidgetProvider"
+            android:icon="@drawable/icon"
+            android:label="What.CD User Stats" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.forum.section.SectionActivity2" android:theme="@style/Theme.Sherlock">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/userstatswidgetinfo" />
+        </receiver>
+    </application>
 
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.forum.ThreadActivity" android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.forum.ThreadActivity2" android:theme="@style/Theme.Sherlock">
-		</activity>
-		
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.forum.ThreadInfoActivity" android:theme="@style/Theme.NoTitleDialog">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.status.WhatStatusActivity" android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.top.TopTorrentsActivity">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.subscriptions.SubscriptionsActivity">
-
-		</activity>
-
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.search.UserSearchActivity" android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.search.RequestsSearchActivity" android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.search.TorrentSearchActivity" android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.torrents.artist.ArtistTabActivity" android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.torrents.ListActivity" android:theme="@style/Theme.NoTitleDialog">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.torrents.artist.ArtistActivity" android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.torrents.artist.ArtistStatsActivity"
-			android:theme="@style/Theme.NoTitleDialog">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.torrents.artist.RequestListActivity"
-			android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.requests.RequestTabActivity" android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.requests.RequestActivity" android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.requests.RequestDetailsActivity" android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.torrents.artist.TorrentListActivity"
-			android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.torrents.torrents.TorrentTabActivity"
-			android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.torrents.torrents.TorrentStatsActivity"
-			android:theme="@style/Theme.NoTitleDialog">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.torrents.torrents.TorrentInfoActivity"
-			android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.torrents.torrents.TorrentFormatsActivity"
-			android:theme="@style/Theme.Sherlock">
-
-		</activity>
-
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.settings.SettingsActivity" android:theme="@style/Theme.Sherlock"
-			android:noHistory="false">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.donate.FlattrDonationActivity">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.forum.PostOptionsActivity" android:theme="@style/Theme.MenuDialog">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.inbox.MessageOptionsActivity" android:theme="@style/Theme.MenuDialog">
-
-		</activity>
-
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.inbox.InboxActivity">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.bookmarks.BookmarksTabActivity">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.bookmarks.ArtistBookmarksActivity">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.bookmarks.TorrentBookmarksActivity">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.announcements.AnnouncementActivity">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:name="what.announcements.BlogActivity" android:theme="@style/Theme.Sherlock">
-
-		</activity>
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.notifications.NotificationsActivity">
-
-		</activity>
-
-		<service android:name="what.services.NotificationService" />
-		<service android:name="what.services.InboxService" />
-		<service android:name="what.services.AnnouncementService" />
-
-
-		<activity android:windowSoftInputMode="adjustPan"
-			android:noHistory="true" android:name="what.user.UserProfilePopUpActivity"
-			android:theme="@style/Theme.NoTitleDialog">
-		</activity>
-
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.user.UserProfileTabActivity">
-		</activity>
-
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.user.UserProfileInfoActivity">
-		</activity>
-
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.user.UserProfileStatsActivity">
-		</activity>
-
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.debug.DebugActivity">
-		</activity>
-
-
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.inbox.ReportActivity">
-		</activity>
-
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.inbox.ConversationActivity">
-
-		</activity>
-
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.inbox.NewConversationActivity">
-
-		</activity>
-
-		<activity android:windowSoftInputMode="adjustPan"
-			android:theme="@style/Theme.Sherlock" android:name="what.forum.NewThreadActivity">
-		</activity>
-
-		<activity android:theme="@style/Theme.Sherlock"
-			android:windowSoftInputMode="adjustResize" android:name="what.sherlockbot.SherlockActivity">
-		</activity>
-
-		<receiver android:name="what.widget.UserStatsWidgetProvider"
-			android:label="What.CD User Stats" android:icon="@drawable/icon">
-			<intent-filter>
-				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-			</intent-filter>
-			<meta-data android:name="android.appwidget.provider"
-				android:resource="@xml/userstatswidgetinfo" />
-		</receiver>
-	</application>
 </manifest>

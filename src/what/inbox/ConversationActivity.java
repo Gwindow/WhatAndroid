@@ -9,7 +9,9 @@ import what.gui.BundleKeys;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
 import what.gui.R;
+import what.gui.ReplyActivity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -27,7 +29,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 /**
- * The Class ConversationActivity.
+ * Displays the "conversation" inside a private message.
  * 
  * @author Gwindow
  * @since May 26, 2012 9:50:18 AM
@@ -155,12 +157,24 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.reply_item:
+				// close options menu for the fade effect
+				closeOptionsMenu();
+				reply();
 				break;
 			case R.id.refresh_item:
 				refresh();
 				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void reply() {
+		Intent intent = new Intent(this, ReplyActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putString(BundleKeys.REPLY_TYPE, BundleKeys.REPLY_TYPE_MESSAGE);
+		bundle.putInt(BundleKeys.CONVERSATION_ID, conversationId);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	private class Load extends AsyncTask<Void, Void, Boolean> {
