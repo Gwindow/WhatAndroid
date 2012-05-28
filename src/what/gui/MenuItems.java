@@ -6,6 +6,7 @@ import java.util.Map;
 import what.forum.ForumActivity;
 import what.home.HomeActivity;
 import what.inbox.InboxActivity;
+import what.search.TorrentSearchActivity;
 
 /**
  * Enum thats hold menu items
@@ -34,7 +35,7 @@ public enum MenuItems {
 		map = new EnumMap<MenuItems, Class<?>>(MenuItems.class);
 		map.put(HOME, HomeActivity.class);
 		map.put(FORUM, ForumActivity.class);
-		map.put(TORRENTS, HomeActivity.class);
+		map.put(TORRENTS, TorrentSearchActivity.class);
 		map.put(REQUESTS, HomeActivity.class);
 		map.put(USERS, HomeActivity.class);
 		map.put(INBOX, InboxActivity.class);

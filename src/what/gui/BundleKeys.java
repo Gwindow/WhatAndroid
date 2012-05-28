@@ -13,8 +13,8 @@ public class BundleKeys {
 	public static final String REPLY_TYPE = "replyType";
 	public static final String REPLY_TYPE_THREAD = "replyTypeThread";
 	public static final String REPLY_TYPE_MESSAGE = "replyTypeMessage";
-
 	public static final String THREAD_ID = "threadId";
 	public static final String USER_ID = "userId";
+	public static final String TORRENT_SEARCH_PAGE = "torrentSearchPage";
 
 }

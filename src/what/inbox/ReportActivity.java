@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import api.inbox.PrivateMessage;
 
+//TODO MODIFY
 public class ReportActivity extends MyActivity {
 	private static final String SUBJECT_ONE = "Bug Report";
 	private static final String SUBJECT_TWO = "Suggestion Report";

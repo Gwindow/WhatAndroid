@@ -1,247 +1,211 @@
 package what.search;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import what.gui.MyActivity;
+import what.gui.ActivityNames;
+import what.gui.BundleKeys;
+import what.gui.ErrorToast;
+import what.gui.MyActivity2;
+import what.gui.MyScrollView;
 import what.gui.R;
-import what.torrents.torrents.TorrentTabActivity;
+import what.gui.Scrollable;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import api.search.torrents.TorrentSearch;
 
-public class TorrentSearchActivity extends MyActivity implements OnClickListener {
-	private ScrollView scrollView;
-	private ArrayList<TextView> resultList;
-	private HashMap<Integer, Integer> idMap;
-	private LinearLayout scrollLayout;
-	private TorrentSearch torrentSearch;
-	private Intent intent;
-	private ProgressDialog dialog;
-	private String searchTerm = "", tagSearchTerm = "";
-	private EditText searchBar, tagSearchBar;
-	private Button backButton, nextButton;
-	private int page;
-	private boolean searchBarsVisible = true;
+/**
+ * @author Gwindow
+ * @since May 28, 2012 11:04:47 AM
+ */
+public class TorrentSearchActivity extends MyActivity2 implements Scrollable, OnClickListener {
+	private static final int ARTIST_TAG = 0;
+	private static final int TORRENT_TAG = 1;
 
+	private MyScrollView scrollView;
+	private LinearLayout scrollLayout;
+
+	private EditText searchTermField;
+	private EditText tagField;
+
+	private TorrentSearch torrentSearch;
+	private int torrentSearchPage = 1;
+
+	private String searchTerm;
+	private String tagSearchTerm;
+
+	private boolean isLoaded;
+	private boolean areSearchBarsHidden;
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		super.setActivityName(ActivityNames.SEARCH);
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.torrentsearch, true);
+		super.setContentView(R.layout.torrent_search, false);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void init() {
-		resultList = new ArrayList<TextView>();
-		idMap = new HashMap<Integer, Integer>();
+		Bundle bundle = getIntent().getExtras();
+		try {
+			torrentSearchPage = bundle.getInt(BundleKeys.TORRENT_SEARCH_PAGE);
+		} catch (Exception e) {
+		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void load() {
-		backButton = (Button) this.findViewById(R.id.previousButton);
-		nextButton = (Button) this.findViewById(R.id.nextButton);
-		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
+		scrollView = (MyScrollView) this.findViewById(R.id.scrollView);
+		scrollView.attachScrollable(this);
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
-		searchBar = (EditText) this.findViewById(R.id.searchBar);
-		tagSearchBar = (EditText) this.findViewById(R.id.tagsearchBar);
+
+		searchTermField = (EditText) this.findViewById(R.id.searchBar);
+		tagField = (EditText) this.findViewById(R.id.tagsearchBar);
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void prepare() {
-		setButtonState(backButton, false);
-		setButtonState(nextButton, false);
-		getBundle();
+		setActionBarTitle("Torrent Search");
+	}
 
-		// if the page is greater than one than get the search term and automatically search for it
-		if ((page > 1) || (searchTerm.length() > 0)) {
-			searchBar.setText(searchTerm);
-			search(null);
-		}
+	/**
+	 * Populate with search results
+	 */
+	public void populate() {
+		setActionBarTitle("Torrent Search, " + torrentSearchPage + "/" + torrentSearch.getResponse().getPages());
 
 	}
 
-	private void getBundle() {
-		Bundle b = this.getIntent().getExtras();
-		try {
-			page = b.getInt("page");
-		} catch (Exception e) {
-			page = 1;
-		}
-
-		try {
-			searchTerm = b.getString("searchTerm");
-		} catch (Exception e) {
-			searchTerm = "";
-		}
-
-		try {
-			tagSearchTerm = b.getString("tagSearchTerm");
-		} catch (Exception e) {
-			tagSearchTerm = "";
-		}
-	}
-
-	private void hideSearchBars() {
-		searchBar.setVisibility(EditText.GONE);
-		tagSearchBar.setVisibility(EditText.GONE);
-		searchBarsVisible = false;
-	}
-
-	private void showSearchBars() {
-		searchBar.setVisibility(EditText.VISIBLE);
-		tagSearchBar.setVisibility(EditText.VISIBLE);
-		searchBarsVisible = true;
-
-	}
-
+	/**
+	 * Called when search button is clicked, starts the search.
+	 * 
+	 * @param v
+	 */
 	public void search(View v) {
-		if (searchBarsVisible) {
-			searchTerm = searchBar.getText().toString().trim();
-			tagSearchTerm = tagSearchBar.getText().toString().trim();
-			if (searchTerm.length() < 0) {
-				searchTerm = "";
-			}
-			if (tagSearchTerm.length() < 0) {
-				tagSearchTerm = "";
-			}
-			// reset the page to 1 for the next search
-			page = 1;
-			clear();
-			new LoadSearchResults().execute();
-			hideSearchBars();
-		} else {
-			showSearchBars();
-		}
-
-	}
-
-	private void populateLayout() {
-		setButtonState(backButton, torrentSearch.hasPreviousPage());
-		setButtonState(nextButton, torrentSearch.hasNextPage());
-
-		List<api.search.torrents.Results> results = torrentSearch.getResponse().getResults();
-
-		if (!results.isEmpty()) {
-
-			for (int i = 0; i < results.size(); i++) {
-				if ((i % 2) == 0) {
-					resultList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_even, null));
-				} else {
-					resultList.add((TextView) getLayoutInflater().inflate(R.layout.forum_name_odd, null));
-				}
-				if (results.get(i).getGroupYear() != null) {
-					resultList.get(i).setText(
-							results.get(i).getGroupName() + " [" + results.get(i).getGroupYear().toString() + "]");
-				} else {
-					resultList.get(i).setText(results.get(i).getGroupName());
-				}
-				resultList.get(i).setTextSize(18);
-				resultList.get(i).setId(i);
-				resultList.get(i).setOnClickListener(this);
-				scrollLayout.addView(resultList.get(i));
-				idMap.put(i, results.get(i).getGroupId().intValue());
+		if (!areSearchBarsHidden) {
+			if (searchTermField.length() > 0) {
+				searchTerm = searchTermField.getText().toString().trim();
+				tagSearchTerm = tagField.getText().toString().trim();
+				// resets variables for the search
+				torrentSearchPage = 1;
+				setActionBarTitle("Torrent Search");
+				toggleSearchBars();
+				new Load().execute();
+			} else {
+				Toast.makeText(this, "No search term entered", Toast.LENGTH_SHORT).show();
 			}
 		} else {
-			Toast.makeText(this, "Nothing found", Toast.LENGTH_SHORT).show();
+			toggleSearchBars();
 		}
-	}
-
-	private void clear() {
-		try {
-			resultList.clear();
-			scrollLayout.removeAllViews();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void openTorrent(int id) {
-		Bundle b = new Bundle();
-		Intent intent = new Intent(TorrentSearchActivity.this, TorrentTabActivity.class);
-		b.putInt("torrentGroupId", id);
-		intent.putExtras(b);
-		startActivity(intent);
 	}
 
 	@Override
 	public void onClick(View v) {
-		for (int i = 0; i < (resultList.size()); i++) {
-			if (v.getId() == resultList.get(i).getId()) {
-				openTorrent(idMap.get(v.getId()));
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void scrolledToBottom() {
+		nextPage();
+	}
+
+	/**
+	 * Load the next page while currentPage < totalPages.
+	 */
+	private void nextPage() {
+		if (isLoaded) {
+			if (torrentSearchPage < torrentSearch.getResponse().getPages().intValue()) {
+				torrentSearchPage++;
+				new Load(true).execute();
 			}
 		}
 	}
 
-	public void next(View v) {
-		if (torrentSearch.hasNextPage()) {
-			Bundle b = new Bundle();
-			intent = new Intent(TorrentSearchActivity.this, what.search.TorrentSearchActivity.class);
-			b.putInt("page", page + 1);
-			b.putString("searchTerm", searchTerm);
-			b.putString("tagSearchTerm", tagSearchTerm);
-			intent.putExtras(b);
-			startActivity(intent);
+	private void toggleSearchBars() {
+		if (areSearchBarsHidden) {
+			searchTermField.setVisibility(View.VISIBLE);
+			tagField.setVisibility(View.VISIBLE);
+		} else {
+			searchTermField.setVisibility(View.GONE);
+			tagField.setVisibility(View.GONE);
 		}
 	}
 
-	public void back(View v) {
-		finish();
-	}
+	private class Load extends AsyncTask<Void, Void, Boolean> {
+		private ProgressDialog dialog;
+		private ProgressBar bar;
+		private boolean useEmbeddedDialog;
 
-	@Override
-	public void onRightGesturePerformed() {
-		next(null);
-	}
+		public Load() {
+			super();
+		}
 
-	@Override
-	public void onDownGesturePerformed() {
-		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-	}
+		public Load(boolean useEmbeddedDialog) {
+			this.useEmbeddedDialog = useEmbeddedDialog;
+		}
 
-	@Override
-	public void onUpGesturePerformed() {
-		scrollView.fullScroll(ScrollView.FOCUS_UP);
-
-	}
-
-	private class LoadSearchResults extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPreExecute() {
-			lockScreenRotation();
-			dialog = new ProgressDialog(TorrentSearchActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Loading...");
-			dialog.show();
+			isLoaded = false;
+			if (useEmbeddedDialog) {
+				bar = new ProgressBar(TorrentSearchActivity.this);
+				bar.setIndeterminate(true);
+				scrollLayout.addView(bar);
+			} else {
+				lockScreenRotation();
+				dialog = new ProgressDialog(TorrentSearchActivity.this);
+				dialog.setIndeterminate(true);
+				dialog.setMessage("Loading...");
+				dialog.show();
+			}
 		}
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			torrentSearch = TorrentSearch.torrentSearchFromSearchTermAndTags(searchTerm, tagSearchTerm, page);
+			torrentSearch = TorrentSearch.torrentSearchFromSearchTermAndTags(searchTerm, tagSearchTerm);
 			return torrentSearch.getStatus();
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			if (status == true) {
-				populateLayout();
+			isLoaded = true;
+			if (useEmbeddedDialog) {
+				hideProgressBar();
+			} else {
+				dialog.dismiss();
+				unlockScreenRotation();
 			}
-			dialog.dismiss();
-			if (status == false) {
-				Toast.makeText(TorrentSearchActivity.this, "Could not load search results", Toast.LENGTH_LONG).show();
+
+			if (status) {
+				populate();
+			} else {
+				ErrorToast.show(TorrentSearchActivity.this, TorrentSearchActivity.class);
 			}
-			unlockScreenRotation();
+		}
+
+		private void hideProgressBar() {
+			scrollLayout.removeViewAt(scrollLayout.getChildCount() - 1);
 		}
 	}
+
 }

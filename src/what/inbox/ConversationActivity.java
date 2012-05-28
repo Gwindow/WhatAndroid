@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import api.inbox.conversation.Conversation;
 import api.inbox.conversation.Messages;
@@ -39,7 +38,6 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 	private static final int QUOTE_TAG = 1;
 	private static final int USER_TAG = 2;
 
-	private ScrollView scrollView;
 	private LinearLayout scrollLayout;
 
 	private Conversation conversation;
@@ -69,7 +67,6 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 	 */
 	@Override
 	public void load() {
-		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) findViewById(R.id.scrollLayout);
 	}
 
@@ -128,6 +125,9 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 	public void onClick(View v) {
 		switch (Integer.valueOf(v.getTag().toString())) {
 			case REPLY_TAG:
+				QuoteBuffer.add(conversationId, Html.fromHtml(conversation.getResponse().getMessages().get(v.getId()).getBody())
+						.toString());
+				reply();
 				break;
 			case QUOTE_TAG:
 				QuoteBuffer.add(conversationId, Html.fromHtml(conversation.getResponse().getMessages().get(v.getId()).getBody())

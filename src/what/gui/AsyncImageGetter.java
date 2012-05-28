@@ -15,14 +15,29 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.Html.ImageGetter;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 /**
  * Based from the example found here http://stackoverflow.com/questions/7424512/android-html-imagegetter-as-asynctask
  */
 public class AsyncImageGetter implements ImageGetter {
-	Context c;
-	View container;
+	private Context c;
+	private View container;
+	private int width, height;
+
+	/***
+	 * Construct the URLImageParser which will execute AsyncTask and refresh the container
+	 * 
+	 * @param t
+	 * @param c
+	 */
+	public AsyncImageGetter(View t, Context c, int width, int height) {
+		this.c = c;
+		this.container = t;
+		this.width = width;
+		this.height = height;
+	}
 
 	/***
 	 * Construct the URLImageParser which will execute AsyncTask and refresh the container
@@ -33,6 +48,8 @@ public class AsyncImageGetter implements ImageGetter {
 	public AsyncImageGetter(View t, Context c) {
 		this.c = c;
 		this.container = t;
+		this.width = width;
+		this.height = height;
 	}
 
 	@Override
@@ -49,6 +66,7 @@ public class AsyncImageGetter implements ImageGetter {
 
 	public class ImageGetterAsyncTask extends AsyncTask<String, Void, Drawable> {
 		URLDrawable urlDrawable;
+		private DisplayMetrics displaymetrics;
 
 		public ImageGetterAsyncTask(URLDrawable d) {
 			this.urlDrawable = d;

@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public abstract class MyActivity2 extends SherlockActivity {
 	private View v;
 	private String activityName;
 	private TextView actionBarTitle;
+	private DisplayMetrics metrics;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,9 @@ public abstract class MyActivity2 extends SherlockActivity {
 		if ((Settings.getSettings() == null) | (Settings.getSettingsEditor() == null)) {
 			Settings.init(this);
 		}
+
+		metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
 		init();
 
@@ -211,6 +216,13 @@ public abstract class MyActivity2 extends SherlockActivity {
 			}
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * @return the metrics
+	 */
+	public DisplayMetrics getMetrics() {
+		return metrics;
 	}
 
 }
