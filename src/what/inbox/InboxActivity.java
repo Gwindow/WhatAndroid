@@ -177,9 +177,6 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 		}.create().show();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
@@ -187,9 +184,6 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

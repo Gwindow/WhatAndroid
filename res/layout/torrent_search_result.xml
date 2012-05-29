@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_width"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="15dip" >
@@ -9,20 +9,11 @@
         android:id="@+id/artistTitle"
         style="@style/SearchResult"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="asdasd" >
+        android:layout_height="wrap_content" >
     </TextView>
 
     <TextView
-        android:id="@+id/hyphen"
-        style="@style/SearchResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" - " >
-    </TextView>
-
-    <TextView
-        android:id="@+id/albumTitle"
+        android:id="@+id/groupTitle"
         style="@style/SearchResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >

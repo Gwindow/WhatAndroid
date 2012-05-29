@@ -1,13 +1,17 @@
 package what.search;
 
+import java.util.List;
+
 import what.gui.ActivityNames;
 import what.gui.BundleKeys;
 import what.gui.ErrorToast;
+import what.gui.JumpToPageDialog;
 import what.gui.MyActivity2;
 import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.Scrollable;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -15,8 +19,13 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
+import api.search.torrents.Results;
 import api.search.torrents.TorrentSearch;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * @author Gwindow
@@ -24,7 +33,7 @@ import api.search.torrents.TorrentSearch;
  */
 public class TorrentSearchActivity extends MyActivity2 implements Scrollable, OnClickListener {
 	private static final int ARTIST_TAG = 0;
-	private static final int TORRENT_TAG = 1;
+	private static final int GROUP_TAG = 1;
 
 	private MyScrollView scrollView;
 	private LinearLayout scrollLayout;
@@ -35,8 +44,8 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 	private TorrentSearch torrentSearch;
 	private int torrentSearchPage = 1;
 
-	private String searchTerm;
-	private String tagSearchTerm;
+	private String searchTerm = "";
+	private String tagSearchTerm = "";
 
 	private boolean isLoaded;
 	private boolean areSearchBarsHidden;
@@ -91,6 +100,30 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 	public void populate() {
 		setActionBarTitle("Torrent Search, " + torrentSearchPage + "/" + torrentSearch.getResponse().getPages());
 
+		List<Results> results = torrentSearch.getResponse().getResults();
+
+		if (results != null) {
+			for (int i = 0; i < results.size(); i++) {
+				LinearLayout result_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.torrent_search_result, null);
+
+				// not all results have artists
+				if (results.get(i).getArtist() != null) {
+					TextView artist = (TextView) result_layout.findViewById(R.id.artistTitle);
+					artist.setText(results.get(i).getArtist() + " - ");
+					// TODO add artist id
+					artist.setTag(ARTIST_TAG);
+					artist.setOnClickListener(this);
+				}
+
+				TextView group = (TextView) result_layout.findViewById(R.id.groupTitle);
+				group.setText(results.get(i).getGroupName());
+				group.setTag(GROUP_TAG);
+				group.setId(results.get(i).getGroupId().intValue());
+				group.setOnClickListener(this);
+
+				scrollLayout.addView(result_layout);
+			}
+		}
 	}
 
 	/**
@@ -100,17 +133,13 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 	 */
 	public void search(View v) {
 		if (!areSearchBarsHidden) {
-			if (searchTermField.length() > 0) {
-				searchTerm = searchTermField.getText().toString().trim();
-				tagSearchTerm = tagField.getText().toString().trim();
-				// resets variables for the search
-				torrentSearchPage = 1;
-				setActionBarTitle("Torrent Search");
-				toggleSearchBars();
-				new Load().execute();
-			} else {
-				Toast.makeText(this, "No search term entered", Toast.LENGTH_SHORT).show();
-			}
+			searchTerm = searchTermField.getText().toString().trim();
+			tagSearchTerm = tagField.getText().toString().trim();
+			// resets variables for the search
+			torrentSearchPage = 1;
+			setActionBarTitle("Torrent Search");
+			toggleSearchBars();
+			new Load().execute();
 		} else {
 			toggleSearchBars();
 		}
@@ -118,7 +147,20 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 
 	@Override
 	public void onClick(View v) {
+		switch (Integer.valueOf(v.getTag().toString())) {
+			case ARTIST_TAG:
+				// TODO finish
+				break;
+			case GROUP_TAG:
+				openGroup(v.getId());
+				break;
+			default:
+				break;
+		}
+	}
 
+	private void openGroup(int id) {
+		// Intent intent = new Intent(this);
 	}
 
 	/**
@@ -139,6 +181,41 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 				new Load(true).execute();
 			}
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.torrent_search_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.jump_page_item:
+				jumpToPage();
+				break;
+			case R.id.refresh_item:
+				refresh();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void jumpToPage() {
+		new JumpToPageDialog(this, torrentSearch.getResponse().getPages().intValue()) {
+			@Override
+			public void jumpToPage() {
+				if (getPage() != -1) {
+					Intent intent = new Intent(TorrentSearchActivity.this, TorrentSearchActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putInt(BundleKeys.TORRENT_SEARCH_PAGE, getPage());
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
+			}
+		}.create().show();
 	}
 
 	private void toggleSearchBars() {
