@@ -6,6 +6,26 @@
     <title>What.CD Android App by Gwindow</title>
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    
+    <style type="text/css">
+ul.ppt {
+	position: relative;
+}
+
+.ppt li {
+	list-style-type: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.ppt img {
+	border: 1px solid #e7e7e7;
+	padding: 5px;
+	background-color: #ececec;
+}
+</style>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="javascripts/respond.js"></script>
     <script type="text/javascript" src="tinyfader.js"></script>
@@ -76,8 +96,21 @@
 <h3>Support or Contact</h3>
 
 <p>Have questions? Contact <a href="https://github.com/Gwindow" class="user-mention">@Gwindow</a> through GitHub, What.CD, or in #whatAndroid.</p>
-      </section>
 
+<h3>Screenshots</h3>
+<ul class="ppt">
+	<li><img src="http://dl.dropbox.com/u/31377518/WhatAndroid/device-2012-05-28-174047.png"></img></li>
+	<li><img src="http://dl.dropbox.com/u/31377518/WhatAndroid/device-2012-05-28-174707.png"></img></li>
+	<li><img src="http://dl.dropbox.com/u/31377518/WhatAndroid/device-2012-05-28-174819.png"></img></li>
+	<li><img src="http://dl.dropbox.com/u/31377518/WhatAndroid/device-2012-05-28-181018.png"></img></li>
+	<li><img src="http://dl.dropbox.com/u/31377518/WhatAndroid/device-2012-05-28-184022.png"></img></li>
+	<li><img src="http://dl.dropbox.com/u/31377518/WhatAndroid/device-2012-05-28-190528.png"></img></li>
+	<li><img src="http://dl.dropbox.com/u/31377518/WhatAndroid/vusdw-resized.png"></img></li>
+	<li><img src="http://dl.dropbox.com/u/31377518/WhatAndroid/xtdlz-resized.png"></img></li>
+	<li><img src="http://dl.dropbox.com/u/31377518/WhatAndroid/0jqf6-resized.png"></img></li>
+</ul>
+     	
+     </section>
     </div>
     
      <div style="visibility:hidden">
@@ -107,18 +140,28 @@
     <update>https://github.com/Gwindow/WhatAndroid/blob/master/bin/WhatAndroid.apk?raw=true</update>
   </div>
 
-    
-    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
-  <script type="text/javascript">
-var slideshow=new TINY.fader.fade('slideshow',{
-  id:'slides',
-	auto:3,
-	resume:true,
-	navid:'pagination',
-	activeclass:'current',
-	visible:true,
-	position:0
-});
+<script type="text/javascript">
+$('.ppt li:gt(0)').hide();
+$('.ppt li:last').addClass('last');
+var cur = $('.ppt li:first');
+
+function animate() {
+	cur.fadeOut( 1000 );
+	if ( cur.attr('class') == 'last' )
+		cur = $('.ppt li:first');
+	else
+		cur = cur.next();
+	cur.fadeIn( 1000 );
+}
+
+$(function() {
+	setInterval( "animate()", 5000 );
+} );
 </script>
+</body>
+</html>
+
+
+
   </body>
 </html>
