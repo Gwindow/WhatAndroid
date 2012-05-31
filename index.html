@@ -9,6 +9,21 @@
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     
     <style type="text/css">
+div.left {
+width:45%;
+position:absolute;
+left:0;
+
+}
+
+div.right{
+width:45%;
+position:absolute;
+right:0;
+
+}    
+    
+    
 ul.ppt {
 	position: relative;
 }
@@ -89,14 +104,20 @@ ul.ppt {
           <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
         </div>
 
+<div class="left">
+<h3>Description</h3>
         <p>An android app for What.CD, includes everything you love about What.CD as well as barcode scanning for quick music look ups.</p>
 
-        <p>The app will work with a default setup of Gazelle, just change the url to point to your site and enjoy.</p>
+        <p>The app will work with a default setup of Gazelle, just change the url to point to your site and enjoy. If you are building from source the <a href="https://github.com/Gwindow/WhatAPI">WhatAPI</a> project is required.</p>
 
 
 <h3>Support or Contact</h3>
 
-<p>Have questions? Contact <a href="https://github.com/Gwindow" class="user-mention">@Gwindow</a> through GitHub, What.CD, or in #whatAndroid.</p>
+<p>Have questions? Contact <a href="https://github.com/Gwindow" class="user-mention">Gwindow</a> through GitHub, What.CD, or in <a href="http://what-network.net/">#whatAndroid</a>.</p>
+
+</div>
+
+<div class="right">
 
 <h3>Screenshots</h3>
 <ul class="ppt">
@@ -110,6 +131,8 @@ ul.ppt {
 	<li><img src="images/xtdlz-resized.png"></img></li>
 	<li><img src="images/0jqf6-resized.png"></img></li>
 </ul>
+
+</div>
      	
      </section>
     </div>
@@ -156,7 +179,7 @@ function animate() {
 }
 
 $(function() {
-	setInterval( "animate()", 5000 );
+	setInterval( "animate()", 2000 );
 } );
 </script>
 </body>
