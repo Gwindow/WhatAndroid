@@ -11,9 +11,9 @@ import what.cache.ImageCache;
 import what.gui.MenuItems;
 import what.gui.MyActivity;
 import what.gui.R;
+import what.search.TorrentSearchActivity;
 import what.settings.Settings;
 import what.status.WhatStatusActivity;
-import what.torrents.torrents.TorrentGroupActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -45,7 +45,7 @@ import com.actionbarsherlock.view.MenuItem;
 public class WhatAndroidActivity extends MyActivity implements OnClickListener {
 	// TODO remove
 	// TODO fix blocking when remember is checked
-	private static final Class<?> REDIRECT_CLASS = TorrentGroupActivity.class;
+	private static final Class<?> REDIRECT_CLASS = TorrentSearchActivity.class;
 	private static final double VERSION = 0.50;
 	private static String SITE = "ssl.what.cd";
 	private static boolean USE_SSL = true;

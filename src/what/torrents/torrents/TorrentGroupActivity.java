@@ -1,6 +1,7 @@
 package what.torrents.torrents;
 
 import what.gui.ActivityNames;
+import what.gui.BundleKeys;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
 import what.gui.R;
@@ -24,12 +25,12 @@ import com.viewpagerindicator.TitleProvider;
  * @since May 28, 2012 5:58:11 PM
  */
 public class TorrentGroupActivity extends MyActivity2 {
-	protected static final String ALBUM_ART_TAG = "Album Art";
-	protected static final String DESCRIPTION_TAG = "Description";
-	protected static final String FORMATS_TAG = "Formats";
-	protected static final String COMMENTS_TAG = "Comments";
-
-	private static final String[] TABS = new String[] { ALBUM_ART_TAG, DESCRIPTION_TAG, FORMATS_TAG, COMMENTS_TAG };
+	private static final String ART_TAG = "Art";
+	private static final String DESCRIPTION_TAG = "Description";
+	private static final String FORMATS_TAG = "Formats";
+	private static final String COMMENTS_TAG = "Comments";
+	// TODO add comments
+	private static final String[] TABS = new String[] { ART_TAG, DESCRIPTION_TAG, FORMATS_TAG };
 
 	private FragmentPagerAdapter adapter;
 	private ViewPager pager;
@@ -42,7 +43,6 @@ public class TorrentGroupActivity extends MyActivity2 {
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.MUSIC);
 		super.onCreate(savedInstanceState);
-
 	}
 
 	/**
@@ -52,8 +52,7 @@ public class TorrentGroupActivity extends MyActivity2 {
 	public void init() {
 		Bundle bundle = getIntent().getExtras();
 		try {
-			// torrentGroupId = bundle.getInt(BundleKeys.TORRENT_GROUP_ID);
-			torrentGroupId = 72190217;
+			torrentGroupId = bundle.getInt(BundleKeys.TORRENT_GROUP_ID);
 		} catch (Exception e) {
 		}
 
@@ -65,7 +64,8 @@ public class TorrentGroupActivity extends MyActivity2 {
 	private void populate() {
 		setContentView(R.layout.torrent_group_tabs);
 
-		setActionBarTitle(torrentGroup.getResponse().getGroup().getName());
+		setActionBarTitle(torrentGroup.getResponse().getGroup().getName() + " ["
+				+ torrentGroup.getResponse().getGroup().getYear() + "]");
 
 		adapter = new TorrentGroupAdapter(getSupportFragmentManager());
 
@@ -116,13 +116,14 @@ public class TorrentGroupActivity extends MyActivity2 {
 		public Fragment getItem(int position) {
 			Fragment fragment = null;
 			String tag = TABS[position % TABS.length];
-			if (tag.equals(ALBUM_ART_TAG)) {
+			if (tag.equals(ART_TAG)) {
 				fragment = new ArtFragment(torrentGroup.getResponse().getGroup().getWikiImage());
 			}
 			if (tag.equals(DESCRIPTION_TAG)) {
 				fragment = new DescriptionFragment(torrentGroup.getResponse().getGroup().getWikiBody());
-			} else {
-				fragment = new ArtFragment(torrentGroup.getResponse().getGroup().getWikiImage());
+			}
+			if (tag.equals(FORMATS_TAG)) {
+				fragment = new FormatsFragment(torrentGroup.getResponse());
 			}
 			return fragment;
 		}

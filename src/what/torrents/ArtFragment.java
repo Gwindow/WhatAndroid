@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -47,7 +46,6 @@ public class ArtFragment extends SherlockFragment {
 		progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
 		if (artBitmap == null) {
-			Toast.makeText(this.getSherlockActivity(), "Loading image", Toast.LENGTH_SHORT).show();
 			new LoadImage().execute(url);
 		} else {
 			progressBar.setVisibility(View.GONE);
