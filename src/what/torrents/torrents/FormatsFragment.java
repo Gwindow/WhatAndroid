@@ -19,9 +19,8 @@ import com.actionbarsherlock.app.SherlockFragment;
  * @since Jun 1, 2012 10:58:17 PM
  */
 public class FormatsFragment extends SherlockFragment {
-	private static final String MUSIC_TAG = "Music";
 	private LinearLayout scrollLayout;
-	private final Response response;
+	private Response response;
 
 	public FormatsFragment(Response response) {
 		this.response = response;
@@ -35,7 +34,8 @@ public class FormatsFragment extends SherlockFragment {
 		View view = inflater.inflate(R.layout.generic_scrollview, container, false);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
 
-		if (response.getGroup().getCategoryName().equals(MUSIC_TAG)) {
+		// TODO take care of other categories
+		if (response.getGroup().getCategoryName().equals(TorrentGroupActivity.MUSIC_CATEGORY)) {
 			populateMusic(view, inflater);
 		}
 
@@ -58,7 +58,10 @@ public class FormatsFragment extends SherlockFragment {
 			}
 			LinearLayout formats_torrent_layout = (LinearLayout) inflater.inflate(R.layout.formats_torrent, null);
 			TextView format = (TextView) formats_torrent_layout.findViewById(R.id.format);
-			format.setText(torrents.get(i).getMediaFormatEncoding());
+			String format_string =
+					torrents.get(i).isFreeTorrent() == true ? "Freeleech! " + torrents.get(i).getMediaFormatEncoding() : torrents
+							.get(i).getMediaFormatEncoding();
+			format.setText(format_string);
 			scrollLayout.addView(formats_torrent_layout);
 		}
 	}

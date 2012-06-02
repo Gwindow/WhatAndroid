@@ -140,9 +140,6 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
@@ -150,9 +147,6 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

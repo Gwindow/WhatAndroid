@@ -1,135 +1,201 @@
 package what.torrents.artist;
 
-import what.gui.ImageLoader;
-import what.gui.MyActivity;
+import what.gui.ActivityNames;
+import what.gui.BundleKeys;
+import what.gui.ErrorToast;
+import what.gui.MyActivity2;
 import what.gui.R;
+import what.torrents.ArtFragment;
+import what.torrents.DescriptionFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
-import android.webkit.WebSettings.LayoutAlgorithm;
-import android.webkit.WebView;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import api.torrents.artist.Artist;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.viewpagerindicator.PageIndicator;
+import com.viewpagerindicator.TabPageIndicator;
+import com.viewpagerindicator.TitleProvider;
 
 /**
  * @author Gwindow
- * 
+ * @since Jun 2, 2012 10:24:17 AM
  */
-public class ArtistActivity extends MyActivity {
-	private TextView artistTitle;
-	private ImageView artistImage;
-	private WebView artistInfo;
-	private ProgressDialog dialog;
-	private Bitmap bmp;
-	private Intent intent;
+public class ArtistActivity extends MyActivity2 {
+	private static final String ART_TAB = "Art";
+	private static final String DESCRIPTION_TAB = "Description";
+	private static final String MUSIC_TAB = "Music";
+	private static final String REQUESTS_TAB = "Requests";
+	// TODO add comments
+	private static final String[] TABS = new String[] { ART_TAB, DESCRIPTION_TAB, MUSIC_TAB, REQUESTS_TAB };
+
+	private FragmentPagerAdapter adapter;
+	private ViewPager pager;
+	private PageIndicator indicator;
+
+	private Artist artist;
+	private int artistId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		super.setActivityName(ActivityNames.MUSIC);
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.artist, false);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void load() {
-		artistTitle = (TextView) this.findViewById(R.id.artistTitle);
-		artistImage = (ImageView) this.findViewById(R.id.artistImage);
-		artistInfo = (WebView) this.findViewById(R.id.artistInfo);
-
-	}
-
-	@Override
-	public void prepare() {
-		new PopulateLayout().execute();
-	}
-
-	public void openSimilar(View v) {
-		Bundle b = new Bundle();
-		intent = new Intent(ArtistActivity.this, what.torrents.ListActivity.class);
-		b.putString("type", "artist_similiar");
-		intent.putExtras(b);
-		startActivity(intent);
-	}
-
-	public void openTags(View v) {
-		Bundle b = new Bundle();
-		intent = new Intent(ArtistActivity.this, what.torrents.ListActivity.class);
-		b.putString("type", "artist_tags");
-		intent.putExtras(b);
-		startActivity(intent);
-	}
-
-	public void openStats(View v) {
-		intent = new Intent(ArtistActivity.this, what.torrents.artist.ArtistStatsActivity.class);
-		startActivity(intent);
-	}
-
-	@Override
-	public void onDestroy() {
+		Bundle bundle = getIntent().getExtras();
 		try {
-			bmp.recycle();
+			artistId = bundle.getInt(BundleKeys.ARTIST_ID);
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		super.onDestroy();
+
+		new Load().execute();
+
 	}
 
-	private class PopulateLayout extends AsyncTask<Void, Void, Boolean> {
+	// TODO make this less sloppy. Create a custom fragment activity.
+	private void populate() {
+		setContentView(R.layout.artist_tabs);
+
+		setActionBarTitle(artist.getResponse().getName());
+
+		adapter = new ArtistAdapater(getSupportFragmentManager());
+
+		pager = (ViewPager) findViewById(R.id.pager);
+		pager.setAdapter(adapter);
+
+		indicator = (TabPageIndicator) findViewById(R.id.indicator);
+		indicator.setViewPager(pager);
+
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.artist_menu, menu);
+		// TODO add bookmarks
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.lastfm:
+				openLastFM();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void openLastFM() {
+		Intent intent = new Intent();
+		intent.setData(Uri.parse(artist.getLastFMUrl()));
+		intent.setAction("android.intent.action.VIEW");
+		startActivity(intent);
+	}
+
+	private class Load extends AsyncTask<Void, Void, Boolean> {
+		private ProgressDialog dialog;
+
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
-			// dialog = new ProgressDialog(ArtistActivity.this);
-			// dialog.setIndeterminate(true);
-			// dialog.setMessage("Loading...");
-			// dialog.show();
+			dialog = new ProgressDialog(ArtistActivity.this);
+			dialog.setIndeterminate(true);
+			dialog.setMessage("Loading...");
+			dialog.show();
 		}
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			String url = ArtistTabActivity.getArtist().getResponse().getImage();
-			if (url.length() > 0) {
-				try {
-					bmp = ImageLoader.loadBitmap(url);
-					return true;
-				} catch (Exception e) {
-					return false;
-				}
-			} else
-				return false;
+			artist = Artist.artistFromId(artistId);
+			return artist.getStatus();
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			if (ArtistTabActivity.getArtist().getStatus()) {
-				artistTitle.setText(ArtistTabActivity.getArtist().getResponse().getName());
-				String body = ArtistTabActivity.getArtist().getResponse().getBody();
-				if (body.length() > 0) {
-					artistInfo.getSettings().setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
-					artistInfo.getSettings().setSupportZoom(true);
-					artistInfo.setVerticalScrollBarEnabled(true);
-					artistInfo.setVerticalScrollbarOverlay(true);
-
-					artistInfo.loadData(body, "text/html", "utf-8");
-					artistInfo.setBackgroundColor(0);
-					artistInfo.setBackgroundResource(R.drawable.color_transparent_white);
-					artistInfo.setVisibility(WebView.VISIBLE);
-				}
-				if (status == true) {
-					artistImage.setImageBitmap(bmp);
-				} else {
-					artistImage.setImageResource(R.drawable.noartwork);
-				}
-			}
+			dialog.dismiss();
 			unlockScreenRotation();
-			// dialog.dismiss();
+
+			if (status) {
+				populate();
+			} else
+				ErrorToast.show(ArtistActivity.this, ArtistActivity.class);
 		}
+	}
+
+	private class ArtistAdapater extends FragmentPagerAdapter implements TitleProvider {
+		public ArtistAdapater(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			Fragment fragment = null;
+			String tag = TABS[position % TABS.length];
+			if (tag.equals(ART_TAB)) {
+				fragment = new ArtFragment(artist.getResponse().getImage());
+			}
+			if (tag.equals(DESCRIPTION_TAB)) {
+				fragment = new DescriptionFragment(artist.getResponse().getBody());
+			}
+			if (tag.equals(MUSIC_TAB)) {
+				fragment = new MusicFragment(artist.getResponse().getTorrentgroup());
+			}
+			if (tag.equals(REQUESTS_TAB)) {
+				fragment = new RequestFragment(artist.getResponse().getRequests());
+			}
+			return fragment;
+		}
+
+		@Override
+		public int getCount() {
+			return TABS.length;
+		}
+
+		@Override
+		public String getTitle(int position) {
+			return TABS[position % TABS.length];
+		}
+	}
+
+	@Override
+	public void onPause() {
+		try {
+			ArtFragment.recyle();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		super.onPause();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void prepare() {
+		// TODO Auto-generated method stub
+
 	}
 }

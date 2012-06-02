@@ -124,6 +124,12 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 
 				scrollLayout.addView(result_layout);
 			}
+			if (results.isEmpty()) {
+				LinearLayout result_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.torrent_search_result, null);
+				TextView group = (TextView) result_layout.findViewById(R.id.groupTitle);
+				group.setText("Nothing found");
+				scrollLayout.addView(result_layout);
+			}
 		}
 	}
 
