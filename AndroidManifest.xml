@@ -136,6 +136,10 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
+            android:name="what.torrents.torrents.TorrentGroupActivity"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
             android:name="what.torrents.artist.ArtistTabActivity"
             android:theme="@style/Theme.Sherlock"
             android:windowSoftInputMode="adjustPan" >

@@ -10,6 +10,7 @@ import what.gui.MyActivity2;
 import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.Scrollable;
+import what.torrents.torrents.TorrentGroupActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -33,7 +34,7 @@ import com.actionbarsherlock.view.MenuItem;
  */
 public class TorrentSearchActivity extends MyActivity2 implements Scrollable, OnClickListener {
 	private static final int ARTIST_TAG = 0;
-	private static final int GROUP_TAG = 1;
+	private static final int TORRENT_GROUP_TAG = 1;
 
 	private MyScrollView scrollView;
 	private LinearLayout scrollLayout;
@@ -117,7 +118,7 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 
 				TextView group = (TextView) result_layout.findViewById(R.id.groupTitle);
 				group.setText(results.get(i).getGroupName());
-				group.setTag(GROUP_TAG);
+				group.setTag(TORRENT_GROUP_TAG);
 				group.setId(results.get(i).getGroupId().intValue());
 				group.setOnClickListener(this);
 
@@ -134,12 +135,14 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 	public void search(View v) {
 		if (!areSearchBarsHidden) {
 			searchTerm = searchTermField.getText().toString().trim();
-			tagSearchTerm = tagField.getText().toString().trim();
-			// resets variables for the search
-			torrentSearchPage = 1;
-			setActionBarTitle("Torrent Search");
-			toggleSearchBars();
-			new Load().execute();
+			if (searchTerm.length() > 0) {
+				tagSearchTerm = tagField.getText().toString().trim();
+				// resets variables for the search
+				torrentSearchPage = 1;
+				setActionBarTitle("Torrent Search");
+				toggleSearchBars();
+				new Load().execute();
+			}
 		} else {
 			toggleSearchBars();
 		}
@@ -151,16 +154,20 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 			case ARTIST_TAG:
 				// TODO finish
 				break;
-			case GROUP_TAG:
-				openGroup(v.getId());
+			case TORRENT_GROUP_TAG:
+				openTorrentGroup(v.getId());
 				break;
 			default:
 				break;
 		}
 	}
 
-	private void openGroup(int id) {
-		// Intent intent = new Intent(this);
+	private void openTorrentGroup(int id) {
+		Intent intent = new Intent(this, TorrentGroupActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt(BundleKeys.TORRENT_GROUP_ID, id);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	/**

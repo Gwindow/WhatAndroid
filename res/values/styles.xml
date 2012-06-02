@@ -94,8 +94,7 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    
-     <style name="SearchResult">
+    <style name="SearchResult">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
@@ -106,9 +105,7 @@
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:textSize">22dip</item>
     </style>
-    
-    
-    
+
     <style name="NotificationText">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
@@ -238,6 +235,38 @@
     <style name="Theme.NoTitleDialog" parent="android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    </style>
+
+    <style name="DarkTheme" parent="Theme.Sherlock.ForceOverflow">
+        <item name="vpiTitlePageIndicatorStyle">@style/Widget.TitlePageIndicator</item>
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+        <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Dark</item>
+        <item name="textColorPrimary">@color/textview_colors_dark</item>
+        <item name="android:textColor">?textColorPrimary</item>
+    </style>
+
+    <style name="LightTheme" parent="Theme.Sherlock.Light.ForceOverflow">
+        <item name="vpiTitlePageIndicatorStyle">@style/Widget.TitlePageIndicator</item>
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+        <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Light</item>
+        <item name="textColorPrimary">@color/textview_colors_light</item>
+        <item name="android:textColor">?textColorPrimary</item>
+    </style>
+
+    <style name="Widget.TabPageIndicator.Text_Dark" parent="Widget">
+        <item name="android:textAppearance">@style/TextAppearance.TabPageIndicator</item>
+        <item name="android:textColor">@color/vpi__dark_theme</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:maxLines">1</item>
+    </style>
+    
+    <style name="Widget.TabPageIndicator.Text_Light" parent="Widget">
+        <item name="android:textAppearance">@style/TextAppearance.TabPageIndicator</item>
+        <item name="android:textColor">@color/vpi__light_theme</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:maxLines">1</item>
     </style>
 
 </resources>
