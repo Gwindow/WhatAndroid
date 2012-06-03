@@ -266,6 +266,11 @@
         <service android:name="what.services.AnnouncementService" />
 
         <activity
+            android:name="what.user.UserActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
             android:name="what.user.UserProfilePopUpActivity"
             android:noHistory="true"
             android:theme="@style/Theme.NoTitleDialog"

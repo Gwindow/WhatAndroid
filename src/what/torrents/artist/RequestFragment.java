@@ -50,7 +50,10 @@ public class RequestFragment extends SherlockFragment implements OnClickListener
 			request_title.setTag(REQUEST_TAG);
 			request_title.setId(requests.get(i).getRequestId().intValue());
 			scrollLayout.addView(request_title);
-
+		}
+		if (requests.size() == 0) {
+			TextView request_title = (TextView) inflater.inflate(R.layout.artist_request_title, null);
+			request_title.setText("No Requests");
 		}
 	}
 

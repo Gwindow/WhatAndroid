@@ -1,4 +1,4 @@
-package what.torrents;
+package what.fragments;
 
 import what.gui.ImageLoader;
 import what.gui.R;
@@ -82,7 +82,7 @@ public class ArtFragment extends SherlockFragment {
 			progressBar.setVisibility(View.GONE);
 			artImageView.setVisibility(View.VISIBLE);
 			if (!status) {
-				artBitmap = getRefelection(BitmapFactory.decodeResource(getResources(), R.drawable.dne));
+				artBitmap = getRefelection(BitmapFactory.decodeResource(getResources(), R.drawable.noartwork));
 			}
 			artImageView.setImageBitmap(artBitmap);
 		}

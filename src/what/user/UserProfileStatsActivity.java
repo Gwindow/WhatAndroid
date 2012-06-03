@@ -47,7 +47,6 @@ public class UserProfileStatsActivity extends MyActivity {
 		username.setText(user.getProfile().getUsername());
 
 		addToListSection("Stats");
-
 		addToList("Class : " + user.getProfile().getPersonal().getUserClass());
 		addToList("Joined: " + user.getProfile().getStats().getJoinedDate());
 		addToList("Last Seen: " + user.getProfile().getStats().getLastAccess());

@@ -1,12 +1,12 @@
 package what.torrents.artist;
 
+import what.fragments.ArtFragment;
+import what.fragments.DescriptionFragment;
 import what.gui.ActivityNames;
 import what.gui.BundleKeys;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
 import what.gui.R;
-import what.torrents.ArtFragment;
-import what.torrents.DescriptionFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;

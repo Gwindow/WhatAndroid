@@ -1,4 +1,4 @@
-package what.torrents;
+package what.fragments;
 
 import what.gui.R;
 import android.os.Bundle;
@@ -28,6 +28,9 @@ public class DescriptionFragment extends SherlockFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.description_fragment, container, false);
 		TextView description_view = (TextView) view.findViewById(R.id.description);
+		if (description == null || description.length() == 0) {
+			description = "No Description";
+		}
 		description_view.setText(Html.fromHtml(description));
 		return view;
 	}

@@ -6,9 +6,11 @@
     android:padding="15dip" >
 
     <what.gui.ViewSlider
+        android:id="@+id/viewSlider"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dip">
+        android:layout_marginLeft="10dip" >
+
         <LinearLayout
             android:id="@+id/primaryLayout"
             android:layout_width="match_parent"
@@ -58,6 +60,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/download"
+                style="@style/TorrentFormatSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Download"
+                android:textStyle="bold" >
             </TextView>
         </LinearLayout>
     </what.gui.ViewSlider>

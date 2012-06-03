@@ -19,5 +19,5 @@ public class BundleKeys {
 	public static final String TORRENT_GROUP_ID = "torrentGroupId";
 	public static final String ARTIST_ID = "artistId";
 	public static final String REQUEST_ID = "requestId";
-
+	public static final String FADE_ANIMATION = "fadeAnimation";
 }

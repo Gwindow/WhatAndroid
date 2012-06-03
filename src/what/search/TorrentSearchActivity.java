@@ -217,7 +217,8 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 	}
 
 	private void jumpToPage() {
-		new JumpToPageDialog(this, torrentSearch.getResponse().getPages().intValue()) {
+		// TODO fix null pointer
+		new JumpToPageDialog(this, torrentSearch.getResponse().getPages()) {
 			@Override
 			public void jumpToPage() {
 				if (getPage() != -1) {

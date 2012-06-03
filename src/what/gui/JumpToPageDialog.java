@@ -42,22 +42,23 @@ public abstract class JumpToPageDialog extends AlertDialog.Builder implements On
 	 * @param maxPage
 	 *            the max number of pages
 	 */
-	public JumpToPageDialog(Context context, int maxPage) {
+	public JumpToPageDialog(Context context, Number maxPage) {
 		super(context);
-		this.maxPage = maxPage;
-		setTitle(DIALOG_TITLE);
-		setCancelable(true);
-		setPositiveButton("Enter", this);
+		if (maxPage != null) {
+			this.maxPage = maxPage.intValue();
+			setTitle(DIALOG_TITLE);
+			setCancelable(true);
+			setPositiveButton("Enter", this);
 
-		pageField = new EditText(context);
-		pageField.setInputType(InputType.TYPE_CLASS_NUMBER);
-		pageField.setHint(PAGE_FIELD_HINT);
-		setView(pageField);
+			pageField = new EditText(context);
+			pageField.setInputType(InputType.TYPE_CLASS_NUMBER);
+			pageField.setHint(PAGE_FIELD_HINT);
+			setView(pageField);
+		} else {
+			Toast.makeText(getContext(), "No pages", Toast.LENGTH_SHORT).show();
+		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 		if (which == AlertDialog.BUTTON_POSITIVE) {

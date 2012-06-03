@@ -11,6 +11,7 @@ import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.Scrollable;
 import what.gui.ViewSlider;
+import what.user.UserActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -20,7 +21,6 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import api.inbox.inbox.Inbox;
 import api.inbox.inbox.Messages;
 
@@ -104,10 +104,11 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 
 				TextView sender = (TextView) message_layout.findViewById(R.id.messageSender);
 				sender.setText("Sender: " + messages.get(i).getUsername());
-				sender.setId(messages.get(i).getSenderId().intValue());
-				sender.setTag(SENDER_TAG);
-				sender.setOnClickListener(this);
-
+				if (!messages.get(i).isSystem()) {
+					sender.setId(messages.get(i).getSenderId().intValue());
+					sender.setTag(SENDER_TAG);
+					sender.setOnClickListener(this);
+				}
 				TextView date = (TextView) message_layout.findViewById(R.id.messageDate);
 				date.setText("Date: " + messages.get(i).getDate());
 
@@ -146,7 +147,7 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 				openMessage(v.getId());
 				break;
 			case SENDER_TAG:
-				Toast.makeText(this, String.valueOf(v.getId()), Toast.LENGTH_SHORT).show();
+				openUser(v.getId());
 				break;
 			default:
 				break;
@@ -162,8 +163,16 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 
 	}
 
+	private void openUser(int id) {
+		Intent intent = new Intent(this, UserActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt(BundleKeys.USER_ID, id);
+		intent.putExtras(bundle);
+		startActivity(intent);
+	}
+
 	private void jumpToPage() {
-		new JumpToPageDialog(this, inbox.getResponse().getPages().intValue()) {
+		new JumpToPageDialog(this, inbox.getResponse().getPages()) {
 			@Override
 			public void jumpToPage() {
 				if (getPage() != -1) {

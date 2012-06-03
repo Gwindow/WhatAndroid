@@ -4,26 +4,17 @@ import java.util.ArrayList;
 
 import what.gui.MyActivity;
 import what.gui.R;
-import what.settings.Settings;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import api.soup.MySoup;
 import api.torrents.torrents.TorrentGroup;
-import api.util.CouldNotLoadException;
 
 public class TorrentFormatsActivity extends MyActivity implements OnClickListener {
 	private LinearLayout scrollLayout;
 	private TorrentGroup torrentGroup;
-	private Intent intent;
 	private TextView title;
 	private ArrayList<TextView> torrentList;
 
@@ -78,57 +69,16 @@ public class TorrentFormatsActivity extends MyActivity implements OnClickListene
 
 	private void downloadTorrent(int i) {
 		String url = torrentGroup.getResponse().getTorrents().get(i).getDownloadLink();
-		String id = torrentGroup.getResponse().getTorrents().get(i).getId().toString();
+		int id = torrentGroup.getResponse().getTorrents().get(i).getId().intValue();
 		if (!url.startsWith("http://") && !url.startsWith("https://")) {
-			url = "http://" + url;
+			url = "https://" + url;
 		}
-		showDownloadDialog(id, url);
-	}
-
-	private void showDownloadDialog(final String torrentId, final String url) {
-		AlertDialog alert = new AlertDialog.Builder(TorrentFormatsActivity.this).create();
-		alert.setButton(AlertDialog.BUTTON1, "Download", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-				startActivity(intent);
-			}
-		});
-		alert.setButton(AlertDialog.BUTTON3, "Send to pyWA", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				String host = Settings.getHostPreference();
-				String port = Settings.getPortPreference();
-				String password = Settings.getPasswordPreference();
-				if ((host.length() > 0) && (port.length() > 0) && (password.length() > 0)) {
-					String pyWaUrl = host + ":" + port + "/dl.pywa?pass=" + password + "&site=whatcd&id=" + torrentId;
-					try {
-						MySoup.scrapeOther(pyWaUrl);
-						Toast.makeText(TorrentFormatsActivity.this, "Torrent sent", Toast.LENGTH_SHORT).show();
-					} catch (CouldNotLoadException e) {
-						Toast.makeText(TorrentFormatsActivity.this, "Could not send torrent", Toast.LENGTH_SHORT).show();
-					}
-				} else {
-					Toast.makeText(TorrentFormatsActivity.this, "Fill out pyWA information in Settings", Toast.LENGTH_LONG)
-							.show();
-				}
-			}
-		});
-		alert.setButton(AlertDialog.BUTTON2, "Cancel", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-
-		alert.setCancelable(true);
-		alert.show();
-
+		new DownloadDialog(this, id, url).show();
 	}
 
 	@Override
 	public void onClick(View v) {
-		for (int i = 0; i < (torrentList.size()); i++) {
+		for (int i = 0; i < torrentList.size(); i++) {
 			if (v.getId() == torrentList.get(i).getId()) {
 				downloadTorrent(i);
 			}

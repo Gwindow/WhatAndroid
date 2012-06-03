@@ -10,6 +10,7 @@ import what.gui.ErrorToast;
 import what.gui.MyActivity2;
 import what.gui.R;
 import what.gui.ReplyActivity;
+import what.user.UserActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import api.inbox.conversation.Conversation;
 import api.inbox.conversation.Messages;
 
@@ -110,34 +112,47 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 				quote.setOnClickListener(this);
 
 				ImageView user = (ImageView) message_layout.findViewById(R.id.userIcon);
-				user.setTag(USER_TAG);
-				user.setId(i);
-				user.setOnClickListener(this);
+				if (!messages.get(i).isSystem()) {
+					user.setTag(USER_TAG);
+					user.setId(i);
+					user.setOnClickListener(this);
+				}
 				scrollLayout.addView(message_layout);
 			}
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void onClick(View v) {
 		switch (Integer.valueOf(v.getTag().toString())) {
 			case REPLY_TAG:
-				QuoteBuffer.add(conversationId, Html.fromHtml(conversation.getResponse().getMessages().get(v.getId()).getBody())
-						.toString());
-				reply();
+				if (!conversation.getResponse().getMessages().get(v.getId()).isSystem()) {
+					QuoteBuffer.add(conversationId,
+							Html.fromHtml(conversation.getResponse().getMessages().get(v.getId()).getBody()).toString());
+					reply();
+				}
 				break;
 			case QUOTE_TAG:
 				QuoteBuffer.add(conversationId, Html.fromHtml(conversation.getResponse().getMessages().get(v.getId()).getBody())
 						.toString());
+				Toast.makeText(this, "Quoted", Toast.LENGTH_SHORT).show();
 				break;
 			case USER_TAG:
+				if (!conversation.getResponse().getMessages().get(v.getId()).isSystem()) {
+					openUser(conversation.getResponse().getMessages().get(v.getId()).getSenderId().intValue());
+				}
 				break;
 			default:
 				break;
 		}
+	}
+
+	private void openUser(int id) {
+		Intent intent = new Intent(this, UserActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt(BundleKeys.USER_ID, id);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	@Override

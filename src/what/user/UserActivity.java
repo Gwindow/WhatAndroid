@@ -1,4 +1,4 @@
-package what.torrents.torrents;
+package what.user;
 
 import what.fragments.ArtFragment;
 import what.fragments.DescriptionFragment;
@@ -7,20 +7,16 @@ import what.gui.BundleKeys;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
 import what.gui.R;
-import what.torrents.artist.ArtistActivity;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import api.torrents.torrents.TorrentGroup;
+import api.user.User;
 
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
@@ -28,28 +24,25 @@ import com.viewpagerindicator.TitleProvider;
 
 /**
  * @author Gwindow
- * @since May 28, 2012 5:58:11 PM
+ * @since Jun 3, 2012 10:07:49 AM
  */
-public class TorrentGroupActivity extends MyActivity2 {
-	protected static final String MUSIC_CATEGORY = "Music";
-	private static final String ART_TAB = "Art";
-	private static final String DESCRIPTION_TAB = "Description";
-	private static final String FORMATS_TAB = "Formats";
-	private static final String COMMENTS_TAB = "Comments";
+public class UserActivity extends MyActivity2 {
+	private static final String AVATAR_TAB = "Avatar";
+	private static final String PROFILE_TAB = "Profile";
+	private static final String STATS_TAB = "Stats";
 
-	// TODO add comments
-	private static final String[] TABS = new String[] { ART_TAB, DESCRIPTION_TAB, FORMATS_TAB };
+	private static final String[] TABS = new String[] { AVATAR_TAB, PROFILE_TAB, STATS_TAB };
 
 	private FragmentPagerAdapter adapter;
 	private ViewPager pager;
 	private PageIndicator indicator;
 
-	private TorrentGroup torrentGroup;
-	private int torrentGroupId;
+	private User user;
+	private int userId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.setActivityName(ActivityNames.MUSIC);
+		super.setActivityName(ActivityNames.USER);
 		super.onCreate(savedInstanceState);
 	}
 
@@ -60,7 +53,7 @@ public class TorrentGroupActivity extends MyActivity2 {
 	public void init() {
 		Bundle bundle = getIntent().getExtras();
 		try {
-			torrentGroupId = bundle.getInt(BundleKeys.TORRENT_GROUP_ID);
+			userId = bundle.getInt(BundleKeys.USER_ID);
 		} catch (Exception e) {
 		}
 
@@ -70,11 +63,11 @@ public class TorrentGroupActivity extends MyActivity2 {
 
 	// TODO make this less sloppy. Create a custom fragment activity.
 	private void populate() {
-		setContentView(R.layout.torrent_group_tabs);
+		setContentView(R.layout.user_tabs);
 
-		setActionBarTitle(torrentGroup.getResponse().getGroup().getName());
+		setActionBarTitle(user.getProfile().getUsername());
 
-		adapter = new TorrentGroupAdapter(getSupportFragmentManager());
+		adapter = new UserAdapter(getSupportFragmentManager());
 
 		pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
@@ -86,41 +79,16 @@ public class TorrentGroupActivity extends MyActivity2 {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.torrentgroup_menu, menu);
+		// MenuInflater inflater = getSupportMenuInflater();
+		// inflater.inflate(R.menu.torrentgroup_menu, menu);
 		return super.onCreateOptionsMenu(menu);
-		// TODO add bookmarks
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.artist:
-				openArtist();
-				break;
-			case R.id.lastfm:
-				openLastFM();
-				break;
-		}
+		// switch (item.getItemId()) {
+
 		return super.onOptionsItemSelected(item);
-	}
-
-	private void openArtist() {
-		if (torrentGroup.getResponse().getGroup().getCategoryName().equals(MUSIC_CATEGORY)) {
-			Intent intent = new Intent(this, ArtistActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putInt(BundleKeys.ARTIST_ID, torrentGroup.getResponse().getGroup().getMusicInfo().getArtists().get(0).getId()
-					.intValue());
-			intent.putExtras(bundle);
-			startActivity(intent);
-		}
-	}
-
-	private void openLastFM() {
-		Intent intent = new Intent();
-		intent.setData(Uri.parse(torrentGroup.getLastFMUrl()));
-		intent.setAction("android.intent.action.VIEW");
-		startActivity(intent);
 	}
 
 	@Override
@@ -139,7 +107,7 @@ public class TorrentGroupActivity extends MyActivity2 {
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
-			dialog = new ProgressDialog(TorrentGroupActivity.this);
+			dialog = new ProgressDialog(UserActivity.this);
 			dialog.setIndeterminate(true);
 			dialog.setMessage("Loading...");
 			dialog.show();
@@ -147,8 +115,8 @@ public class TorrentGroupActivity extends MyActivity2 {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			torrentGroup = TorrentGroup.torrentGroupFromId(torrentGroupId);
-			return torrentGroup.getStatus();
+			user = User.userFromId(userId);
+			return user.getStatus();
 		}
 
 		@Override
@@ -159,12 +127,12 @@ public class TorrentGroupActivity extends MyActivity2 {
 			if (status) {
 				populate();
 			} else
-				ErrorToast.show(TorrentGroupActivity.this, TorrentGroupActivity.class);
+				ErrorToast.show(UserActivity.this, UserActivity.class);
 		}
 	}
 
-	private class TorrentGroupAdapter extends FragmentPagerAdapter implements TitleProvider {
-		public TorrentGroupAdapter(FragmentManager fm) {
+	private class UserAdapter extends FragmentPagerAdapter implements TitleProvider {
+		public UserAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
@@ -172,14 +140,14 @@ public class TorrentGroupActivity extends MyActivity2 {
 		public Fragment getItem(int position) {
 			Fragment fragment = null;
 			String tag = TABS[position % TABS.length];
-			if (tag.equals(ART_TAB)) {
-				fragment = new ArtFragment(torrentGroup.getResponse().getGroup().getWikiImage());
+			if (tag.equals(AVATAR_TAB)) {
+				fragment = new ArtFragment(user.getProfile().getAvatar());
 			}
-			if (tag.equals(DESCRIPTION_TAB)) {
-				fragment = new DescriptionFragment(torrentGroup.getResponse().getGroup().getWikiBody());
+			if (tag.equals(PROFILE_TAB)) {
+				fragment = new DescriptionFragment(user.getProfile().getProfileText());
 			}
-			if (tag.equals(FORMATS_TAB)) {
-				fragment = new FormatsFragment(torrentGroup.getResponse());
+			if (tag.equals(STATS_TAB)) {
+				fragment = new StatsFragment(user.getProfile());
 			}
 			return fragment;
 		}
