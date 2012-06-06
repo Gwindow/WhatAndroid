@@ -225,13 +225,18 @@
             android:theme="@style/Theme.MenuDialog"
             android:windowSoftInputMode="adjustPan" >
         </activity>
-           <activity
+        <activity
             android:name="what.inbox.NewMessageActivity"
             android:theme="@style/Theme.MenuDialog"
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
             android:name="what.inbox.InboxActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="what.bookmarks.BookmarksActivity"
             android:theme="@style/Theme.Sherlock"
             android:windowSoftInputMode="adjustPan" >
         </activity>

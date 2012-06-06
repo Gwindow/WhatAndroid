@@ -203,6 +203,19 @@
         <item name="android:textSize">22dip</item>
     </style>
     
+      
+    <style name="BookmarksTorrentGroupTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:textSize">22dip</item>
+    </style>
+    
     <style name="NotificationText">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>

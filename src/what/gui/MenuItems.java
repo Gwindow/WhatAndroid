@@ -3,7 +3,7 @@ package what.gui;
 import java.util.EnumMap;
 import java.util.Map;
 
-import what.bookmarks.BookmarksTabActivity;
+import what.bookmarks.BookmarksActivity;
 import what.debug.DebugActivity;
 import what.forum.ForumActivity;
 import what.home.HomeActivity;
@@ -48,7 +48,7 @@ public enum MenuItems {
 		map.put(USERS, HomeActivity.class);
 		map.put(INBOX, InboxActivity.class);
 		map.put(BARCODE_SCANNER, HomeActivity.class);
-		map.put(BOOKMARKS, BookmarksTabActivity.class);
+		map.put(BOOKMARKS, BookmarksActivity.class);
 		map.put(NOTIFICATIONS, NotificationsActivity.class);
 		map.put(SETTINGS, SettingsActivity.class);
 		map.put(STATUS, WhatStatus.class);
