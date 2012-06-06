@@ -7,16 +7,20 @@ import what.gui.BundleKeys;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
 import what.gui.R;
+import what.inbox.NewMessageActivity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.Toast;
 import api.user.User;
 
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
@@ -27,6 +31,8 @@ import com.viewpagerindicator.TitleProvider;
  * @since Jun 3, 2012 10:07:49 AM
  */
 public class UserActivity extends MyActivity2 {
+	private static final int FRIENDS_ITEM_ID = 0;
+
 	private static final String AVATAR_TAB = "Avatar";
 	private static final String PROFILE_TAB = "Profile";
 	private static final String STATS_TAB = "Stats";
@@ -63,6 +69,7 @@ public class UserActivity extends MyActivity2 {
 
 	// TODO make this less sloppy. Create a custom fragment activity.
 	private void populate() {
+		invalidateOptionsMenu();
 		setContentView(R.layout.user_tabs);
 
 		setActionBarTitle(user.getProfile().getUsername());
@@ -79,16 +86,43 @@ public class UserActivity extends MyActivity2 {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// MenuInflater inflater = getSupportMenuInflater();
-		// inflater.inflate(R.menu.torrentgroup_menu, menu);
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.user_menu, menu);
+		if (user != null && !user.getProfile().IsFriend()) {
+			String title = "Add Friend";
+			menu.addSubMenu(Menu.NONE, FRIENDS_ITEM_ID, Menu.NONE, title);
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// switch (item.getItemId()) {
-
+		switch (item.getItemId()) {
+			case R.id.message_item:
+				// close options menu for the fade effect
+				closeOptionsMenu();
+				sendMessage();
+				break;
+			case FRIENDS_ITEM_ID:
+				addFriend();
+				break;
+			default:
+				break;
+		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void sendMessage() {
+		Intent intent = new Intent(this, NewMessageActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt(BundleKeys.USER_ID, userId);
+		intent.putExtras(bundle);
+		startActivity(intent);
+	}
+
+	private void addFriend() {
+		user.addToFriends();
+		Toast.makeText(this, "Added to Friends list", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

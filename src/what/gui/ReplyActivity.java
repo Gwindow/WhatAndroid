@@ -27,7 +27,6 @@ public class ReplyActivity extends MyActivity2 {
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 		super.setContentView(R.layout.reply);
-
 	}
 
 	/**

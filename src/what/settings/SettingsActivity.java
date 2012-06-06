@@ -4,13 +4,15 @@ import java.net.URISyntaxException;
 
 import what.gui.R;
 import what.inbox.ReportActivity;
-import what.login.WhatAndroidActivity;
+import what.login.UpdateChecker;
 import what.services.AnnouncementService;
 import what.services.InboxService;
 import what.services.NotificationService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -52,7 +54,8 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 
 		PreferenceScreen prefenceScreen = getPreferenceScreen();
 		PreferenceCategory preferenceCategory = new PreferenceCategory(this);
-		preferenceCategory.setTitle("Version " + WhatAndroidActivity.INSTALLED_VERSION);
+		// TODO fix
+		preferenceCategory.setTitle("Version " + getInstalledVersion());
 		prefenceScreen.addPreference(preferenceCategory);
 
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -86,6 +89,23 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 
 		report_preference = findPreference("report_preference");
 		report_preference.setOnPreferenceClickListener(this);
+	}
+
+	private double getInstalledVersion() {
+		int versionCode;
+		String versionName;
+		double installedVersion = 0;
+		try {
+			PackageInfo manager = getPackageManager().getPackageInfo(getPackageName(), 0);
+			versionCode = manager.versionCode;
+			versionName = manager.versionName;
+			installedVersion = versionCode + Double.parseDouble(versionName);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		// TODO remove
+		// return installedVersion;
+		return UpdateChecker.VERSION;
 	}
 
 	/*
@@ -190,25 +210,25 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
-		case FILE_SELECT_CODE:
-			if (resultCode == RESULT_OK) {
-				// Get the Uri of the selected file
-				Uri uri = data.getData();
-				Log.d("FILE CHOOSER", "File Uri: " + uri.toString());
-				// Get the path
-				try {
-					String path = getPath(this, uri);
-					Settings.saveCustomBackgroundPath(path);
-					Log.d("FILE CHOOSER", "File Path: " + path);
-				} catch (URISyntaxException e) {
-					e.printStackTrace();
-					Log.d("FILE CHOOSER", "URI SYNTAX EXCEPTION");
+			case FILE_SELECT_CODE:
+				if (resultCode == RESULT_OK) {
+					// Get the Uri of the selected file
+					Uri uri = data.getData();
+					Log.d("FILE CHOOSER", "File Uri: " + uri.toString());
+					// Get the path
+					try {
+						String path = getPath(this, uri);
+						Settings.saveCustomBackgroundPath(path);
+						Log.d("FILE CHOOSER", "File Path: " + path);
+					} catch (URISyntaxException e) {
+						e.printStackTrace();
+						Log.d("FILE CHOOSER", "URI SYNTAX EXCEPTION");
+					}
+					// Get the file instance
+					// File file = new File(path);
+					// Initiate the upload
 				}
-				// Get the file instance
-				// File file = new File(path);
-				// Initiate the upload
-			}
-			break;
+				break;
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

@@ -6,12 +6,21 @@
     android:padding="20dip" >
 
     <EditText
+        android:id="@+id/subject"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top|left"
+        android:hint="Subject..." >
+    </EditText>
+
+    <EditText
         android:id="@+id/body"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/linearLayout1"
+        android:layout_below="@+id/subject"
         android:gravity="top|left"
-        android:hint="Reply..." >
+        android:hint="Body..." >
     </EditText>
 
     <LinearLayout
@@ -24,12 +33,12 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/replyButton"
+            android:id="@+id/sendButton"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:onClick="reply"
-            android:text="Reply" >
+            android:onClick="send"
+            android:text="Send" >
         </Button>
     </LinearLayout>
 

@@ -31,9 +31,9 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 	private TextView actionBarTitle;
 	private DisplayMetrics metrics;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.setTheme(THEME);
+	public void onCreate(Bundle savedInstanceState, Integer customTheme) {
+		customTheme = customTheme == null ? THEME : customTheme;
+		super.setTheme(customTheme);
 		super.onCreate(savedInstanceState);
 
 		if ((Settings.getSettings() == null) | (Settings.getSettingsEditor() == null)) {
@@ -54,6 +54,11 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		actionBarTitle = ((TextView) v.findViewById(R.id.title));
 
 		getSupportActionBar().setCustomView(v);
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		onCreate(savedInstanceState, null);
 	}
 
 	/**
