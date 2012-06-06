@@ -201,8 +201,17 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.REQUESTS.toString());
 		searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.USERS.toString());
 
+		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.BOOKMARKS.toString());
+		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.NOTIFICATIONS.toString());
 		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.INBOX.toString());
 		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.BARCODE_SCANNER.toString());
+
+		SubMenu moremenu = submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.MORE.toString());
+		moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.SETTINGS.toString());
+		moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.STATUS.toString());
+		if (Settings.getDebugPreference()) {
+			moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.DEVELOPER.toString());
+		}
 
 		MenuItem subMenuItem = submenu.getItem();
 		// subMenuItem.setIcon(R.drawable.ic_title_share_default);

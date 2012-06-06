@@ -3,10 +3,15 @@ package what.gui;
 import java.util.EnumMap;
 import java.util.Map;
 
+import what.bookmarks.BookmarksTabActivity;
+import what.debug.DebugActivity;
 import what.forum.ForumActivity;
 import what.home.HomeActivity;
 import what.inbox.InboxActivity;
+import what.notifications.NotificationsActivity;
 import what.search.TorrentSearchActivity;
+import what.settings.SettingsActivity;
+import api.whatstatus.WhatStatus;
 
 /**
  * Enum thats hold menu items
@@ -20,7 +25,10 @@ public enum MenuItems {
 	// search menu start
 	TORRENTS("Torrents"), REQUESTS("Requests"), USERS("Users"),
 	// search menu end
-	INBOX("Inbox"), BARCODE_SCANNER("Barcode Scanner");
+	INBOX("Inbox"), BARCODE_SCANNER("Barcode Scanner"), BOOKMARKS("Bookmarks"), NOTIFICATIONS("Notifications"), MORE("More"),
+	// more menu start
+	SETTINGS("Settings"), STATUS("Status"), DEVELOPER("Developer");
+	// more menu end
 
 	/** The map. */
 	private static Map<MenuItems, Class<?>> map;
@@ -29,7 +37,7 @@ public enum MenuItems {
 	private final String name;
 
 	/**
-	 * Inits the.
+	 * Inits the menu items.
 	 */
 	public static void init() {
 		map = new EnumMap<MenuItems, Class<?>>(MenuItems.class);
@@ -40,6 +48,11 @@ public enum MenuItems {
 		map.put(USERS, HomeActivity.class);
 		map.put(INBOX, InboxActivity.class);
 		map.put(BARCODE_SCANNER, HomeActivity.class);
+		map.put(BOOKMARKS, BookmarksTabActivity.class);
+		map.put(NOTIFICATIONS, NotificationsActivity.class);
+		map.put(SETTINGS, SettingsActivity.class);
+		map.put(STATUS, WhatStatus.class);
+		map.put(DEVELOPER, DebugActivity.class);
 	}
 
 	/**
