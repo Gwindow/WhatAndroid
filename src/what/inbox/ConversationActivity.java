@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.util.Linkify;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -100,6 +101,7 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 
 				TextView body = (TextView) message_layout.findViewById(R.id.body);
 				body.setText(Html.fromHtml(messages.get(i).getBody(), new AsyncImageGetter(body, this), null));
+				Linkify.addLinks(body, Linkify.WEB_URLS);
 
 				ImageView reply = (ImageView) message_layout.findViewById(R.id.replyIcon);
 				reply.setTag(REPLY_TAG);

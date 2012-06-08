@@ -1,11 +1,14 @@
 package what.forum;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
+import what.cache.ImageCache;
 import what.gui.ActivityNames;
 import what.gui.AsyncImageGetter;
 import what.gui.BundleKeys;
 import what.gui.ErrorToast;
+import what.gui.ImageLoader;
 import what.gui.JumpToPageDialog;
 import what.gui.MyActivity2;
 import what.gui.MyScrollView;
@@ -15,6 +18,7 @@ import what.gui.Scrollable;
 import what.user.UserActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -41,6 +45,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	private static final int QUOTE_TAG = 1;
 	private static final int USER_TAG = 2;
 	private static final int NON_EXISTANT = -1;
+	private static final int SUBSCRIBE_ITEM_ID = 3;
 
 	private MyScrollView scrollView;
 	private LinearLayout scrollLayout;
@@ -52,6 +57,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	private boolean isLoaded;
 
 	private LinkedList<Posts> posts;
+	private HashMap<Integer, ImageView> avatarMap;
 
 	/**
 	 * {@inheritDoc}
@@ -81,6 +87,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 		}
 
 		posts = new LinkedList<Posts>();
+		avatarMap = new HashMap<Integer, ImageView>();
 	}
 
 	/**
@@ -102,6 +109,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	}
 
 	private void populate() {
+		invalidateOptionsMenu();
 		threadPage = thread.getResponse().getCurrentPage().intValue();
 		setActionBarTitle(thread.getResponse().getThreadTitle() + ", " + threadPage + "/"
 				+ thread.getResponse().getPages().intValue());
@@ -111,6 +119,11 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 			for (int i = 0; i < thread.getResponse().getPosts().size(); i++) {
 				LinearLayout post_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.thread_post, null);
 				posts.add(thread.getResponse().getPosts().get(i));
+
+				ImageView avatar = (ImageView) post_layout.findViewById(R.id.avatar);
+				avatarMap.put(posts.getLast().getPostId().intValue(), avatar);
+				new LoadAvatar(avatar, posts.getLast().getAuthor().getAuthorId().intValue(), posts.getLast().getAuthor()
+						.getAvatar()).execute();
 
 				TextView author = (TextView) post_layout.findViewById(R.id.author);
 				author.setText(posts.getLast().getAuthor().getAuthorName());
@@ -123,7 +136,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 
 				TextView body = (TextView) post_layout.findViewById(R.id.body);
 				body.setText(Html.fromHtml(posts.getLast().getBody(), new AsyncImageGetter(body, this), null));
-				Linkify.addLinks(body, Linkify.ALL);
+				Linkify.addLinks(body, Linkify.WEB_URLS);
 
 				ImageView reply = (ImageView) post_layout.findViewById(R.id.replyIcon);
 				reply.setTag(REPLY_TAG);
@@ -204,6 +217,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 		startActivity(intent);
 	}
 
+	// TODO investigate why page jumping doenst work
 	private void jumpToPage() {
 		new JumpToPageDialog(this, thread.getResponse().getPages()) {
 			@Override
@@ -223,7 +237,18 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.inbox_menu, menu);
+		inflater.inflate(R.menu.thread_menu, menu);
+
+		if (thread != null) {
+			String title = "Unsubscribe";
+			if (thread.getResponse().isSubscribed()) {
+				title = "Unsubscribe";
+			} else {
+				title = "Subscribe";
+			}
+			menu.addSubMenu(Menu.NONE, SUBSCRIBE_ITEM_ID, Menu.FIRST, title);
+		}
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -231,6 +256,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.reply_item:
+				closeOptionsMenu();
 				reply();
 				break;
 			case R.id.jump_page_item:
@@ -238,6 +264,16 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				break;
 			case R.id.refresh_item:
 				refresh();
+				break;
+			case SUBSCRIBE_ITEM_ID:
+				if (thread.getResponse().isSubscribed()) {
+					thread.unsubscribe();
+					Toast.makeText(this, "Unsubscribed", Toast.LENGTH_SHORT).show();
+				} else {
+					thread.subscribe();
+					Toast.makeText(this, "Subscribed", Toast.LENGTH_SHORT).show();
+
+				}
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -305,6 +341,68 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 
 		private void hideProgressBar() {
 			scrollLayout.removeViewAt(scrollLayout.getChildCount() - 1);
+		}
+	}
+
+	@Override
+	public void onPause() {
+		for (ImageView avatar : avatarMap.values()) {
+			avatar.destroyDrawingCache();
+		}
+		super.onPause();
+	}
+
+	private class LoadAvatar extends AsyncTask<Void, Void, Boolean> {
+		private final ImageView avatar;
+		private final int userId;
+		private final String avatarUrl;
+		private Bitmap bitmap;
+
+		public LoadAvatar(ImageView avatar, int userId, String avatarUrl) {
+			this.avatarUrl = avatarUrl;
+			this.avatar = avatar;
+			this.userId = userId;
+		}
+
+		@Override
+		protected void onPreExecute() {
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			boolean status = false;
+
+			if (!ImageCache.hasImage(userId, avatarUrl)) {
+				if (avatarUrl.length() > 0) {
+					try {
+						bitmap = ImageLoader.loadBitmap(avatarUrl);
+						ImageCache.saveImage(userId, avatarUrl, bitmap);
+						status = true;
+					} catch (Exception e) {
+						e.printStackTrace();
+						status = false;
+					}
+				}
+			} else {
+				try {
+					bitmap = ImageCache.getImage(userId);
+					status = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+					status = false;
+				}
+			}
+
+			return status;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status) {
+			if (status) {
+				avatar.setImageBitmap(bitmap);
+			} else {
+				avatar.setImageResource(R.drawable.dne);
+			}
 		}
 	}
 

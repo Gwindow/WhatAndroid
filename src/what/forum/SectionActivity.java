@@ -14,6 +14,7 @@ import what.gui.ViewSlider;
 import what.user.UserActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -94,7 +95,17 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 			for (int i = 0; i < threads.size(); i++) {
 				ViewSlider thread_layout = (ViewSlider) getLayoutInflater().inflate(R.layout.section_thread, null);
 				TextView thread_title = (TextView) thread_layout.findViewById(R.id.threadTitle);
-				thread_title.setText(threads.get(i).getTitle());
+				String title = threads.get(i).getTitle();
+				if (threads.get(i).isLocked()) {
+					title = "[Locked] " + title;
+				}
+				if (threads.get(i).isSticky()) {
+					title = "[Sticky] " + title;
+				}
+				if (!threads.get(i).isRead()) {
+					thread_title.setTypeface(null, Typeface.BOLD);
+				}
+				thread_title.setText(title);
 				thread_title.setTag(new Tuple<Number, Number>(threads.get(i).getTopicId(), threads.get(i).getLastReadPostId()));
 				thread_title.setOnClickListener(this);
 
