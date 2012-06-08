@@ -38,6 +38,11 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
         <item name="android:textSize">25dip</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
     </style>
 
     <style name="InboxMessageTitle">
@@ -62,14 +67,6 @@
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:textSize">17dip</item>
-    </style>
-
-    <style name="ConversationMessageBody">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:textSize">15dip</item>
     </style>
 
     <style name="ConversationMessageBody">
@@ -228,6 +225,30 @@
         <item name="android:textSize">22dip</item>
     </style>
     
+        
+    <style name="PostBody">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:textSize">15dip</item>
+    </style>
+
+    <style name="PostHeaderPrimary">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18dip</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="PostHeaderSecondary">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15dip</item>
+        <item name="android:singleLine">true</item>
+    </style>
+        
+        
     <style name="NotificationText">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
