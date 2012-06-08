@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.util.Linkify;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -122,6 +123,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 
 				TextView body = (TextView) post_layout.findViewById(R.id.body);
 				body.setText(Html.fromHtml(posts.getLast().getBody(), new AsyncImageGetter(body, this), null));
+				Linkify.addLinks(body, Linkify.ALL);
 
 				ImageView reply = (ImageView) post_layout.findViewById(R.id.replyIcon);
 				reply.setTag(REPLY_TAG);
@@ -228,6 +230,9 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case R.id.reply_item:
+				reply();
+				break;
 			case R.id.jump_page_item:
 				jumpToPage();
 				break;
