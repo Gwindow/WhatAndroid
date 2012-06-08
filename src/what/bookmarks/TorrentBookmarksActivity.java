@@ -108,7 +108,7 @@ public class TorrentBookmarksActivity extends MyActivity implements OnClickListe
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			bookmarks = Bookmarks.loadTorrentBookmarks();
+			bookmarks = Bookmarks.initTorrentBookmarks();
 			return bookmarks.getStatus();
 		}
 
