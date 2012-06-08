@@ -158,20 +158,4 @@ public class QuickScannerActivity extends MyActivity {
 		return false;
 	}
 
-	@Override
-	public void onMenuGesturePerformed() {
-		if (MySoup.isLoggedIn()) {
-			Intent intent = new Intent(QuickScannerActivity.this, what.gui.MainMenu.class);
-			startActivity(intent);
-		}
-	}
-
-	@Override
-	public void onHomeGesturePerformed() {
-		if (MySoup.isLoggedIn()) {
-			Intent intent = new Intent(QuickScannerActivity.this, what.home.HomeActivity.class);
-			startActivity(intent);
-		}
-	}
-
 }

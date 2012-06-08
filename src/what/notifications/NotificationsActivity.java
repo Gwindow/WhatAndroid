@@ -28,6 +28,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+/**
+ * @author Gwindow
+ * @since Jun 7, 2012 11:43:17 PM
+ */
+
 public class NotificationsActivity extends MyActivity2 implements OnClickListener, Scrollable {
 	private static final int TORRENTGROUP_TAG = 0;
 	private MyScrollView scrollView;

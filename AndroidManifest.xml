@@ -86,7 +86,7 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name="what.forum.section.SectionActivity2"
+            android:name="what.forum.SectionActivity"
             android:theme="@style/Theme.Sherlock"
             android:windowSoftInputMode="adjustPan" >
         </activity>

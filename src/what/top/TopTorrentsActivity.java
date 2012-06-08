@@ -221,7 +221,7 @@ public class TopTorrentsActivity extends MyActivity implements OnClickListener {
 
 	private void openTorrent(int id) {
 		Bundle b = new Bundle();
-		intent = new Intent(TopTorrentsActivity.this, what.torrents.torrents.TorrentTabActivity.class);
+		// intent = new Intent(TopTorrentsActivity.this, what.torrents.torrents.TorrentTabActivity.class);
 		b.putInt("torrentGroupId", id);
 		intent.putExtras(b);
 		startActivity(intent);

@@ -2,7 +2,6 @@ package what.forum;
 
 import java.util.List;
 
-import what.forum.section.SectionActivity2;
 import what.gui.ActivityNames;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
@@ -97,7 +96,7 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 	}
 
 	private void openSection(int id) {
-		Intent intent = new Intent(this, SectionActivity2.class);
+		Intent intent = new Intent(this, SectionActivity.class);
 		Bundle bundle = new Bundle();
 		bundle.putInt("sectionId", id);
 		intent.putExtras(bundle);

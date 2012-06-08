@@ -1,10 +1,10 @@
 package what.login;
 
 import what.cache.ImageCache;
+import what.forum.ForumActivity;
 import what.gui.MenuItems;
 import what.gui.MyActivity2;
 import what.gui.R;
-import what.search.TorrentSearchActivity;
 import what.settings.Settings;
 import what.status.WhatStatusActivity;
 import android.app.AlertDialog;
@@ -38,7 +38,7 @@ import com.actionbarsherlock.view.MenuItem;
 public class WhatAndroidActivity extends MyActivity2 implements OnClickListener {
 
 	/** The Constant REDIRECT_CLASS. */
-	private static final Class<?> REDIRECT_CLASS = TorrentSearchActivity.class;
+	private static final Class<?> REDIRECT_CLASS = ForumActivity.class;
 
 	/** The Constant SITE. */
 	private static final String SITE = "ssl.what.cd";

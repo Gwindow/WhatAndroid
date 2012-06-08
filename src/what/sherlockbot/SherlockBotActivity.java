@@ -78,4 +78,5 @@ public class SherlockBotActivity extends MyActivity {
 		alert.setCancelable(true);
 		alert.show();
 	}
+
 }

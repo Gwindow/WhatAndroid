@@ -1,19 +1,14 @@
 package what.gui;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 import what.settings.Settings;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.gesture.Gesture;
-import android.gesture.GestureLibraries;
 import android.gesture.GestureLibrary;
 import android.gesture.GestureOverlayView;
-import android.gesture.GestureOverlayView.OnGesturePerformedListener;
-import android.gesture.Prediction;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -30,7 +25,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public abstract class MyActivity extends SherlockFragmentActivity implements OnGesturePerformedListener {
+public abstract class MyActivity extends SherlockFragmentActivity {
 	private static int DEFAULT_THEME = com.actionbarsherlock.R.style.Theme_Sherlock_ForceOverflow;
 	private static DisplayMetrics displaymetrics = null;
 	private static BitmapDrawable customBackground;
@@ -87,12 +82,7 @@ public abstract class MyActivity extends SherlockFragmentActivity implements OnG
 	 *            the enable background
 	 */
 	public void setContentView(int layoutResID, boolean enableBackground) {
-
-		if (isGesturesEnabled) {
-			super.setContentView(loadGestureOverLayView(layoutResID));
-		} else {
-			super.setContentView(layoutResID);
-		}
+		super.setContentView(layoutResID);
 		if (enableBackground) {
 			v = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
 			if (Settings.getCustomBackground()) {
@@ -127,21 +117,6 @@ public abstract class MyActivity extends SherlockFragmentActivity implements OnG
 	 * Prepare the activity for the user, run any code necessary to do that here.
 	 */
 	public abstract void prepare();
-
-	private GestureOverlayView loadGestureOverLayView(int layoutResID) {
-		gestureOverlayView = new GestureOverlayView(this);
-		View inflate = getLayoutInflater().inflate(layoutResID, null);
-		gestureOverlayView.addView(inflate);
-		gestureOverlayView.addOnGesturePerformedListener(this);
-		gestureOverlayView.setGestureVisible(true);
-		gestureOverlayView.setGestureStrokeWidth(3.0f);
-		gestureLib = GestureLibraries.fromRawResource(this, R.raw.gestures);
-		gestureSensitivity = Settings.getGestureSensitivity();
-		if (!gestureLib.load()) {
-			finish();
-		}
-		return gestureOverlayView;
-	}
 
 	private void loadDefaultBackground() {
 		try {
@@ -202,8 +177,6 @@ public abstract class MyActivity extends SherlockFragmentActivity implements OnG
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			Intent intent = new Intent(this, what.gui.MainMenu.class);
-			startActivity(intent);
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
@@ -228,12 +201,12 @@ public abstract class MyActivity extends SherlockFragmentActivity implements OnG
 
 	public void lockScreenRotation() {
 		switch (this.getResources().getConfiguration().orientation) {
-		case Configuration.ORIENTATION_PORTRAIT:
-			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			break;
-		case Configuration.ORIENTATION_LANDSCAPE:
-			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-			break;
+			case Configuration.ORIENTATION_PORTRAIT:
+				this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				break;
+			case Configuration.ORIENTATION_LANDSCAPE:
+				this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+				break;
 		}
 	}
 
@@ -260,47 +233,8 @@ public abstract class MyActivity extends SherlockFragmentActivity implements OnG
 		return post.replace("[img]", "").replace("[/img]", "");
 	}
 
-	@Override
-	public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
-		if (isGesturesEnabled) {
-			ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
-			for (Prediction prediction : predictions) {
-				if (prediction.score > gestureSensitivity) {
-					if (prediction.name.trim().equals(Gestures.UP)) {
-						onUpGesturePerformed();
-					}
-					if (prediction.name.trim().equals(Gestures.DOWN)) {
-						onDownGesturePerformed();
-					}
-					if (prediction.name.trim().equals(Gestures.LEFT)) {
-						onLeftGesturePerformed();
-					}
-					if (prediction.name.trim().equals(Gestures.RIGHT)) {
-						onRightGesturePerformed();
-					}
-					if (prediction.name.trim().equals(Gestures.REFRESH)) {
-						onRefreshGesturePerformed();
-					}
-					if (prediction.name.trim().equals(Gestures.HOME)) {
-						onHomeGesturePerformed();
-					}
-				}
-				if ((prediction.score > 9) || (prediction.score > (gestureSensitivity + 1))) {
-					if (prediction.name.trim().equals(Gestures.MENU)) {
-						onMenuGesturePerformed();
-					}
-				}
-			}
-		}
-	}
-
 	public void enableGestures(boolean b) {
 		gestureOverlayView.setEnabled(b);
-	}
-
-	public void onMenuGesturePerformed() {
-		Intent intent = new Intent(MyActivity.this, what.gui.MainMenu.class);
-		startActivity(intent);
 	}
 
 	public void onRefreshGesturePerformed() {

@@ -21,4 +21,5 @@ public class BundleKeys {
 	public static final String REQUEST_ID = "requestId";
 	public static final String FADE_ANIMATION = "fadeAnimation";
 	public static final String NOTIFICATIONS_PAGE = "notificationsPage";
+	public static final String SECTION_ID = "sectionId";
 }

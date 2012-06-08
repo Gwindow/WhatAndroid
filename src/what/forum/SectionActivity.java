@@ -1,250 +1,256 @@
 package what.forum;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import what.gui.MyActivity;
+import what.gui.ActivityNames;
+import what.gui.BundleKeys;
+import what.gui.ErrorToast;
+import what.gui.JumpToPageDialog;
+import what.gui.MyActivity2;
+import what.gui.MyScrollView;
 import what.gui.R;
+import what.gui.Scrollable;
+import what.gui.ViewSlider;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.forum.section.Section;
 import api.forum.section.Threads;
 
-//TODO reenable author names at some point?
-public class SectionActivity extends MyActivity implements OnClickListener, OnLongClickListener {
-	private static final String JUMP_UP_STRING = "Up";
-	private static final String JUMP_DOWN_STRING = "Down";
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
-	private ScrollView scrollView;
+/**
+ * @author Gwindow
+ * @since May 5, 2012 5:55:53 PM
+ */
+public class SectionActivity extends MyActivity2 implements Scrollable, OnClickListener {
+	private static final int THREAD_TAG = 0;
+	private static final int AUTHOR_TAG = 1;
+	private static final int LAST_POSTER_TAG = 2;
+
+	private MyScrollView scrollView;
 	private LinearLayout scrollLayout;
-	private int counter;
-	private ProgressDialog dialog;
-	private ArrayList<TextView> threadList;
-	private TextView sectionTitle;
-	private Intent intent;
-	private Section section;
-	private int id, page;
-	private Button backButton, nextButton;
-	private Button jumpButton;
-	// false is down, true is up
-	private boolean isJumped;
 
+	private Section section;
+	private int sectionId;
+	private int sectionPage = 1;
+
+	private boolean isLoaded;
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		super.setActivityName(ActivityNames.FORUM);
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.threads, true);
+		super.setContentView(R.layout.section, false);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void init() {
-		threadList = new ArrayList<TextView>();
+		Bundle bundle = getIntent().getExtras();
+		sectionId = bundle.getInt(BundleKeys.SECTION_ID);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void load() {
-		backButton = (Button) this.findViewById(R.id.previousButton);
-		nextButton = (Button) this.findViewById(R.id.nextButton);
-		jumpButton = (Button) this.findViewById(R.id.jumpButton);
-		jumpButton.setOnLongClickListener(this);
-		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
+		scrollView = (MyScrollView) this.findViewById(R.id.scrollView);
+		scrollView.attachScrollable(this);
 		scrollLayout = (LinearLayout) findViewById(R.id.scrollLayout);
-		sectionTitle = (TextView) findViewById(R.id.titleText);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void prepare() {
-		setButtonState(backButton, false);
-		setButtonState(nextButton, false);
-		getBundle();
 		new LoadSection().execute();
 	}
 
-	private void getBundle() {
-		Bundle b = this.getIntent().getExtras();
-		id = b.getInt("id");
-		try {
-			page = b.getInt("page");
-		} catch (Exception e) {
-			page = 1;
-		}
-
-	}
-
-	private void populateLayout() {
-		setButtonState(backButton, section.hasPreviousPage());
-		setButtonState(nextButton, section.hasNextPage());
-		int textLayoutId;
-
-		sectionTitle
-				.setText(section.getResponse().getForumName() + ", page " + section.getResponse().getCurrentPage().intValue());
+	/**
+	 * Populate section with threads.
+	 */
+	private void populate() {
+		setActionBarTitle(section.getResponse().getForumName() + ", " + sectionPage + "/" + section.getResponse().getPages());
 
 		List<Threads> threads = section.getResponse().getThreads();
-		for (int i = 0; i < threads.size(); i++) {
-			if ((i % 2) == 0) {
-				textLayoutId = R.layout.forum_name_even;
-			} else {
-				textLayoutId = R.layout.forum_name_odd;
+		if (threads != null) {
+			for (int i = 0; i < threads.size(); i++) {
+				ViewSlider thread_layout = (ViewSlider) getLayoutInflater().inflate(R.layout.section_thread, null);
+				TextView thread_title = (TextView) thread_layout.findViewById(R.id.threadTitle);
+				thread_title.setText(threads.get(i).getTitle());
+				thread_title.setId(threads.get(i).getTopicId().intValue());
+				thread_title.setTag(THREAD_TAG);
+				thread_title.setOnClickListener(this);
+				TextView thread_last_poster = (TextView) thread_layout.findViewById(R.id.threadLastPoster);
+				thread_last_poster.setText("Last Poster: " + threads.get(i).getLastAuthorName());
+				thread_last_poster.setId(threads.get(i).getLastAuthorId().intValue());
+				thread_last_poster.setTag(LAST_POSTER_TAG);
+
+				TextView thread_author = (TextView) thread_layout.findViewById(R.id.threadAuthor);
+				thread_author.setText("Author: " + threads.get(i).getAuthorName());
+				thread_author.setId(threads.get(i).getAuthorId().intValue());
+				thread_author.setTag(AUTHOR_TAG);
+
+				scrollLayout.addView(thread_layout);
 			}
-
-			threadList.add((TextView) getLayoutInflater().inflate(textLayoutId, null));
-			if (threads.get(i).isLocked()) {
-				threadList.get(i).setText("Locked: " + threads.get(i).getTitle());
-			} else if (threads.get(i).isSticky()) {
-				threadList.get(i).setText("Sticky: " + threads.get(i).getTitle());
-			} else if (threads.get(i).isLocked() && threads.get(i).isSticky()) {
-				threadList.get(i).setText("Locked Sticky: " + threads.get(i).getTitle());
-			} else {
-				threadList.get(i).setText(threads.get(i).getTitle());
-			}
-			threadList.get(i).setSingleLine(true);
-			threadList.get(i).setOnClickListener(this);
-
-			scrollLayout.addView(threadList.get(i));
-			counter++;
-		}
-		idGenerator();
-	}
-
-	private void idGenerator() {
-		for (int i = 0; i < counter; i++) {
-			threadList.get(i).setId(i);
 		}
 	}
 
-	private void openThread(int i) {
-		Bundle b = new Bundle();
-		intent = new Intent(SectionActivity.this, what.forum.ThreadActivity.class);
-		b.putInt("id", (section.getResponse().getThreads().get(i).getTopicId().intValue()));
-
-		// if the thread has been read in the past automatically jump to last read page
-		if (section.getResponse().getThreads().get(i).isRead()) {
-			b.putInt("page", (section.getResponse().getThreads().get(i).getLastReadPage().intValue()));
-		} else {
-			b.putInt("page", 1);
-		}
-		intent.putExtras(b);
-		startActivity(intent);
-	}
-
-	private void openAuthor(int i) {
-		Bundle b = new Bundle();
-		intent = new Intent(SectionActivity.this, what.user.UserProfilePopUpActivity.class);
-		b.putInt("userId", section.getResponse().getThreads().get(i).getAuthorId().intValue());
-		intent.putExtras(b);
-		startActivity(intent);
-	}
-
-	public void back(View v) {
-		if (section.hasPreviousPage()) {
-			Bundle b = new Bundle();
-			intent = new Intent(SectionActivity.this, what.forum.SectionActivity.class);
-			b.putInt("id", id);
-			b.putInt("page", page - 1);
-			intent.putExtras(b);
-			startActivity(intent);
-		} else {
-			finish();
-		}
-	}
-
-	public void next(View v) {
-		if (section.hasNextPage()) {
-			Bundle b = new Bundle();
-			intent = new Intent(SectionActivity.this, what.forum.SectionActivity.class);
-			b.putInt("id", id);
-			b.putInt("page", page + 1);
-			intent.putExtras(b);
-			startActivity(intent);
-		}
-	}
-
-	public void newThread(View v) {
-		Bundle b = new Bundle();
-		intent = new Intent(SectionActivity.this, what.forum.NewThreadActivity.class);
-		b.putInt("sectionId", Section.getId());
-		intent.putExtras(b);
-		startActivity(intent);
-	}
-
-	public void jump(View v) {
-		int dy = scrollView.getHeight();
-		int y = scrollView.getScrollY() + dy;
-		scrollView.scrollBy(0, dy);
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public boolean onLongClick(View v) {
-		if (v.getId() == jumpButton.getId()) {
-			scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-		}
-		return false;
+	public void scrolledToBottom() {
+		nextPage();
 	}
 
+	/**
+	 * Load the next page while currentPage < totalPages.
+	 */
+	private void nextPage() {
+		if (isLoaded) {
+			if (sectionPage < section.getLastPage()) {
+				sectionPage++;
+				new LoadSection(true).execute();
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onClick(View v) {
-		for (int i = 0; i < (threadList.size()); i++) {
-			if (v.getId() == threadList.get(i).getId()) {
-				openThread(i);
-			}
+		switch (Integer.valueOf(v.getTag().toString())) {
+			case THREAD_TAG:
+				Toast.makeText(this, String.valueOf(v.getId()), Toast.LENGTH_SHORT).show();
+				break;
+			case AUTHOR_TAG:
+				// TODO fill out
+				break;
+			case LAST_POSTER_TAG:
+				// TODO fill out
+				break;
+			default:
+				break;
 		}
 	}
 
-	@Override
-	public void onRightGesturePerformed() {
-		next(null);
+	private void jumpToPage() {
+		new JumpToPageDialog(this, section.getResponse().getPages().intValue()) {
+			@Override
+			public void jumpToPage() {
+				if (getPage() != -1) {
+					Intent intent = new Intent(SectionActivity.this, SectionActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putInt("sectionPage", getPage());
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
+			}
+		}.create().show();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void onDownGesturePerformed() {
-		jumpButton.setText(JUMP_UP_STRING);
-		isJumped = true;
-		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.section_menu, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void onUpGesturePerformed() {
-		scrollView.fullScroll(ScrollView.FOCUS_UP);
-		isJumped = false;
-		scrollView.fullScroll(ScrollView.FOCUS_UP);
-
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.new_thread_item:
+				break;
+			case R.id.jump_page_item:
+				jumpToPage();
+				break;
+			case R.id.refresh_item:
+				refresh();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private class LoadSection extends AsyncTask<Void, Void, Boolean> {
+		private ProgressDialog dialog;
+		private ProgressBar bar;
+		private boolean useEmbeddedDialog;
+
+		public LoadSection() {
+			super();
+		}
+
+		public LoadSection(boolean useEmbeddedDialog) {
+			this.useEmbeddedDialog = useEmbeddedDialog;
+		}
+
 		@Override
 		protected void onPreExecute() {
-			lockScreenRotation();
-			dialog = new ProgressDialog(SectionActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Loading...");
-			dialog.show();
+			isLoaded = false;
+			if (useEmbeddedDialog) {
+				bar = new ProgressBar(SectionActivity.this);
+				bar.setIndeterminate(true);
+				scrollLayout.addView(bar);
+			} else {
+				lockScreenRotation();
+				dialog = new ProgressDialog(SectionActivity.this);
+				dialog.setIndeterminate(true);
+				dialog.setMessage("Loading...");
+				dialog.show();
+			}
 		}
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			section = Section.sectionFromIdAndPage(id, page);
+			section = Section.sectionFromIdAndPage(sectionId, sectionPage);
 			return section.getStatus();
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			if (status == true) {
-				populateLayout();
+			isLoaded = true;
+			if (useEmbeddedDialog) {
+				hideProgressBar();
+			} else {
+				dialog.dismiss();
+				unlockScreenRotation();
 			}
-			dialog.dismiss();
-			if (status == false) {
-				Toast.makeText(SectionActivity.this, "Could not load section", Toast.LENGTH_LONG).show();
+
+			if (status) {
+				populate();
 			}
-			unlockScreenRotation();
+			if (!status) {
+				ErrorToast.show(SectionActivity.this, SectionActivity.class);
+			}
+		}
+
+		private void hideProgressBar() {
+			scrollLayout.removeViewAt(scrollLayout.getChildCount() - 1);
 		}
 	}
 
