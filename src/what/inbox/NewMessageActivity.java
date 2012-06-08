@@ -96,6 +96,9 @@ public class NewMessageActivity extends MyActivity2 {
 		protected void onPostExecute(Boolean result) {
 			if (!result) {
 				Toast.makeText(NewMessageActivity.this, "Could not send message", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(NewMessageActivity.this, "Message Sent", Toast.LENGTH_SHORT).show();
+
 			}
 		}
 

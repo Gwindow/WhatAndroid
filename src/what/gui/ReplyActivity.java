@@ -91,7 +91,8 @@ public class ReplyActivity extends MyActivity2 {
 			}
 			if (type.equals(BundleKeys.REPLY_TYPE_MESSAGE)) {
 				try {
-					new PrivateMessage(userId, id, params[0]).sendMessage();
+					// TODO why doesn't replying work?
+					new PrivateMessage(userId, id, params[0]).replyMessage();
 					toReturn = true;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -108,6 +109,8 @@ public class ReplyActivity extends MyActivity2 {
 		protected void onPostExecute(Boolean result) {
 			if (!result) {
 				Toast.makeText(ReplyActivity.this, "Could not post reply", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(ReplyActivity.this, "Replied", Toast.LENGTH_SHORT).show();
 			}
 		}
 
