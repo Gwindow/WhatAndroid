@@ -20,4 +20,5 @@ public class BundleKeys {
 	public static final String ARTIST_ID = "artistId";
 	public static final String REQUEST_ID = "requestId";
 	public static final String FADE_ANIMATION = "fadeAnimation";
+	public static final String NOTIFICATIONS_PAGE = "notificationsPage";
 }

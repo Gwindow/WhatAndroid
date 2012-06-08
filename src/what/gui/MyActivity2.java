@@ -195,6 +195,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		SubMenu submenu = menu.addSubMenu(Menu.NONE, MENU_PLACEHOLDER_ID, Menu.NONE, activityName);
 		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.HOME.toString());
 		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.FORUM.toString());
+		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.INBOX.toString());
 
 		SubMenu searchmenu = submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.SEARCH.toString());
 		searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.TORRENTS.toString());
@@ -203,7 +204,6 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 
 		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.BOOKMARKS.toString());
 		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.NOTIFICATIONS.toString());
-		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.INBOX.toString());
 		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.BARCODE_SCANNER.toString());
 
 		SubMenu moremenu = submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.MORE.toString());

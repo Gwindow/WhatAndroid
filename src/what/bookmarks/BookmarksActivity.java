@@ -26,7 +26,7 @@ public class BookmarksActivity extends MyActivity2 {
 	private static final String COVERS_TAB = "Covers";
 	private static final String TORRENTS_TAB = "Torrents";
 	private static final String ARTISTS_TAB = "Artists";
-	private static final String[] TABS = new String[] { COVERS_TAB, TORRENTS_TAB, ARTISTS_TAB };
+	private static final String[] TABS = new String[] { TORRENTS_TAB, ARTISTS_TAB };
 
 	private FragmentPagerAdapter adapter;
 	private ViewPager pager;
@@ -37,7 +37,7 @@ public class BookmarksActivity extends MyActivity2 {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.setActivityName(ActivityNames.MUSIC);
+		super.setActivityName(ActivityNames.BOOKMARKS);
 		super.onCreate(savedInstanceState);
 	}
 
@@ -52,7 +52,7 @@ public class BookmarksActivity extends MyActivity2 {
 
 	// TODO make this less sloppy. Create a custom fragment activity.
 	private void populate() {
-		setContentView(R.layout.artist_tabs);
+		setContentView(R.layout.bookmarks_tabs);
 
 		setActionBarTitle("Bookmarks");
 

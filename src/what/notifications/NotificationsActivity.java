@@ -1,199 +1,245 @@
 package what.notifications;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import what.gui.MyActivity;
+import what.gui.ActivityNames;
+import what.gui.BundleKeys;
+import what.gui.ErrorToast;
+import what.gui.JumpToPageDialog;
+import what.gui.MyActivity2;
+import what.gui.MyScrollView;
 import what.gui.R;
-import what.services.NotificationService;
-import android.app.NotificationManager;
+import what.gui.Scrollable;
+import what.torrents.torrents.TorrentGroupActivity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.notifications.Notifications;
+import api.notifications.Results;
 
-public class NotificationsActivity extends MyActivity implements OnClickListener {
-	private ScrollView scrollView;
-	private TextView title;
-	private ArrayList<TextView> torrentList;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class NotificationsActivity extends MyActivity2 implements OnClickListener, Scrollable {
+	private static final int TORRENTGROUP_TAG = 0;
+	private MyScrollView scrollView;
 	private LinearLayout scrollLayout;
-	private Intent intent;
-	private Notifications notifications;
-	private ProgressDialog dialog;
-	private int page;
-	private Button backButton, nextButton;
-	private NotificationManager myNotificationManager;
 
+	private Notifications notifications;
+	private int notificationsPage = 1;
+
+	private boolean isLoaded;
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		super.setActivityName(ActivityNames.NOTIFICATIONS);
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.notifications, true);
+		super.setContentView(R.layout.generic_endless_scrollview, false);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void init() {
-		torrentList = new ArrayList<TextView>();
+		Bundle bundle = getIntent().getExtras();
+		try {
+			notificationsPage = bundle.getInt(BundleKeys.NOTIFICATIONS_PAGE);
+		} catch (Exception e) {
+		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void load() {
-		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		scrollView = (ScrollView) this.findViewById(R.id.scrollView);
-		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
-		title = (TextView) this.findViewById(R.id.title);
-		backButton = (Button) this.findViewById(R.id.previousButton);
-		nextButton = (Button) this.findViewById(R.id.nextButton);
+		scrollView = (MyScrollView) this.findViewById(R.id.scrollView);
+		scrollView.attachScrollable(this);
+		scrollLayout = (LinearLayout) findViewById(R.id.scrollLayout);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void prepare() {
-		myNotificationManager.cancel(NotificationService.ID);
+		new Load().execute();
+	}
 
-		setButtonState(backButton, false);
-		setButtonState(nextButton, false);
-		getBundle();
+	/**
+	 * Populate notifications.
+	 */
+	private void populate() {
+		setActionBarTitle("Notifications, " + notificationsPage + "/" + notifications.getResponse().getPages());
 
-		if (page == 1) {
-			if (NotificationService.isRunning()) {
-				notifications = NotificationService.notifications;
-				populateLayout();
+		List<Results> results = notifications.getResponse().getResults();
+
+		if (results != null) {
+			for (int i = 0; i < results.size(); i++) {
+				TextView torrentgroup_title =
+						(TextView) getLayoutInflater().inflate(R.layout.notifications_torrentgroup_title, null);
+				String title = results.get(i).getGroupName() + " - " + results.get(i).getMediaFormatEncoding();
+				String displayed_title = results.get(i).isUnread() ? "New! " + title : title;
+				torrentgroup_title.setText(displayed_title);
+				torrentgroup_title.setId(results.get(i).getGroupId().intValue());
+				torrentgroup_title.setTag(TORRENTGROUP_TAG);
+				torrentgroup_title.setOnClickListener(this);
+				scrollLayout.addView(torrentgroup_title);
 			}
-			if (!NotificationService.isRunning()) {
-				new LoadNotifications().execute();
-			}
-		} else {
-			new LoadNotifications().execute();
 		}
 	}
 
-	private void getBundle() {
-		Bundle b = this.getIntent().getExtras();
-		try {
-			page = b.getInt("page");
-		} catch (Exception e) {
-			page = 1;
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void scrolledToBottom() {
+		nextPage();
+	}
+
+	/**
+	 * Load the next page while currentPage < totalPages.
+	 */
+	private void nextPage() {
+		if (isLoaded) {
+			if (notificationsPage < notifications.getLastPage()) {
+				notificationsPage++;
+				new Load(true).execute();
+			}
 		}
 	}
 
-	private void populateLayout() {
-		title.setText("Notifications, page " + notifications.getResponse().getCurrentPages().toString() + "\n"
-				+ notifications.getResponse().getNumNew() + " new notifications");
-		setButtonState(backButton, notifications.hasNextPage());
-		setButtonState(nextButton, notifications.hasPreviousPage());
-		for (int i = 0; i < notifications.getResponse().getResults().size(); i++) {
-			if ((i % 2) == 0) {
-				torrentList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_even, null));
-			} else {
-				torrentList.add((TextView) getLayoutInflater().inflate(R.layout.torrent_name_odd, null));
-			}
-			if (notifications.getResponse().getResults().get(i).isUnread()) {
-				torrentList.get(i).setTextColor(Color.RED);
-			}
-			torrentList.get(i).setText(
-					notifications.getResponse().getResults().get(i).getGroupName() + " "
-							+ notifications.getResponse().getResults().get(i).getYearMediaFormatEncoding());
-			torrentList.get(i).setId(i);
-			torrentList.get(i).setOnClickListener(this);
-			scrollLayout.addView(torrentList.get(i));
-		}
-	}
-
-	private void openTorrent(int i) {
-		Bundle b = new Bundle();
-		intent = new Intent(NotificationsActivity.this, what.torrents.torrents.TorrentTabActivity.class);
-		b.putInt("torrentGroupId", notifications.getResponse().getResults().get(i).getGroupId().intValue());
-		intent.putExtras(b);
-		startActivity(intent);
-	}
-
-	public void clear(View v) {
-		notifications.clearNotifications();
-		torrentList.clear();
-		scrollLayout.removeAllViews();
-		setButtonState(backButton, false);
-		setButtonState(nextButton, false);
-
-	}
-
-	public void next(View v) {
-		Bundle b = new Bundle();
-		intent = new Intent(NotificationsActivity.this, what.notifications.NotificationsActivity.class);
-		b.putInt("page", page + 1);
-		intent.putExtras(b);
-		startActivity(intent);
-	}
-
-	public void back(View v) {
-		Bundle b = new Bundle();
-		intent = new Intent(NotificationsActivity.this, what.notifications.NotificationsActivity.class);
-		b.putInt("page", page - 1);
-		intent.putExtras(b);
-		startActivity(intent);
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onClick(View v) {
-		for (int i = 0; i < (torrentList.size()); i++) {
-			if (v.getId() == torrentList.get(i).getId()) {
-				openTorrent(i);
+		switch (Integer.valueOf(v.getTag().toString())) {
+			case TORRENTGROUP_TAG:
+				openTorrentGroup(v.getId());
+				break;
+			default:
+				break;
+		}
+	}
+
+	private void openTorrentGroup(int id) {
+		Intent intent = new Intent(this, TorrentGroupActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt(BundleKeys.TORRENT_GROUP_ID, id);
+		intent.putExtras(bundle);
+		startActivity(intent);
+
+	}
+
+	private void clearNotifications() {
+		notifications.clearNotifications();
+		refresh();
+		Toast.makeText(this, "Notifications cleared", Toast.LENGTH_SHORT).show();
+	}
+
+	private void jumpToPage() {
+		new JumpToPageDialog(this, notifications.getResponse().getPages()) {
+			@Override
+			public void jumpToPage() {
+				if (getPage() != -1) {
+					Intent intent = new Intent(NotificationsActivity.this, NotificationsActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putInt(BundleKeys.INBOX_PAGE, getPage());
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
 			}
+		}.create().show();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.notifications_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.jump_page_item:
+				jumpToPage();
+				break;
+			case R.id.clear_item:
+				clearNotifications();
+				break;
 		}
+		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onRightGesturePerformed() {
-		if (notifications.hasNextPage()) {
-			next(null);
+	private class Load extends AsyncTask<Void, Void, Boolean> {
+		private ProgressDialog dialog;
+		private ProgressBar bar;
+		private boolean useEmbeddedDialog;
+
+		public Load() {
+			super();
 		}
-	}
 
-	@Override
-	public void onDownGesturePerformed() {
-		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-	}
+		public Load(boolean useEmbeddedDialog) {
+			this.useEmbeddedDialog = useEmbeddedDialog;
+		}
 
-	@Override
-	public void onUpGesturePerformed() {
-		scrollView.fullScroll(ScrollView.FOCUS_UP);
-
-	}
-
-	private class LoadNotifications extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected void onPreExecute() {
-			lockScreenRotation();
-			dialog = new ProgressDialog(NotificationsActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Loading...");
-			dialog.show();
+			isLoaded = false;
+			if (useEmbeddedDialog) {
+				bar = new ProgressBar(NotificationsActivity.this);
+				bar.setIndeterminate(true);
+				scrollLayout.addView(bar);
+			} else {
+				lockScreenRotation();
+				dialog = new ProgressDialog(NotificationsActivity.this);
+				dialog.setIndeterminate(true);
+				dialog.setMessage("Loading...");
+				dialog.show();
+			}
 		}
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			notifications = Notifications.notificationsFromPage(page);
+			notifications = Notifications.notificationsFromPage(notificationsPage);
 			return notifications.getStatus();
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			if (status == true) {
-				populateLayout();
+			isLoaded = true;
+			if (useEmbeddedDialog) {
+				hideProgressBar();
+			} else {
+				dialog.dismiss();
+				unlockScreenRotation();
 			}
-			dialog.dismiss();
-			if (status == false) {
-				Toast.makeText(NotificationsActivity.this, "Could not load notifications", Toast.LENGTH_LONG).show();
+
+			if (status) {
+				populate();
 			}
-			unlockScreenRotation();
+			if (!status) {
+				ErrorToast.show(NotificationsActivity.this, NotificationsActivity.class);
+			}
+		}
+
+		private void hideProgressBar() {
+			scrollLayout.removeViewAt(scrollLayout.getChildCount() - 1);
 		}
 	}
-
 }

@@ -39,14 +39,16 @@ public class TorrentsFragment extends SherlockFragment implements OnClickListene
 	}
 
 	private void populate(View view, LayoutInflater inflater) {
-		for (int i = 0; i < bookmarks.size(); i++) {
-			// TODO view slider
-			TextView torrentgroup_title = (TextView) inflater.inflate(R.layout.bookmarks_torrentgroup_title, null);
-			torrentgroup_title.setText(bookmarks.get(i).getName());
-			torrentgroup_title.setOnClickListener(this);
-			torrentgroup_title.setTag(TORRENTGROUP_TAG);
-			torrentgroup_title.setId(bookmarks.get(i).getId().intValue());
-			scrollLayout.addView(torrentgroup_title);
+		if (bookmarks != null) {
+			for (int i = 0; i < bookmarks.size(); i++) {
+				// TODO view slider
+				TextView torrentgroup_title = (TextView) inflater.inflate(R.layout.bookmarks_torrentgroup_title, null);
+				torrentgroup_title.setText(bookmarks.get(i).getName());
+				torrentgroup_title.setOnClickListener(this);
+				torrentgroup_title.setTag(TORRENTGROUP_TAG);
+				torrentgroup_title.setId(bookmarks.get(i).getId().intValue());
+				scrollLayout.addView(torrentgroup_title);
+			}
 		}
 	}
 
