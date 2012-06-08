@@ -41,6 +41,7 @@ public class ArtistsFragment extends SherlockFragment implements OnClickListener
 	private void populate(View view, LayoutInflater inflater) {
 		if (bookmarks != null) {
 			for (int i = 0; i < bookmarks.size(); i++) {
+				// TODO view slider
 				TextView torrentgroup_title = (TextView) inflater.inflate(R.layout.bookmarks_torrentgroup_title, null);
 				torrentgroup_title.setText(bookmarks.get(i).getArtistName());
 				torrentgroup_title.setOnClickListener(this);

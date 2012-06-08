@@ -118,7 +118,7 @@ public class BookmarksActivity extends MyActivity2 {
 				fragment = new TorrentsFragment(torrentBookmarks.getResponse().getTorrents());
 			}
 			if (tag.equals(ARTISTS_TAB)) {
-				fragment = new ArtistsFragment(torrentBookmarks.getResponse().getArtists());
+				fragment = new ArtistsFragment(artistBookmarks.getResponse().getArtists());
 			}
 			return fragment;
 		}

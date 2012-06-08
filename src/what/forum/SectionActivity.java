@@ -11,6 +11,7 @@ import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.Scrollable;
 import what.gui.ViewSlider;
+import what.user.UserActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -20,9 +21,9 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import api.forum.section.Section;
 import api.forum.section.Threads;
+import api.util.Tuple;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -33,7 +34,6 @@ import com.actionbarsherlock.view.MenuItem;
  * @since May 5, 2012 5:55:53 PM
  */
 public class SectionActivity extends MyActivity2 implements Scrollable, OnClickListener {
-	private static final int THREAD_TAG = 0;
 	private static final int AUTHOR_TAG = 1;
 	private static final int LAST_POSTER_TAG = 2;
 
@@ -95,9 +95,9 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 				ViewSlider thread_layout = (ViewSlider) getLayoutInflater().inflate(R.layout.section_thread, null);
 				TextView thread_title = (TextView) thread_layout.findViewById(R.id.threadTitle);
 				thread_title.setText(threads.get(i).getTitle());
-				thread_title.setId(threads.get(i).getTopicId().intValue());
-				thread_title.setTag(THREAD_TAG);
+				thread_title.setTag(new Tuple<Number, Number>(threads.get(i).getTopicId(), threads.get(i).getLastReadPostId()));
 				thread_title.setOnClickListener(this);
+
 				TextView thread_last_poster = (TextView) thread_layout.findViewById(R.id.threadLastPoster);
 				thread_last_poster.setText("Last Poster: " + threads.get(i).getLastAuthorName());
 				thread_last_poster.setId(threads.get(i).getLastAuthorId().intValue());
@@ -138,19 +138,41 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 	 */
 	@Override
 	public void onClick(View v) {
-		switch (Integer.valueOf(v.getTag().toString())) {
-			case THREAD_TAG:
-				Toast.makeText(this, String.valueOf(v.getId()), Toast.LENGTH_SHORT).show();
-				break;
-			case AUTHOR_TAG:
-				// TODO fill out
-				break;
-			case LAST_POSTER_TAG:
-				// TODO fill out
-				break;
-			default:
-				break;
+		if (v.getTag() instanceof Tuple<?, ?>) {
+			Tuple<Number, Number> tuple = (Tuple<Number, Number>) v.getTag();
+			openThread(tuple.getA(), tuple.getB());
+		} else {
+			switch (Integer.valueOf(v.getTag().toString())) {
+				case AUTHOR_TAG:
+					openUser(v.getId());
+					break;
+				case LAST_POSTER_TAG:
+					openUser(v.getId());
+					break;
+				default:
+					break;
+			}
 		}
+	}
+
+	private void openThread(Number threadId, Number lastReadPostId) {
+		Intent intent = new Intent(this, ThreadActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt(BundleKeys.THREAD_ID, threadId.intValue());
+		if (lastReadPostId != null) {
+			bundle.putInt(BundleKeys.THREAD_LAST_READ_POST_ID, lastReadPostId.intValue());
+
+		}
+		intent.putExtras(bundle);
+		startActivity(intent);
+	}
+
+	private void openUser(int id) {
+		Intent intent = new Intent(this, UserActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt(BundleKeys.USER_ID, id);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	private void jumpToPage() {

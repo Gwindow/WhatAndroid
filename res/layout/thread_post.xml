@@ -33,16 +33,6 @@
         android:layout_marginTop="5dip"
         android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/avatarImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxHeight="400dp"
-            android:maxWidth="150dp"
-            android:minWidth="150dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/artist_icon_dark" />
-
         <what.gui.ViewSlider
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
