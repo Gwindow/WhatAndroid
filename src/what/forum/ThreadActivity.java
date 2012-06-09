@@ -66,6 +66,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.FORUM);
 		super.onCreate(savedInstanceState);
+		enableFade();
 		super.setContentView(R.layout.generic_endless_scrollview, false);
 	}
 
@@ -109,6 +110,8 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	}
 
 	private void populate() {
+		fade();
+
 		invalidateOptionsMenu();
 		threadPage = thread.getResponse().getCurrentPage().intValue();
 		setActionBarTitle(thread.getResponse().getThreadTitle() + ", " + threadPage + "/"

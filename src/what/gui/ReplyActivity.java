@@ -4,7 +4,6 @@ import what.forum.QuoteBuffer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import api.forum.thread.Thread;
@@ -25,7 +24,7 @@ public class ReplyActivity extends MyActivity2 {
 	public void onCreate(Bundle savedInstanceState) {
 		setTheme(com.actionbarsherlock.R.style.Theme_Sherlock_Dialog);
 		super.onCreate(savedInstanceState);
-		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+		enableFade();
 		super.setContentView(R.layout.reply);
 	}
 
@@ -60,10 +59,7 @@ public class ReplyActivity extends MyActivity2 {
 	 */
 	@Override
 	public void prepare() {
-		WindowManager.LayoutParams lp = getWindow().getAttributes();
-		lp.dimAmount = 0.0f;
-		getWindow().setAttributes(lp);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		fade();
 
 		setActionBarTitle("Reply...");
 	}
@@ -118,7 +114,7 @@ public class ReplyActivity extends MyActivity2 {
 
 	@Override
 	protected void onPause() {
-		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+		enableFade();
 		super.onPause();
 	}
 

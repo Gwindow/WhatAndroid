@@ -14,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -237,6 +238,17 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 	 */
 	public DisplayMetrics getMetrics() {
 		return metrics;
+	}
+
+	public void enableFade() {
+		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+	}
+
+	public void fade() {
+		WindowManager.LayoutParams lp = getWindow().getAttributes();
+		lp.dimAmount = 0.0f;
+		getWindow().setAttributes(lp);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 	}
 
 }

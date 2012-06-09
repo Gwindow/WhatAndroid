@@ -53,6 +53,7 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.INBOX);
 		super.onCreate(savedInstanceState);
+		enableFade();
 		super.setContentView(R.layout.generic_scrollview, false);
 	}
 
@@ -85,6 +86,8 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 	 * Populate with messages.
 	 */
 	private void populate() {
+		fade();
+
 		setActionBarTitle(conversation.getResponse().getSubject());
 
 		List<Messages> messages = conversation.getResponse().getMessages();
@@ -186,6 +189,12 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 		bundle.putInt(BundleKeys.CONVERSATION_ID, conversationId);
 		intent.putExtras(bundle);
 		startActivity(intent);
+	}
+
+	@Override
+	protected void onPause() {
+		enableFade();
+		super.onPause();
 	}
 
 	private class Load extends AsyncTask<Void, Void, Boolean> {
