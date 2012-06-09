@@ -1,33 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/widget30"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	xmlns:android="http://schemas.android.com/apk/res/android">
-	<LinearLayout android:id="@+id/bar" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:background="@drawable/table_header_dark">
-		<TextView android:textAppearance="?android:attr/textAppearanceMedium"
-			android:textColor="@color/textview_colors2" android:text=""
-			android:id="@+id/username" android:layout_height="wrap_content"
-			android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-			android:layout_width="wrap_content" android:layout_alignParentRight="true"
-			></TextView>
-		<TextView android:textAppearance="?android:attr/textAppearanceSmall"
-			android:layout_height="wrap_content" android:id="@+id/time"
-			 android:layout_marginLeft="20dip"
-			android:layout_width="wrap_content" android:text=""></TextView>
-	</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget30"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-	<RelativeLayout android:id="@+id/content"
-		android:layout_below="@+id/bar" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:clickable="true">
-		<ImageView android:layout_width="wrap_content" android:src="@drawable/dne"
-			android:layout_height="wrap_content" android:id="@+id/avatar"
-			android:layout_alignParentLeft="true" android:background="#FFFFFF"
-			android:adjustViewBounds="true" android:minWidth="110px"
-			android:maxWidth="110px">
-		</ImageView>
-		<WebView android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:id="@+id/body"
-			android:layout_toRightOf="@+id/avatar">
-		</WebView>
-	</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/table_header_dark" >
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/textview_colors2" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" >
+        </TextView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar"
+        android:clickable="true" >
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:adjustViewBounds="true"
+            android:background="#FFFFFF"
+            android:maxWidth="110px"
+            android:minWidth="110px"
+            android:src="@drawable/dne" >
+        </ImageView>
+
+        <WebView
+            android:id="@+id/body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/avatar" >
+        </WebView>
+    </RelativeLayout>
+
 </RelativeLayout>

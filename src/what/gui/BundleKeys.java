@@ -24,4 +24,5 @@ public class BundleKeys {
 	public static final String SECTION_ID = "sectionId";
 	public static final String THREAD_PAGE = "threadPage";
 	public static final String THREAD_LAST_READ_POST_ID = "threadLastReadPostId";
+	public static final String SECTION_PAGE = "sectionPage";
 }

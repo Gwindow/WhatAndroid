@@ -44,8 +44,8 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	private static final int REPLY_TAG = 0;
 	private static final int QUOTE_TAG = 1;
 	private static final int USER_TAG = 2;
-	private static final int NON_EXISTANT = -1;
 	private static final int SUBSCRIBE_ITEM_ID = 3;
+	private static final int NON_EXISTANT = -1;
 
 	private MyScrollView scrollView;
 	private LinearLayout scrollLayout;
@@ -311,12 +311,12 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			if (useEmbeddedDialog) {
-				thread = api.forum.thread.Thread.threadFromIdAndPostId(threadId, threadPage);
+				thread = api.forum.thread.Thread.threadFromIdAndPage(threadId, threadPage);
 			} else {
 				if (lastReadPostId != NON_EXISTANT) {
 					thread = api.forum.thread.Thread.threadFromIdAndPostId(threadId, lastReadPostId);
 				} else {
-					thread = api.forum.thread.Thread.threadFromIdAndPostId(threadId, threadPage);
+					thread = api.forum.thread.Thread.threadFromIdAndPage(threadId, threadPage);
 				}
 			}
 			return thread.getStatus();

@@ -43,7 +43,7 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 
 	private Section section;
 	private int sectionId;
-	private int sectionPage = 1;
+	private int sectionPage;
 
 	private boolean isLoaded;
 
@@ -64,6 +64,11 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 	public void init() {
 		Bundle bundle = getIntent().getExtras();
 		sectionId = bundle.getInt(BundleKeys.SECTION_ID);
+		if (bundle.containsKey(BundleKeys.SECTION_PAGE)) {
+			sectionPage = bundle.getInt(BundleKeys.SECTION_PAGE);
+		} else {
+			sectionPage = 1;
+		}
 	}
 
 	/**
@@ -144,13 +149,11 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void onClick(View v) {
 		if (v.getTag() instanceof Tuple<?, ?>) {
-			Tuple<Number, Number> tuple = (Tuple<Number, Number>) v.getTag();
+			@SuppressWarnings("unchecked")
+			Tuple<Number, Number> tuple = ((Tuple<Number, Number>) v.getTag());
 			openThread(tuple.getA(), tuple.getB());
 		} else {
 			switch (Integer.valueOf(v.getTag().toString())) {
@@ -178,6 +181,14 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 		startActivity(intent);
 	}
 
+	private void newThread() {
+		Intent intent = new Intent(this, NewThreadActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt(BundleKeys.SECTION_ID, sectionId);
+		intent.putExtras(bundle);
+		startActivity(intent);
+	}
+
 	private void openUser(int id) {
 		Intent intent = new Intent(this, UserActivity.class);
 		Bundle bundle = new Bundle();
@@ -193,7 +204,8 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 				if (getPage() != -1) {
 					Intent intent = new Intent(SectionActivity.this, SectionActivity.class);
 					Bundle bundle = new Bundle();
-					bundle.putInt("sectionPage", getPage());
+					bundle.putInt(BundleKeys.SECTION_ID, sectionId);
+					bundle.putInt(BundleKeys.SECTION_PAGE, getPage());
 					intent.putExtras(bundle);
 					startActivity(intent);
 				}
@@ -218,6 +230,7 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.new_thread_item:
+				newThread();
 				break;
 			case R.id.jump_page_item:
 				jumpToPage();

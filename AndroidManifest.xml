@@ -230,6 +230,11 @@
             android:theme="@style/Theme.MenuDialog"
             android:windowSoftInputMode="adjustPan" >
         </activity>
+          <activity
+            android:name="what.forum.NewThreadActivity"
+            android:theme="@style/Theme.MenuDialog"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
         <activity
             android:name="what.inbox.InboxActivity"
             android:theme="@style/Theme.Sherlock"
