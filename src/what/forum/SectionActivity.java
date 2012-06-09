@@ -54,7 +54,6 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.FORUM);
 		super.onCreate(savedInstanceState);
-		enableFade();
 		super.setContentView(R.layout.section, false);
 	}
 
@@ -94,8 +93,6 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 	 * Populate section with threads.
 	 */
 	private void populate() {
-		fade();
-
 		setActionBarTitle(section.getResponse().getForumName() + ", " + sectionPage + "/" + section.getResponse().getPages());
 
 		List<Threads> threads = section.getResponse().getThreads();
@@ -243,12 +240,6 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 				break;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	protected void onPause() {
-		enableFade();
-		super.onPause();
 	}
 
 	private class LoadSection extends AsyncTask<Void, Void, Boolean> {

@@ -66,7 +66,6 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.FORUM);
 		super.onCreate(savedInstanceState);
-		enableFade();
 		super.setContentView(R.layout.generic_endless_scrollview, false);
 	}
 
@@ -110,8 +109,6 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	}
 
 	private void populate() {
-		fade();
-
 		invalidateOptionsMenu();
 		threadPage = thread.getResponse().getCurrentPage().intValue();
 		setActionBarTitle(thread.getResponse().getThreadTitle() + ", " + threadPage + "/"
@@ -345,14 +342,6 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 		private void hideProgressBar() {
 			scrollLayout.removeViewAt(scrollLayout.getChildCount() - 1);
 		}
-	}
-
-	@Override
-	public void onPause() {
-		for (ImageView avatar : avatarMap.values()) {
-			avatar.destroyDrawingCache();
-		}
-		super.onPause();
 	}
 
 	private class LoadAvatar extends AsyncTask<Void, Void, Boolean> {
