@@ -103,6 +103,18 @@
         <item name="android:textSize">22dip</item>
     </style>
 
+    <style name="UserSearchResult">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:textSize">22dip</item>
+    </style>
+
     <style name="TorrentFormatHeader">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -135,7 +147,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:textSize">17dip</item>
     </style>
-	
+
     <style name="ArtistTorrentGroupHeader">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -149,7 +161,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:clickable">true</item>
     </style>
-    
+
     <style name="ArtistTorrentGroupTitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -161,8 +173,8 @@
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:textSize">22dip</item>
     </style>
-    
-     <style name="ArtistRequestTitle">
+
+    <style name="ArtistRequestTitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
@@ -173,8 +185,8 @@
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:textSize">22dip</item>
     </style>
-    
-     <style name="UserStatsHeader">
+
+    <style name="UserStatsHeader">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
@@ -187,7 +199,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:clickable">true</item>
     </style>
-    
+
     <style name="UserStatsTitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -199,8 +211,7 @@
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:textSize">22dip</item>
     </style>
-    
-      
+
     <style name="BookmarksTorrentGroupTitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -212,8 +223,8 @@
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:textSize">22dip</item>
     </style>
-    
-        <style name="NotificationsTorrentGroupTitle">
+
+    <style name="NotificationsTorrentGroupTitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
@@ -224,8 +235,7 @@
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:textSize">22dip</item>
     </style>
-    
-        
+
     <style name="PostBody">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -247,7 +257,7 @@
         <item name="android:textSize">15dip</item>
         <item name="android:singleLine">true</item>
     </style>
-        
+
     <style name="Theme" parent="android:Theme.Light"></style>
 
     <style name="Theme.TransparentDialog">
@@ -282,6 +292,7 @@
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Dark</item>
         <item name="textColorPrimary">@color/textview_colors_dark</item>
         <item name="android:textColor">?textColorPrimary</item>
+        <item name="actionBarStyle">@style/ActionBar.Dark</item>
     </style>
 
     <style name="LightTheme" parent="Theme.Sherlock.Light.ForceOverflow">
@@ -290,6 +301,7 @@
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Light</item>
         <item name="textColorPrimary">@color/textview_colors_light</item>
         <item name="android:textColor">?textColorPrimary</item>
+        <item name="actionBarStyle">@style/ActionBar.Light</item>
     </style>
 
     <style name="Widget.TabPageIndicator.Text_Dark" parent="Widget">
@@ -306,6 +318,30 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="ActionBar.Dark" parent="Sherlock.__Widget.ActionBar">
+        <item name="titleTextStyle">@color/actionbar_colors_dark</item>
+        <item name="subtitleTextStyle">@style/TextAppearance.Sherlock.Widget.ActionBar.Subtitle</item>
+        <item name="background">@drawable/abs__ab_transparent_dark_holo</item>
+        <item name="backgroundStacked">@drawable/abs__ab_stacked_transparent_dark_holo</item>
+        <item name="backgroundSplit">@drawable/abs__ab_bottom_transparent_dark_holo</item>
+        <item name="divider">?attr/dividerVertical</item>
+        <item name="progressBarStyle">@style/Widget.Sherlock.ProgressBar.Horizontal</item>
+        <item name="indeterminateProgressStyle">@style/Widget.Sherlock.ProgressBar</item>
+        <item name="progressBarPadding">32dip</item>
+        <item name="itemPadding">8dip</item>
+    </style>
+
+    <style name="ActionBar.Light" parent="Widget.Sherlock.ActionBar">
+        <item name="titleTextStyle">@color/actionbar_colors_light</item>
+        <item name="subtitleTextStyle">@style/TextAppearance.Sherlock.Widget.ActionBar.Subtitle</item>
+        <item name="background">@drawable/abs__ab_transparent_light_holo</item>
+        <item name="backgroundStacked">@drawable/abs__ab_stacked_transparent_light_holo</item>
+        <item name="backgroundSplit">@drawable/abs__ab_bottom_transparent_light_holo</item>
+        <item name="homeAsUpIndicator">@drawable/abs__ic_ab_back_holo_light</item>
+        <item name="progressBarStyle">@style/Widget.Sherlock.Light.ProgressBar.Horizontal</item>
+        <item name="indeterminateProgressStyle">@style/Widget.Sherlock.Light.ProgressBar</item>
     </style>
 
 </resources>

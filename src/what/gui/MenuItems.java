@@ -10,6 +10,7 @@ import what.home.HomeActivity;
 import what.inbox.InboxActivity;
 import what.notifications.NotificationsActivity;
 import what.search.TorrentSearchActivity;
+import what.search.UserSearchActivity;
 import what.settings.SettingsActivity;
 import api.whatstatus.WhatStatus;
 
@@ -45,7 +46,7 @@ public enum MenuItems {
 		map.put(FORUM, ForumActivity.class);
 		map.put(TORRENTS, TorrentSearchActivity.class);
 		map.put(REQUESTS, HomeActivity.class);
-		map.put(USERS, HomeActivity.class);
+		map.put(USERS, UserSearchActivity.class);
 		map.put(INBOX, InboxActivity.class);
 		map.put(BARCODE_SCANNER, HomeActivity.class);
 		map.put(BOOKMARKS, BookmarksActivity.class);

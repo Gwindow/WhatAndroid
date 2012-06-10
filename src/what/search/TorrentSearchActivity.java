@@ -147,6 +147,11 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 				torrentSearchPage = 1;
 				setActionBarTitle("Torrent Search");
 				toggleSearchBars();
+
+				if (scrollLayout.getChildCount() > 0) {
+					scrollLayout.removeAllViews();
+				}
+
 				new Load().execute();
 			}
 		} else {
@@ -236,9 +241,11 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 		if (areSearchBarsHidden) {
 			searchTermField.setVisibility(View.VISIBLE);
 			tagField.setVisibility(View.VISIBLE);
+			areSearchBarsHidden = false;
 		} else {
 			searchTermField.setVisibility(View.GONE);
 			tagField.setVisibility(View.GONE);
+			areSearchBarsHidden = true;
 		}
 	}
 
@@ -273,7 +280,7 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			torrentSearch = TorrentSearch.torrentSearchFromSearchTermAndTags(searchTerm, tagSearchTerm);
+			torrentSearch = TorrentSearch.torrentSearchFromSearchTermAndTags(searchTerm, tagSearchTerm, torrentSearchPage);
 			return torrentSearch.getStatus();
 		}
 

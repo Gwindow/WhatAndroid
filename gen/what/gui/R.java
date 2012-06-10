@@ -861,6 +861,8 @@ containing a value of this type.
         public static final int abs__primary_text_disable_only_holo_light=0x7f080024;
         public static final int abs__primary_text_holo_dark=0x7f080025;
         public static final int abs__primary_text_holo_light=0x7f080026;
+        public static final int actionbar_colors_dark=0x7f080027;
+        public static final int actionbar_colors_light=0x7f080028;
         public static final int black=0x7f080019;
         public static final int button_black=0x7f08001d;
         public static final int button_yellow=0x7f08001c;
@@ -873,13 +875,13 @@ containing a value of this type.
         public static final int default_title_indicator_text_color=0x7f08000d;
         public static final int lightGray=0x7f08001b;
         public static final int light_textview=0x7f080022;
-        public static final int list_item_1=0x7f080027;
+        public static final int list_item_1=0x7f080029;
         public static final int roboto=0x7f08001f;
         public static final int robotoDark=0x7f080020;
-        public static final int textview_colors=0x7f080028;
-        public static final int textview_colors2=0x7f080029;
-        public static final int textview_colors_dark=0x7f08002a;
-        public static final int textview_colors_light=0x7f08002b;
+        public static final int textview_colors=0x7f08002a;
+        public static final int textview_colors2=0x7f08002b;
+        public static final int textview_colors_dark=0x7f08002c;
+        public static final int textview_colors_light=0x7f08002d;
         public static final int transparent=0x7f080017;
         public static final int transparentBlack=0x7f080018;
         public static final int vpi__background_holo_dark=0x7f080000;
@@ -890,8 +892,8 @@ containing a value of this type.
         public static final int vpi__bright_foreground_holo_light=0x7f080003;
         public static final int vpi__bright_foreground_inverse_holo_dark=0x7f080006;
         public static final int vpi__bright_foreground_inverse_holo_light=0x7f080007;
-        public static final int vpi__dark_theme=0x7f08002c;
-        public static final int vpi__light_theme=0x7f08002d;
+        public static final int vpi__dark_theme=0x7f08002e;
+        public static final int vpi__light_theme=0x7f08002f;
         public static final int what_gray=0x7f08001e;
         public static final int white=0x7f08001a;
     }
@@ -1493,15 +1495,17 @@ containing a value of this type.
         public static final int torrentlist=0x7f03005c;
         public static final int torrentsearch=0x7f03005d;
         public static final int torrentstats=0x7f03005e;
-        public static final int user_stats_header=0x7f03005f;
-        public static final int user_stats_title=0x7f030060;
-        public static final int user_tabs=0x7f030061;
-        public static final int userinfo=0x7f030062;
-        public static final int userprofilepopup=0x7f030063;
-        public static final int usersearch=0x7f030064;
-        public static final int userstatswidget=0x7f030065;
-        public static final int vpi__tab=0x7f030066;
-        public static final int whatstatus=0x7f030067;
+        public static final int user_search=0x7f03005f;
+        public static final int user_search_result=0x7f030060;
+        public static final int user_stats_header=0x7f030061;
+        public static final int user_stats_title=0x7f030062;
+        public static final int user_tabs=0x7f030063;
+        public static final int userinfo=0x7f030064;
+        public static final int userprofilepopup=0x7f030065;
+        public static final int usersearch=0x7f030066;
+        public static final int userstatswidget=0x7f030067;
+        public static final int vpi__tab=0x7f030068;
+        public static final int whatstatus=0x7f030069;
     }
     public static final class menu {
         public static final int artist_menu=0x7f0f0000;
@@ -1586,28 +1590,30 @@ containing a value of this type.
         public static final int welcome=0x7f0d000e;
     }
     public static final class style {
-        public static final int ArtistRequestTitle=0x7f0c0070;
-        public static final int ArtistTorrentGroupHeader=0x7f0c006e;
-        public static final int ArtistTorrentGroupTitle=0x7f0c006f;
-        public static final int BookmarksTorrentGroupTitle=0x7f0c0073;
+        public static final int ActionBar_Dark=0x7f0c0081;
+        public static final int ActionBar_Light=0x7f0c0082;
+        public static final int ArtistRequestTitle=0x7f0c0071;
+        public static final int ArtistTorrentGroupHeader=0x7f0c006f;
+        public static final int ArtistTorrentGroupTitle=0x7f0c0070;
+        public static final int BookmarksTorrentGroupTitle=0x7f0c0074;
         public static final int ButtonText=0x7f0c005e;
         public static final int ButtonTextSmall=0x7f0c005f;
         public static final int ButtonTextTiny=0x7f0c0060;
         public static final int ConversationMessageBody=0x7f0c0067;
-        public static final int DarkTheme=0x7f0c007c;
+        public static final int DarkTheme=0x7f0c007d;
         public static final int DialogWindowTitle_Sherlock=0x7f0c0039;
         public static final int DialogWindowTitle_Sherlock_Light=0x7f0c003a;
         public static final int ForumCategory=0x7f0c0063;
         public static final int ForumSection=0x7f0c0064;
         public static final int InboxMessageSecondary=0x7f0c0066;
         public static final int InboxMessageTitle=0x7f0c0065;
-        public static final int LightTheme=0x7f0c007d;
+        public static final int LightTheme=0x7f0c007e;
         public static final int MessageHeaderPrimary=0x7f0c0068;
         public static final int MessageHeaderSecondary=0x7f0c0069;
-        public static final int NotificationsTorrentGroupTitle=0x7f0c0074;
-        public static final int PostBody=0x7f0c0075;
-        public static final int PostHeaderPrimary=0x7f0c0076;
-        public static final int PostHeaderSecondary=0x7f0c0077;
+        public static final int NotificationsTorrentGroupTitle=0x7f0c0075;
+        public static final int PostBody=0x7f0c0076;
+        public static final int PostHeaderPrimary=0x7f0c0077;
+        public static final int PostHeaderSecondary=0x7f0c0078;
         public static final int SearchResult=0x7f0c006a;
         public static final int SectionThreadSecondary=0x7f0c0062;
         public static final int SectionThreadTitle=0x7f0c0061;
@@ -1643,9 +1649,9 @@ containing a value of this type.
         public static final int TextAppearance_Sherlock_Widget_PopupMenu_Small=0x7f0c0047;
         public static final int TextAppearance_Sherlock_Widget_TextView_SpinnerItem=0x7f0c0049;
         public static final int TextAppearance_TabPageIndicator=0x7f0c0006;
-        public static final int Theme=0x7f0c0078;
-        public static final int Theme_MenuDialog=0x7f0c007a;
-        public static final int Theme_NoTitleDialog=0x7f0c007b;
+        public static final int Theme=0x7f0c0079;
+        public static final int Theme_MenuDialog=0x7f0c007b;
+        public static final int Theme_NoTitleDialog=0x7f0c007c;
         public static final int Theme_PageIndicatorDefaults=0x7f0c0000;
         public static final int Theme_Sherlock=0x7f0c0054;
         public static final int Theme_Sherlock_Dialog=0x7f0c005c;
@@ -1657,12 +1663,13 @@ containing a value of this type.
         public static final int Theme_Sherlock_Light_ForceOverflow=0x7f0c005a;
         public static final int Theme_Sherlock_Light_NoActionBar=0x7f0c0058;
         public static final int Theme_Sherlock_NoActionBar=0x7f0c0057;
-        public static final int Theme_TransparentDialog=0x7f0c0079;
-        public static final int TorrentFormatHeader=0x7f0c006b;
-        public static final int TorrentFormatSecondary=0x7f0c006d;
-        public static final int TorrentFormatTitle=0x7f0c006c;
-        public static final int UserStatsHeader=0x7f0c0071;
-        public static final int UserStatsTitle=0x7f0c0072;
+        public static final int Theme_TransparentDialog=0x7f0c007a;
+        public static final int TorrentFormatHeader=0x7f0c006c;
+        public static final int TorrentFormatSecondary=0x7f0c006e;
+        public static final int TorrentFormatTitle=0x7f0c006d;
+        public static final int UserSearchResult=0x7f0c006b;
+        public static final int UserStatsHeader=0x7f0c0072;
+        public static final int UserStatsTitle=0x7f0c0073;
         public static final int Widget=0x7f0c0001;
         public static final int Widget_CirclePageIndicator=0x7f0c0002;
         public static final int Widget_Sherlock_ActionBar=0x7f0c0008;
@@ -1711,8 +1718,8 @@ containing a value of this type.
         public static final int Widget_Sherlock_TextView_SpinnerItem=0x7f0c0038;
         public static final int Widget_TabPageIndicator=0x7f0c0004;
         public static final int Widget_TabPageIndicator_Text=0x7f0c0005;
-        public static final int Widget_TabPageIndicator_Text_Dark=0x7f0c007e;
-        public static final int Widget_TabPageIndicator_Text_Light=0x7f0c007f;
+        public static final int Widget_TabPageIndicator_Text_Dark=0x7f0c007f;
+        public static final int Widget_TabPageIndicator_Text_Light=0x7f0c0080;
         public static final int Widget_TitlePageIndicator=0x7f0c0003;
     }
     public static final class xml {
