@@ -87,6 +87,7 @@ public class WhatAndroidActivity extends MyActivity2 implements OnClickListener 
 	@Override
 	public void actionbar() {
 		setActionBarTitle("The What.CD Android App");
+		setActionBarTouchToHome(false);
 	}
 
 	@Override

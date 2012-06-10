@@ -18,6 +18,8 @@
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:text=""
+        android:clickable="true"
+        android:onClick="openHome"
         android:textSize="20dp" >
     </TextView>
 

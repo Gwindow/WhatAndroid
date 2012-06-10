@@ -24,13 +24,15 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 
 public abstract class MyActivity2 extends SherlockFragmentActivity {
-	private static final int THEME = R.style.LightTheme;
+	private static final int THEME = R.style.DarkTheme;
 	private static final int MENU_PLACEHOLDER_ID = 1;
 	private static final int MENU_ITEM_ID = 2;
 	private View v;
 	private String activityName;
 	private TextView actionBarTitle;
 	private DisplayMetrics metrics;
+	private long actionBarTitleTouchedTime;
+	private boolean touchToHome = true;
 
 	public void onCreate(Bundle savedInstanceState, Integer customTheme) {
 		customTheme = customTheme == null ? THEME : customTheme;
@@ -111,6 +113,10 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		actionBarTitle.setText(title);
 	}
 
+	public void setActionBarTouchToHome(boolean touchToHome) {
+		this.touchToHome = touchToHome;
+	}
+
 	/**
 	 * Prepare the activity for the user, run any code necessary to do that here.
 	 */
@@ -168,6 +174,17 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 	}
 
+	public void openHome(View v) {
+		if (touchToHome) {
+			if ((System.currentTimeMillis() - actionBarTitleTouchedTime) <= 500) {
+				Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();
+				actionBarTitleTouchedTime = 0;
+			} else {
+				actionBarTitleTouchedTime = System.currentTimeMillis();
+			}
+		}
+	}
+
 	/**
 	 * @return the activityName
 	 */
@@ -196,13 +213,13 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		SubMenu submenu = menu.addSubMenu(Menu.NONE, MENU_PLACEHOLDER_ID, Menu.NONE, activityName);
 		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.HOME.toString());
 		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.FORUM.toString());
-		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.INBOX.toString());
 
 		SubMenu searchmenu = submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.SEARCH.toString());
 		searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.TORRENTS.toString());
 		searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.REQUESTS.toString());
 		searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.USERS.toString());
 
+		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.INBOX.toString());
 		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.BOOKMARKS.toString());
 		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.NOTIFICATIONS.toString());
 		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.BARCODE_SCANNER.toString());
