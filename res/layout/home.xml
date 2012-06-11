@@ -1,86 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-	<RelativeLayout android:layout_width="fill_parent"
-		android:id="@+id/userbar" android:layout_height="wrap_content"
-		android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-		android:padding="5dip" android:background="@drawable/table_header_dark">
-		<TextView android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:clickable="true" android:onClick="openProfile" android:id="@+id/username"
-			android:layout_width="wrap_content" android:textStyle="bold"
-			android:layout_alignParentLeft="true" ></TextView>
-		<TextView android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:id="@+id/upvalue" android:layout_width="wrap_content"
-			android:text="" android:layout_toLeftOf="@+id/downvalue"
-			android:layout_alignParentTop="true" ></TextView>
-		<TextView android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:id="@+id/downvalue" android:layout_width="wrap_content"
-			android:text="" android:layout_alignParentRight="true"
-			android:layout_alignParentTop="true" ></TextView>
-		<TextView android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:id="@+id/buffervalue" android:layout_width="wrap_content"
-			android:text="" android:layout_alignParentRight="true"
-			android:layout_below="@+id/downvalue" ></TextView>
-		<TextView android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:layout_below="@+id/upvalue" 
-			android:id="@+id/ratiovalue" android:layout_width="wrap_content"
-			android:text="" android:layout_toLeftOf="@+id/buffervalue"
-			></TextView>
-	</RelativeLayout>
-	<RelativeLayout android:layout_width="fill_parent"
-		android:id="@+id/buttonbar" android:layout_height="wrap_content"
-		android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-		android:padding="5dip" 
-		android:layout_marginBottom="5dip"
-		android:background="@drawable/table_header_dark">
-		<LinearLayout android:id="@+id/buttons"
-			android:layout_height="wrap_content" android:layout_width="fill_parent"
-			android:orientation="horizontal">
-			<TextView android:text="Torrents" android:id="@+id/torrentsButton"
-				android:textColor="@color/textview_colors2" android:onClick="openTorrents"
-				android:clickable="true" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:layout_weight="1"></TextView>
-			<TextView android:text="Forum" android:id="@+id/forumButton"
-				android:textColor="@color/textview_colors2" android:onClick="openForum"
-				android:layout_marginLeft="7dip" android:clickable="true"
-				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:layout_weight="1"></TextView>
-			<TextView android:text="Inbox" android:id="@+id/inboxButton"
-				android:textColor="@color/textview_colors2" android:onClick="openInbox"
-				android:layout_marginLeft="7dip" android:clickable="true"
-				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:layout_weight="1"></TextView>
-			<TextView android:text="Top 10" android:id="@+id/topButton"
-				android:textColor="@color/textview_colors2" android:onClick="openTopTen"
-				android:layout_marginLeft="7dip" android:clickable="true"
-				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:layout_weight="1"></TextView>
-		</LinearLayout>
-	</RelativeLayout>
-	<EditText android:layout_width="fill_parent" android:padding="5dip"
-		 android:hint="Quick search"
-		android:layout_height="wrap_content" android:id="@+id/searchBar">
-	</EditText>
-	<TextView android:layout_height="wrap_content" android:text="Subscriptions"
-		android:textColor="@color/textview_colors2" android:clickable="true"
-		android:onClick="refresh" android:textAppearance="?android:attr/textAppearanceMedium"
-		android:id="@+id/subscriptionsTitle" android:padding="5dip"
-		android:layout_alignParentBottom="true"
-		android:layout_alignParentLeft="true" android:background="@drawable/table_header_dark"
-		android:layout_width="fill_parent" ></TextView>
-	<ScrollView android:id="@+id/scrollView" android:paddingTop="5dip"
-		android:layout_marginBottom="5dip"
-		android:layout_below="@+id/searchBar" android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
-		<LinearLayout android:id="@+id/scrollLayout"
-			android:layout_height="fill_parent" android:layout_width="fill_parent"
-			android:orientation="vertical">
-		</LinearLayout>
-	</ScrollView>
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:padding="10dip" >
+
+        <TextView
+            android:id="@+id/upload"
+            style="@style/HomeInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Up: " />
+
+        <TextView
+            android:id="@+id/download"
+            style="@style/HomeInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Down: " />
+
+        <TextView
+            android:id="@+id/ratio"
+            style="@style/HomeInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ratio: " />
+
+        <TextView
+            android:id="@+id/buffer"
+            style="@style/HomeInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Buffer: " />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingBottom="10dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip" >
+
+        <TextView
+            android:id="@+id/inbox"
+            style="@style/HomeInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="openInbox"
+            android:text="Inbox: 0" />
+
+        <TextView
+            android:id="@+id/notifications"
+            style="@style/HomeInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="openNotifications"
+            android:text="Notifications: 0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingBottom="10dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip" >
+
+        <TextView
+            style="@style/HomeSubscriptionsHeader"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="openInbox"
+            android:text="Subscriptions" >
+        </TextView>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_marginBottom="5dip"
+            android:layout_weight="1"
+            android:paddingTop="5dip" >
+
+            <LinearLayout
+                android:id="@+id/scrollLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" />
+        </ScrollView>
+    </LinearLayout>
+
 </LinearLayout>

@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 
 import what.settings.Settings;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.gesture.GestureLibrary;
@@ -244,8 +243,8 @@ public abstract class MyActivity extends SherlockFragmentActivity {
 	}
 
 	public void onHomeGesturePerformed() {
-		Intent intent = new Intent(MyActivity.this, what.home.HomeActivity.class);
-		startActivity(intent);
+		// Intent intent = new Intent(MyActivity.this, what.home.HomeActivity.class);
+		// startActivity(intent);
 	}
 
 	public void onRightGesturePerformed() {

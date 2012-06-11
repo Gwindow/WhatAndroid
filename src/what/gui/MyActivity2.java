@@ -24,7 +24,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 
 public abstract class MyActivity2 extends SherlockFragmentActivity {
-	private static final int THEME = R.style.DarkTheme;
+	private static final int THEME = R.style.LightTheme;
 	private static final int MENU_PLACEHOLDER_ID = 1;
 	private static final int MENU_ITEM_ID = 2;
 	private View v;
@@ -177,7 +177,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 	public void openHome(View v) {
 		if (touchToHome) {
 			if ((System.currentTimeMillis() - actionBarTitleTouchedTime) <= 500) {
-				Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();
+				// startActivity(new Intent(this, HomeActivity.class));
 				actionBarTitleTouchedTime = 0;
 			} else {
 				actionBarTitleTouchedTime = System.currentTimeMillis();
