@@ -25,7 +25,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 
 public abstract class MyActivity2 extends SherlockFragmentActivity {
-	private static final int THEME = R.style.LightTheme;
+	private static final int THEME = R.style.DarkTheme;
 	private static final int MENU_PLACEHOLDER_ID = 1;
 	private static final int MENU_ITEM_ID = 2;
 	private View v;
