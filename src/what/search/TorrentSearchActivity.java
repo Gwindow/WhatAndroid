@@ -10,6 +10,7 @@ import what.gui.MyActivity2;
 import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.Scrollable;
+import what.torrents.artist.ArtistActivity;
 import what.torrents.torrents.TorrentGroupActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -111,7 +112,9 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 				if (results.get(i).getArtist() != null) {
 					TextView artist = (TextView) result_layout.findViewById(R.id.artistTitle);
 					artist.setText(results.get(i).getArtist() + " - ");
-					// TODO add artist id
+					if (results.get(i).getTorrents().get(0).getArtists() != null) {
+						artist.setId(results.get(i).getTorrents().get(0).getArtists().get(0).getAliasid().intValue());
+					}
 					artist.setTag(ARTIST_TAG);
 					artist.setOnClickListener(this);
 				}
@@ -163,7 +166,9 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 	public void onClick(View v) {
 		switch (Integer.valueOf(v.getTag().toString())) {
 			case ARTIST_TAG:
-				// TODO finish
+				if (v.getId() != View.NO_ID) {
+					openArtist(v.getId());
+				}
 				break;
 			case TORRENT_GROUP_TAG:
 				openTorrentGroup(v.getId());
@@ -171,6 +176,14 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 			default:
 				break;
 		}
+	}
+
+	private void openArtist(int id) {
+		Intent intent = new Intent(this, ArtistActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt(BundleKeys.ARTIST_ID, id);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	private void openTorrentGroup(int id) {

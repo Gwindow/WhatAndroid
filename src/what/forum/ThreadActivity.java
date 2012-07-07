@@ -140,7 +140,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 
 				ImageView reply = (ImageView) post_layout.findViewById(R.id.replyIcon);
 				reply.setTag(REPLY_TAG);
-				reply.setId(threadId);
+				reply.setId(posts.size() - 1);
 				reply.setOnClickListener(this);
 
 				ImageView quote = (ImageView) post_layout.findViewById(R.id.quoteIcon);
@@ -178,18 +178,15 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void onClick(View v) {
 		switch (Integer.valueOf(v.getTag().toString())) {
 			case REPLY_TAG:
-				QuoteBuffer.add(threadId, Html.fromHtml(posts.get(v.getId()).getBody()).toString());
+				QuoteBuffer.add(threadId, posts.get(v.getId()).getQuotableBody());
 				reply();
 				break;
 			case QUOTE_TAG:
-				QuoteBuffer.add(threadId, Html.fromHtml(posts.get(v.getId()).getBody()).toString());
+				QuoteBuffer.add(threadId, posts.get(v.getId()).getQuotableBody());
 				Toast.makeText(this, "Quoted", Toast.LENGTH_SHORT).show();
 				break;
 			case USER_TAG:
@@ -272,7 +269,6 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				} else {
 					thread.subscribe();
 					Toast.makeText(this, "Subscribed", Toast.LENGTH_SHORT).show();
-
 				}
 				break;
 		}

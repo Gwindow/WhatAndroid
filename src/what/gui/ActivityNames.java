@@ -6,7 +6,7 @@ package what.gui;
  */
 public enum ActivityNames {
 	HOME("Home"), FORUM("Forum"), SEARCH("Search"), INBOX("Inbox"), MUSIC("Music"), USER("User"), NOTIFICATIONS("Notifications"),
-	BOOKMARKS("Bookmarks");
+	SCANNER("Scanner"), BOOKMARKS("Bookmarks");
 
 	private final String name;
 

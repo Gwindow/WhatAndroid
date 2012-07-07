@@ -48,8 +48,9 @@ public abstract class JumpToPageDialog extends AlertDialog.Builder implements On
 			this.maxPage = maxPage.intValue();
 			setTitle(DIALOG_TITLE);
 			setCancelable(true);
-			setPositiveButton("Enter", this);
-
+			setNegativeButton("Entered Page", this);
+			setNeutralButton("First Page", this);
+			setPositiveButton("Last Page", this);
 			pageField = new EditText(context);
 			pageField.setInputType(InputType.TYPE_CLASS_NUMBER);
 			pageField.setHint(PAGE_FIELD_HINT);
@@ -61,7 +62,7 @@ public abstract class JumpToPageDialog extends AlertDialog.Builder implements On
 
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-		if (which == AlertDialog.BUTTON_POSITIVE) {
+		if (which == AlertDialog.BUTTON_NEGATIVE) {
 			try {
 				int input = Integer.valueOf(pageField.getText().toString());
 				if (input > 0 && input <= maxPage) {
@@ -73,6 +74,15 @@ public abstract class JumpToPageDialog extends AlertDialog.Builder implements On
 			} catch (Exception e) {
 				Toast.makeText(getContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show();
 			}
+		}
+		if (which == AlertDialog.BUTTON_NEUTRAL) {
+			page = 1;
+			jumpToPage();
+		}
+
+		if (which == AlertDialog.BUTTON_POSITIVE) {
+			page = maxPage;
+			jumpToPage();
 		}
 	}
 

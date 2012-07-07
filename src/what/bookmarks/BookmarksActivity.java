@@ -1,5 +1,6 @@
 package what.bookmarks;
 
+import what.fragments.CoverArtGridFragment;
 import what.gui.ActivityNames;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
@@ -26,7 +27,7 @@ public class BookmarksActivity extends MyActivity2 {
 	private static final String COVERS_TAB = "Covers";
 	private static final String TORRENTS_TAB = "Torrents";
 	private static final String ARTISTS_TAB = "Artists";
-	private static final String[] TABS = new String[] { TORRENTS_TAB, ARTISTS_TAB };
+	private static final String[] TABS = new String[] { COVERS_TAB, TORRENTS_TAB, ARTISTS_TAB };
 
 	private FragmentPagerAdapter adapter;
 	private ViewPager pager;
@@ -114,6 +115,9 @@ public class BookmarksActivity extends MyActivity2 {
 		public Fragment getItem(int position) {
 			Fragment fragment = null;
 			String tag = TABS[position % TABS.length];
+			if (tag.equals(COVERS_TAB)) {
+				fragment = new CoverArtGridFragment(torrentBookmarks.getResponse().getTorrents());
+			}
 			if (tag.equals(TORRENTS_TAB)) {
 				fragment = new TorrentsFragment(torrentBookmarks.getResponse().getTorrents());
 			}

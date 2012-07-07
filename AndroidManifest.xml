@@ -5,7 +5,9 @@
     android:versionCode="0"
     android:versionName="0.1" >
 
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="14" />
 
     <uses-permission
         android:name="android.permission.INTERNET"
@@ -46,6 +48,11 @@
         </activity>
         <activity
             android:name="what.barcode.ScannerActivity"
+            android:theme="@style/Theme.Sherlock"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+         <activity
+            android:name="what.barcode.BarcodeScannerActivity"
             android:theme="@style/Theme.Sherlock"
             android:windowSoftInputMode="adjustPan" >
         </activity>
@@ -230,7 +237,7 @@
             android:theme="@style/Theme.MenuDialog"
             android:windowSoftInputMode="adjustPan" >
         </activity>
-          <activity
+        <activity
             android:name="what.forum.NewThreadActivity"
             android:theme="@style/Theme.MenuDialog"
             android:windowSoftInputMode="adjustPan" >
@@ -337,17 +344,14 @@
             android:windowSoftInputMode="adjustResize" >
         </activity>
 
-        <receiver
-            android:name="what.widget.UserStatsWidgetProvider"
-            android:icon="@drawable/icon"
-            android:label="What.CD User Stats" >
+        <receiver android:name="StatsWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/userstatswidgetinfo" />
+                android:resource="@xml/stats_widget_info" />
         </receiver>
     </application>
 

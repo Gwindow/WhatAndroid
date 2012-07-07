@@ -1,5 +1,6 @@
 package what.gui;
 
+import what.home.HomeActivity;
 import what.settings.Settings;
 import android.content.Context;
 import android.content.Intent;
@@ -160,24 +161,33 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 	}
 
 	public void lockScreenRotation() {
-		switch (this.getResources().getConfiguration().orientation) {
+		switch (getResources().getConfiguration().orientation) {
 			case Configuration.ORIENTATION_PORTRAIT:
-				this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				} else if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT) {
+					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+				}
 				break;
 			case Configuration.ORIENTATION_LANDSCAPE:
-				this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+				if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+				} else if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
+					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+				}
 				break;
+
 		}
 	}
 
 	public void unlockScreenRotation() {
-		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 	}
 
 	public void openHome(View v) {
 		if (touchToHome) {
 			if ((System.currentTimeMillis() - actionBarTitleTouchedTime) <= 500) {
-				// startActivity(new Intent(this, HomeActivity.class));
+				startActivity(new Intent(this, HomeActivity.class));
 				actionBarTitleTouchedTime = 0;
 			} else {
 				actionBarTitleTouchedTime = System.currentTimeMillis();

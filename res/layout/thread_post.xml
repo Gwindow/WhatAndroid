@@ -29,7 +29,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dip"
         android:layout_marginTop="5dip"
@@ -40,14 +40,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:maxHeight="400px"
-            android:maxWidth="150px"
-            android:minWidth="150px"
+            android:maxHeight="370dp"
+            android:maxWidth="120dp"
+            android:minWidth="120dp"
             android:scaleType="centerInside"
             android:src="@drawable/dne" />
 
         <what.gui.ViewSlider
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip" >
 

@@ -17,11 +17,13 @@ import android.os.AsyncTask;
 import android.text.Html.ImageGetter;
 import android.util.DisplayMetrics;
 import android.view.View;
+import api.soup.MySoup;
 
 /**
  * Based from the example found here http://stackoverflow.com/questions/7424512/android-html-imagegetter-as-asynctask
  */
 public class AsyncImageGetter implements ImageGetter {
+	private static final String SMILEY = "static/common/smileys/";
 	private Context c;
 	private View container;
 	private int width, height;
@@ -48,12 +50,14 @@ public class AsyncImageGetter implements ImageGetter {
 	public AsyncImageGetter(View t, Context c) {
 		this.c = c;
 		this.container = t;
-		this.width = width;
-		this.height = height;
 	}
 
 	@Override
 	public Drawable getDrawable(String source) {
+		if (source.startsWith(SMILEY)) {
+			source = MySoup.getSite() + source;
+		}
+
 		URLDrawable urlDrawable = new URLDrawable();
 
 		// get the actual source

@@ -193,4 +193,10 @@ public class HomeActivity extends MyActivity2 implements OnClickListener {
 		}
 	}
 
+	@Override
+	public void onBackPressed() {
+		moveTaskToBack(true);
+		super.onBackPressed();
+	}
+
 }

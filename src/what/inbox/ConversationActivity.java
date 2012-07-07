@@ -129,14 +129,12 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 		switch (Integer.valueOf(v.getTag().toString())) {
 			case REPLY_TAG:
 				if (!conversation.getResponse().getMessages().get(v.getId()).isSystem()) {
-					QuoteBuffer.add(conversationId,
-							Html.fromHtml(conversation.getResponse().getMessages().get(v.getId()).getBody()).toString());
+					QuoteBuffer.add(conversationId, (conversation.getResponse().getMessages().get(v.getId()).getQuotableBody()));
 					reply();
 				}
 				break;
 			case QUOTE_TAG:
-				QuoteBuffer.add(conversationId, Html.fromHtml(conversation.getResponse().getMessages().get(v.getId()).getBody())
-						.toString());
+				QuoteBuffer.add(conversationId, (conversation.getResponse().getMessages().get(v.getId()).getQuotableBody()));
 				Toast.makeText(this, "Quoted", Toast.LENGTH_SHORT).show();
 				break;
 			case USER_TAG:

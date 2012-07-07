@@ -2,14 +2,12 @@ package what.widget;
 
 import java.text.DecimalFormat;
 
-import what.gui.R;
 import what.settings.Settings;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.RemoteViews;
 import api.soup.MySoup;
 import api.user.User;
@@ -28,7 +26,6 @@ public class UserStatsWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
-		remoteViews = new RemoteViews(context.getPackageName(), R.layout.userstatswidget);
 		userStatsWidget = new ComponentName(context, UserStatsWidgetProvider.class);
 
 		new LoadProfile().execute();
@@ -44,13 +41,6 @@ public class UserStatsWidgetProvider extends AppWidgetProvider {
 		seeding = user.getProfile().getCommunity().getSeeding().toString();
 		leeching = user.getProfile().getCommunity().getLeeching().toString();
 
-		remoteViews.setTextViewText(R.id.username, username);
-		remoteViews.setTextViewText(R.id.upvalue, up);
-		remoteViews.setTextViewText(R.id.downvalue, down);
-		remoteViews.setTextViewText(R.id.ratiovalue, ratio);
-		remoteViews.setTextViewText(R.id.seedingvalue, seeding);
-		remoteViews.setTextViewText(R.id.leechingvalue, leeching);
-		Log.v("widget", "ppuplated");
 	}
 
 	private String toGBString(Double d) {
