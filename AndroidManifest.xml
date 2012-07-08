@@ -118,7 +118,7 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name="what.top.TopTorrentsActivity"
+            android:name="what.top.TopTenActivity"
             android:theme="@style/Theme.Sherlock"
             android:windowSoftInputMode="adjustPan" >
         </activity>

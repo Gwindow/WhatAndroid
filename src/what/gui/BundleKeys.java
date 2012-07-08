@@ -16,6 +16,7 @@ public class BundleKeys {
 	public static final String THREAD_ID = "threadId";
 	public static final String USER_ID = "userId";
 	public static final String TORRENT_SEARCH_PAGE = "torrentSearchPage";
+	public static final String SEARCH_STRING = "searchString";
 	public static final String TORRENT_GROUP_ID = "torrentGroupId";
 	public static final String ARTIST_ID = "artistId";
 	public static final String REQUEST_ID = "requestId";

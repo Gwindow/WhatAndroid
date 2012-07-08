@@ -59,6 +59,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:onClick="openInbox"
             android:text="Inbox: 0" />
 
@@ -68,6 +69,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:onClick="openNotifications"
             android:text="Notifications: 0" />
     </LinearLayout>
@@ -81,6 +83,7 @@
         android:paddingRight="10dip" >
 
         <TextView
+            android:id="@+id/subscriptionsHeader"
             style="@style/HomeSubscriptionsHeader"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

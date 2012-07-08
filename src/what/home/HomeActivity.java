@@ -8,14 +8,22 @@ import what.gui.BundleKeys;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
 import what.gui.R;
+import what.search.TorrentSearchActivity;
+import what.settings.Settings;
+import what.user.UserActivity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import api.cli.Utils;
 import api.index.Index;
 import api.soup.MySoup;
@@ -23,14 +31,19 @@ import api.subscriptions.Subscriptions;
 import api.subscriptions.Threads;
 import api.util.Tuple;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 /**
  * @author Gwindow
  * @since Jun 10, 2012 12:47:24 PM
  */
-public class HomeActivity extends MyActivity2 implements OnClickListener {
+public class HomeActivity extends MyActivity2 implements OnClickListener, OnEditorActionListener {
 	private LinearLayout scrollLayout;
 	private TextView uploadView, downloadView, ratioView, bufferView;
 	private TextView inboxView, notificationsView;
+
+	private EditText searchView;
 
 	private Index index;
 	private Subscriptions subscriptions;
@@ -57,6 +70,9 @@ public class HomeActivity extends MyActivity2 implements OnClickListener {
 		bufferView = (TextView) this.findViewById(R.id.buffer);
 		inboxView = (TextView) this.findViewById(R.id.inbox);
 		notificationsView = (TextView) this.findViewById(R.id.notifications);
+
+		searchView = (EditText) this.getLayoutInflater().inflate(R.layout.collapsible_edittext, null);
+		searchView.setOnEditorActionListener(this);
 	}
 
 	@Override
@@ -64,9 +80,14 @@ public class HomeActivity extends MyActivity2 implements OnClickListener {
 		setActionBarTitle(MySoup.getUsername());
 
 		new LoadInfo().execute();
-		new LoadSubscriptions().execute();
+		if (Settings.getSubscriptionsEnabled()) {
+			new LoadSubscriptions().execute();
+		} else {
+			((TextView) this.findViewById(R.id.subscriptionsHeader)).setVisibility(View.GONE);
+		}
 	}
 
+	// TODO caching
 	private void populateInfo() {
 		Number upload = index.getResponse().getUserstats().getUploaded();
 		if (upload != null) {
@@ -91,11 +112,17 @@ public class HomeActivity extends MyActivity2 implements OnClickListener {
 		Number messages = index.getResponse().getNotifications().getMessages();
 		if (messages != null) {
 			inboxView.setText("Inbox: " + messages);
+			if (messages.intValue() > 0) {
+				inboxView.setTypeface(null, Typeface.BOLD);
+			}
 		}
 
 		Number notifications = index.getResponse().getNotifications().getNotifications();
 		if (notifications != null) {
 			notificationsView.setText("Notifications: " + notifications);
+			if (notifications.intValue() > 0) {
+				notificationsView.setTypeface(null, Typeface.BOLD);
+			}
 		}
 	}
 
@@ -142,6 +169,36 @@ public class HomeActivity extends MyActivity2 implements OnClickListener {
 
 	public void openNotifications(View v) {
 		startActivity(new Intent(this, what.notifications.NotificationsActivity.class));
+	}
+
+	@Override
+	public void openHome(View v) {
+		Intent intent = new Intent(this, UserActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt(BundleKeys.USER_ID, MySoup.getUserId());
+		intent.putExtras(bundle);
+		startActivity(intent);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO figure out themes
+		menu.add("Search").setIcon(THEME == R.style.LightTheme ? R.drawable.ic_search_inverse : R.drawable.ic_search)
+				.setActionView(R.layout.collapsible_edittext)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+		if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+			Intent intent = new Intent(this, TorrentSearchActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString(BundleKeys.SEARCH_STRING, view.getText().toString());
+			intent.putExtras(bundle);
+			startActivity(intent);
+		}
+		return true;
 	}
 
 	private class LoadInfo extends AsyncTask<Void, Void, Boolean> {

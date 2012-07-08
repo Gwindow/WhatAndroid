@@ -15,6 +15,7 @@ import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.ReplyActivity;
 import what.gui.Scrollable;
+import what.settings.Settings;
 import what.user.UserActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -121,9 +122,13 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				posts.add(thread.getResponse().getPosts().get(i));
 
 				ImageView avatar = (ImageView) post_layout.findViewById(R.id.avatar);
-				avatarMap.put(posts.getLast().getPostId().intValue(), avatar);
-				new LoadAvatar(avatar, posts.getLast().getAuthor().getAuthorId().intValue(), posts.getLast().getAuthor()
-						.getAvatar()).execute();
+				if (Settings.getAvatarsEnabled()) {
+					avatarMap.put(posts.getLast().getPostId().intValue(), avatar);
+					new LoadAvatar(avatar, posts.getLast().getAuthor().getAuthorId().intValue(), posts.getLast().getAuthor()
+							.getAvatar()).execute();
+				} else {
+					avatar.setVisibility(View.GONE);
+				}
 
 				TextView author = (TextView) post_layout.findViewById(R.id.author);
 				author.setText(posts.getLast().getAuthor().getAuthorName());

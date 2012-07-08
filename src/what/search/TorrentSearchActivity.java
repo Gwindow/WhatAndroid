@@ -51,6 +51,7 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 
 	private boolean isLoaded;
 	private boolean areSearchBarsHidden;
+	private String searchString;
 
 	/**
 	 * {@inheritDoc}
@@ -70,6 +71,7 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 		Bundle bundle = getIntent().getExtras();
 		try {
 			torrentSearchPage = bundle.getInt(BundleKeys.TORRENT_SEARCH_PAGE);
+			searchString = bundle.getString(BundleKeys.SEARCH_STRING);
 		} catch (Exception e) {
 		}
 	}
@@ -94,6 +96,10 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 	@Override
 	public void prepare() {
 		setActionBarTitle("Torrent Search");
+		if (searchString != null) {
+			searchTermField.setText(searchString);
+			search(null);
+		}
 	}
 
 	/**

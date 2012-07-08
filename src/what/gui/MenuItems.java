@@ -13,6 +13,7 @@ import what.notifications.NotificationsActivity;
 import what.search.TorrentSearchActivity;
 import what.search.UserSearchActivity;
 import what.settings.SettingsActivity;
+import what.top.TopTenActivity;
 import api.whatstatus.WhatStatus;
 
 /**
@@ -29,7 +30,7 @@ public enum MenuItems {
 	// search menu end
 	INBOX("Inbox"), BARCODE_SCANNER("Barcode Scanner"), BOOKMARKS("Bookmarks"), NOTIFICATIONS("Notifications"), MORE("More"),
 	// more menu start
-	SETTINGS("Settings"), STATUS("Status"), DEVELOPER("Developer");
+	SETTINGS("Settings"), TOP_TEN("Top 10"), STATUS("Status"), DEVELOPER("Developer");
 	// more menu end
 
 	/** The map. */
@@ -52,6 +53,7 @@ public enum MenuItems {
 		map.put(NOTIFICATIONS, NotificationsActivity.class);
 		map.put(BARCODE_SCANNER, ScannerActivity.class);
 		map.put(SETTINGS, SettingsActivity.class);
+		map.put(TOP_TEN, TopTenActivity.class);
 		map.put(STATUS, WhatStatus.class);
 		map.put(DEVELOPER, DebugActivity.class);
 	}

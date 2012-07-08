@@ -25,7 +25,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 
 public abstract class MyActivity2 extends SherlockFragmentActivity {
-	private static final int THEME = R.style.DarkTheme;
+	protected static final int THEME = R.style.LightTheme;
 	private static final int MENU_PLACEHOLDER_ID = 1;
 	private static final int MENU_ITEM_ID = 2;
 	private View v;
@@ -236,6 +236,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 
 		SubMenu moremenu = submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.MORE.toString());
 		moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.SETTINGS.toString());
+		moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.TOP_TEN.toString());
 		moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.STATUS.toString());
 		if (Settings.getDebugPreference()) {
 			moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.DEVELOPER.toString());
