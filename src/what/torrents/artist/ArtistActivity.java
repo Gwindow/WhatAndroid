@@ -48,6 +48,7 @@ public class ArtistActivity extends MyActivity2 {
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.MUSIC);
 		super.onCreate(savedInstanceState);
+
 	}
 
 	/**

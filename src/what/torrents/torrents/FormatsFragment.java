@@ -31,9 +31,6 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
 		this.response = response;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.generic_scrollview, container, false);

@@ -30,7 +30,7 @@ public enum MenuItems {
 	// search menu end
 	INBOX("Inbox"), BARCODE_SCANNER("Barcode Scanner"), BOOKMARKS("Bookmarks"), NOTIFICATIONS("Notifications"), MORE("More"),
 	// more menu start
-	SETTINGS("Settings"), TOP_TEN("Top 10"), STATUS("Status"), DEVELOPER("Developer");
+	SETTINGS("Settings"), TOP_TEN("Top Ten"), STATUS("Status"), DEVELOPER("Developer");
 	// more menu end
 
 	/** The map. */
