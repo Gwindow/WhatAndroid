@@ -39,7 +39,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		customTheme = customTheme == null ? THEME : customTheme;
 		super.setTheme(customTheme);
 		super.onCreate(savedInstanceState);
-
+		new ReportSender(this);
 		if ((Settings.getSettings() == null) | (Settings.getSettingsEditor() == null)) {
 			Settings.init(this);
 		}

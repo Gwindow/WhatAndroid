@@ -3,11 +3,12 @@ package what.gui;
 import android.content.Context;
 
 public class ReportSender {
-	ErrorReporter errReporter = new ErrorReporter();
+	private ErrorReporter errReporter;
 
 	public ReportSender(Context context) {
 		// TODO renable
-		// errReporter.init(context);
-		// errReporter.CheckErrorAndSendMail(context);
+		errReporter = new ErrorReporter();
+		errReporter.init(context);
+		errReporter.CheckErrorAndSendMail(context);
 	}
 }

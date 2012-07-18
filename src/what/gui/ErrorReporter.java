@@ -21,7 +21,7 @@ import android.os.Environment;
 import android.os.StatFs;
 
 public class ErrorReporter implements Thread.UncaughtExceptionHandler {
-	private String[] _recipients = new String[] { "" };
+	private String[] _recipients = new String[] { "tim.mikeladze@gmail.com" };
 	private String _subject = "Crash Report";
 
 	String VersionName;

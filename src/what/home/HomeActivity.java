@@ -165,10 +165,16 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 
 	public void openInbox(View v) {
 		startActivity(new Intent(this, what.inbox.InboxActivity.class));
+		inboxView.setTypeface(null, Typeface.NORMAL);
+		inboxView.setText("Inbox: 0");
+
 	}
 
 	public void openNotifications(View v) {
 		startActivity(new Intent(this, what.notifications.NotificationsActivity.class));
+		notificationsView.setTypeface(null, Typeface.NORMAL);
+		notificationsView.setText("Notifications: 0");
+
 	}
 
 	@Override
