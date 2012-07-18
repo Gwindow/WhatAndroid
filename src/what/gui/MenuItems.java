@@ -10,6 +10,7 @@ import what.forum.ForumActivity;
 import what.home.HomeActivity;
 import what.inbox.InboxActivity;
 import what.notifications.NotificationsActivity;
+import what.search.RequestsSearchActivity;
 import what.search.TorrentSearchActivity;
 import what.search.UserSearchActivity;
 import what.settings.SettingsActivity;
@@ -30,7 +31,7 @@ public enum MenuItems {
 	// search menu end
 	INBOX("Inbox"), BARCODE_SCANNER("Barcode Scanner"), BOOKMARKS("Bookmarks"), NOTIFICATIONS("Notifications"), MORE("More"),
 	// more menu start
-	SETTINGS("Settings"), TOP_TEN("Top Ten"), STATUS("Status"), DEVELOPER("Developer");
+	SETTINGS("Settings"), TOP_TEN("Top Ten"), STATUS("Status"), DEBUG("Debug");
 	// more menu end
 
 	/** The map. */
@@ -47,6 +48,7 @@ public enum MenuItems {
 		map.put(HOME, HomeActivity.class);
 		map.put(FORUM, ForumActivity.class);
 		map.put(TORRENTS, TorrentSearchActivity.class);
+		map.put(REQUESTS, RequestsSearchActivity.class);
 		map.put(USERS, UserSearchActivity.class);
 		map.put(INBOX, InboxActivity.class);
 		map.put(BOOKMARKS, BookmarksActivity.class);
@@ -55,7 +57,7 @@ public enum MenuItems {
 		map.put(SETTINGS, SettingsActivity.class);
 		map.put(TOP_TEN, TopTenActivity.class);
 		map.put(STATUS, WhatStatus.class);
-		map.put(DEVELOPER, DebugActivity.class);
+		map.put(DEBUG, DebugActivity.class);
 	}
 
 	/**

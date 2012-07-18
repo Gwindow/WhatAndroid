@@ -239,7 +239,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.TOP_TEN.toString());
 		moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.STATUS.toString());
 		if (Settings.getDebugPreference()) {
-			moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.DEVELOPER.toString());
+			moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.DEBUG.toString());
 		}
 
 		MenuItem subMenuItem = submenu.getItem();

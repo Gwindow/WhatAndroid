@@ -32,56 +32,56 @@ public class StatsFragment extends SherlockFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.generic_scrollview, container, false);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
-		populateStats(view, inflater);
+		populateStats(view);
 
 		return view;
 	}
 
 	// TODO secondary classes
-	private void populateStats(View view, LayoutInflater inflater) {
-		addToListSection("Stats", inflater);
-		addToList("Class", profile.getPersonal().getUserClass(), inflater);
-		addToList("Joined", profile.getStats().getJoinedDate(), inflater);
-		addToList("Last Seen", profile.getStats().getLastAccess(), inflater);
+	private void populateStats(View view) {
+		addToListSection("Stats");
+		addToList("Class", profile.getPersonal().getUserClass());
+		addToList("Joined", profile.getStats().getJoinedDate());
+		addToList("Last Seen", profile.getStats().getLastAccess());
 		if (profile.getStats().getUploaded() != null) {
-			addToList("Uploaded", Utils.toHumanReadableSize(profile.getStats().getUploaded().longValue()), inflater);
+			addToList("Uploaded", Utils.toHumanReadableSize(profile.getStats().getUploaded().longValue()));
 		}
 		if (profile.getStats().getDownloaded() != null) {
-			addToList("Downloaded", Utils.toHumanReadableSize(profile.getStats().getDownloaded().longValue()), inflater);
+			addToList("Downloaded", Utils.toHumanReadableSize(profile.getStats().getDownloaded().longValue()));
 		}
-		addToList("Ratio", profile.getStats().getRatio(), inflater);
-		addToList("Required Ratio", profile.getStats().getRequiredRatio(), inflater);
+		addToList("Ratio", profile.getStats().getRatio());
+		addToList("Required Ratio", profile.getStats().getRequiredRatio());
 
-		addToListSection("Percentile Rankings", inflater);
-		addToList("Data Uploaded", profile.getRanks().getUploaded(), inflater);
-		addToList("Data Downloaded", profile.getRanks().getDownloaded(), inflater);
-		addToList("Requests Filled", profile.getRanks().getRequests(), inflater);
-		addToList("Bounty Spent", profile.getRanks().getBounty(), inflater);
-		addToList("Posts Made", profile.getRanks().getPosts(), inflater);
-		addToList("Artists Added", profile.getRanks().getArtists(), inflater);
-		addToList("Overall Rank", profile.getRanks().getOverall(), inflater);
+		addToListSection("Percentile Rankings");
+		addToList("Data Uploaded", profile.getRanks().getUploaded());
+		addToList("Data Downloaded", profile.getRanks().getDownloaded());
+		addToList("Requests Filled", profile.getRanks().getRequests());
+		addToList("Bounty Spent", profile.getRanks().getBounty());
+		addToList("Posts Made", profile.getRanks().getPosts());
+		addToList("Artists Added", profile.getRanks().getArtists());
+		addToList("Overall Rank", profile.getRanks().getOverall());
 
-		addToListSection("Personal", inflater);
-		addToList("Paranoia", profile.getPersonal().getParanoiaText(), inflater);
+		addToListSection("Personal");
+		addToList("Paranoia", profile.getPersonal().getParanoiaText());
 
-		addToListSection("Community", inflater);
-		addToList("Forum Posts", profile.getCommunity().getPosts(), inflater);
-		addToList("Torrent Comments ", profile.getCommunity().getTorrentComments(), inflater);
-		addToList("Collages Started", profile.getCommunity().getCollagesStarted(), inflater);
-		addToList("Collages Contributed To ", profile.getCommunity().getCollagesContrib(), inflater);
-		addToList("Requests Filled", profile.getCommunity().getRequestsFilled(), inflater);
-		addToList("Requests Voted", profile.getCommunity().getRequestsVoted(), inflater);
-		addToList("Uploaded", profile.getCommunity().getUploaded(), inflater);
-		addToList("Unique Groups", profile.getCommunity().getGroups(), inflater);
-		addToList("Perfect Flacs", profile.getCommunity().getPerfectFlacs(), inflater);
-		addToList("Seeding", profile.getCommunity().getSeeding(), inflater);
-		addToList("Leeching", profile.getCommunity().getLeeching(), inflater);
-		addToList("Snatched", profile.getCommunity().getSnatched(), inflater);
-		addToList("Invited", profile.getCommunity().getInvited(), inflater);
+		addToListSection("Community");
+		addToList("Forum Posts", profile.getCommunity().getPosts());
+		addToList("Torrent Comments ", profile.getCommunity().getTorrentComments());
+		addToList("Collages Started", profile.getCommunity().getCollagesStarted());
+		addToList("Collages Contributed To ", profile.getCommunity().getCollagesContrib());
+		addToList("Requests Filled", profile.getCommunity().getRequestsFilled());
+		addToList("Requests Voted", profile.getCommunity().getRequestsVoted());
+		addToList("Uploaded", profile.getCommunity().getUploaded());
+		addToList("Unique Groups", profile.getCommunity().getGroups());
+		addToList("Perfect Flacs", profile.getCommunity().getPerfectFlacs());
+		addToList("Seeding", profile.getCommunity().getSeeding());
+		addToList("Leeching", profile.getCommunity().getLeeching());
+		addToList("Snatched", profile.getCommunity().getSnatched());
+		addToList("Invited", profile.getCommunity().getInvited());
 	}
 
-	private void addToList(String type, Object value, LayoutInflater inflater) {
-		TextView title = (TextView) inflater.inflate(R.layout.user_stats_title, null);
+	private void addToList(String type, Object value) {
+		TextView title = (TextView) View.inflate(getSherlockActivity(), R.layout.user_stats_title, null);
 		if (value != null) {
 			String displayed_string = type + ": " + value;
 			title.setText(displayed_string);
@@ -89,8 +89,8 @@ public class StatsFragment extends SherlockFragment {
 		}
 	}
 
-	private void addToListSection(String s, LayoutInflater inflater) {
-		TextView header = (TextView) inflater.inflate(R.layout.user_stats_header, null);
+	private void addToListSection(String s) {
+		TextView header = (TextView) View.inflate(getSherlockActivity(), R.layout.user_stats_header, null);
 		header.setText(s);
 		scrollLayout.addView(header);
 	}

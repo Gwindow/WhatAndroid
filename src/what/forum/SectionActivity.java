@@ -111,6 +111,7 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 					thread_title.setTypeface(null, Typeface.BOLD);
 				}
 				thread_title.setText(title);
+				thread_title.setTag(new Tuple<Number, Number>(threads.get(i).getTopicId(), threads.get(i).getLastReadPostId()));
 				thread_title.setHorizontallyScrolling(true);
 				thread_title.setOnClickListener(this);
 

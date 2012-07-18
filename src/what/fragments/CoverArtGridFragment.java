@@ -1,20 +1,26 @@
 package what.fragments;
 
+import java.io.IOException;
 import java.util.List;
 
+import what.gui.BundleKeys;
+import what.gui.ImageLoader;
 import what.gui.R;
+import what.torrents.torrents.TorrentGroupActivity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 import api.bookmarks.Torrents;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -23,7 +29,7 @@ import com.actionbarsherlock.app.SherlockFragment;
  * @author Gwindow
  * @since Jun 6, 2012 3:55:05 PM
  */
-public class CoverArtGridFragment extends SherlockFragment implements OnClickListener {
+public class CoverArtGridFragment extends SherlockFragment {
 	private GridView gridView;
 	private final List<Torrents> torrents;
 
@@ -40,16 +46,19 @@ public class CoverArtGridFragment extends SherlockFragment implements OnClickLis
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				Toast.makeText(getSherlockActivity(), "" + position, Toast.LENGTH_SHORT).show();
+				openTorrentGroup(torrents.get(position).getId().intValue());
 			}
 		});
 
 		return view;
 	}
 
-	@Override
-	public void onClick(View v) {
-
+	private void openTorrentGroup(int id) {
+		Intent intent = new Intent(getSherlockActivity(), TorrentGroupActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt(BundleKeys.TORRENT_GROUP_ID, id);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	public class ImageAdapter extends BaseAdapter {
@@ -83,13 +92,33 @@ public class CoverArtGridFragment extends SherlockFragment implements OnClickLis
 				imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
 				imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				imageView.setPadding(12, 12, 12, 12);
+				imageView.setTag(torrents.get(position).getImage());
+				imageView.setImageResource(R.drawable.noartwork);
+				new DownloadImage().execute(imageView);
 			} else {
 				imageView = (ImageView) convertView;
 			}
-
-			imageView.setImageResource(R.drawable.noartwork);
 			return imageView;
+
 		}
 	}
 
+	private class DownloadImage extends AsyncTask<ImageView, Void, Bitmap> {
+		ImageView imageView = null;
+
+		@Override
+		protected Bitmap doInBackground(ImageView... imageViews) {
+			this.imageView = imageViews[0];
+			try {
+				return ImageLoader.loadBitmap((String) imageView.getTag());
+			} catch (IOException e) {
+				return BitmapFactory.decodeResource(CoverArtGridFragment.this.getResources(), R.drawable.dne);
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap result) {
+			imageView.setImageBitmap(result);
+		}
+	}
 }
