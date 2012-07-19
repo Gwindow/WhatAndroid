@@ -1,52 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="wrap_content">
-	<RelativeLayout android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:id="@+id/relativeLayout0"
-		android:gravity="center">
-		<TextView android:id="@+id/title" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_alignParentTop="true"
-			android:layout_alignParentLeft="true" 
-			android:padding="5dip" 
-			 android:text="WhatStatus"
-			android:textColor="@color/white" android:textStyle="bold"
-			android:textSize="20dip" android:background="@drawable/table_header_dark">
-		</TextView>
-	</RelativeLayout>
-	<RelativeLayout android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:id="@+id/relativeLayout1"
-		android:gravity="center" android:textStyle="bold"
-		android:background="@drawable/table_header_dark"
-		android:layout_margin="25dip">
-		<TextView android:text="Site" android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:layout_width="wrap_content" android:id="@+id/site"
-			android:layout_below="@+id/title" android:layout_marginLeft="40dip">
-		</TextView>
-		<TextView android:text="Tracker" android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:layout_width="wrap_content" android:id="@+id/tracker"
-			android:layout_alignParentLeft="true" android:layout_below="@+id/site"
-			android:layout_marginLeft="40dip"></TextView>
-		<TextView android:text="IRC" android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:layout_width="wrap_content" android:id="@+id/irc"
-			android:layout_alignParentLeft="true" android:layout_below="@+id/tracker"
-			android:layout_marginLeft="40dip"></TextView>
-		<ImageView android:id="@+id/sitestatus"
-			android:layout_height="wrap_content" android:layout_width="wrap_content"
-			android:layout_alignParentRight="true" android:layout_marginRight="40dip"></ImageView>
-		<ImageView android:id="@+id/trackerstatus"
-			android:layout_height="wrap_content" android:layout_width="wrap_content"
-			android:layout_alignParentRight="true" android:layout_below="@+id/sitestatus"
-			android:layout_marginRight="40dip"></ImageView>
-		<ImageView android:id="@+id/ircstatus"
-			android:layout_height="wrap_content" android:layout_width="wrap_content"
-			android:layout_alignParentRight="true" android:layout_below="@+id/trackerstatus"
-			android:layout_marginRight="40dip"></ImageView>
-	</RelativeLayout>
-	<!-- <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dip"
+        android:gravity="center"
+        android:textStyle="bold" >
+
+        <TextView
+            android:id="@+id/site"
+            style="@style/HomeSubscriptionsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_marginLeft="40dip"
+            android:text="Site" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/tracker"
+            style="@style/HomeSubscriptionsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/site"
+            android:layout_marginLeft="40dip"
+            android:text="Tracker" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/irc"
+            style="@style/HomeSubscriptionsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tracker"
+            android:layout_marginLeft="40dip"
+            android:text="IRC" >
+        </TextView>
+
+        <ImageView
+            android:id="@+id/sitestatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dip" >
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/trackerstatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/sitestatus"
+            android:layout_marginRight="40dip" >
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/ircstatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/trackerstatus"
+            android:layout_marginRight="40dip" >
+        </ImageView>
+    </RelativeLayout>
+    <!--
+         <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" 
 		android:id="@+id/relativeLayout2" android:layout_centerHorizontal="true" 
 		android:gravity="center_horizontal"> <RelativeLayout android:layout_width="fill_parent" 
 		android:layout_height="wrap_content" android:id="@+id/relativeLayout3" android:onClick="openTwitter" 
@@ -71,5 +96,7 @@
 		android:layout_width="wrap_content" android:id="@+id/original" android:clickable="true" 
 		android:onClick="openWhatStatus" android:layout_below="@+id/title"  
 		android:layout_marginLeft="25dip" android:layout_marginRight="25dip"> </TextView> 
-		</LinearLayout> -->
+		</LinearLayout>
+    -->
+
 </LinearLayout>

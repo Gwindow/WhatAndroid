@@ -4,58 +4,38 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import what.gui.MyActivity;
 import what.gui.R;
 import what.settings.Settings;
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
-import api.soup.MySoup;
 
-public class QuickScannerActivity extends MyActivity {
+import com.actionbarsherlock.app.SherlockFragment;
+
+public class QuickScannerFragment extends SherlockFragment {
 	private static final String ZXING_MARKETPLACE_URL =
 			"https://play.google.com/store/apps/details?id=com.google.zxing.client.android";
 	private static final String FILENAME = "barcodes.txt";
 	private static String extStorageDirectory = null;
 	private Intent intent;
 	private String upc;
-	private ProgressDialog dialog;
 	private FileOutputStream fileOutputStream;
-	private static boolean isOpen;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.quickscanner, true);
-
-		extStorageDirectory = getExternalCacheDir().toString();
-
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.quickscanner, container, false);
 		if (Settings.getQuickScannerFirstRun()) {
 			showInstructions();
 			Settings.saveQuickScannerFirstRun(false);
 		}
-	}
-
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void load() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void prepare() {
-
+		return view;
 	}
 
 	private void writeToFile(String s) throws IOException {
@@ -68,10 +48,10 @@ public class QuickScannerActivity extends MyActivity {
 	}
 
 	private void showInstructions() {
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		AlertDialog.Builder alert = new AlertDialog.Builder(getSherlockActivity());
 		alert.setTitle("Instructions");
 		alert.setMessage("Scan as many barcodes as your heart desires. These barcodes will be saved to a file which can be analyzed by different program on your computer to determine what the site is missing.");
-		alert.setPositiveButton("Understood", null);
+		alert.setPositiveButton("Close", null);
 		alert.setCancelable(true);
 		alert.create().show();
 
@@ -84,7 +64,7 @@ public class QuickScannerActivity extends MyActivity {
 	public void clear(View v) {
 		File file = new File(extStorageDirectory, FILENAME);
 		file.delete();
-		Toast.makeText(QuickScannerActivity.this, "Barcodes deleted", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getSherlockActivity(), "Barcodes deleted", Toast.LENGTH_SHORT).show();
 	}
 
 	public void send(View v) {
@@ -103,7 +83,7 @@ public class QuickScannerActivity extends MyActivity {
 			intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
 			startActivityForResult(intent, 0);
 		} catch (Exception e) {
-			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+			AlertDialog.Builder alert = new AlertDialog.Builder(getSherlockActivity());
 			alert.setTitle("Barcode Scanner not found");
 			alert.setMessage("The Zxing Barcode Scanner is required to use the scanning features, would you like to install it?");
 			alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -121,18 +101,18 @@ public class QuickScannerActivity extends MyActivity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode == 0) {
-			if (resultCode == RESULT_OK) {
+			if (resultCode == Activity.RESULT_OK) {
 				upc = intent.getStringExtra("SCAN_RESULT");
 				try {
 					writeToFile(upc);
-					Toast.makeText(QuickScannerActivity.this, "Barcode saved", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getSherlockActivity(), "Barcode saved", Toast.LENGTH_SHORT).show();
 
 				} catch (IOException e) {
-					Toast.makeText(QuickScannerActivity.this, "Could not write barcode to file", Toast.LENGTH_LONG).show();
+					Toast.makeText(getSherlockActivity(), "Could not write barcode to file", Toast.LENGTH_LONG).show();
 					e.printStackTrace();
 				}
-			} else if (resultCode == RESULT_CANCELED) {
-				Toast.makeText(this, "Scan failed", Toast.LENGTH_LONG).show();
+			} else if (resultCode == Activity.RESULT_CANCELED) {
+				Toast.makeText(getSherlockActivity(), "Scan failed", Toast.LENGTH_LONG).show();
 			}
 		}
 	}
@@ -142,20 +122,4 @@ public class QuickScannerActivity extends MyActivity {
 		i.setData(Uri.parse(url));
 		startActivity(i);
 	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			finish();
-		}
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			if (MySoup.isLoggedIn()) {
-				super.onKeyDown(keyCode, event);
-			} else {
-				Toast.makeText(QuickScannerActivity.this, "Login to access menu", Toast.LENGTH_SHORT).show();
-			}
-		}
-		return false;
-	}
-
 }

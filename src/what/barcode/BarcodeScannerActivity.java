@@ -22,7 +22,9 @@ public class BarcodeScannerActivity extends MyActivity2 {
 	private static final String SCAN_TAB = "Scan & Search";
 	private static final String QUICK_TAB = "Quick Scan";
 	// TODO add comments
-	private static final String[] TABS = new String[] { SCAN_TAB, QUICK_TAB };
+	private static final String[] TABS_LOGGED_IN = new String[] { SCAN_TAB, QUICK_TAB };
+	private static final String[] TABS_LOGGED_OUT = new String[] { QUICK_TAB };
+	private static String[] tabs;
 
 	private FragmentPagerAdapter adapter;
 	private ViewPager pager;
@@ -39,14 +41,19 @@ public class BarcodeScannerActivity extends MyActivity2 {
 	 */
 	@Override
 	public void init() {
+		if (MySoup.isLoggedIn()) {
+			tabs = TABS_LOGGED_IN;
+		} else {
+			tabs = TABS_LOGGED_OUT;
+		}
 		populate();
 	}
 
 	// TODO make this less sloppy. Create a custom fragment activity.
 	private void populate() {
-		setContentView(R.layout.generic_pager);
-
+		super.setContentView(R.layout.generic_pager);
 		setActionBarTitle("Barcode Scanner");
+		setActionBarTouchToHome(MySoup.isLoggedIn());
 
 		adapter = new ScannerAdapater(getSupportFragmentManager());
 
@@ -66,26 +73,26 @@ public class BarcodeScannerActivity extends MyActivity2 {
 		@Override
 		public Fragment getItem(int position) {
 			Fragment fragment = null;
-			String tag = TABS[position % TABS.length];
-			if (MySoup.isLoggedIn()) {
-				if (tag.equals(SCAN_TAB)) {
-					// fragment = new ScannerFragment();
-				}
+			String tag;
+			tag = tabs[position % tabs.length];
+
+			if (tag.equals(SCAN_TAB)) {
+				fragment = new ScannerFragment();
 			}
 			if (tag.equals(QUICK_TAB)) {
-				// fragment = new QuickScannerFragment();
+				fragment = new QuickScannerFragment();
 			}
 			return fragment;
 		}
 
 		@Override
 		public int getCount() {
-			return TABS.length;
+			return tabs.length;
 		}
 
 		@Override
 		public String getTitle(int position) {
-			return TABS[position % TABS.length];
+			return tabs[position % tabs.length];
 		}
 	}
 

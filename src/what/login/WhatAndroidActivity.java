@@ -150,7 +150,7 @@ public class WhatAndroidActivity extends MyActivity2 implements OnClickListener 
 		Intent intent;
 		switch (item.getItemId()) {
 			case R.id.scanner_item:
-				intent = new Intent(this, what.barcode.QuickScannerActivity.class);
+				intent = new Intent(this, what.barcode.BarcodeScannerActivity.class);
 				startActivity(intent);
 				break;
 			case R.id.status_item:

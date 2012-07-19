@@ -1,17 +1,21 @@
 package what.barcode;
 
-import what.gui.MyActivity;
+import what.gui.BundleKeys;
 import what.gui.R;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 import api.search.crossreference.CrossReference;
@@ -19,7 +23,9 @@ import api.search.requests.RequestsSearch;
 import api.search.torrents.TorrentSearch;
 import api.util.Triple;
 
-public class ScannerActivity extends MyActivity implements OnClickListener, DialogInterface.OnClickListener {
+import com.actionbarsherlock.app.SherlockFragment;
+
+public class ScannerFragment extends SherlockFragment implements OnClickListener, DialogInterface.OnClickListener {
 	private static final String ZXING_MARKETPLACE_URL =
 			"https://play.google.com/store/apps/details?id=com.google.zxing.client.android";
 	private Intent intent;
@@ -28,30 +34,12 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 	private String upc, searchTerm;
 	private TorrentSearch torrentSearch;
 	private RequestsSearch requestsSearch;
-	private Button torrentsButton, requestsButton;
 	private SearchType searchType;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.scanner, true);
-	}
-
-	@Override
-	public void init() {
-
-	}
-
-	@Override
-	public void load() {
-		torrentsButton = (Button) this.findViewById(R.id.torrentsbutton);
-		requestsButton = (Button) this.findViewById(R.id.requestsbutton);
-	}
-
-	@Override
-	public void prepare() {
-		setButtonState(torrentsButton, false);
-		setButtonState(requestsButton, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.scanner, container, false);
+		return view;
 	}
 
 	public void scanRequests(View v) {
@@ -64,11 +52,6 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 		startScanner();
 	}
 
-	public void quickScan(View v) {
-		Intent i = new Intent(ScannerActivity.this, QuickScannerActivity.class);
-		startActivity(i);
-	}
-
 	private void startScanner() {
 		try {
 			intent = new Intent("com.google.zxing.client.android.SCAN");
@@ -76,7 +59,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 			intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
 			startActivityForResult(intent, 0);
 		} catch (Exception e) {
-			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+			AlertDialog.Builder alert = new AlertDialog.Builder(getSherlockActivity());
 			alert.setTitle("Barcode Scanner not found");
 			alert.setMessage("The Zxing Barcode Scanner is required to use the scanning features, would you like to install it?");
 			alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -104,7 +87,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 			i.setData(Uri.parse(url));
 			startActivity(i);
 		} else {
-			Toast.makeText(this, "Please scan or enter a upc code", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getSherlockActivity(), "Please scan or enter a upc code", Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -123,21 +106,21 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode == 0) {
-			if (resultCode == RESULT_OK) {
+			if (resultCode == Activity.RESULT_OK) {
 				contents = intent.getStringExtra("SCAN_RESULT");
 				upc = contents;
 				new LoadSearchResults().execute();
-			} else if (resultCode == RESULT_CANCELED) {
-				Toast.makeText(this, "Scan canceled", Toast.LENGTH_LONG).show();
+			} else if (resultCode == Activity.RESULT_CANCELED) {
+				Toast.makeText(getSherlockActivity(), "Scan canceled", Toast.LENGTH_LONG).show();
 			}
 		}
 	}
 
 	public void displayEditTextPopup() {
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		AlertDialog.Builder alert = new AlertDialog.Builder(getSherlockActivity());
 		alert.setTitle("");
 		alert.setMessage("Enter UPC code");
-		final EditText input = new EditText(this);
+		final EditText input = new EditText(getSherlockActivity());
 		alert.setView(input);
 		alert.setPositiveButton("Search", new DialogInterface.OnClickListener() {
 			@Override
@@ -147,7 +130,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 					// new LoadSearchResults().execute();
 					displayManualSearchTypePopup();
 				} else {
-					Toast.makeText(ScannerActivity.this, "UPC not entered", Toast.LENGTH_LONG).show();
+					Toast.makeText(ScannerFragment.this.getSherlockActivity(), "UPC not entered", Toast.LENGTH_LONG).show();
 				}
 			}
 		});
@@ -163,7 +146,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 	}
 
 	public void displayManualSearchTypePopup() {
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		AlertDialog.Builder alert = new AlertDialog.Builder(getSherlockActivity());
 		alert.setTitle("");
 		alert.setMessage("Select a Search Type");
 
@@ -187,7 +170,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 	}
 
 	public void displayNotFoundPopup() {
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		AlertDialog.Builder alert = new AlertDialog.Builder(getSherlockActivity());
 
 		alert.setTitle("");
 		alert.setMessage("Could not find this music on What.CD");
@@ -211,40 +194,40 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 
 	private void openTorrentSearch() {
 		Bundle b = new Bundle();
-		intent = new Intent(ScannerActivity.this, what.search.TorrentSearchActivity.class);
-		b.putString("searchTerm", searchTerm);
+		intent = new Intent(getSherlockActivity(), what.search.TorrentSearchActivity.class);
+		b.putString(BundleKeys.SEARCH_STRING, searchTerm);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
 
 	private void openRequestSearch() {
 		Bundle b = new Bundle();
-		intent = new Intent(ScannerActivity.this, what.search.RequestsSearchActivity.class);
-		b.putString("searchTerm", searchTerm);
+		intent = new Intent(getSherlockActivity(), what.search.RequestsSearchActivity.class);
+		b.putString(BundleKeys.SEARCH_STRING, searchTerm);
 		intent.putExtras(b);
 		startActivityForResult(intent, 0);
 	}
 
 	public void displayFoundPopup(int torrents, int requests) {
-		AlertDialog alert = new AlertDialog.Builder(ScannerActivity.this).create();
+		AlertDialog alert = new AlertDialog.Builder(getSherlockActivity()).create();
 
 		alert.setTitle("Results Found");
 
 		if ((torrents > 0) && (requests > 0)) {
 			alert.setMessage("Found " + torrents + " torrents and " + requests + " requests");
-			alert.setButton(AlertDialog.BUTTON1, "Torrents", new DialogInterface.OnClickListener() {
+			alert.setButton(AlertDialog.BUTTON_NEGATIVE, "Torrents", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					openTorrentSearch();
 				}
 			});
-			alert.setButton(AlertDialog.BUTTON2, "Requests", new DialogInterface.OnClickListener() {
+			alert.setButton(AlertDialog.BUTTON_POSITIVE, "Requests", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					openRequestSearch();
 				}
 			});
-			alert.setButton(AlertDialog.BUTTON3, "Buy", new DialogInterface.OnClickListener() {
+			alert.setButton(AlertDialog.BUTTON_NEUTRAL, "Buy", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					buy();
@@ -254,13 +237,13 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 
 		if ((torrents > 0) && (requests == 0)) {
 			alert.setMessage("Found " + torrents + " torrents");
-			alert.setButton(AlertDialog.BUTTON1, "Torrents", new DialogInterface.OnClickListener() {
+			alert.setButton(AlertDialog.BUTTON_NEGATIVE, "Torrents", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					openTorrentSearch();
 				}
 			});
-			alert.setButton(AlertDialog.BUTTON2, "Buy", new DialogInterface.OnClickListener() {
+			alert.setButton(AlertDialog.BUTTON_POSITIVE, "Buy", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					buy();
@@ -270,13 +253,13 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 
 		if ((torrents == 0) && (requests > 0)) {
 			alert.setMessage("Found " + requests + " requests");
-			alert.setButton(AlertDialog.BUTTON1, "Requests", new DialogInterface.OnClickListener() {
+			alert.setButton(AlertDialog.BUTTON_NEGATIVE, "Requests", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					openRequestSearch();
 				}
 			});
-			alert.setButton(AlertDialog.BUTTON2, "Buy", new DialogInterface.OnClickListener() {
+			alert.setButton(AlertDialog.BUTTON_POSITIVE, "Buy", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					buy();
@@ -302,7 +285,7 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
-			dialog = new ProgressDialog(ScannerActivity.this);
+			dialog = new ProgressDialog(getSherlockActivity());
 			dialog.setIndeterminate(true);
 			dialog.setMessage("Loading...");
 			dialog.show();
@@ -351,11 +334,35 @@ public class ScannerActivity extends MyActivity implements OnClickListener, Dial
 				}
 			}
 			if (status.getA() == false) {
-				Toast.makeText(ScannerActivity.this, "Scan Failed", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getSherlockActivity(), "Scan Failed", Toast.LENGTH_SHORT).show();
 				// displayNotFoundPopup();
 				unlockScreenRotation();
 			}
 		}
+	}
+
+	public void lockScreenRotation() {
+		switch (getResources().getConfiguration().orientation) {
+			case Configuration.ORIENTATION_PORTRAIT:
+				if (getSherlockActivity().getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+					getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				} else if (getSherlockActivity().getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT) {
+					getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+				}
+				break;
+			case Configuration.ORIENTATION_LANDSCAPE:
+				if (getSherlockActivity().getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+					getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+				} else if (getSherlockActivity().getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
+					getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+				}
+				break;
+
+		}
+	}
+
+	public void unlockScreenRotation() {
+		getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 	}
 
 	enum SearchType {
