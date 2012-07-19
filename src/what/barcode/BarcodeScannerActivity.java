@@ -51,7 +51,8 @@ public class BarcodeScannerActivity extends MyActivity2 {
 
 	// TODO make this less sloppy. Create a custom fragment activity.
 	private void populate() {
-		super.setContentView(R.layout.generic_pager);
+		setContentView(R.layout.generic_pager);
+
 		setActionBarTitle("Barcode Scanner");
 		setActionBarTouchToHome(MySoup.isLoggedIn());
 

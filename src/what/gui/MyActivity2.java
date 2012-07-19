@@ -25,7 +25,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 
 public abstract class MyActivity2 extends SherlockFragmentActivity {
-	protected static final int THEME = R.style.LightTheme;
+	protected static final int THEME = R.style.Theme_gwindow_loves_tom;
 	private static final int MENU_PLACEHOLDER_ID = 1;
 	private static final int MENU_ITEM_ID = 2;
 	private View v;
@@ -35,9 +35,9 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 	private long actionBarTitleTouchedTime;
 	private boolean touchToHome = true;
 
-	public void onCreate(Bundle savedInstanceState, Integer customTheme) {
-		customTheme = customTheme == null ? THEME : customTheme;
-		super.setTheme(customTheme);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		setTheme();
 		super.onCreate(savedInstanceState);
 		new ReportSender(this);
 		if ((Settings.getSettings() == null) | (Settings.getSettingsEditor() == null)) {
@@ -46,8 +46,6 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-		init();
 
 		getSupportActionBar().setDisplayShowHomeEnabled(false);
 		this.getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -58,11 +56,11 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		actionBarTitle = ((TextView) v.findViewById(R.id.title));
 
 		getSupportActionBar().setCustomView(v);
+		init();
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		onCreate(savedInstanceState, null);
+	private void setTheme() {
+
 	}
 
 	/**

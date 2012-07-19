@@ -1,38 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-	<PreferenceCategory android:title="Bug Report/Suggestion">
-		<Preference android:summary="Send Report" android:title="Bug/Suggestion Report"
-			android:key="report_preference"></Preference>
-	</PreferenceCategory>
-	<PreferenceCategory android:title="UI">
-		<CheckBoxPreference android:key="avatarsEnabled_preference"
-			android:summaryOn="Enabled" android:summaryOff="Disabled"
-			android:title="Avatars in forum" android:summary="Enable/Disable Avatars"
-			android:defaultValue="true" />
-		<CheckBoxPreference android:key="subscriptionsEnabled_preference"
-			android:summaryOn="Enabled" android:summaryOff="Disabled"
-			android:title="Suscriptions" android:summary="Enable/Disable Subscriptions"
-			android:defaultValue="true" />
-		<!-- <CheckBoxPreference android:key="donateButton_preference" android:summaryOn="Enabled" 
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="Bug Report/Suggestion" >
+        <Preference
+            android:key="report_preference"
+            android:summary="Send Report"
+            android:title="Bug/Suggestion Report" >
+        </Preference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Theme" >
+    </PreferenceCategory>
+    <PreferenceCategory android:title="UI" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="avatarsEnabled_preference"
+            android:summary="Enable/Disable Avatars"
+            android:summaryOff="Disabled"
+            android:summaryOn="Enabled"
+            android:title="Avatars in forum" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="subscriptionsEnabled_preference"
+            android:summary="Enable/Disable Subscriptions"
+            android:summaryOff="Disabled"
+            android:summaryOn="Enabled"
+            android:title="Suscriptions" />
+        <!--
+             <CheckBoxPreference android:key="donateButton_preference" android:summaryOn="Enabled" 
 			android:summaryOff="Disabled" android:title="Donate Button" android:summary="Enable/Disable 
-			Donate Button" android:defaultValue="false" /> -->
-	</PreferenceCategory>
-	<PreferenceCategory android:title="pyWA">
-		<EditTextPreference android:defaultValue=""
-			android:dialogTitle="Host" android:dialogMessage="Set the Host"
-			android:key="host_preference" android:title="Host"
-			android:summary="Begins with http:// or https://" />
-		<EditTextPreference android:defaultValue=""
-			android:dialogTitle="Port" android:dialogMessage="Set the Port"
-			android:key="port_preference" android:title="Port" />
-		<EditTextPreference android:defaultValue=""
-			android:dialogTitle="Password" android:dialogMessage="Set the Password"
-			android:key="password_preference" android:title="Password" />
-	</PreferenceCategory>
-	<PreferenceCategory android:title="Developer">
-		<CheckBoxPreference android:key="debug_preference"
-			android:summaryOn="Enabled" android:summaryOff="Disabled"
-			android:title="Debug Mode" android:summary="Enable/Disable Debug Mode"
-			android:defaultValue="false" />
-	</PreferenceCategory>
+			Donate Button" android:defaultValue="false" />
+        -->
+    </PreferenceCategory>
+    <PreferenceCategory android:title="pyWA" >
+        <EditTextPreference
+            android:defaultValue=""
+            android:dialogMessage="Set the Host"
+            android:dialogTitle="Host"
+            android:key="host_preference"
+            android:summary="Begins with http:// or https://"
+            android:title="Host" />
+        <EditTextPreference
+            android:defaultValue=""
+            android:dialogMessage="Set the Port"
+            android:dialogTitle="Port"
+            android:key="port_preference"
+            android:title="Port" />
+        <EditTextPreference
+            android:defaultValue=""
+            android:dialogMessage="Set the Password"
+            android:dialogTitle="Password"
+            android:key="password_preference"
+            android:title="Password" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Developer" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="debug_preference"
+            android:summary="Enable/Disable Debug Mode"
+            android:summaryOff="Disabled"
+            android:summaryOn="Enabled"
+            android:title="Debug Mode" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
