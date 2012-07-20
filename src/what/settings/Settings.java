@@ -1,5 +1,8 @@
 package what.settings;
 
+import java.util.HashMap;
+
+import what.gui.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -7,6 +10,20 @@ import android.preference.PreferenceManager;
 public class Settings {
 	private static SharedPreferences settings;
 	private static SharedPreferences.Editor settingsEditor;
+
+	protected static HashMap<String, Integer> themes;
+	static {
+		themes = new HashMap<String, Integer>();
+		themes.put("Moldy Walls", R.style.Theme_moldy_walls);
+		themes.put("Gwindow Loves Tom", R.style.Theme_gwindow_loves_tom);
+		themes.put("Old E and 4 Blunts", R.style.Theme_old_e_and_four_blunts);
+		themes.put("Watermelon", R.style.Theme_watermelon);
+		themes.put("Ridejck's Barbie Convertible", R.style.Theme_ridejkcls_barbie_convertible);
+		themes.put("Wonder Orange", R.style.Theme_wonder_orange);
+		themes.put("Light", R.style.LightTheme);
+		themes.put("Dark", R.style.DarkTheme);
+
+	}
 
 	/**
 	 * Initialize the settings reader and writer, should only be done once
@@ -18,6 +35,15 @@ public class Settings {
 		settings = PreferenceManager.getDefaultSharedPreferences(c);
 		settingsEditor = settings.edit();
 
+	}
+
+	public static int getTheme() {
+		return settings.getInt("theme_preference", R.style.LightTheme);
+	}
+
+	public static void saveTheme(int theme) {
+		settingsEditor.putInt("theme_preference", theme);
+		commit();
 	}
 
 	public static boolean getDebugPreference() {

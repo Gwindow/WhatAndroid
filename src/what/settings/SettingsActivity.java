@@ -1,5 +1,7 @@
 package what.settings;
 
+import java.util.LinkedList;
+
 import what.gui.R;
 import what.inbox.ReportActivity;
 import what.login.UpdateChecker;
@@ -8,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
@@ -21,16 +24,18 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 public class SettingsActivity extends SherlockPreferenceActivity implements OnPreferenceClickListener {
 	private Preference debugPreference;
 	private Preference reportPreference;
-
+	private LinkedList<CheckBoxPreference> themePreferencesList;
 	private SharedPreferences sharedPreferences;
+	private boolean themeMessageShown;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO set theme
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setTitle("Settings");
-
 		addPreferencesFromResource(R.xml.settingsactivity);
+
+		themePreferencesList = new LinkedList<CheckBoxPreference>();
 
 		PreferenceScreen prefenceScreen = getPreferenceScreen();
 		PreferenceCategory preferenceCategory = new PreferenceCategory(this);
@@ -38,6 +43,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 		preferenceCategory.setTitle("Version " + getInstalledVersion());
 		prefenceScreen.addPreference(preferenceCategory);
 
+		populateThemes();
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 		debugPreference = findPreference("debug_preference");
@@ -45,6 +51,25 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 
 		reportPreference = findPreference("report_preference");
 		reportPreference.setOnPreferenceClickListener(this);
+	}
+
+	private void populateThemes() {
+		PreferenceScreen prefenceScreen = getPreferenceScreen();
+		PreferenceCategory preferenceCategory = new PreferenceCategory(this);
+		preferenceCategory.setTitle("Themes");
+		prefenceScreen.addPreference(preferenceCategory);
+
+		for (String title : Settings.themes.keySet()) {
+			CheckBoxPreference preference = new CheckBoxPreference(this);
+			preference.setTitle(title);
+			if (Settings.getTheme() == Settings.themes.get(title)) {
+				preference.setChecked(true);
+			}
+			preference.setOnPreferenceClickListener(this);
+			preferenceCategory.addPreference(preference);
+			themePreferencesList.add(preference);
+		}
+
 	}
 
 	private double getInstalledVersion() {
@@ -66,6 +91,19 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 
 	@Override
 	public boolean onPreferenceClick(Preference pref) {
+		if (Settings.themes.containsKey(pref.getTitle())) {
+			Settings.saveTheme(Settings.themes.get(pref.getTitle()));
+			for (CheckBoxPreference cbp : themePreferencesList) {
+				if (cbp != pref) {
+					cbp.setChecked(false);
+				}
+			}
+			if (!themeMessageShown) {
+				Toast.makeText(this, "Theme changes will be applied next time you load a page", Toast.LENGTH_LONG).show();
+				themeMessageShown = true;
+			}
+		}
+
 		if (pref == debugPreference) {
 			if (sharedPreferences.getBoolean("debug_preference", true)) {
 				MySon.setDebugEnabled(true);

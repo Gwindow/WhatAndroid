@@ -189,8 +189,7 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO figure out themes
-		menu.add("Search").setIcon(THEME == R.style.LightTheme ? R.drawable.ic_search_inverse : R.drawable.ic_search)
-				.setActionView(R.layout.collapsible_edittext)
+		menu.add("Search").setIcon(R.drawable.ic_search_inverse).setActionView(R.layout.collapsible_edittext)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 		return super.onCreateOptionsMenu(menu);
 	}
