@@ -20,6 +20,7 @@ public class Settings {
 		themes.put("Watermelon", R.style.Theme_watermelon);
 		themes.put("Ridejck's Barbie Convertible", R.style.Theme_ridejkcls_barbie_convertible);
 		themes.put("Wonder Orange", R.style.Theme_wonder_orange);
+		themes.put("DarkCD", R.style.Theme_darkcd);
 		themes.put("Light", R.style.LightTheme);
 		themes.put("Dark", R.style.DarkTheme);
 
