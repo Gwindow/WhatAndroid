@@ -39,6 +39,10 @@ public class Settings {
 
 	}
 
+	public static boolean getBoldSetting() {
+		return settings.getBoolean("boldthreads_preference", true);
+	}
+
 	public static int getTheme() {
 		return settings.getInt("theme_preference", R.style.LightTheme);
 	}

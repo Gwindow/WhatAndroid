@@ -269,7 +269,7 @@ public class ErrorReporter implements Thread.UncaughtExceptionHandler {
 		return GetErrorFileList().length > 0;
 	}
 
-	public void CheckErrorAndSendMail(Context _context) {
+	public void checkErrorAndSendMail(Context _context) {
 		try {
 			FilePath = _context.getFilesDir().getAbsolutePath();
 			if (bIsThereAnyErrorFile()) {

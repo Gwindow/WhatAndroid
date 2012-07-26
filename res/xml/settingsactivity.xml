@@ -23,6 +23,13 @@
             android:summaryOff="Disabled"
             android:summaryOn="Enabled"
             android:title="Suscriptions" />
+          <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="boldthreads_preference"
+            android:summary="Bold/Unbold Unread Threads"
+            android:summaryOff="Disabled"
+            android:summaryOn="Enabled"
+            android:title="Bold Threads" />
         <!--
              <CheckBoxPreference android:key="donateButton_preference" android:summaryOn="Enabled" 
 			android:summaryOff="Disabled" android:title="Donate Button" android:summary="Enable/Disable 

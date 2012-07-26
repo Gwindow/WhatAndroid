@@ -1,6 +1,7 @@
 package what.debug;
 
-import what.gui.MyActivity;
+import what.gui.ActivityNames;
+import what.gui.MyActivity2;
 import what.gui.R;
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -10,11 +11,12 @@ import api.son.MySon;
  * 
  *
  */
-public class DebugActivity extends MyActivity {
+public class DebugActivity extends MyActivity2 {
 	private WebView webView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		super.setActivityName(ActivityNames.DEBUG);
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.debug, false);
 	}
@@ -30,7 +32,7 @@ public class DebugActivity extends MyActivity {
 
 	@Override
 	public void prepare() {
-		enableGestures(false);
+		setActionBarTitle("Debug");
 		try {
 			webView.loadData(MySon.getDebugString(), "text/html", "utf-8");
 		} catch (Exception e) {

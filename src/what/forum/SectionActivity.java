@@ -11,6 +11,7 @@ import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.Scrollable;
 import what.gui.ViewSlider;
+import what.settings.Settings;
 import what.user.UserActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -102,12 +103,12 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 				TextView thread_title = (TextView) thread_layout.findViewById(R.id.threadTitle);
 				String title = threads.get(i).getTitle();
 				if (threads.get(i).isLocked()) {
-					title = "[Locked] " + title;
+					title = "[L] " + title;
 				}
 				if (threads.get(i).isSticky()) {
-					title = "[Sticky] " + title;
+					title = "[S] " + title;
 				}
-				if (!threads.get(i).isRead()) {
+				if (!threads.get(i).isRead() && Settings.getBoldSetting()) {
 					thread_title.setTypeface(null, Typeface.BOLD);
 				}
 				thread_title.setText(title);

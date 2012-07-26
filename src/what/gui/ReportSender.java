@@ -9,6 +9,6 @@ public class ReportSender {
 		// TODO renable
 		errReporter = new ErrorReporter();
 		errReporter.init(context);
-		errReporter.CheckErrorAndSendMail(context);
+		errReporter.checkErrorAndSendMail(context);
 	}
 }
