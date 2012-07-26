@@ -20,6 +20,7 @@ import what.user.UserActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -372,6 +373,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				if (avatarUrl.length() > 0) {
 					try {
 						bitmap = ImageLoader.loadBitmap(avatarUrl);
+						bitmap = Bitmap.createScaledBitmap(bitmap, 110, bitmap.getHeight(), true);
 						ImageCache.saveImage(userId, avatarUrl, bitmap);
 						status = true;
 						Log.d("cache", "saved : " + String.valueOf(userId));
@@ -397,7 +399,9 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 			if (status) {
 				avatar.setImageBitmap(bitmap);
 			} else {
-				avatar.setImageResource(R.drawable.dne);
+				Bitmap no_avatar = BitmapFactory.decodeResource(getResources(), R.drawable.dne);
+				avatar.setImageBitmap(Bitmap.createScaledBitmap(no_avatar, 110, 110 / (bitmap.getWidth() / bitmap.getHeight()),
+						true));
 			}
 		}
 	}

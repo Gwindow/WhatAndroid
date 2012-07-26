@@ -90,6 +90,8 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 		List<Messages> messages = conversation.getResponse().getMessages();
 
 		if (messages != null) {
+			int width = getMetrics().widthPixels;
+			int height = getMetrics().heightPixels;
 			for (int i = 0; i < messages.size(); i++) {
 				LinearLayout message_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.conversation_message, null);
 
@@ -100,7 +102,7 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 				date.setText(messages.get(i).getSentDate());
 
 				TextView body = (TextView) message_layout.findViewById(R.id.body);
-				body.setText(Html.fromHtml(messages.get(i).getBody(), new AsyncImageGetter(body, this), null));
+				body.setText(Html.fromHtml(messages.get(i).getBody(), new AsyncImageGetter(body, this, width, height), null));
 				Linkify.addLinks(body, Linkify.WEB_URLS);
 
 				ImageView reply = (ImageView) message_layout.findViewById(R.id.replyIcon);

@@ -42,7 +42,7 @@
     <style name="CustomTabPageIndicator.Text" parent="Widget">
         <item name="android:textAppearance">@style/TextAppearance.TabPageIndicator</item>
         <item name="android:textColor">@color/vpi__light_theme</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:maxLines">1</item>
         <item name="android:paddingLeft">22dip</item>
