@@ -14,8 +14,8 @@ import what.search.RequestsSearchActivity;
 import what.search.TorrentSearchActivity;
 import what.search.UserSearchActivity;
 import what.settings.SettingsActivity;
+import what.status.WhatStatusActivity;
 import what.top.TopTenActivity;
-import api.whatstatus.WhatStatus;
 
 /**
  * Enum thats hold menu items
@@ -56,7 +56,7 @@ public enum MenuItems {
 		map.put(BARCODE_SCANNER, BarcodeScannerActivity.class);
 		map.put(SETTINGS, SettingsActivity.class);
 		map.put(TOP_TEN, TopTenActivity.class);
-		map.put(STATUS, WhatStatus.class);
+		map.put(STATUS, WhatStatusActivity.class);
 		map.put(DEBUG, DebugActivity.class);
 	}
 

@@ -10,23 +10,25 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.R;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.Html.ImageGetter;
-import android.util.DisplayMetrics;
-import android.view.View;
+import android.util.Log;
+import android.widget.TextView;
 import api.soup.MySoup;
 
 /**
  * Based from the example found here http://stackoverflow.com/questions/7424512/android-html-imagegetter-as-asynctask
  */
 public class AsyncImageGetter implements ImageGetter {
+	private static final double SCALE = 0.3;
 	private static final String SMILEY = "static/common/smileys/";
 	private Context c;
-	private View container;
-	private int width, height;
+	private TextView container;
+	private double width, height;
 
 	/***
 	 * Construct the URLImageParser which will execute AsyncTask and refresh the container
@@ -34,10 +36,10 @@ public class AsyncImageGetter implements ImageGetter {
 	 * @param t
 	 * @param c
 	 */
-	public AsyncImageGetter(View t, Context c, int width, int height) {
+	public AsyncImageGetter(TextView t, Context c, double width, double height) {
 		this.c = c;
 		this.container = t;
-		this.width = width;
+		this.width = width * SCALE;
 		this.height = height;
 	}
 
@@ -47,7 +49,7 @@ public class AsyncImageGetter implements ImageGetter {
 	 * @param t
 	 * @param c
 	 */
-	public AsyncImageGetter(View t, Context c) {
+	public AsyncImageGetter(TextView t, Context c) {
 		this.c = c;
 		this.container = t;
 	}
@@ -70,7 +72,6 @@ public class AsyncImageGetter implements ImageGetter {
 
 	public class ImageGetterAsyncTask extends AsyncTask<String, Void, Drawable> {
 		URLDrawable urlDrawable;
-		private DisplayMetrics displaymetrics;
 
 		public ImageGetterAsyncTask(URLDrawable d) {
 			this.urlDrawable = d;
@@ -85,14 +86,30 @@ public class AsyncImageGetter implements ImageGetter {
 		@Override
 		protected void onPostExecute(Drawable result) {
 			// set the correct bound according to the result from HTTP call
-			urlDrawable.setBounds(0, 0, 0 + result.getIntrinsicWidth(), 0 + result.getIntrinsicHeight());
 
-			// change the reference of the current drawable to the result
-			// from the HTTP call
-			urlDrawable.drawable = result;
+			double resized_width = result.getIntrinsicWidth();
+			double resized_height = result.getIntrinsicHeight();
+			if (result.getIntrinsicWidth() > width) {
+				resized_width = width;
+				resized_height = width / (result.getIntrinsicWidth() / result.getIntrinsicHeight());
+				Log.d("orig", String.valueOf(width));
+			}
+			urlDrawable.drawable =
+					new BitmapDrawable(Bitmap.createScaledBitmap(((BitmapDrawable) result).getBitmap(), (int) resized_width,
+							(int) resized_height, true));
+
+			urlDrawable.setBounds(0, 0, (int) resized_width, (int) resized_height);
+
+			Log.d("size", "width: " + result.getIntrinsicWidth() + ", resized width:  " + resized_width);
 
 			// redraw the image by invalidating the container
 			AsyncImageGetter.this.container.invalidate();
+
+			// For ICS
+			AsyncImageGetter.this.container.setHeight((int) (AsyncImageGetter.this.container.getHeight() + resized_height));
+
+			// Pre ICS
+			// AsyncImageGetter.this.textView.setEllipsize(null);
 		}
 
 		/***

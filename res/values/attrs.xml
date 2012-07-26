@@ -3,5 +3,6 @@
 
     <attr name="textViewColorDefault" format="color|reference" />
     <attr name="textViewColorFocused" format="color|reference" />
+    <attr name="actionbarTitleColor" format="color|reference" />
 
 </resources>

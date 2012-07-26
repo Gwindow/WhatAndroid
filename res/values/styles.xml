@@ -270,8 +270,8 @@
         <item name="android:textSize">22dip</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
-     <style name="SubscriptionThreadTitle">
+
+    <style name="SubscriptionThreadTitle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
@@ -321,7 +321,7 @@
     </style>
 
     <style name="LightTheme" parent="Theme.Sherlock.Light.ForceOverflow">
-        <item name="vpiTitlePageIndicatorStyle">@style/Widget.TitlePageIndicator</item>
+<!--          <item name="vpiTitlePageIndicatorStyle">@style/Widget.TitlePageIndicator</item> -->
         <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Light</item>
         <item name="textColorPrimary">@color/textview_colors_light</item>

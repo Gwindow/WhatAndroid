@@ -14,6 +14,7 @@ public class Settings {
 	protected static HashMap<String, Integer> themes;
 	static {
 		themes = new HashMap<String, Integer>();
+		themes.put("Schnappi", R.style.Theme_schnappi);
 		themes.put("Moldy Walls", R.style.Theme_moldy_walls);
 		themes.put("Gwindow Loves Tom", R.style.Theme_gwindow_loves_tom);
 		themes.put("Old E and 4 Blunts", R.style.Theme_old_e_and_four_blunts);

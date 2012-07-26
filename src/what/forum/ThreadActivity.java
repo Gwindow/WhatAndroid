@@ -24,6 +24,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -116,6 +117,8 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				+ thread.getResponse().getPages().intValue());
 
 		if (thread.getResponse().getPosts() != null) {
+			int width = getMetrics().widthPixels;
+			int height = getMetrics().heightPixels;
 
 			for (int i = 0; i < thread.getResponse().getPosts().size(); i++) {
 				LinearLayout post_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.thread_post, null);
@@ -140,7 +143,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				date.setText(posts.getLast().getAddedTime());
 
 				TextView body = (TextView) post_layout.findViewById(R.id.body);
-				body.setText(Html.fromHtml(posts.getLast().getBody(), new AsyncImageGetter(body, this), null));
+				body.setText(Html.fromHtml(posts.getLast().getBody(), new AsyncImageGetter(body, this, width, height), null));
 				Linkify.addLinks(body, Linkify.WEB_URLS);
 
 				ImageView reply = (ImageView) post_layout.findViewById(R.id.replyIcon);
@@ -250,7 +253,6 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 			}
 			menu.addSubMenu(Menu.NONE, SUBSCRIBE_ITEM_ID, Menu.FIRST, title);
 		}
-
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -275,6 +277,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 					thread.subscribe();
 					Toast.makeText(this, "Subscribed", Toast.LENGTH_SHORT).show();
 				}
+				super.invalidateOptionsMenu();
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -371,18 +374,18 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 						bitmap = ImageLoader.loadBitmap(avatarUrl);
 						ImageCache.saveImage(userId, avatarUrl, bitmap);
 						status = true;
+						Log.d("cache", "saved : " + String.valueOf(userId));
 					} catch (Exception e) {
 						e.printStackTrace();
-						status = false;
 					}
 				}
 			} else {
 				try {
 					bitmap = ImageCache.getImage(userId);
 					status = true;
+					Log.d("cache", "loaded : " + String.valueOf(userId));
 				} catch (Exception e) {
 					e.printStackTrace();
-					status = false;
 				}
 			}
 

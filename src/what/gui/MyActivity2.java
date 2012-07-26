@@ -12,6 +12,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,10 +45,10 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 
 		metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
+		Log.d("width", String.valueOf(metrics.widthPixels));
 		getSupportActionBar().setDisplayShowHomeEnabled(false);
-		this.getSupportActionBar().setDisplayShowCustomEnabled(true);
-		this.getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setDisplayShowCustomEnabled(true);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View v = inflator.inflate(R.layout.actionbar_title, null);

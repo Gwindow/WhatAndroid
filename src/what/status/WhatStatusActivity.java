@@ -19,7 +19,7 @@ public class WhatStatusActivity extends MyActivity2 {
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.STATUS);
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.whatstatus, true);
+		super.setContentView(R.layout.whatstatus);
 	}
 
 	@Override

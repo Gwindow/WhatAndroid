@@ -88,10 +88,10 @@ public class UserActivity extends MyActivity2 {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.user_menu, menu);
-		if (user != null && !user.getProfile().IsFriend()) {
-			String title = "Add Friend";
-			menu.addSubMenu(Menu.NONE, FRIENDS_ITEM_ID, Menu.NONE, title);
-		}
+		/*
+		 * if (user != null && !user.getProfile().IsFriend()) { String title = "Add Friend"; menu.addSubMenu(Menu.NONE,
+		 * FRIENDS_ITEM_ID, Menu.NONE, title); }
+		 */
 		return super.onCreateOptionsMenu(menu);
 	}
 

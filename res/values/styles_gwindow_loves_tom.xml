@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- File created by the Android Action Bar Style Generator
+<!--
+     File created by the Android Action Bar Style Generator
 
      Copyright (C) 2012 readyState Software Ltd
 
@@ -25,7 +26,6 @@
         <item name="actionBarTabStyle">@style/gwindow_loves_tom_ActionBarTabStyle</item>
         <item name="actionDropDownStyle">@style/gwindow_loves_tom_DropDownNav</item>
         <item name="actionBarStyle">@style/gwindow_loves_tom_solid_ActionBar</item>
-
         <item name="android:actionBarItemBackground">@drawable/selectable_background_gwindow_loves_tom</item>
         <item name="android:popupMenuStyle">@style/gwindow_loves_tom_PopupMenu</item>
         <item name="android:dropDownListViewStyle">@style/gwindow_loves_tom_DropDownListView</item>
@@ -33,6 +33,9 @@
         <item name="android:actionDropDownStyle">@style/gwindow_loves_tom_DropDownNav</item>
         <item name="android:actionBarStyle">@style/gwindow_loves_tom_solid_ActionBar</item>
         <item name="android:panelBackground">@drawable/menu_hardkey_panel_gwindow_loves_tom</item>
+        <item name="android:textColor">@color/textview_colors_dark</item>
+        <item name="vpiTabPageIndicatorStyle">@drawable/tab_indicator_ab_gwindow_loves_tom</item>
+        <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Dark</item>
     </style>
 
     <style name="gwindow_loves_tom_solid_ActionBar" parent="@style/Widget.Sherlock.ActionBar.Solid">
@@ -40,7 +43,6 @@
         <item name="backgroundStacked">@drawable/ab_stacked_solid_gwindow_loves_tom</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_gwindow_loves_tom</item>
         <item name="progressBarStyle">@style/gwindow_loves_tom_ProgressBar</item>
-
         <item name="android:background">@drawable/ab_solid_gwindow_loves_tom</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_gwindow_loves_tom</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_gwindow_loves_tom</item>
@@ -50,33 +52,30 @@
     <style name="gwindow_loves_tom_transparent_ActionBar" parent="@style/Widget.Sherlock.ActionBar">
         <item name="background">@drawable/ab_transparent_gwindow_loves_tom</item>
         <item name="progressBarStyle">@style/gwindow_loves_tom_ProgressBar</item>
-        
         <item name="android:background">@drawable/ab_transparent_gwindow_loves_tom</item>
         <item name="android:progressBarStyle">@style/gwindow_loves_tom_ProgressBar</item>
     </style>
-	
-    <style name="gwindow_loves_tom_PopupMenu" parent="@style/Widget.Sherlock.ListPopupWindow">	
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_gwindow_loves_tom</item>	
+
+    <style name="gwindow_loves_tom_PopupMenu" parent="@style/Widget.Sherlock.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_gwindow_loves_tom</item>
     </style>
-	
+
     <style name="gwindow_loves_tom_DropDownListView" parent="@style/Widget.Sherlock.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_gwindow_loves_tom</item>
     </style>
 
     <style name="gwindow_loves_tom_ActionBarTabStyle" parent="@style/Widget.Sherlock.ActionBar.TabView">
         <item name="background">@drawable/tab_indicator_ab_gwindow_loves_tom</item>
-
         <item name="android:background">@drawable/tab_indicator_ab_gwindow_loves_tom</item>
     </style>
-	
+
     <style name="gwindow_loves_tom_DropDownNav" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
         <item name="background">@drawable/spinner_background_ab_gwindow_loves_tom</item>
-
         <item name="android:background">@drawable/spinner_background_ab_gwindow_loves_tom</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_gwindow_loves_tom</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_gwindow_loves_tom</item>
     </style>
-    
+
     <style name="gwindow_loves_tom_ProgressBar" parent="@style/Widget.Sherlock.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_gwindow_loves_tom</item>
     </style>
