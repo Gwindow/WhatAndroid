@@ -33,8 +33,8 @@
         <item name="android:actionDropDownStyle">@style/schnappi_DropDownNav</item>
         <item name="android:actionBarStyle">@style/schnappi_solid_ActionBar</item>
         <item name="android:panelBackground">@drawable/menu_hardkey_panel_schnappi</item>
-        <item name="android:textColor">@color/textview_colors_light</item>
-        <item name="actionbarTitleColor">@color/button_yellow</item>
+        <item name="android:textColor">@color/text_colors_schnappi</item>
+        <item name="actionbarTitleColor">@color/schnappi</item>
         <item name="vpiTabPageIndicatorStyle">@style/schnappi_ActionBarTabStyle</item>
         <item name="vpiTabTextStyle">@style/CustomTabPageIndicator.Text</item>
     </style>

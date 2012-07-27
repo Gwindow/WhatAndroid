@@ -18,6 +18,7 @@
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:text=""
+        android:textColor="?actionbarTitleColor"
         android:clickable="true"
         android:onClick="openHome"
         android:textSize="20dp" >

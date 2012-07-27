@@ -39,12 +39,17 @@ public class Settings {
 
 	}
 
+	public static boolean getHomeIcon() {
+		return settings.getBoolean("homeicon_preference", false);
+
+	}
+
 	public static boolean getBoldSetting() {
 		return settings.getBoolean("boldthreads_preference", true);
 	}
 
 	public static int getTheme() {
-		return settings.getInt("theme_preference", R.style.LightTheme);
+		return settings.getInt("theme_preference", R.style.Theme_schnappi);
 	}
 
 	public static void saveTheme(int theme) {

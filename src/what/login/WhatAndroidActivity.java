@@ -55,7 +55,7 @@ public class WhatAndroidActivity extends MyActivity2 implements OnClickListener 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState, R.style.DarkTheme);
+		super.onCreate(savedInstanceState, R.style.Theme_schnappi);
 		super.setContentView(R.layout.login, false);
 	}
 

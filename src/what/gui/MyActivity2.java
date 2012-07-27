@@ -12,7 +12,6 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,9 +43,10 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		}
 
 		metrics = new DisplayMetrics();
+
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		Log.d("width", String.valueOf(metrics.widthPixels));
-		getSupportActionBar().setDisplayShowHomeEnabled(false);
+		getSupportActionBar().setDisplayShowHomeEnabled(Settings.getHomeIcon());
+		getSupportActionBar().setDisplayHomeAsUpEnabled(Settings.getHomeIcon());
 		getSupportActionBar().setDisplayShowCustomEnabled(true);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -260,6 +260,9 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 				Intent intent = new Intent(this, MenuItems.get(mi));
 				startActivity(intent);
 			}
+		}
+		if (item.getItemId() == android.R.id.home) {
+			finish();
 		}
 		return super.onOptionsItemSelected(item);
 	}

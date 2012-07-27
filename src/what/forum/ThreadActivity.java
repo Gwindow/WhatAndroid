@@ -61,6 +61,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 
 	private LinkedList<Posts> posts;
 	private HashMap<Integer, ImageView> avatarMap;
+	private boolean isSubscribed;
 
 	/**
 	 * {@inheritDoc}
@@ -112,6 +113,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	}
 
 	private void populate() {
+		isSubscribed = thread.getResponse().isSubscribed();
 		invalidateOptionsMenu();
 		threadPage = thread.getResponse().getCurrentPage().intValue();
 		setActionBarTitle(thread.getResponse().getThreadTitle() + ", " + threadPage + "/"
@@ -246,8 +248,8 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 		inflater.inflate(R.menu.thread_menu, menu);
 
 		if (thread != null) {
-			String title = "Unsubscribe";
-			if (thread.getResponse().isSubscribed()) {
+			String title;
+			if (isSubscribed) {
 				title = "Unsubscribe";
 			} else {
 				title = "Subscribe";
@@ -271,12 +273,14 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				refresh();
 				break;
 			case SUBSCRIBE_ITEM_ID:
-				if (thread.getResponse().isSubscribed()) {
+				if (isSubscribed) {
 					thread.unsubscribe();
 					Toast.makeText(this, "Unsubscribed", Toast.LENGTH_SHORT).show();
+					isSubscribed = false;
 				} else {
 					thread.subscribe();
 					Toast.makeText(this, "Subscribed", Toast.LENGTH_SHORT).show();
+					isSubscribed = true;
 				}
 				super.invalidateOptionsMenu();
 				break;
@@ -400,7 +404,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				avatar.setImageBitmap(bitmap);
 			} else {
 				Bitmap no_avatar = BitmapFactory.decodeResource(getResources(), R.drawable.dne);
-				avatar.setImageBitmap(Bitmap.createScaledBitmap(no_avatar, 110, 110 / (bitmap.getWidth() / bitmap.getHeight()),
+				avatar.setImageBitmap(Bitmap.createScaledBitmap(no_avatar, 110, 110 / (bitmap.getHeight() / (bitmap.getWidth())),
 						true));
 			}
 		}
