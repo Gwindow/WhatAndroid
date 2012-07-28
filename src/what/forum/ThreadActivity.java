@@ -7,6 +7,7 @@ import what.cache.ImageCache;
 import what.gui.ActivityNames;
 import what.gui.AsyncImageGetter;
 import what.gui.BundleKeys;
+import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.ImageLoader;
 import what.gui.JumpToPageDialog;
@@ -17,7 +18,6 @@ import what.gui.ReplyActivity;
 import what.gui.Scrollable;
 import what.settings.Settings;
 import what.user.UserActivity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -50,6 +50,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	private static final int SUBSCRIBE_ITEM_ID = 3;
 	private static final int NON_EXISTANT = -1;
 
+	private Cancelable cancelable;
 	private MyScrollView scrollView;
 	private LinearLayout scrollLayout;
 
@@ -69,6 +70,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.FORUM);
+		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.generic_endless_scrollview, false);
 	}
@@ -187,6 +189,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				new Load(true).execute();
 			}
 		}
+
 	}
 
 	@Override
@@ -202,6 +205,9 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				break;
 			case USER_TAG:
 				openUser(v.getId());
+				break;
+			case android.R.id.home:
+				homeIconJump(scrollView);
 				break;
 			default:
 				break;
@@ -288,17 +294,35 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class Load extends AsyncTask<Void, Void, Boolean> {
-		private ProgressDialog dialog;
+	@Override
+	protected void onPause() {
+		if (cancelable != null) {
+			cancelable.cancel();
+			Log.d("cancel", "cancelled");
+		}
+		super.onPause();
+	}
+
+	public void attachCancelable(Cancelable cancelable) {
+		this.cancelable = cancelable;
+	}
+
+	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		private ProgressBar bar;
 		private boolean useEmbeddedDialog;
 
 		public Load() {
-			super();
+			this(false);
 		}
 
 		public Load(boolean useEmbeddedDialog) {
 			this.useEmbeddedDialog = useEmbeddedDialog;
+			attachCancelable(this);
+		}
+
+		@Override
+		public void cancel() {
+			super.cancel(true);
 		}
 
 		@Override
@@ -310,10 +334,6 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				scrollLayout.addView(bar);
 			} else {
 				lockScreenRotation();
-				dialog = new ProgressDialog(ThreadActivity.this);
-				dialog.setIndeterminate(true);
-				dialog.setMessage("Loading...");
-				dialog.show();
 			}
 		}
 
@@ -337,7 +357,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 			if (useEmbeddedDialog) {
 				hideProgressBar();
 			} else {
-				dialog.dismiss();
+				hideIndeterminateProgress();
 				unlockScreenRotation();
 			}
 

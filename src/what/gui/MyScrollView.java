@@ -34,6 +34,7 @@ public class MyScrollView extends ScrollView {
 	 */
 	public MyScrollView(Context context) {
 		super(context);
+
 	}
 
 	public void attachScrollable(Scrollable scrollable) {
@@ -42,23 +43,36 @@ public class MyScrollView extends ScrollView {
 
 	@Override
 	protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-		int bottomY = getBottomY();
-		int calc = getChildAt(getChildCount() - 1).getBottom() - bottomY;
-		boolean hitBottom = calc == 0;
-		if (hitBottom) {
-			pages++;
-			scrollable.scrolledToBottom();
-			hitBottom = false;
+		if (scrollable != null) {
+			int calc = getChildAt(getChildCount() - 1).getBottom() - getBottomY();
+			boolean hitBottom = calc == 0;
+			if (hitBottom) {
+				pages++;
+				scrollable.scrolledToBottom();
+				hitBottom = false;
+			}
+			super.onScrollChanged(l, t, oldl, oldt);
 		}
-		super.onScrollChanged(l, t, oldl, oldt);
 	}
 
-	public void scrollToBottom() {
+	/*
+	 * public void jump() { int calc = getChildAt(getChildCount() - 1).getBottom() - getBottomY(); if (calc >
+	 * getChildAt(getChildCount() - 1).getBottom() / 2) { scrollToTop(); } else { scrollToBottom(); } }
+	 */
+	public void scrollToTop() {
 		scrollTo(0, 0);
 	}
 
-	public void scrollToTop() {
-		scrollTo(0, getBottomY());
+	public void jumpUp() {
+		scrollBy(0, -getHeight());
+	}
+
+	public void jumpDown() {
+		scrollBy(0, getHeight());
+	}
+
+	public void scrollToBottom() {
+		scrollTo(0, getHeight() + getBottom());
 	}
 
 	public int getBottomY() {

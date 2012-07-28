@@ -23,6 +23,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
+import com.actionbarsherlock.view.Window;
 
 public abstract class MyActivity2 extends SherlockFragmentActivity {
 	private static final int MENU_PLACEHOLDER_ID = 1;
@@ -261,9 +262,9 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 				startActivity(intent);
 			}
 		}
-		if (item.getItemId() == android.R.id.home) {
-			finish();
-		}
+		/*
+		 * if (item.getItemId() == android.R.id.home) { finish(); }
+		 */
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -283,6 +284,27 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		lp.dimAmount = 0.0f;
 		getWindow().setAttributes(lp);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+	}
+
+	public void requestIndeterminateProgress() {
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setProgressBarIndeterminateVisibility(true);
+	}
+
+	public void hideIndeterminateProgress() {
+		setProgressBarIndeterminateVisibility(false);
+
+	}
+
+	/**
+	 * @param scrollView
+	 */
+	public void homeIconJump(MyScrollView scrollView) {
+		if (scrollView.getTop() <= 0) {
+			finish();
+		} else {
+			scrollView.scrollToTop();
+		}
 	}
 
 }

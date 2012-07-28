@@ -12,7 +12,6 @@ import what.gui.R;
 import what.gui.Scrollable;
 import what.gui.ViewSlider;
 import what.user.UserActivity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,8 +49,9 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.INBOX);
+		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.inbox, false);
+		super.setContentView(R.layout.generic_endless_scrollview, false);
 	}
 
 	/**
@@ -149,6 +149,8 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 			case SENDER_TAG:
 				openUser(v.getId());
 				break;
+			case android.R.id.home:
+				homeIconJump(scrollView);
 			default:
 				break;
 		}
@@ -202,12 +204,14 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 			case R.id.refresh_item:
 				refresh();
 				break;
+			case android.R.id.home:
+				homeIconJump(scrollView);
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	private class Load extends AsyncTask<Void, Void, Boolean> {
-		private ProgressDialog dialog;
 		private ProgressBar bar;
 		private boolean useEmbeddedDialog;
 
@@ -228,10 +232,7 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 				scrollLayout.addView(bar);
 			} else {
 				lockScreenRotation();
-				dialog = new ProgressDialog(InboxActivity.this);
-				dialog.setIndeterminate(true);
-				dialog.setMessage("Loading...");
-				dialog.show();
+
 			}
 		}
 
@@ -247,7 +248,7 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 			if (useEmbeddedDialog) {
 				hideProgressBar();
 			} else {
-				dialog.dismiss();
+				hideIndeterminateProgress();
 				unlockScreenRotation();
 			}
 

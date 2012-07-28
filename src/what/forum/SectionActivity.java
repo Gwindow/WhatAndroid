@@ -13,7 +13,6 @@ import what.gui.Scrollable;
 import what.gui.ViewSlider;
 import what.settings.Settings;
 import what.user.UserActivity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -54,8 +53,9 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.FORUM);
+		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.section, false);
+		super.setContentView(R.layout.generic_endless_scrollview, false);
 	}
 
 	/**
@@ -240,12 +240,14 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 			case R.id.refresh_item:
 				refresh();
 				break;
+			case android.R.id.home:
+				homeIconJump(scrollView);
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	private class LoadSection extends AsyncTask<Void, Void, Boolean> {
-		private ProgressDialog dialog;
 		private ProgressBar bar;
 		private boolean useEmbeddedDialog;
 
@@ -266,10 +268,6 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 				scrollLayout.addView(bar);
 			} else {
 				lockScreenRotation();
-				dialog = new ProgressDialog(SectionActivity.this);
-				dialog.setIndeterminate(true);
-				dialog.setMessage("Loading...");
-				dialog.show();
 			}
 		}
 
@@ -285,7 +283,7 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 			if (useEmbeddedDialog) {
 				hideProgressBar();
 			} else {
-				dialog.dismiss();
+				setProgressBarIndeterminateVisibility(false);
 				unlockScreenRotation();
 			}
 

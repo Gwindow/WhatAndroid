@@ -3,6 +3,8 @@ package what.top;
 import java.util.List;
 
 import what.gui.BundleKeys;
+import what.gui.MyScrollView;
+import what.gui.MySherlockFragment;
 import what.gui.R;
 import what.torrents.torrents.DownloadDialog;
 import what.torrents.torrents.TorrentGroupActivity;
@@ -18,18 +20,17 @@ import api.cli.Utils;
 import api.top.Response;
 import api.util.Tuple;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 /**
  * @author Gwindow
  * @since Jul 15, 2012 12:20:25 PM
  */
-public class TopTenFragment extends SherlockFragment implements OnClickListener {
+public class TopTenFragment extends MySherlockFragment implements OnClickListener {
 	private static final int DOWNLOAD_TAG = 0;
 	private static final int GROUP_TAG = 1;
 	private final List<Response> response;
 	private final String tag;
 	private LinearLayout scrollLayout;
+	private MyScrollView scrollView;
 
 	/**
 	 * @param response
@@ -42,7 +43,8 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.generic_scrollview, container, false);
+		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
+		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
 		populateMusic();
 		return view;
@@ -98,6 +100,9 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener 
 			bundle.putInt(BundleKeys.TORRENT_GROUP_ID, (Integer) v.getTag());
 			intent.putExtras(bundle);
 			startActivity(intent);
+		}
+		if (v.getId() == android.R.id.home) {
+			homeIconJump(scrollView);
 		}
 	}
 }

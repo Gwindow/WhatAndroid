@@ -6,7 +6,6 @@ import what.gui.ActivityNames;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
 import what.gui.R;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,6 +32,7 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.FORUM);
+		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.forums, false);
 	}
@@ -104,15 +104,9 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 	}
 
 	private class LoadForums extends AsyncTask<Void, Void, Boolean> {
-		private ProgressDialog dialog;
-
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
-			dialog = new ProgressDialog(ForumActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Loading...");
-			dialog.show();
 		}
 
 		@Override
@@ -123,7 +117,8 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			dialog.dismiss();
+			ForumActivity.this.hideIndeterminateProgress();
+
 			unlockScreenRotation();
 			if (status) {
 				populate();

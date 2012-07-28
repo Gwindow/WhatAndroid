@@ -8,10 +8,10 @@ import what.gui.AsyncImageGetter;
 import what.gui.BundleKeys;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
+import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.ReplyActivity;
 import what.user.UserActivity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -45,6 +45,7 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 
 	private Conversation conversation;
 	private int conversationId;
+	private MyScrollView scrollView;
 
 	/**
 	 * {@inheritDoc}
@@ -52,8 +53,9 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.INBOX);
+		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.generic_scrollview, false);
+		super.setContentView(R.layout.generic_endless_scrollview, false);
 	}
 
 	/**
@@ -70,6 +72,7 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 	 */
 	@Override
 	public void load() {
+		scrollView = (MyScrollView) this.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) findViewById(R.id.scrollLayout);
 	}
 
@@ -144,6 +147,9 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 					openUser(conversation.getResponse().getMessages().get(v.getId()).getSenderId().intValue());
 				}
 				break;
+			case android.R.id.home:
+				homeIconJump(scrollView);
+				break;
 			default:
 				break;
 		}
@@ -189,8 +195,6 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 	}
 
 	private class Load extends AsyncTask<Void, Void, Boolean> {
-		private ProgressDialog dialog;
-
 		public Load() {
 			super();
 		}
@@ -198,10 +202,6 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
-			dialog = new ProgressDialog(ConversationActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Loading...");
-			dialog.show();
 		}
 
 		@Override
@@ -212,7 +212,7 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			dialog.dismiss();
+			hideIndeterminateProgress();
 			unlockScreenRotation();
 
 			if (status) {

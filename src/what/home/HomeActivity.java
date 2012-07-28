@@ -215,7 +215,6 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-
 			if (status) {
 				populateInfo();
 			} else {

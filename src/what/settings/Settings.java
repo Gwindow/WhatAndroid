@@ -39,9 +39,12 @@ public class Settings {
 
 	}
 
+	public static boolean getBottomBar() {
+		return settings.getBoolean("bottombar_preference", true);
+	}
+
 	public static boolean getHomeIcon() {
 		return settings.getBoolean("homeicon_preference", false);
-
 	}
 
 	public static boolean getBoldSetting() {
