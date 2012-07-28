@@ -53,6 +53,14 @@ public class MyScrollView extends ScrollView {
 		super.onScrollChanged(l, t, oldl, oldt);
 	}
 
+	public void scrollToBottom() {
+		scrollTo(0, 0);
+	}
+
+	public void scrollToTop() {
+		scrollTo(0, getBottomY());
+	}
+
 	public int getBottomY() {
 		return getHeight() + getScrollY();
 	}

@@ -404,7 +404,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				avatar.setImageBitmap(bitmap);
 			} else {
 				Bitmap no_avatar = BitmapFactory.decodeResource(getResources(), R.drawable.dne);
-				avatar.setImageBitmap(Bitmap.createScaledBitmap(no_avatar, 110, 110 / (bitmap.getHeight() / (bitmap.getWidth())),
+				avatar.setImageBitmap(Bitmap.createScaledBitmap(no_avatar, 110, 110 / (bitmap.getWidth() / (bitmap.getHeight())),
 						true));
 			}
 		}
