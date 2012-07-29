@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import what.gui.BundleKeys;
+import what.gui.Cancelable;
 import what.gui.ImageLoader;
+import what.gui.MyActivity2;
 import what.gui.R;
 import what.torrents.torrents.TorrentGroupActivity;
 import android.content.Context;
@@ -94,7 +96,7 @@ public class CoverArtGridFragment extends SherlockFragment {
 				imageView.setPadding(12, 12, 12, 12);
 				imageView.setTag(torrents.get(position).getImage());
 				imageView.setImageResource(R.drawable.noartwork);
-				new DownloadImage().execute(imageView);
+				new Load().execute(imageView);
 			} else {
 				imageView = (ImageView) convertView;
 			}
@@ -103,8 +105,17 @@ public class CoverArtGridFragment extends SherlockFragment {
 		}
 	}
 
-	private class DownloadImage extends AsyncTask<ImageView, Void, Bitmap> {
+	private class Load extends AsyncTask<ImageView, Void, Bitmap> implements Cancelable {
 		ImageView imageView = null;
+
+		public Load() {
+			((MyActivity2) getSherlockActivity()).attachCancelable(this);
+		}
+
+		@Override
+		public void cancel() {
+			super.cancel(true);
+		}
 
 		@Override
 		protected Bitmap doInBackground(ImageView... imageViews) {

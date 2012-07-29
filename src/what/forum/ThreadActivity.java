@@ -287,7 +287,9 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				super.invalidateOptionsMenu();
 				break;
 		}
-		homeIconJump(item, scrollView);
+		if (item.getItemId() == android.R.id.home) {
+			return homeIconJump(scrollView);
+		}
 		return super.onOptionsItemSelected(item);
 	}
 

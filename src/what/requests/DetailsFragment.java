@@ -1,5 +1,7 @@
 package what.requests;
 
+import what.gui.MyActivity2;
+import what.gui.MyScrollView;
 import what.gui.R;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import api.cli.Utils;
 import api.requests.Response;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * @author Gwindow
@@ -20,6 +23,7 @@ public class DetailsFragment extends SherlockFragment {
 
 	private LinearLayout scrollLayout;
 	private final Response response;
+	private MyScrollView scrollView;
 
 	/**
 	 * @param response
@@ -34,6 +38,7 @@ public class DetailsFragment extends SherlockFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.generic_scrollview, container, false);
+		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
 		populateStats(view);
 		return view;
@@ -68,6 +73,14 @@ public class DetailsFragment extends SherlockFragment {
 			title.setText(displayed_string);
 			scrollLayout.addView(title);
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			return ((MyActivity2) getSherlockActivity()).homeIconJump(scrollView);
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 }

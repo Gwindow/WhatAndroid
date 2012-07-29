@@ -4,6 +4,7 @@ import java.util.List;
 
 import what.gui.ActivityNames;
 import what.gui.BundleKeys;
+import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.JumpToPageDialog;
 import what.gui.MyActivity2;
@@ -200,6 +201,9 @@ public class UserSearchActivity extends MyActivity2 implements Scrollable, OnCli
 				refresh();
 				break;
 		}
+		if (item.getItemId() == android.R.id.home) {
+			return homeIconJump(scrollView);
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -229,17 +233,23 @@ public class UserSearchActivity extends MyActivity2 implements Scrollable, OnCli
 		}
 	}
 
-	private class Load extends AsyncTask<Void, Void, Boolean> {
+	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		private ProgressDialog dialog;
 		private ProgressBar bar;
 		private boolean useEmbeddedDialog;
 
 		public Load() {
-			super();
+			this(false);
 		}
 
 		public Load(boolean useEmbeddedDialog) {
 			this.useEmbeddedDialog = useEmbeddedDialog;
+			attachCancelable(this);
+		}
+
+		@Override
+		public void cancel() {
+			super.cancel(true);
 		}
 
 		@Override

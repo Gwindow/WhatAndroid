@@ -6,6 +6,7 @@ import what.forum.QuoteBuffer;
 import what.gui.ActivityNames;
 import what.gui.AsyncImageGetter;
 import what.gui.BundleKeys;
+import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
 import what.gui.MyScrollView;
@@ -147,9 +148,6 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 					openUser(conversation.getResponse().getMessages().get(v.getId()).getSenderId().intValue());
 				}
 				break;
-			case android.R.id.home:
-				homeIconJump(scrollView);
-				break;
 			default:
 				break;
 		}
@@ -182,6 +180,9 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 				refresh();
 				break;
 		}
+		if (item.getItemId() == android.R.id.home) {
+			return homeIconJump(scrollView);
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -194,9 +195,14 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 		startActivity(intent);
 	}
 
-	private class Load extends AsyncTask<Void, Void, Boolean> {
+	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		public Load() {
-			super();
+			attachCancelable(this);
+		}
+
+		@Override
+		public void cancel() {
+			super.cancel(true);
 		}
 
 		@Override

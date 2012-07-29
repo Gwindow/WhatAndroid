@@ -3,11 +3,12 @@ package what.torrents.artist;
 import java.util.List;
 
 import what.gui.BundleKeys;
+import what.gui.MyActivity2;
+import what.gui.MyScrollView;
 import what.gui.R;
 import what.torrents.torrents.TorrentGroupActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,14 +17,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import api.torrents.artist.TorrentGroup;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.MenuItem;
+
 /**
  * @author Gwindow
  * @since Jun 2, 2012 10:35:15 AM
  */
-public class MusicFragment extends Fragment implements OnClickListener {
+public class MusicFragment extends SherlockFragment implements OnClickListener {
 	private static final int TORRENTGROUP_TAG = 0;
 	private LinearLayout scrollLayout;
 	private List<TorrentGroup> torrentGroups;
+	private MyScrollView scrollView;
 
 	public MusicFragment(List<TorrentGroup> torrentGroups) {
 		this.torrentGroups = torrentGroups;
@@ -31,7 +36,8 @@ public class MusicFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.generic_scrollview, container, false);
+		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
+		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
 		populate(view, inflater);
 		return view;
@@ -66,6 +72,14 @@ public class MusicFragment extends Fragment implements OnClickListener {
 			default:
 				break;
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			return ((MyActivity2) getSherlockActivity()).homeIconJump(scrollView);
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void openTorrentGroup(int id) {

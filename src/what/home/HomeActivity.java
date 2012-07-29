@@ -5,6 +5,7 @@ import java.util.List;
 import what.forum.ThreadActivity;
 import what.gui.ActivityNames;
 import what.gui.BundleKeys;
+import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
 import what.gui.R;
@@ -206,7 +207,16 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 		return true;
 	}
 
-	private class LoadInfo extends AsyncTask<Void, Void, Boolean> {
+	private class LoadInfo extends AsyncTask<Void, Void, Boolean> implements Cancelable {
+		public LoadInfo() {
+			attachCancelable(this);
+		}
+
+		@Override
+		public void cancel() {
+			super.cancel(true);
+		}
+
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			index = Index.init();
@@ -223,8 +233,17 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 		}
 	}
 
-	private class LoadSubscriptions extends AsyncTask<Void, Void, Boolean> {
+	private class LoadSubscriptions extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		private ProgressBar bar;
+
+		public LoadSubscriptions() {
+			attachCancelable(this);
+		}
+
+		@Override
+		public void cancel() {
+			super.cancel(true);
+		}
 
 		@Override
 		protected void onPreExecute() {

@@ -15,15 +15,15 @@ public class Settings {
 	static {
 		themes = new HashMap<String, Integer>();
 		themes.put("Schnappi", R.style.Theme_schnappi);
-		themes.put("Moldy Walls by senatortom", R.style.Theme_moldy_walls);
-		themes.put("Gwindow Loves Tom by senatortom", R.style.Theme_gwindow_loves_tom);
-		themes.put("Old E and 4 Blunts by amxtrash", R.style.Theme_old_e_and_four_blunts);
-		themes.put("Watermelon by senatortom", R.style.Theme_watermelon);
-		themes.put("Ridejckl's Barbie Convertible by ridejckl", R.style.Theme_ridejkcls_barbie_convertible);
-		themes.put("Wonder Orange by Guegs", R.style.Theme_wonder_orange);
-		// themes.put("DarkCD", R.style.Theme_darkcd);
-		themes.put("Light", R.style.LightTheme);
-		themes.put("Dark", R.style.DarkTheme);
+		/*
+		 * themes.put("Moldy Walls by senatortom", R.style.Theme_moldy_walls);
+		 * themes.put("Gwindow Loves Tom by senatortom", R.style.Theme_gwindow_loves_tom);
+		 * themes.put("Old E and 4 Blunts by amxtrash", R.style.Theme_old_e_and_four_blunts);
+		 * themes.put("Watermelon by senatortom", R.style.Theme_watermelon);
+		 * themes.put("Ridejckl's Barbie Convertible by ridejckl", R.style.Theme_ridejkcls_barbie_convertible);
+		 * themes.put("Wonder Orange by Guegs", R.style.Theme_wonder_orange); // themes.put("DarkCD",
+		 * R.style.Theme_darkcd); themes.put("Light", R.style.LightTheme); themes.put("Dark", R.style.DarkTheme);
+		 */
 
 	}
 

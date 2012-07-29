@@ -3,8 +3,8 @@ package what.top;
 import java.util.List;
 
 import what.gui.BundleKeys;
+import what.gui.MyActivity2;
 import what.gui.MyScrollView;
-import what.gui.MySherlockFragment;
 import what.gui.R;
 import what.torrents.torrents.DownloadDialog;
 import what.torrents.torrents.TorrentGroupActivity;
@@ -19,6 +19,9 @@ import android.widget.TextView;
 import api.cli.Utils;
 import api.top.Response;
 import api.util.Tuple;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * @author Gwindow
@@ -101,8 +104,14 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener 
 			intent.putExtras(bundle);
 			startActivity(intent);
 		}
-		if (v.getId() == android.R.id.home) {
-			homeIconJump(scrollView);
-		}
 	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			return ((MyActivity2) getSherlockActivity()).homeIconJump(scrollView);
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 }

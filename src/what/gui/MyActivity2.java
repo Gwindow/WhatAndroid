@@ -41,7 +41,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		setTheme(customTheme);
 		super.onCreate(savedInstanceState);
 		new ReportSender(this);
-		if ((Settings.getSettings() == null) | (Settings.getSettingsEditor() == null)) {
+		if ((Settings.getSettings() == null) || (Settings.getSettingsEditor() == null)) {
 			Settings.init(this);
 		}
 
@@ -59,6 +59,14 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 
 		getSupportActionBar().setCustomView(v);
 		init();
+	}
+
+	@Override
+	public void onResume() {
+		if ((Settings.getSettings() == null) || (Settings.getSettingsEditor() == null)) {
+			Settings.init(this);
+		}
+		super.onResume();
 	}
 
 	@Override
@@ -302,14 +310,17 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 	/**
 	 * @param scrollView
 	 */
-	public void homeIconJump(MenuItem item, MyScrollView scrollView) {
-		if (item.getItemId() == android.R.id.home) {
-			if (scrollView.getTop() <= 0) {
+	public boolean homeIconJump(MyScrollView scrollView) {
+		if (scrollView != null) {
+			if (scrollView.getScrollY() <= 0) {
 				finish();
 			} else {
 				scrollView.scrollToTop();
 			}
+		} else {
+			finish();
 		}
+		return true;
 	}
 
 	public void attachCancelable(Cancelable cancelable) {

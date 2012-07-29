@@ -1,6 +1,8 @@
 package what.fragments;
 
+import what.gui.Cancelable;
 import what.gui.ImageLoader;
+import what.gui.MyActivity2;
 import what.gui.R;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -50,7 +52,7 @@ public class ArtFragment extends SherlockFragment {
 		progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
 		if (artBitmap == null || artBitmap.isRecycled()) {
-			new LoadImage().execute(url);
+			new Load().execute(url);
 		} else {
 			progressBar.setVisibility(View.GONE);
 			artImageView.setVisibility(View.VISIBLE);
@@ -59,7 +61,16 @@ public class ArtFragment extends SherlockFragment {
 		return view;
 	}
 
-	private class LoadImage extends AsyncTask<String, Void, Boolean> {
+	private class Load extends AsyncTask<String, Void, Boolean> implements Cancelable {
+		public Load() {
+			((MyActivity2) getSherlockActivity()).attachCancelable(this);
+		}
+
+		@Override
+		public void cancel() {
+			super.cancel(true);
+		}
+
 		@Override
 		protected Boolean doInBackground(String... params) {
 			boolean status = false;

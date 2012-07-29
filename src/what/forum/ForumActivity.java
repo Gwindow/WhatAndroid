@@ -3,8 +3,10 @@ package what.forum;
 import java.util.List;
 
 import what.gui.ActivityNames;
+import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
+import what.gui.MyScrollView;
 import what.gui.R;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -17,6 +19,8 @@ import api.forum.forumsections.Categories;
 import api.forum.forumsections.ForumSections;
 import api.soup.MySoup;
 
+import com.actionbarsherlock.view.MenuItem;
+
 /**
  * @author Gwindow
  * @since May 5, 2012 5:55:53 PM
@@ -25,6 +29,7 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 	private static final int SECTION_TAG = 0;
 	private LinearLayout scrollLayout;
 	private ForumSections forumSections;
+	private MyScrollView scrollView;
 
 	/**
 	 * {@inheritDoc}
@@ -34,7 +39,7 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 		super.setActivityName(ActivityNames.FORUM);
 		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
-		super.setContentView(R.layout.forums, false);
+		super.setContentView(R.layout.generic_endless_scrollview, false);
 	}
 
 	/**
@@ -50,6 +55,7 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 	@Override
 	public void load() {
 		scrollLayout = (LinearLayout) findViewById(R.id.scrollLayout);
+		scrollView = (MyScrollView) findViewById(R.id.scrollView);
 	}
 
 	/**
@@ -57,7 +63,7 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 	 */
 	@Override
 	public void prepare() {
-		new LoadForums().execute();
+		new Load().execute();
 	}
 
 	/**
@@ -103,7 +109,24 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 		startActivity(intent);
 	}
 
-	private class LoadForums extends AsyncTask<Void, Void, Boolean> {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			return homeIconJump(scrollView);
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
+		public Load() {
+			attachCancelable(this);
+		}
+
+		@Override
+		public void cancel() {
+			super.cancel(true);
+		}
+
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
@@ -117,7 +140,7 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			ForumActivity.this.hideIndeterminateProgress();
+			hideIndeterminateProgress();
 
 			unlockScreenRotation();
 			if (status) {
@@ -127,6 +150,7 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 				ErrorToast.show(ForumActivity.this, ForumActivity.class);
 			}
 		}
+
 	}
 
 }

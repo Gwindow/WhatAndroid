@@ -4,11 +4,11 @@ import what.fragments.ArtFragment;
 import what.fragments.DescriptionFragment;
 import what.gui.ActivityNames;
 import what.gui.BundleKeys;
+import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
 import what.gui.R;
 import what.torrents.artist.ArtistActivity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -50,6 +50,7 @@ public class TorrentGroupActivity extends MyActivity2 {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.MUSIC);
+		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
 	}
 
@@ -133,16 +134,19 @@ public class TorrentGroupActivity extends MyActivity2 {
 		super.onPause();
 	}
 
-	private class Load extends AsyncTask<Void, Void, Boolean> {
-		private ProgressDialog dialog;
+	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
+		public Load() {
+			attachCancelable(this);
+		}
+
+		@Override
+		public void cancel() {
+			super.cancel(true);
+		}
 
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();
-			dialog = new ProgressDialog(TorrentGroupActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Loading...");
-			dialog.show();
 		}
 
 		@Override
@@ -153,7 +157,7 @@ public class TorrentGroupActivity extends MyActivity2 {
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			dialog.dismiss();
+			hideIndeterminateProgress();
 			unlockScreenRotation();
 
 			if (status) {

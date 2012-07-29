@@ -2,6 +2,8 @@ package what.torrents.torrents;
 
 import java.util.List;
 
+import what.gui.MyActivity2;
+import what.gui.MyScrollView;
 import what.gui.R;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import api.torrents.torrents.Torrents;
 import api.util.Tuple;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * @author Gwindow
@@ -27,15 +30,17 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
 	private LinearLayout scrollLayout;
 	private Response response;
 
+	private MyScrollView scrollView;
+
 	public FormatsFragment(Response response) {
 		this.response = response;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.generic_scrollview, container, false);
+		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
-
+		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 		// TODO take care of other categories
 		if (response.getGroup().getCategoryName().equals(TorrentGroupActivity.MUSIC_CATEGORY)) {
 			populateMusic(view, inflater);
@@ -83,6 +88,14 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
 			scrollLayout.addView(formats_torrent_layout);
 
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			return ((MyActivity2) getSherlockActivity()).homeIconJump(scrollView);
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

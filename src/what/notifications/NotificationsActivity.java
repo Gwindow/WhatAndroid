@@ -4,6 +4,7 @@ import java.util.List;
 
 import what.gui.ActivityNames;
 import what.gui.BundleKeys;
+import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.JumpToPageDialog;
 import what.gui.MyActivity2;
@@ -11,7 +12,6 @@ import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.Scrollable;
 import what.torrents.torrents.TorrentGroupActivity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -49,6 +49,7 @@ public class NotificationsActivity extends MyActivity2 implements OnClickListene
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.NOTIFICATIONS);
+		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.generic_endless_scrollview, false);
 	}
@@ -187,20 +188,28 @@ public class NotificationsActivity extends MyActivity2 implements OnClickListene
 				clearNotifications();
 				break;
 		}
+		if (item.getItemId() == android.R.id.home) {
+			return homeIconJump(scrollView);
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class Load extends AsyncTask<Void, Void, Boolean> {
-		private ProgressDialog dialog;
+	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		private ProgressBar bar;
 		private boolean useEmbeddedDialog;
 
 		public Load() {
-			super();
+			this(false);
 		}
 
 		public Load(boolean useEmbeddedDialog) {
 			this.useEmbeddedDialog = useEmbeddedDialog;
+			attachCancelable(this);
+		}
+
+		@Override
+		public void cancel() {
+			super.cancel(true);
 		}
 
 		@Override
@@ -212,10 +221,6 @@ public class NotificationsActivity extends MyActivity2 implements OnClickListene
 				scrollLayout.addView(bar);
 			} else {
 				lockScreenRotation();
-				dialog = new ProgressDialog(NotificationsActivity.this);
-				dialog.setIndeterminate(true);
-				dialog.setMessage("Loading...");
-				dialog.show();
 			}
 		}
 
@@ -231,7 +236,7 @@ public class NotificationsActivity extends MyActivity2 implements OnClickListene
 			if (useEmbeddedDialog) {
 				hideProgressBar();
 			} else {
-				dialog.dismiss();
+				hideIndeterminateProgress();
 				unlockScreenRotation();
 			}
 

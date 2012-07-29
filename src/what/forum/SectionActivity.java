@@ -4,6 +4,7 @@ import java.util.List;
 
 import what.gui.ActivityNames;
 import what.gui.BundleKeys;
+import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.JumpToPageDialog;
 import what.gui.MyActivity2;
@@ -87,7 +88,7 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 	 */
 	@Override
 	public void prepare() {
-		new LoadSection().execute();
+		new Load().execute();
 	}
 
 	/**
@@ -146,7 +147,7 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 		if (isLoaded) {
 			if (sectionPage < section.getLastPage()) {
 				sectionPage++;
-				new LoadSection(true).execute();
+				new Load(true).execute();
 			}
 		}
 	}
@@ -240,23 +241,29 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 			case R.id.refresh_item:
 				refresh();
 				break;
-			case android.R.id.home:
-				homeIconJump(scrollView);
-				break;
+		}
+		if (item.getItemId() == android.R.id.home) {
+			return homeIconJump(scrollView);
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class LoadSection extends AsyncTask<Void, Void, Boolean> {
+	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		private ProgressBar bar;
 		private boolean useEmbeddedDialog;
 
-		public LoadSection() {
-			super();
+		public Load() {
+			this(false);
 		}
 
-		public LoadSection(boolean useEmbeddedDialog) {
+		public Load(boolean useEmbeddedDialog) {
 			this.useEmbeddedDialog = useEmbeddedDialog;
+			attachCancelable(this);
+		}
+
+		@Override
+		public void cancel() {
+			super.cancel(true);
 		}
 
 		@Override
@@ -283,7 +290,7 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 			if (useEmbeddedDialog) {
 				hideProgressBar();
 			} else {
-				setProgressBarIndeterminateVisibility(false);
+				hideIndeterminateProgress();
 				unlockScreenRotation();
 			}
 

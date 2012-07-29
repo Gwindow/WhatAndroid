@@ -79,7 +79,9 @@ public class ArtistsFragment extends SherlockFragment implements OnClickListener
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		((MyActivity2) getSherlockActivity()).homeIconJump(item, scrollView);
+		if (item.getItemId() == android.R.id.home) {
+			return ((MyActivity2) getSherlockActivity()).homeIconJump(scrollView);
+		}
 		return super.onOptionsItemSelected(item);
 	}
 }

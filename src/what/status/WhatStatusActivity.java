@@ -1,10 +1,10 @@
 package what.status;
 
 import what.gui.ActivityNames;
+import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
 import what.gui.R;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -13,11 +13,11 @@ import api.whatstatus.WhatStatus;
 public class WhatStatusActivity extends MyActivity2 {
 	private ImageView siteStatus, trackerStatus, ircStatus;
 	private WhatStatus whatStatus;
-	private ProgressDialog dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.STATUS);
+		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.whatstatus);
 	}
@@ -38,7 +38,7 @@ public class WhatStatusActivity extends MyActivity2 {
 	@Override
 	public void prepare() {
 		setActionBarTitle("WhatStatus");
-		new LoadStatus().execute();
+		new Load().execute();
 	}
 
 	public void populateLayout() {
@@ -96,14 +96,14 @@ public class WhatStatusActivity extends MyActivity2 {
 	 * Intent(Intent.ACTION_VIEW); i.setData(Uri.parse(url)); startActivity(i); }
 	 */
 
-	private class LoadStatus extends AsyncTask<Void, Void, Boolean> {
+	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
+		public Load() {
+			attachCancelable(this);
+		}
+
 		@Override
-		protected void onPreExecute() {
-			lockScreenRotation();
-			dialog = new ProgressDialog(WhatStatusActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Loading...");
-			dialog.show();
+		public void cancel() {
+			super.cancel(true);
 		}
 
 		@Override
@@ -121,15 +121,16 @@ public class WhatStatusActivity extends MyActivity2 {
 
 		@Override
 		protected void onPostExecute(Boolean status) {
+			hideIndeterminateProgress();
 			if (status == true) {
 				populateLayout();
 			}
-			dialog.dismiss();
+			unlockScreenRotation();
 			if (status == false) {
 				ErrorToast.show(WhatStatusActivity.this, WhatStatusActivity.class);
 			}
-			unlockScreenRotation();
 		}
+
 	}
 
 }
