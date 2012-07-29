@@ -1,5 +1,7 @@
 package what.gui;
 
+import android.util.DisplayMetrics;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
 /**
@@ -7,6 +9,14 @@ import com.actionbarsherlock.app.SherlockFragment;
  * @since Jul 28, 2012 11:24:34 AM
  */
 public class MySherlockFragment extends SherlockFragment {
+
+	private DisplayMetrics metrics;
+
+	public MySherlockFragment() {
+		metrics = new DisplayMetrics();
+		getSherlockActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+	}
+
 	/**
 	 * @param scrollView
 	 */
@@ -16,6 +26,13 @@ public class MySherlockFragment extends SherlockFragment {
 		} else {
 			scrollView.scrollToTop();
 		}
+	}
+
+	/**
+	 * @return the metrics
+	 */
+	public DisplayMetrics getMetrics() {
+		return metrics;
 	}
 
 }

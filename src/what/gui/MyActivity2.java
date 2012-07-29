@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+import api.soup.MySoup;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -34,6 +35,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 	private DisplayMetrics metrics;
 	private long actionBarTitleTouchedTime;
 	private boolean touchToHome = true;
+	private Cancelable cancelable;
 
 	public void onCreate(Bundle savedInstanceState, Integer customTheme) {
 		setTheme(customTheme);
@@ -223,33 +225,34 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// this first item is a dummy menu item used to identify the currently selected item
-		SubMenu submenu = menu.addSubMenu(Menu.NONE, MENU_PLACEHOLDER_ID, Menu.NONE, activityName);
-		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.HOME.toString());
-		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.FORUM.toString());
+		if (MySoup.isLoggedIn()) {
+			// this first item is a dummy menu item used to identify the currently selected item
+			SubMenu submenu = menu.addSubMenu(Menu.NONE, MENU_PLACEHOLDER_ID, Menu.NONE, activityName);
+			submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.HOME.toString());
+			submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.FORUM.toString());
 
-		SubMenu searchmenu = submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.SEARCH.toString());
-		searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.TORRENTS.toString());
-		searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.REQUESTS.toString());
-		searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.USERS.toString());
+			SubMenu searchmenu = submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.SEARCH.toString());
+			searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.TORRENTS.toString());
+			searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.REQUESTS.toString());
+			searchmenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.USERS.toString());
 
-		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.INBOX.toString());
-		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.BOOKMARKS.toString());
-		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.NOTIFICATIONS.toString());
-		submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.BARCODE_SCANNER.toString());
+			submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.INBOX.toString());
+			submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.BOOKMARKS.toString());
+			submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.NOTIFICATIONS.toString());
+			submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.BARCODE_SCANNER.toString());
 
-		SubMenu moremenu = submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.MORE.toString());
-		moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.SETTINGS.toString());
-		moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.TOP_TEN.toString());
-		moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.STATUS.toString());
-		if (Settings.getDebugPreference()) {
-			moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.DEBUG.toString());
+			SubMenu moremenu = submenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.MORE.toString());
+			moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.SETTINGS.toString());
+			moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.TOP_TEN.toString());
+			moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.STATUS.toString());
+			if (Settings.getDebugPreference()) {
+				moremenu.addSubMenu(Menu.NONE, MENU_ITEM_ID, Menu.NONE, MenuItems.DEBUG.toString());
+			}
+
+			MenuItem subMenuItem = submenu.getItem();
+			// subMenuItem.setIcon(R.drawable.ic_title_share_default);
+			subMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		}
-
-		MenuItem subMenuItem = submenu.getItem();
-		// subMenuItem.setIcon(R.drawable.ic_title_share_default);
-		subMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -299,12 +302,26 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 	/**
 	 * @param scrollView
 	 */
-	public void homeIconJump(MyScrollView scrollView) {
-		if (scrollView.getTop() <= 0) {
-			finish();
-		} else {
-			scrollView.scrollToTop();
+	public void homeIconJump(MenuItem item, MyScrollView scrollView) {
+		if (item.getItemId() == android.R.id.home) {
+			if (scrollView.getTop() <= 0) {
+				finish();
+			} else {
+				scrollView.scrollToTop();
+			}
 		}
+	}
+
+	public void attachCancelable(Cancelable cancelable) {
+		this.cancelable = cancelable;
+	}
+
+	@Override
+	protected void onPause() {
+		if (cancelable != null) {
+			cancelable.cancel();
+		}
+		super.onPause();
 	}
 
 }

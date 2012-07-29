@@ -50,7 +50,6 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	private static final int SUBSCRIBE_ITEM_ID = 3;
 	private static final int NON_EXISTANT = -1;
 
-	private Cancelable cancelable;
 	private MyScrollView scrollView;
 	private LinearLayout scrollLayout;
 
@@ -206,9 +205,6 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 			case USER_TAG:
 				openUser(v.getId());
 				break;
-			case android.R.id.home:
-				homeIconJump(scrollView);
-				break;
 			default:
 				break;
 		}
@@ -291,20 +287,8 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				super.invalidateOptionsMenu();
 				break;
 		}
+		homeIconJump(item, scrollView);
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	protected void onPause() {
-		if (cancelable != null) {
-			cancelable.cancel();
-			Log.d("cancel", "cancelled");
-		}
-		super.onPause();
-	}
-
-	public void attachCancelable(Cancelable cancelable) {
-		this.cancelable = cancelable;
 	}
 
 	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
@@ -322,6 +306,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 
 		@Override
 		public void cancel() {
+			Log.d("cancel", "cancelled thread");
 			super.cancel(true);
 		}
 
@@ -373,7 +358,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 		}
 	}
 
-	private class LoadAvatar extends AsyncTask<Void, Void, Boolean> {
+	private class LoadAvatar extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		private final ImageView avatar;
 		private final int userId;
 		private final String avatarUrl;
@@ -383,10 +368,13 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 			this.avatarUrl = avatarUrl;
 			this.avatar = avatar;
 			this.userId = userId;
+			attachCancelable(this);
 		}
 
 		@Override
-		protected void onPreExecute() {
+		public void cancel() {
+			Log.d("cancel", "cancelled avatar");
+			super.cancel(true);
 		}
 
 		@Override
@@ -397,7 +385,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				if (avatarUrl.length() > 0) {
 					try {
 						bitmap = ImageLoader.loadBitmap(avatarUrl);
-						bitmap = Bitmap.createScaledBitmap(bitmap, 110, bitmap.getHeight(), true);
+						bitmap = Bitmap.createScaledBitmap(bitmap, 110, 110 / (bitmap.getWidth() / bitmap.getHeight()), true);
 						ImageCache.saveImage(userId, avatarUrl, bitmap);
 						status = true;
 						Log.d("cache", "saved : " + String.valueOf(userId));
@@ -424,8 +412,8 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				avatar.setImageBitmap(bitmap);
 			} else {
 				Bitmap no_avatar = BitmapFactory.decodeResource(getResources(), R.drawable.dne);
-				avatar.setImageBitmap(Bitmap.createScaledBitmap(no_avatar, 110, 110 / (bitmap.getWidth() / (bitmap.getHeight())),
-						true));
+				avatar.setImageBitmap(Bitmap.createScaledBitmap(no_avatar, 110,
+						110 / (no_avatar.getWidth() / (no_avatar.getHeight())), true));
 			}
 		}
 	}

@@ -3,6 +3,8 @@ package what.bookmarks;
 import java.util.List;
 
 import what.gui.BundleKeys;
+import what.gui.MyActivity2;
+import what.gui.MyScrollView;
 import what.gui.R;
 import what.torrents.artist.ArtistActivity;
 import android.content.Intent;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import api.bookmarks.Artist;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * @author Gwindow
@@ -25,6 +28,7 @@ public class ArtistsFragment extends SherlockFragment implements OnClickListener
 	private static final int ARTIST_TAG = 0;
 	private LinearLayout scrollLayout;
 	private List<Artist> bookmarks;
+	private MyScrollView scrollView;
 
 	public ArtistsFragment(List<Artist> bookmarks) {
 		this.bookmarks = bookmarks;
@@ -32,7 +36,9 @@ public class ArtistsFragment extends SherlockFragment implements OnClickListener
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.generic_scrollview, container, false);
+		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
+
+		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
 		populate(view, inflater);
 		return view;
@@ -69,5 +75,11 @@ public class ArtistsFragment extends SherlockFragment implements OnClickListener
 		bundle.putInt(BundleKeys.ARTIST_ID, id);
 		intent.putExtras(bundle);
 		startActivity(intent);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		((MyActivity2) getSherlockActivity()).homeIconJump(item, scrollView);
+		return super.onOptionsItemSelected(item);
 	}
 }

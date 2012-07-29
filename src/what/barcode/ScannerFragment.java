@@ -1,6 +1,8 @@
 package what.barcode;
 
 import what.gui.BundleKeys;
+import what.gui.Cancelable;
+import what.gui.MyActivity2;
 import what.gui.R;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,6 +14,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -281,7 +284,17 @@ public class ScannerFragment extends SherlockFragment implements OnClickListener
 
 	}
 
-	private class LoadSearchResults extends AsyncTask<Void, Void, Triple<Boolean, Integer, Integer>> {
+	private class LoadSearchResults extends AsyncTask<Void, Void, Triple<Boolean, Integer, Integer>> implements Cancelable {
+		public LoadSearchResults() {
+			((MyActivity2) getSherlockActivity()).attachCancelable(this);
+		}
+
+		@Override
+		public void cancel() {
+			Log.d("cancel", "cancelled avatar");
+			super.cancel(true);
+		}
+
 		@Override
 		protected void onPreExecute() {
 			lockScreenRotation();

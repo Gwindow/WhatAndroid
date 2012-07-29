@@ -31,7 +31,7 @@
             android:summaryOn="Enabled"
             android:title="Bold Threads" />
           <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="homeicon_preference"
             android:summary="Icon in Actionbar to jump to top and/or go back"
             android:summaryOff="Disabled"

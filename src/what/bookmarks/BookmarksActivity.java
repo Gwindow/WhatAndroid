@@ -2,10 +2,10 @@ package what.bookmarks;
 
 import what.fragments.CoverArtGridFragment;
 import what.gui.ActivityNames;
+import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
 import what.gui.R;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,6 +39,7 @@ public class BookmarksActivity extends MyActivity2 {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.BOOKMARKS);
+		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
 	}
 
@@ -67,16 +68,14 @@ public class BookmarksActivity extends MyActivity2 {
 
 	}
 
-	private class Load extends AsyncTask<Void, Void, Boolean> {
-		private ProgressDialog dialog;
+	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
+		public Load() {
+			attachCancelable(this);
+		}
 
 		@Override
-		protected void onPreExecute() {
-			lockScreenRotation();
-			dialog = new ProgressDialog(BookmarksActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Loading...");
-			dialog.show();
+		public void cancel() {
+			super.cancel(true);
 		}
 
 		@Override
@@ -96,14 +95,14 @@ public class BookmarksActivity extends MyActivity2 {
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			dialog.dismiss();
+			BookmarksActivity.this.hideIndeterminateProgress();
 			unlockScreenRotation();
-
 			if (status) {
 				populate();
 			} else
 				ErrorToast.show(BookmarksActivity.this, BookmarksActivity.class);
 		}
+
 	}
 
 	private class BookmarksAdapater extends FragmentPagerAdapter implements TitleProvider {

@@ -1,14 +1,15 @@
 package what.fragments;
 
+import what.gui.AsyncImageGetter;
+import what.gui.MySherlockFragment;
 import what.gui.R;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.SherlockFragment;
 
 /**
  * @author Gwindow
@@ -31,7 +32,11 @@ public class DescriptionFragment extends SherlockFragment {
 		if (description == null || description.length() == 0) {
 			description = "No Description";
 		}
-		description_view.setText(Html.fromHtml(description));
+		int width = getMetrics().widthPixels;
+		int height = getMetrics().heightPixels;
+		description_view.setText(Html.fromHtml(description, new AsyncImageGetter(description_view, getSherlockActivity(), width,
+				height), null));
+		Linkify.addLinks(description_view, Linkify.WEB_URLS);
 		return view;
 	}
 }

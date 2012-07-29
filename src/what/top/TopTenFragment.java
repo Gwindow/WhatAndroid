@@ -24,7 +24,7 @@ import api.util.Tuple;
  * @author Gwindow
  * @since Jul 15, 2012 12:20:25 PM
  */
-public class TopTenFragment extends MySherlockFragment implements OnClickListener {
+public class TopTenFragment extends SherlockFragment implements OnClickListener {
 	private static final int DOWNLOAD_TAG = 0;
 	private static final int GROUP_TAG = 1;
 	private final List<Response> response;

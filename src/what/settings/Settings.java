@@ -44,7 +44,7 @@ public class Settings {
 	}
 
 	public static boolean getHomeIcon() {
-		return settings.getBoolean("homeicon_preference", false);
+		return settings.getBoolean("homeicon_preference", true);
 	}
 
 	public static boolean getBoldSetting() {
