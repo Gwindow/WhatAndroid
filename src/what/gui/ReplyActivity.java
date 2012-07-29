@@ -43,6 +43,9 @@ public class ReplyActivity extends MyActivity2 {
 			id = bundle.getInt(BundleKeys.CONVERSATION_ID);
 			userId = bundle.getInt(BundleKeys.USER_ID);
 		}
+		if (type.equals(BundleKeys.REPLY_TYPE_COMMENT)) {
+			id = bundle.getInt(BundleKeys.GROUP_ID);
+		}
 	}
 
 	/**
@@ -94,6 +97,9 @@ public class ReplyActivity extends MyActivity2 {
 					e.printStackTrace();
 				}
 
+			}
+			if (type.equals(BundleKeys.REPLY_TYPE_COMMENT)) {
+				// TODO Do something.
 			}
 			return toReturn;
 		}

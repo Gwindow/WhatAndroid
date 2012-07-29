@@ -38,7 +38,7 @@ public class TorrentGroupActivity extends MyActivity2 {
 	private static final String COMMENTS_TAB = "Comments";
 
 	// TODO add comments
-	private static final String[] TABS = new String[] { ART_TAB, DESCRIPTION_TAB, FORMATS_TAB };
+	private static final String[] TABS = new String[] { ART_TAB, DESCRIPTION_TAB, FORMATS_TAB, COMMENTS_TAB };
 
 	private FragmentPagerAdapter adapter;
 	private ViewPager pager;
@@ -75,7 +75,7 @@ public class TorrentGroupActivity extends MyActivity2 {
 
 		setActionBarTitle(torrentGroup.getResponse().getGroup().getName());
 
-		adapter = new TorrentGroupAdapter(getSupportFragmentManager());
+		adapter = new TorrentGroupAdapter(getSupportFragmentManager(), this);
 
 		pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
@@ -168,8 +168,10 @@ public class TorrentGroupActivity extends MyActivity2 {
 	}
 
 	private class TorrentGroupAdapter extends FragmentPagerAdapter implements TitleProvider {
-		public TorrentGroupAdapter(FragmentManager fm) {
+		MyActivity2 act;
+		public TorrentGroupAdapter(FragmentManager fm, MyActivity2 act) {
 			super(fm);
+			this.act = act;
 		}
 
 		@Override
@@ -184,6 +186,9 @@ public class TorrentGroupActivity extends MyActivity2 {
 			}
 			if (tag.equals(FORMATS_TAB)) {
 				fragment = new FormatsFragment(torrentGroup.getResponse());
+			}
+			if (tag.equals(COMMENTS_TAB)) {
+				fragment = new CommentsFragment(torrentGroupId, act);
 			}
 			return fragment;
 		}
