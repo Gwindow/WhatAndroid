@@ -150,11 +150,11 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 	public void onClick(View v) {
 		switch (Integer.valueOf(v.getTag().toString())) {
 		case REPLY_TAG:
-			QuoteBuffer.add(groupId, comments.get(v.getId()).getBbBody());
+			QuoteBuffer.add(groupId, comments.get(v.getId()).getQuotableBody());
 			reply();
 			break;
 		case QUOTE_TAG:
-			QuoteBuffer.add(groupId, comments.get(v.getId()).getBbBody());
+			QuoteBuffer.add(groupId, comments.get(v.getId()).getQuotableBody());
 			Toast.makeText(mCtx, "Quoted", Toast.LENGTH_SHORT).show();
 			break;
 		case USER_TAG:
