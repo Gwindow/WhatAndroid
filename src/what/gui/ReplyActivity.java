@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import api.comments.TorrentComments;
 import api.forum.thread.Thread;
 import api.inbox.PrivateMessage;
 
@@ -99,7 +100,12 @@ public class ReplyActivity extends MyActivity2 {
 
 			}
 			if (type.equals(BundleKeys.REPLY_TYPE_COMMENT)) {
-				// TODO Do something.
+				try {
+					TorrentComments.postComment(id, params[0]);
+					toReturn = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			return toReturn;
 		}
