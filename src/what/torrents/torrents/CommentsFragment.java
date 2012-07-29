@@ -92,6 +92,7 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 					LoadAvatar lAv = new LoadAvatar(mCtx, avatar, comments.getLast().getUserinfo().getAuthorId().intValue(), comments.getLast().getUserinfo()
 							.getAvatar());
 					mCtx.attachCancelable(lAv);
+					lAv.execute();
 				} else {
 					avatar.setVisibility(View.GONE);
 				}
