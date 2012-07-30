@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import api.comments.TorrentComments;
 import api.forum.thread.Thread;
 import api.inbox.PrivateMessage;
 
@@ -42,6 +43,9 @@ public class ReplyActivity extends MyActivity2 {
 		if (type.equals(BundleKeys.REPLY_TYPE_MESSAGE)) {
 			id = bundle.getInt(BundleKeys.CONVERSATION_ID);
 			userId = bundle.getInt(BundleKeys.USER_ID);
+		}
+		if (type.equals(BundleKeys.REPLY_TYPE_COMMENT)) {
+			id = bundle.getInt(BundleKeys.GROUP_ID);
 		}
 	}
 
@@ -94,6 +98,14 @@ public class ReplyActivity extends MyActivity2 {
 					e.printStackTrace();
 				}
 
+			}
+			if (type.equals(BundleKeys.REPLY_TYPE_COMMENT)) {
+				try {
+					TorrentComments.postComment(id, params[0]);
+					toReturn = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			return toReturn;
 		}

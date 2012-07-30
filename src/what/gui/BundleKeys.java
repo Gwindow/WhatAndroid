@@ -14,6 +14,8 @@ public class BundleKeys {
 	public static final String REPLY_TYPE_THREAD = "replyTypeThread";
 	public static final String REPLY_TYPE_MESSAGE = "replyTypeMessage";
 	public static final String THREAD_ID = "threadId";
+	public static final String REPLY_TYPE_COMMENT = "replyTypeComment";
+	public static final String GROUP_ID = "groupId";
 	public static final String USER_ID = "userId";
 	public static final String TORRENT_SEARCH_PAGE = "torrentSearchPage";
 	public static final String SEARCH_STRING = "searchString";
