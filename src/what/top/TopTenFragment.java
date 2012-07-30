@@ -63,7 +63,7 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener 
 
 					String format_string = "";
 					if (response.get(j).getResults().get(i).getArtist() != null
-							&& response.get(j).getResults().get(i).getArtist().equalsIgnoreCase("false")) {
+							&& !response.get(j).getResults().get(i).getArtist().equalsIgnoreCase("false")) {
 						format_string += response.get(j).getResults().get(i).getArtist() + " - ";
 					}
 					format_string += response.get(j).getResults().get(i).getGroupName();
