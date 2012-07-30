@@ -233,6 +233,7 @@ public abstract class MyActivity extends SherlockFragmentActivity {
 	}
 
 	public void enableGestures(boolean b) {
+            if (gestureOverlayView != null)
 		gestureOverlayView.setEnabled(b);
 	}
 

@@ -231,6 +231,7 @@ public class HomeActivity extends MyActivity2 implements OnClickListener {
 			attachCancelable(this);
 		}
 
+<<<<<<< HEAD
 		@Override
 		public void cancel() {
 			super.cancel(true);
@@ -240,6 +241,17 @@ public class HomeActivity extends MyActivity2 implements OnClickListener {
 		protected Boolean doInBackground(Void... params) {
 			index = Index.init();
 			return index.getStatus();
+||||||| merged common ancestors
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+=======
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			moveTaskToBack(false);
+>>>>>>> deb08d6097fc5875967df76b4315021bf0390997
 		}
 
 		@Override
