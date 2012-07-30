@@ -60,10 +60,18 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener 
 					LinearLayout formats_torrent_layout =
 							(LinearLayout) View.inflate(getSherlockActivity(), R.layout.formats_torrent, null);
 					TextView format = (TextView) formats_torrent_layout.findViewById(R.id.format);
-					String format_string =
-							response.get(j).getResults().get(i).getArtist() + " - "
-									+ response.get(j).getResults().get(i).getGroupName() + " ["
-									+ response.get(j).getResults().get(i).getGroupYear() + "]";
+
+					String format_string = "";
+					if (response.get(j).getResults().get(i).getArtist() != null
+							&& response.get(j).getResults().get(i).getArtist().equalsIgnoreCase("false")) {
+						format_string += response.get(j).getResults().get(i).getArtist() + " - ";
+					}
+					format_string += response.get(j).getResults().get(i).getGroupName();
+					if (response.get(j).getResults().get(i).getGroupYear() != null
+							&& response.get(j).getResults().get(i).getGroupYear().intValue() != 0) {
+						format_string += " [" + response.get(j).getResults().get(i).getGroupYear() + "]";
+					}
+
 					format.setText(format_string);
 					format.setOnClickListener(this);
 					format.setId(GROUP_TAG);

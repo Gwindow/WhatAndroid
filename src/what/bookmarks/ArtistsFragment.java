@@ -18,6 +18,8 @@ import android.widget.TextView;
 import api.bookmarks.Artist;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 /**
@@ -37,7 +39,7 @@ public class ArtistsFragment extends SherlockFragment implements OnClickListener
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
-
+		setHasOptionsMenu(true);
 		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
 		populate(view, inflater);
@@ -75,6 +77,11 @@ public class ArtistsFragment extends SherlockFragment implements OnClickListener
 		bundle.putInt(BundleKeys.ARTIST_ID, id);
 		intent.putExtras(bundle);
 		startActivity(intent);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override

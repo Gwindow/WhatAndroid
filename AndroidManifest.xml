@@ -235,7 +235,7 @@
         <activity
             android:name="what.inbox.NewMessageActivity"
             android:theme="@style/Theme.MenuDialog"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
             android:name="what.forum.NewThreadActivity"

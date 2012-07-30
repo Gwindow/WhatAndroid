@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
+import api.soup.MySoup;
 import api.user.User;
 
 import com.actionbarsherlock.view.Menu;
@@ -89,6 +90,12 @@ public class UserActivity extends MyActivity2 {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.user_menu, menu);
+		if (user != null) {
+			if (MySoup.getUsername().equalsIgnoreCase(user.getProfile().getUsername())) {
+				menu.getItem(0).setEnabled(false);
+				menu.getItem(0).setVisible(false);
+			}
+		}
 		/*
 		 * if (user != null && !user.getProfile().IsFriend()) { String title = "Add Friend"; menu.addSubMenu(Menu.NONE,
 		 * FRIENDS_ITEM_ID, Menu.NONE, title); }
@@ -179,7 +186,7 @@ public class UserActivity extends MyActivity2 {
 			Fragment fragment = null;
 			String tag = TABS[position % TABS.length];
 			if (tag.equals(AVATAR_TAB)) {
-				fragment = new ArtFragment(user.getProfile().getAvatar());
+				fragment = new ArtFragment(user.getProfile().getAvatar(), R.drawable.dne);
 			}
 			if (tag.equals(PROFILE_TAB)) {
 				fragment = new DescriptionFragment(user.getProfile().getProfileText());

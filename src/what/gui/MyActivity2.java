@@ -299,11 +299,11 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 
 	public void requestIndeterminateProgress() {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setProgressBarIndeterminateVisibility(true);
+		setSupportProgressBarIndeterminateVisibility(true);
 	}
 
 	public void hideIndeterminateProgress() {
-		setProgressBarIndeterminateVisibility(false);
+		setSupportProgressBarIndeterminateVisibility(false);
 
 	}
 

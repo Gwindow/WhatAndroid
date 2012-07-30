@@ -132,4 +132,5 @@ public class CoverArtGridFragment extends SherlockFragment {
 			imageView.setImageBitmap(result);
 		}
 	}
+
 }

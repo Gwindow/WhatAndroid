@@ -31,6 +31,7 @@ public class DescriptionFragment extends SherlockFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.description_fragment, container, false);
 		TextView description_view = (TextView) view.findViewById(R.id.description);
+		description_view.setClickable(false);
 		if (description == null || description.length() == 0) {
 			description = "No Description";
 		}

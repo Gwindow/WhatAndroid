@@ -87,7 +87,8 @@
             style="@style/HomeSubscriptionsHeader"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:onClick="openInbox"
+            android:onClick="refreshSubscriptions"
+            android:clickable="true"
             android:text="Subscriptions" >
         </TextView>
 

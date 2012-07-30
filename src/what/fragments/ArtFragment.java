@@ -33,6 +33,7 @@ public class ArtFragment extends SherlockFragment {
 	private ImageView artImageView;
 	private static Bitmap artBitmap;
 	private String url;
+	private int resource;
 
 	/**
 	 * Instantiates a new art fragment.
@@ -42,7 +43,13 @@ public class ArtFragment extends SherlockFragment {
 	 * @param torrentGroup
 	 */
 	public ArtFragment(String url) {
+		this(url, R.drawable.noartwork);
+	}
+
+	public ArtFragment(String url, int resource) {
 		this.url = url;
+		this.resource = resource;
+
 	}
 
 	@Override
@@ -90,7 +97,7 @@ public class ArtFragment extends SherlockFragment {
 			progressBar.setVisibility(View.GONE);
 			artImageView.setVisibility(View.VISIBLE);
 			if (!status) {
-				artBitmap = getRefelection(BitmapFactory.decodeResource(getResources(), R.drawable.noartwork));
+				artBitmap = getRefelection(BitmapFactory.decodeResource(getResources(), resource));
 			}
 			artImageView.setImageBitmap(artBitmap);
 		}

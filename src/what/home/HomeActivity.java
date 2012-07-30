@@ -24,7 +24,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import api.cli.Utils;
 import api.index.Index;
 import api.soup.MySoup;
@@ -39,7 +38,7 @@ import com.actionbarsherlock.view.MenuItem;
  * @author Gwindow
  * @since Jun 10, 2012 12:47:24 PM
  */
-public class HomeActivity extends MyActivity2 implements OnClickListener, OnEditorActionListener {
+public class HomeActivity extends MyActivity2 implements OnClickListener {
 	private LinearLayout scrollLayout;
 	private TextView uploadView, downloadView, ratioView, bufferView;
 	private TextView inboxView, notificationsView;
@@ -72,8 +71,25 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 		inboxView = (TextView) this.findViewById(R.id.inbox);
 		notificationsView = (TextView) this.findViewById(R.id.notifications);
 
-		searchView = (EditText) this.getLayoutInflater().inflate(R.layout.collapsible_edittext, null);
-		searchView.setOnEditorActionListener(this);
+		// searchView = (EditText) this.getLayoutInflater().inflate(R.layout.collapsible_edittext, null);
+		// searchView.setOnEditorActionListener(this);
+		// searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+		((EditText) findViewById(R.layout.collapsible_edittext)).setOnEditorActionListener(new EditText.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE
+						|| event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+					Intent intent = new Intent(HomeActivity.this, TorrentSearchActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putString(BundleKeys.SEARCH_STRING, view.getText().toString());
+					intent.putExtras(bundle);
+					startActivity(intent);
+					return true;
+				}
+				return false;
+			}
+		});
 	}
 
 	@Override
@@ -175,6 +191,14 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 		startActivity(new Intent(this, what.notifications.NotificationsActivity.class));
 		notificationsView.setTypeface(null, Typeface.NORMAL);
 		notificationsView.setText("Notifications: 0");
+	}
+
+	public void refreshSubscriptions(View v) {
+		try {
+			scrollLayout.removeAllViews();
+		} catch (Exception e) {
+		}
+		new LoadSubscriptions().execute();
 
 	}
 
@@ -195,17 +219,12 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	@Override
-	public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-		if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-			Intent intent = new Intent(this, TorrentSearchActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putString(BundleKeys.SEARCH_STRING, view.getText().toString());
-			intent.putExtras(bundle);
-			startActivity(intent);
-		}
-		return true;
-	}
+	/*
+	 * @Override public boolean onEditorAction(TextView view, int actionId, KeyEvent event) { if (actionId ==
+	 * EditorInfo.IME_ACTION_SEARCH) { Intent intent = new Intent(this, TorrentSearchActivity.class); Bundle bundle =
+	 * new Bundle(); bundle.putString(BundleKeys.SEARCH_STRING, view.getText().toString()); intent.putExtras(bundle);
+	 * startActivity(intent); return true; } return false; }
+	 */
 
 	private class LoadInfo extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		public LoadInfo() {
@@ -247,6 +266,7 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 
 		@Override
 		protected void onPreExecute() {
+			findViewById(R.id.subscriptionsHeader).setClickable(false);
 			bar = new ProgressBar(HomeActivity.this);
 			bar.setIndeterminate(true);
 			scrollLayout.addView(bar);
@@ -260,6 +280,7 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 
 		@Override
 		protected void onPostExecute(Boolean status) {
+			findViewById(R.id.subscriptionsHeader).setClickable(true);
 			hideProgressBar();
 			if (status) {
 				populateSubscriptions();
