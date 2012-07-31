@@ -13,6 +13,8 @@ import api.cli.Utils;
 import api.user.Profile;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 /**
@@ -34,6 +36,7 @@ public class StatsFragment extends SherlockFragment {
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
 		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
 		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
@@ -98,6 +101,11 @@ public class StatsFragment extends SherlockFragment {
 		TextView header = (TextView) View.inflate(getSherlockActivity(), R.layout.user_stats_header, null);
 		header.setText(s);
 		scrollLayout.addView(header);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override

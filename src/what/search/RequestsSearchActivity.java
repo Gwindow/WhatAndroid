@@ -131,20 +131,20 @@ public class RequestsSearchActivity extends MyActivity2 implements Scrollable, O
 	 */
 	public void search(View v) {
 		if (!areSearchBarsHidden) {
-			searchTerm = searchTermField.getText().toString().trim();
-			if (searchTerm.length() > 0) {
-				tagSearchTerm = tagField.getText().toString().trim();
-				// resets variables for the search
-				requestsSearchPage = 1;
-				setActionBarTitle("Requests Search");
-				toggleSearchBars();
+			searchTerm = searchTermField.getText().toString();
+			// if (searchTerm.length() > 0) {
+			tagSearchTerm = tagField.getText().toString();
+			// resets variables for the search
+			requestsSearchPage = 1;
+			setActionBarTitle("Requests Search");
+			toggleSearchBars();
 
-				if (scrollLayout.getChildCount() > 0) {
-					scrollLayout.removeAllViews();
-				}
-
-				new Load().execute();
+			if (scrollLayout.getChildCount() > 0) {
+				scrollLayout.removeAllViews();
 			}
+
+			new Load().execute();
+			// }
 		} else {
 			toggleSearchBars();
 		}

@@ -37,13 +37,6 @@
             android:summaryOff="Disabled"
             android:summaryOn="Enabled"
             android:title="Icon in Actionbar" />
-           <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="bottombar_preference"
-            android:summary="Bottom bar with jump buttons"
-            android:summaryOff="Disabled"
-            android:summaryOn="Enabled"
-            android:title="Jump up/down button bar on bottom of screen" />
         <!--
              <CheckBoxPreference android:key="donateButton_preference" android:summaryOn="Enabled" 
 			android:summaryOff="Disabled" android:title="Donate Button" android:summary="Enable/Disable 

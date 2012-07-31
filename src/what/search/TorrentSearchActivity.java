@@ -126,7 +126,8 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 				if (results.get(i).getArtist() != null) {
 					TextView artist = (TextView) result_layout.findViewById(R.id.artistTitle);
 					artist.setText(results.get(i).getArtist() + " - ");
-					if (results.get(i).getTorrents().get(0).getArtists() != null) {
+					if (results.get(i).getTorrents().get(0).getArtists() != null
+							&& !results.get(i).getTorrents().get(0).getArtists().isEmpty()) {
 						artist.setId(results.get(i).getTorrents().get(0).getArtists().get(0).getAliasid().intValue());
 					}
 					artist.setTag(ARTIST_TAG);
@@ -157,20 +158,20 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 	 */
 	public void search(View v) {
 		if (!areSearchBarsHidden) {
-			searchTerm = searchTermField.getText().toString().trim();
-			if (searchTerm.length() > 0) {
-				tagSearchTerm = tagField.getText().toString().trim();
-				// resets variables for the search
-				torrentSearchPage = 1;
-				setActionBarTitle("Torrent Search");
-				toggleSearchBars();
+			searchTerm = searchTermField.getText().toString();
+			// if (searchTerm.length() > 0) {
+			tagSearchTerm = tagField.getText().toString();
+			// resets variables for the search
+			torrentSearchPage = 1;
+			setActionBarTitle("Torrent Search");
+			toggleSearchBars();
 
-				if (scrollLayout.getChildCount() > 0) {
-					scrollLayout.removeAllViews();
-				}
-
-				new Load().execute();
+			if (scrollLayout.getChildCount() > 0) {
+				scrollLayout.removeAllViews();
 			}
+
+			new Load().execute();
+			// }
 		} else {
 			toggleSearchBars();
 		}

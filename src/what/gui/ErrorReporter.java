@@ -235,7 +235,7 @@ public class ErrorReporter implements Thread.UncaughtExceptionHandler {
 		sendIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
 		sendIntent.setType("message/rfc822");
 		sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		_context.startActivity(Intent.createChooser(sendIntent, "Title:"));
+		_context.startActivity(Intent.createChooser(sendIntent, "Send or Save Crash Report"));
 	}
 
 	private void SaveAsFile(String ErrorContent) {

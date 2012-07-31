@@ -44,7 +44,7 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 	private static final int USER_TAG = 2;
 
 	private Response response;
-	private int groupId, threadPage, width, height;
+	private int groupId, threadPage;
 	private boolean isLoaded = true;
 	private MyActivity2 mCtx;
 
@@ -53,6 +53,8 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 
 	private LinearLayout scrollLayout;
 	private MyScrollView scrollView;
+
+	private TorrentComments torrentComments;
 
 	public CommentsFragment(int groupId, MyActivity2 ctx) {
 		this.groupId = groupId;
@@ -68,13 +70,7 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
 		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 		scrollView.attachScrollable(this);
-
-		TorrentComments comments = TorrentComments.fromIdAndPage(groupId, 1);
-		if (comments.getStatus()) {
-			response = comments.getResponse();
-			populateComments();
-		}
-
+		new Load().execute();
 		return view;
 	}
 
@@ -82,6 +78,9 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 		threadPage = response.getPage().intValue();
 
 		if (response.getComments() != null) {
+			int width = ((MyActivity2) getSherlockActivity()).getMetrics().widthPixels;
+			int height = ((MyActivity2) getSherlockActivity()).getMetrics().heightPixels;
+
 			for (Comments comment : response.getComments()) {
 				LinearLayout post_layout = (LinearLayout) LayoutInflater.from(mCtx).inflate(R.layout.thread_post, null);
 				comments.add(comment);
@@ -89,8 +88,9 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 				ImageView avatar = (ImageView) post_layout.findViewById(R.id.avatar);
 				if (Settings.getAvatarsEnabled()) {
 					avatarMap.put(comments.getLast().getPostId().intValue(), avatar);
-					LoadAvatar lAv = new LoadAvatar(mCtx, avatar, comments.getLast().getUserinfo().getAuthorId().intValue(), comments.getLast().getUserinfo()
-							.getAvatar());
+					LoadAvatar lAv =
+							new LoadAvatar(mCtx, avatar, comments.getLast().getUserinfo().getAuthorId().intValue(), comments
+									.getLast().getUserinfo().getAvatar());
 					mCtx.attachCancelable(lAv);
 					lAv.execute();
 				} else {
@@ -147,21 +147,22 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 		startActivity(intent);
 	}
 
+	@Override
 	public void onClick(View v) {
 		switch (Integer.valueOf(v.getTag().toString())) {
-		case REPLY_TAG:
-			QuoteBuffer.add(groupId, comments.get(v.getId()).getQuotableBody());
-			reply();
-			break;
-		case QUOTE_TAG:
-			QuoteBuffer.add(groupId, comments.get(v.getId()).getQuotableBody());
-			Toast.makeText(mCtx, "Quoted", Toast.LENGTH_SHORT).show();
-			break;
-		case USER_TAG:
-			openUser(v.getId());
-			break;
-		default:
-			break;
+			case REPLY_TAG:
+				QuoteBuffer.add(groupId, comments.get(v.getId()).getQuotableBody());
+				reply();
+				break;
+			case QUOTE_TAG:
+				QuoteBuffer.add(groupId, comments.get(v.getId()).getQuotableBody());
+				Toast.makeText(mCtx, "Quoted", Toast.LENGTH_SHORT).show();
+				break;
+			case USER_TAG:
+				openUser(v.getId());
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -218,10 +219,10 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			TorrentComments cmt = TorrentComments.fromIdAndPage(groupId, threadPage);
-			response = cmt.getResponse();
+			torrentComments = TorrentComments.fromIdAndPage(groupId, threadPage);
+			response = torrentComments.getResponse();
 
-			return cmt.getStatus();
+			return torrentComments.getStatus();
 		}
 
 		@Override

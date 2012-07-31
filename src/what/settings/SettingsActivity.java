@@ -25,6 +25,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 	private Preference debugPreference;
 	private Preference reportPreference;
 	private LinkedList<CheckBoxPreference> themePreferencesList;
+	private LinkedList<CheckBoxPreference> iconPreferencesList;
 	private SharedPreferences sharedPreferences;
 	private boolean themeMessageShown;
 
@@ -36,6 +37,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 		addPreferencesFromResource(R.xml.settingsactivity);
 
 		themePreferencesList = new LinkedList<CheckBoxPreference>();
+		iconPreferencesList = new LinkedList<CheckBoxPreference>();
 
 		PreferenceScreen prefenceScreen = getPreferenceScreen();
 		PreferenceCategory preferenceCategory = new PreferenceCategory(this);
@@ -44,6 +46,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 		prefenceScreen.addPreference(preferenceCategory);
 
 		populateThemes();
+		populateIcons();
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 		debugPreference = findPreference("debug_preference");
@@ -68,6 +71,25 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 			preference.setOnPreferenceClickListener(this);
 			preferenceCategory.addPreference(preference);
 			themePreferencesList.add(preference);
+		}
+
+	}
+
+	private void populateIcons() {
+		PreferenceScreen prefenceScreen = getPreferenceScreen();
+		PreferenceCategory preferenceCategory = new PreferenceCategory(this);
+		preferenceCategory.setTitle("Actionbar Icon");
+		prefenceScreen.addPreference(preferenceCategory);
+
+		for (String title : Settings.icons.keySet()) {
+			CheckBoxPreference preference = new CheckBoxPreference(this);
+			preference.setTitle(title);
+			if (Settings.getHomeIconPath() == Settings.icons.get(title)) {
+				preference.setChecked(true);
+			}
+			preference.setOnPreferenceClickListener(this);
+			preferenceCategory.addPreference(preference);
+			iconPreferencesList.add(preference);
 		}
 
 	}
@@ -101,6 +123,15 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 			if (!themeMessageShown) {
 				Toast.makeText(this, "Theme changes will be applied next time you load a page", Toast.LENGTH_LONG).show();
 				themeMessageShown = true;
+			}
+		}
+
+		if (Settings.icons.containsKey(pref.getTitle())) {
+			Settings.saveHomeIconPath(Settings.icons.get(pref.getTitle()));
+			for (CheckBoxPreference cbp : iconPreferencesList) {
+				if (cbp != pref) {
+					cbp.setChecked(false);
+				}
 			}
 		}
 

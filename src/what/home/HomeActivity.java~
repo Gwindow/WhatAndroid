@@ -24,7 +24,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import api.cli.Utils;
 import api.index.Index;
 import api.soup.MySoup;
@@ -39,7 +38,7 @@ import com.actionbarsherlock.view.MenuItem;
  * @author Gwindow
  * @since Jun 10, 2012 12:47:24 PM
  */
-public class HomeActivity extends MyActivity2 implements OnClickListener, OnEditorActionListener {
+public class HomeActivity extends MyActivity2 implements OnClickListener {
 	private LinearLayout scrollLayout;
 	private TextView uploadView, downloadView, ratioView, bufferView;
 	private TextView inboxView, notificationsView;
@@ -48,7 +47,6 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 
 	private Index index;
 	private Subscriptions subscriptions;
-	private List<Threads> threads;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,9 +71,25 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 		inboxView = (TextView) this.findViewById(R.id.inbox);
 		notificationsView = (TextView) this.findViewById(R.id.notifications);
 
-		searchView = (EditText) this.getLayoutInflater().inflate(R.layout.collapsible_edittext, null);
-		searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-		searchView.setOnEditorActionListener(this);
+		// searchView = (EditText) this.getLayoutInflater().inflate(R.layout.collapsible_edittext, null);
+		// searchView.setOnEditorActionListener(this);
+		// searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+		((EditText) findViewById(R.layout.collapsible_edittext)).setOnEditorActionListener(new EditText.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE
+						|| event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+					Intent intent = new Intent(HomeActivity.this, TorrentSearchActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putString(BundleKeys.SEARCH_STRING, view.getText().toString());
+					intent.putExtras(bundle);
+					startActivity(intent);
+					return true;
+				}
+				return false;
+			}
+		});
 	}
 
 	@Override
@@ -131,7 +145,7 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 
 	private void populateSubscriptions() {
 		if (subscriptions.getResponse().getThreads() != null) {
-			threads = subscriptions.getResponse().getThreads();
+			List<Threads> threads = subscriptions.getResponse().getThreads();
 
 			for (int i = 0; i < threads.size(); i++) {
 				TextView thread = (TextView) getLayoutInflater().inflate(R.layout.subscription_thread, null);
@@ -149,7 +163,7 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 		if (v.getTag() instanceof Tuple<?, ?>) {
 			Tuple<Number, Number> tuple = (Tuple<Number, Number>) v.getTag();
 			openThread(tuple.getA(), tuple.getB());
-			scrollLayout.getChildAt(v.getId()).setVisibility(View.GONE);
+			scrollLayout.removeViewAt(v.getId());
 		}
 	}
 
@@ -198,23 +212,9 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 	}
 
 	@Override
-	public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-		if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE
-				|| event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-			Intent intent = new Intent(HomeActivity.this, TorrentSearchActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putString(BundleKeys.SEARCH_STRING, view.getText().toString());
-			intent.putExtras(bundle);
-			startActivity(intent);
-			return true;
-		}
-		return false;
-	}
-
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO figure out themes
-		menu.add("Search").setIcon(R.drawable.ic_search_inverse).setActionView(searchView)
+		menu.add("Search").setIcon(R.drawable.ic_search_inverse).setActionView(R.layout.collapsible_edittext)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -231,6 +231,7 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 			attachCancelable(this);
 		}
 
+<<<<<<< HEAD
 		@Override
 		public void cancel() {
 			super.cancel(true);
@@ -240,6 +241,17 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 		protected Boolean doInBackground(Void... params) {
 			index = Index.init();
 			return index.getStatus();
+||||||| merged common ancestors
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+=======
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			moveTaskToBack(false);
+>>>>>>> deb08d6097fc5875967df76b4315021bf0390997
 		}
 
 		@Override

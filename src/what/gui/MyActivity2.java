@@ -48,6 +48,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		metrics = new DisplayMetrics();
 
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		getSupportActionBar().setLogo(Settings.getHomeIconPath());
 		getSupportActionBar().setDisplayShowHomeEnabled(Settings.getHomeIcon());
 		getSupportActionBar().setDisplayHomeAsUpEnabled(Settings.getHomeIcon());
 		getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -299,11 +300,11 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 
 	public void requestIndeterminateProgress() {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setProgressBarIndeterminateVisibility(true);
+		setSupportProgressBarIndeterminateVisibility(true);
 	}
 
 	public void hideIndeterminateProgress() {
-		setProgressBarIndeterminateVisibility(false);
+		setSupportProgressBarIndeterminateVisibility(false);
 
 	}
 

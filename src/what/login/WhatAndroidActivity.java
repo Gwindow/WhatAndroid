@@ -1,6 +1,7 @@
 package what.login;
 
 import what.cache.ImageCache;
+import what.gui.Cancelable;
 import what.gui.MenuItems;
 import what.gui.MyActivity2;
 import what.gui.R;
@@ -204,7 +205,15 @@ public class WhatAndroidActivity extends MyActivity2 implements OnClickListener 
 	 * @author Gwindow
 	 * @since Jun 5, 2012 9:46:17 PM
 	 */
-	private class Login extends AsyncTask<String, Void, Boolean> {
+	private class Login extends AsyncTask<String, Void, Boolean> implements Cancelable {
+		public Login() {
+			attachCancelable(this);
+		}
+
+		@Override
+		public void cancel() {
+			super.cancel(true);
+		}
 
 		/** The dialog. */
 		private ProgressDialog dialog;
