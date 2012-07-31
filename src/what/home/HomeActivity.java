@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import api.cli.Utils;
 import api.index.Index;
 import api.soup.MySoup;
@@ -38,7 +39,7 @@ import com.actionbarsherlock.view.MenuItem;
  * @author Gwindow
  * @since Jun 10, 2012 12:47:24 PM
  */
-public class HomeActivity extends MyActivity2 implements OnClickListener {
+public class HomeActivity extends MyActivity2 implements OnClickListener, OnEditorActionListener {
 	private LinearLayout scrollLayout;
 	private TextView uploadView, downloadView, ratioView, bufferView;
 	private TextView inboxView, notificationsView;
@@ -72,26 +73,9 @@ public class HomeActivity extends MyActivity2 implements OnClickListener {
 		inboxView = (TextView) this.findViewById(R.id.inbox);
 		notificationsView = (TextView) this.findViewById(R.id.notifications);
 
-		// searchView = (EditText) this.getLayoutInflater().inflate(R.layout.collapsible_edittext, null);
-		// searchView.setOnEditorActionListener(this);
-		// searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-
-		((EditText) getLayoutInflater().inflate(R.layout.collapsible_edittext, null))
-				.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-					@Override
-					public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-						if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE
-								|| event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-							Intent intent = new Intent(HomeActivity.this, TorrentSearchActivity.class);
-							Bundle bundle = new Bundle();
-							bundle.putString(BundleKeys.SEARCH_STRING, view.getText().toString());
-							intent.putExtras(bundle);
-							startActivity(intent);
-							return true;
-						}
-						return false;
-					}
-				});
+		searchView = (EditText) this.getLayoutInflater().inflate(R.layout.collapsible_edittext, null);
+		searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+		searchView.setOnEditorActionListener(this);
 	}
 
 	@Override
@@ -214,9 +198,23 @@ public class HomeActivity extends MyActivity2 implements OnClickListener {
 	}
 
 	@Override
+	public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+		if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE
+				|| event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+			Intent intent = new Intent(HomeActivity.this, TorrentSearchActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString(BundleKeys.SEARCH_STRING, view.getText().toString());
+			intent.putExtras(bundle);
+			startActivity(intent);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO figure out themes
-		menu.add("Search").setIcon(R.drawable.ic_search_inverse).setActionView(R.layout.collapsible_edittext)
+		menu.add("Search").setIcon(R.drawable.ic_search_inverse).setActionView(searchView)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 		return super.onCreateOptionsMenu(menu);
 	}

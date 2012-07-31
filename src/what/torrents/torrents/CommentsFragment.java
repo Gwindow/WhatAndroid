@@ -44,7 +44,7 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 	private static final int USER_TAG = 2;
 
 	private Response response;
-	private int groupId, threadPage, width, height;
+	private int groupId, threadPage;
 	private boolean isLoaded = true;
 	private MyActivity2 mCtx;
 
@@ -78,6 +78,9 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 		threadPage = response.getPage().intValue();
 
 		if (response.getComments() != null) {
+			int width = ((MyActivity2) getSherlockActivity()).getMetrics().widthPixels;
+			int height = ((MyActivity2) getSherlockActivity()).getMetrics().heightPixels;
+
 			for (Comments comment : response.getComments()) {
 				LinearLayout post_layout = (LinearLayout) LayoutInflater.from(mCtx).inflate(R.layout.thread_post, null);
 				comments.add(comment);
