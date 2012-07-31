@@ -47,6 +47,7 @@ public class HomeActivity extends MyActivity2 implements OnClickListener {
 
 	private Index index;
 	private Subscriptions subscriptions;
+	private List<Threads> threads;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -146,7 +147,7 @@ public class HomeActivity extends MyActivity2 implements OnClickListener {
 
 	private void populateSubscriptions() {
 		if (subscriptions.getResponse().getThreads() != null) {
-			List<Threads> threads = subscriptions.getResponse().getThreads();
+			threads = subscriptions.getResponse().getThreads();
 
 			for (int i = 0; i < threads.size(); i++) {
 				TextView thread = (TextView) getLayoutInflater().inflate(R.layout.subscription_thread, null);
@@ -164,7 +165,7 @@ public class HomeActivity extends MyActivity2 implements OnClickListener {
 		if (v.getTag() instanceof Tuple<?, ?>) {
 			Tuple<Number, Number> tuple = (Tuple<Number, Number>) v.getTag();
 			openThread(tuple.getA(), tuple.getB());
-			scrollLayout.removeViewAt(v.getId());
+			scrollLayout.getChildAt(v.getId()).setVisibility(View.GONE);
 		}
 	}
 

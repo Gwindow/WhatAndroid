@@ -27,6 +27,27 @@ public class Settings {
 
 	}
 
+	protected static HashMap<String, Integer> icons;
+	static {
+		icons = new HashMap<String, Integer>();
+		icons.put("Icon A", R.drawable.icon_a);
+		icons.put("Icon B", R.drawable.icon_b);
+		icons.put("Icon C", R.drawable.icon_c);
+		icons.put("Icon D", R.drawable.icon_d);
+		icons.put("Icon E", R.drawable.icon_e);
+
+		/*
+		 * themes.put("Moldy Walls by senatortom", R.style.Theme_moldy_walls);
+		 * themes.put("Gwindow Loves Tom by senatortom", R.style.Theme_gwindow_loves_tom);
+		 * themes.put("Old E and 4 Blunts by amxtrash", R.style.Theme_old_e_and_four_blunts);
+		 * themes.put("Watermelon by senatortom", R.style.Theme_watermelon);
+		 * themes.put("Ridejckl's Barbie Convertible by ridejckl", R.style.Theme_ridejkcls_barbie_convertible);
+		 * themes.put("Wonder Orange by Guegs", R.style.Theme_wonder_orange); // themes.put("DarkCD",
+		 * R.style.Theme_darkcd); themes.put("Light", R.style.LightTheme); themes.put("Dark", R.style.DarkTheme);
+		 */
+
+	}
+
 	/**
 	 * Initialize the settings reader and writer, should only be done once
 	 * 
@@ -39,8 +60,13 @@ public class Settings {
 
 	}
 
-	public static boolean getBottomBar() {
-		return settings.getBoolean("bottombar_preference", true);
+	public static int getHomeIconPath() {
+		return settings.getInt("homeiconpath_preference", R.drawable.icon_a);
+	}
+
+	public static void saveHomeIconPath(int path) {
+		settingsEditor.putInt("homeiconpath_preference", path);
+		commit();
 	}
 
 	public static boolean getHomeIcon() {

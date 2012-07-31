@@ -22,7 +22,7 @@
     <uses-permission android:name="com.flattr4android.permission.READ_THING" />
 
     <application
-        android:icon="@drawable/icon"
+        android:icon="@drawable/icon_a"
         android:label="@string/app_name" >
         <activity
             android:name="what.login.WhatAndroidActivity"
