@@ -11,7 +11,10 @@
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:layout_marginTop="10dip"
-        android:hint="Search term" >
+        android:hint="Search term"
+        android:singleLine="true"
+        android:imeOptions="actionSearch"
+        android:inputType="text">
     </EditText>
 
     <EditText
@@ -20,7 +23,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
-        android:hint="Tags (comma-separated)" >
+        android:hint="Tags (comma-separated)"
+        android:singleLine="true"
+        android:imeOptions="actionSearch"
+        android:inputType="text">
     </EditText>
 
     <Button

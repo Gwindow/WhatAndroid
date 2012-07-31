@@ -14,15 +14,20 @@ import what.gui.Scrollable;
 import what.torrents.artist.ArtistActivity;
 import what.torrents.torrents.TorrentGroupActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import api.search.torrents.Results;
 import api.search.torrents.TorrentSearch;
 
@@ -34,7 +39,7 @@ import com.actionbarsherlock.view.MenuItem;
  * @author Gwindow
  * @since May 28, 2012 11:04:47 AM
  */
-public class TorrentSearchActivity extends MyActivity2 implements Scrollable, OnClickListener {
+public class TorrentSearchActivity extends MyActivity2 implements Scrollable, OnClickListener, OnEditorActionListener {
 	private static final int ARTIST_TAG = 0;
 	private static final int TORRENT_GROUP_TAG = 1;
 
@@ -87,7 +92,9 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 		scrollLayout = (LinearLayout) this.findViewById(R.id.scrollLayout);
 
 		searchTermField = (EditText) this.findViewById(R.id.searchBar);
+		searchTermField.setOnEditorActionListener(this);
 		tagField = (EditText) this.findViewById(R.id.tagsearchBar);
+		tagField.setOnEditorActionListener(this);
 
 	}
 
@@ -270,6 +277,20 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 			tagField.setVisibility(View.GONE);
 			areSearchBarsHidden = true;
 		}
+	}
+
+	@Override
+	public boolean onEditorAction(TextView v, int actionId,
+			KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+			search(null);
+			InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+					InputMethodManager.HIDE_NOT_ALWAYS);
+			return true;
+		}
+		return false;
 	}
 
 	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
