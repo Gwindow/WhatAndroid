@@ -10,7 +10,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.R;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -121,9 +123,10 @@ public class AsyncImageGetter implements ImageGetter {
 		public Drawable fetchDrawable(String urlString) {
 			try {
 				InputStream is = fetch(urlString);
-				Drawable drawable = Drawable.createFromStream(is, "src");
-				drawable.setBounds(0, 0, 0 + drawable.getIntrinsicWidth(), 0 + drawable.getIntrinsicHeight());
-				return drawable;
+				return new BitmapDrawable(decodeSampledBitmapFromStream(is, width, height));
+				//Drawable drawable = Drawable.createFromStream(is, "src");
+				//drawable.setBounds(0, 0, 0 + drawable.getIntrinsicWidth(), 0 + drawable.getIntrinsicHeight());
+				//return drawable;
 			} catch (Exception e) {
 				return c.getResources().getDrawable(R.drawable.ic_delete);
 			}
@@ -149,5 +152,33 @@ public class AsyncImageGetter implements ImageGetter {
 				drawable.draw(canvas);
 			}
 		}
+	}
+
+	public static Bitmap decodeSampledBitmapFromStream(InputStream is, double reqWidth, double reqHeight) {
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeStream(is, null, options);
+
+		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+		options.inJustDecodeBounds = false;
+		return BitmapFactory.decodeStream(is, null, options);
+	}
+
+	public static int calculateInSampleSize(
+			BitmapFactory.Options options, double reqWidth, double reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+			if (width > height) {
+				inSampleSize = Math.round((float)height / (float)reqHeight);
+			} else {
+				inSampleSize = Math.round((float)width / (float)reqWidth);
+			}
+		}
+		return inSampleSize;
 	}
 }
