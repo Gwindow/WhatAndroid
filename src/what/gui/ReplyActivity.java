@@ -1,6 +1,7 @@
 package what.gui;
 
 import what.forum.QuoteBuffer;
+import what.settings.Settings;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -83,7 +84,7 @@ public class ReplyActivity extends MyActivity2 {
 			boolean toReturn = false;
 			if (type.equals(BundleKeys.REPLY_TYPE_THREAD)) {
 				try {
-					Thread.postReply(id, params[0]);
+					Thread.postReply(id, params[0], Settings.getSubscribetToThreads());
 					toReturn = true;
 				} catch (Exception e) {
 					e.printStackTrace();

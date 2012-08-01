@@ -65,7 +65,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 		for (String title : Settings.themes.keySet()) {
 			CheckBoxPreference preference = new CheckBoxPreference(this);
 			preference.setTitle(title);
-			if (Settings.getTheme() == Settings.themes.get(title)) {
+			if (Settings.getTheme().getA() == Settings.themes.get(title).getA()) {
 				preference.setChecked(true);
 			}
 			preference.setOnPreferenceClickListener(this);
@@ -114,7 +114,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 	@Override
 	public boolean onPreferenceClick(Preference pref) {
 		if (Settings.themes.containsKey(pref.getTitle())) {
-			Settings.saveTheme(Settings.themes.get(pref.getTitle()));
+			Settings.saveTheme(Settings.themes.get(pref.getTitle()).getA(), Settings.themes.get(pref.getTitle()).getB());
 			for (CheckBoxPreference cbp : themePreferencesList) {
 				if (cbp != pref) {
 					cbp.setChecked(false);

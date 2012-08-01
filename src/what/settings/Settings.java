@@ -6,23 +6,29 @@ import what.gui.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import api.util.Tuple;
 
 public class Settings {
 	private static SharedPreferences settings;
 	private static SharedPreferences.Editor settingsEditor;
 
-	protected static HashMap<String, Integer> themes;
+	protected static HashMap<String, Tuple<Integer, Integer>> themes;
 	static {
-		themes = new HashMap<String, Integer>();
-		themes.put("Schnappi", R.style.Theme_schnappi);
+		themes = new HashMap<String, Tuple<Integer, Integer>>();
+		themes.put("Schnappi", new Tuple<Integer, Integer>(R.style.Theme_schnappi, R.color.schnappi));
+		themes.put("Moldy Walls by senatortom", new Tuple<Integer, Integer>(R.style.Theme_moldy_walls, R.color.moldy_walls));
+		themes.put("Gwindow Loves Tom by senatortom", new Tuple<Integer, Integer>(R.style.Theme_gwindow_loves_tom,
+				R.color.gwindow_loves_tom));
+		themes.put("Light", new Tuple<Integer, Integer>(R.style.LightTheme, R.color.roboto));
+		themes.put("Dark", new Tuple<Integer, Integer>(R.style.DarkTheme, R.color.robotoDark));
 		/*
-		 * themes.put("Moldy Walls by senatortom", R.style.Theme_moldy_walls);
 		 * themes.put("Gwindow Loves Tom by senatortom", R.style.Theme_gwindow_loves_tom);
 		 * themes.put("Old E and 4 Blunts by amxtrash", R.style.Theme_old_e_and_four_blunts);
 		 * themes.put("Watermelon by senatortom", R.style.Theme_watermelon);
 		 * themes.put("Ridejckl's Barbie Convertible by ridejckl", R.style.Theme_ridejkcls_barbie_convertible);
 		 * themes.put("Wonder Orange by Guegs", R.style.Theme_wonder_orange); // themes.put("DarkCD",
-		 * R.style.Theme_darkcd); themes.put("Light", R.style.LightTheme); themes.put("Dark", R.style.DarkTheme);
+		 * R.style.Theme_darkcd); themes.put("Light", R.style.LightTheme); themes.put("Dark", R.style.DarkTheme); dead
+		 * camels mono newgroove example penis dark meline
 		 */
 
 	}
@@ -36,16 +42,6 @@ public class Settings {
 		icons.put("Icon D", R.drawable.icon_d);
 		icons.put("Icon E", R.drawable.icon_e);
 
-		/*
-		 * themes.put("Moldy Walls by senatortom", R.style.Theme_moldy_walls);
-		 * themes.put("Gwindow Loves Tom by senatortom", R.style.Theme_gwindow_loves_tom);
-		 * themes.put("Old E and 4 Blunts by amxtrash", R.style.Theme_old_e_and_four_blunts);
-		 * themes.put("Watermelon by senatortom", R.style.Theme_watermelon);
-		 * themes.put("Ridejckl's Barbie Convertible by ridejckl", R.style.Theme_ridejkcls_barbie_convertible);
-		 * themes.put("Wonder Orange by Guegs", R.style.Theme_wonder_orange); // themes.put("DarkCD",
-		 * R.style.Theme_darkcd); themes.put("Light", R.style.LightTheme); themes.put("Dark", R.style.DarkTheme);
-		 */
-
 	}
 
 	/**
@@ -58,6 +54,10 @@ public class Settings {
 		settings = PreferenceManager.getDefaultSharedPreferences(c);
 		settingsEditor = settings.edit();
 
+	}
+
+	public static boolean getSubscribetToThreads() {
+		return settings.getBoolean("subscribetothreads_preference", true);
 	}
 
 	public static int getHomeIconPath() {
@@ -77,12 +77,14 @@ public class Settings {
 		return settings.getBoolean("boldthreads_preference", true);
 	}
 
-	public static int getTheme() {
-		return settings.getInt("theme_preference", R.style.Theme_schnappi);
+	public static Tuple<Integer, Integer> getTheme() {
+		return new Tuple<Integer, Integer>(settings.getInt("theme_preference_a", R.style.Theme_schnappi), settings.getInt(
+				"theme_preference_b", R.color.schnappi));
 	}
 
-	public static void saveTheme(int theme) {
-		settingsEditor.putInt("theme_preference", theme);
+	public static void saveTheme(int theme, int color) {
+		settingsEditor.putInt("theme_preference_a", theme);
+		settingsEditor.putInt("theme_preference_b", color);
 		commit();
 	}
 

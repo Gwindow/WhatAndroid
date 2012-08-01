@@ -23,6 +23,13 @@
             android:summaryOff="Disabled"
             android:summaryOn="Enabled"
             android:title="Suscriptions" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="subscribetothreads_preference"
+            android:summary="Enable/Disable Subscribing"
+            android:summaryOff="Disabled"
+            android:summaryOn="Enabled"
+            android:title="Subscribe to Threads when replying" />
           <CheckBoxPreference
             android:defaultValue="true"
             android:key="boldthreads_preference"

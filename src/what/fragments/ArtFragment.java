@@ -23,6 +23,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * @author Gwindow
@@ -54,6 +57,7 @@ public class ArtFragment extends SherlockFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
 		View view = inflater.inflate(R.layout.art_fragment, container, false);
 		artImageView = (ImageView) view.findViewById(R.id.art);
 		progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
@@ -152,6 +156,19 @@ public class ArtFragment extends SherlockFragment {
 
 	public static void recyle() {
 		artBitmap.recycle();
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			return ((MyActivity2) getSherlockActivity()).homeIconJump(null);
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 }

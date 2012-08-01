@@ -26,6 +26,9 @@ import android.widget.ImageView;
 import api.bookmarks.Torrents;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * @author Gwindow
@@ -131,6 +134,19 @@ public class CoverArtGridFragment extends SherlockFragment {
 		protected void onPostExecute(Bitmap result) {
 			imageView.setImageBitmap(result);
 		}
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			return ((MyActivity2) getSherlockActivity()).homeIconJump(null);
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 }

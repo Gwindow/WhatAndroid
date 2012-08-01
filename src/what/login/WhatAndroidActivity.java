@@ -5,9 +5,9 @@ import what.gui.Cancelable;
 import what.gui.MenuItems;
 import what.gui.MyActivity2;
 import what.gui.R;
-import what.home.HomeActivity;
 import what.settings.Settings;
 import what.status.WhatStatusActivity;
+import what.top.TopTenActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -39,7 +39,7 @@ import com.actionbarsherlock.view.MenuItem;
 public class WhatAndroidActivity extends MyActivity2 implements OnClickListener {
 
 	/** The Constant REDIRECT_CLASS. */
-	private static final Class<?> REDIRECT_CLASS = HomeActivity.class;
+	private static final Class<?> REDIRECT_CLASS = TopTenActivity.class;
 
 	/** The Constant SITE. */
 	private static final String SITE = "ssl.what.cd";
@@ -56,7 +56,7 @@ public class WhatAndroidActivity extends MyActivity2 implements OnClickListener 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState, R.style.Theme_schnappi);
+		super.onCreate(savedInstanceState, R.style.LightTheme, R.color.roboto);
 		super.setContentView(R.layout.login, false);
 	}
 

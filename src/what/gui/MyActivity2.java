@@ -36,14 +36,16 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 	private long actionBarTitleTouchedTime;
 	private boolean touchToHome = true;
 	private Cancelable cancelable;
+	private int theme;
+	private int color;
 
-	public void onCreate(Bundle savedInstanceState, Integer customTheme) {
-		setTheme(customTheme);
-		super.onCreate(savedInstanceState);
-		new ReportSender(this);
+	public void onCreate(Bundle savedInstanceState, Integer customTheme, Integer customColor) {
 		if ((Settings.getSettings() == null) || (Settings.getSettingsEditor() == null)) {
 			Settings.init(this);
 		}
+		setTheme(customTheme, customColor);
+		super.onCreate(savedInstanceState);
+		// new ReportSender(this);
 
 		metrics = new DisplayMetrics();
 
@@ -57,7 +59,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 
 		View v = inflator.inflate(R.layout.actionbar_title, null);
 		actionBarTitle = ((TextView) v.findViewById(R.id.title));
-
+		actionBarTitle.setTextColor(getResources().getColor(color));
 		getSupportActionBar().setCustomView(v);
 		init();
 	}
@@ -72,11 +74,12 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		onCreate(savedInstanceState, null);
+		onCreate(savedInstanceState, null, null);
 	}
 
-	private void setTheme(Integer customTheme) {
-		int theme = customTheme == null ? Settings.getTheme() : customTheme;
+	private void setTheme(Integer customTheme, Integer customColor) {
+		theme = customTheme == null ? Settings.getTheme().getA() : customTheme;
+		color = customColor == null ? Settings.getTheme().getB() : customColor;
 		super.setTheme(theme);
 	}
 

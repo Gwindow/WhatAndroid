@@ -42,6 +42,7 @@ public class RequestFragment extends SherlockFragment implements OnClickListener
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
 		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
 		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
@@ -62,6 +63,7 @@ public class RequestFragment extends SherlockFragment implements OnClickListener
 		if (requests.size() == 0) {
 			TextView request_title = (TextView) inflater.inflate(R.layout.artist_request_title, null);
 			request_title.setText("No Requests");
+			scrollLayout.addView(request_title);
 		}
 	}
 

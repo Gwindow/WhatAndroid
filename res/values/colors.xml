@@ -4,15 +4,17 @@
     <color name="transparent">#00000000</color>
     <color name="transparentBlack">#AA000000</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFF</color>
     <color name="lightGray">#FFEEEEEE</color>
     <color name="button_yellow">#f3ae1b</color>
-    <color name="schnappi">#f3ae1b</color>
     <color name="button_black">#bb6008</color>
     <color name="what_gray">#FF343434</color>
     <color name="roboto">#177BBD</color>
     <color name="robotoDark">#1828BF</color>
     <color name="dark_textview">#ff000000</color>
     <color name="light_textview">#fff3f3f3</color>
+    <color name="schnappi">#f3ae1b</color>
+    <color name="moldy_walls">#FFFFFF</color>
+    <color name="gwindow_loves_tom">#177BBD</color>
 
 </resources>

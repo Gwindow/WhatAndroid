@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * @author Gwindow
@@ -29,6 +32,7 @@ public class DescriptionFragment extends SherlockFragment {
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
 		View view = inflater.inflate(R.layout.description_fragment, container, false);
 		TextView description_view = (TextView) view.findViewById(R.id.description);
 		description_view.setClickable(false);
@@ -41,5 +45,18 @@ public class DescriptionFragment extends SherlockFragment {
 				height), null));
 		Linkify.addLinks(description_view, Linkify.WEB_URLS);
 		return view;
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			return ((MyActivity2) getSherlockActivity()).homeIconJump(null);
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

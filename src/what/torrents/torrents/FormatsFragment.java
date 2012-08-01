@@ -38,6 +38,7 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
 		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
 		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);

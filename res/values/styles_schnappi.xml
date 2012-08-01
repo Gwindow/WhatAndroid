@@ -38,7 +38,7 @@
         <item name="vpiTabPageIndicatorStyle">@style/schnappi_ActionBarTabStyle</item>
         <item name="vpiTabTextStyle">@style/CustomTabPageIndicator.Text</item>
     </style>
-    
+
     <style name="CustomTabPageIndicator.Text" parent="Widget">
         <item name="android:textAppearance">@style/TextAppearance.TabPageIndicator</item>
         <item name="android:textColor">@color/vpi__light_theme</item>
