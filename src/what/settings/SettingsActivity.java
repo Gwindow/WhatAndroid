@@ -16,6 +16,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 import android.widget.Toast;
 import api.son.MySon;
 
@@ -65,7 +66,10 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 		for (String title : Settings.themes.keySet()) {
 			CheckBoxPreference preference = new CheckBoxPreference(this);
 			preference.setTitle(title);
-			if (Settings.getTheme().getA() == Settings.themes.get(title).getA()) {
+			int saved_theme = Settings.getTheme().getA();
+			Log.d("settings", String.valueOf(Settings.getTheme().getA() + " and " + Settings.themes.get(title).getA()));
+			if (String.valueOf(saved_theme).trim().equalsIgnoreCase(String.valueOf(Settings.themes.get(title).getA()).trim())) {
+				Log.d("settings", "matches");
 				preference.setChecked(true);
 			}
 			preference.setOnPreferenceClickListener(this);

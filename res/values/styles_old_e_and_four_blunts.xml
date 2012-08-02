@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- File created by the Android Action Bar Style Generator
+<!--
+     File created by the Android Action Bar Style Generator
 
      Copyright (C) 2012 readyState Software Ltd
 
@@ -25,7 +26,6 @@
         <item name="actionBarTabStyle">@style/old_e_and_four_blunts_ActionBarTabStyle</item>
         <item name="actionDropDownStyle">@style/old_e_and_four_blunts_DropDownNav</item>
         <item name="actionBarStyle">@style/old_e_and_four_blunts_solid_ActionBar</item>
-
         <item name="android:actionBarItemBackground">@drawable/selectable_background_old_e_and_four_blunts</item>
         <item name="android:popupMenuStyle">@style/old_e_and_four_blunts_PopupMenu</item>
         <item name="android:dropDownListViewStyle">@style/old_e_and_four_blunts_DropDownListView</item>
@@ -33,6 +33,9 @@
         <item name="android:actionDropDownStyle">@style/old_e_and_four_blunts_DropDownNav</item>
         <item name="android:actionBarStyle">@style/old_e_and_four_blunts_solid_ActionBar</item>
         <item name="android:panelBackground">@drawable/menu_hardkey_panel_old_e_and_four_blunts</item>
+        <item name="android:textColor">@color/old_e_and_four_blunts</item>
+        <item name="vpiTabPageIndicatorStyle">@style/old_e_and_four_blunts_ActionBarTabStyle</item>
+        <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Dark</item>
     </style>
 
     <style name="old_e_and_four_blunts_solid_ActionBar" parent="@style/Widget.Sherlock.ActionBar.Solid">
@@ -40,7 +43,6 @@
         <item name="backgroundStacked">@drawable/ab_stacked_solid_old_e_and_four_blunts</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_old_e_and_four_blunts</item>
         <item name="progressBarStyle">@style/old_e_and_four_blunts_ProgressBar</item>
-
         <item name="android:background">@drawable/ab_solid_old_e_and_four_blunts</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_old_e_and_four_blunts</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_old_e_and_four_blunts</item>
@@ -50,33 +52,30 @@
     <style name="old_e_and_four_blunts_transparent_ActionBar" parent="@style/Widget.Sherlock.ActionBar">
         <item name="background">@drawable/ab_transparent_old_e_and_four_blunts</item>
         <item name="progressBarStyle">@style/old_e_and_four_blunts_ProgressBar</item>
-        
         <item name="android:background">@drawable/ab_transparent_old_e_and_four_blunts</item>
         <item name="android:progressBarStyle">@style/old_e_and_four_blunts_ProgressBar</item>
     </style>
-	
-    <style name="old_e_and_four_blunts_PopupMenu" parent="@style/Widget.Sherlock.ListPopupWindow">	
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_old_e_and_four_blunts</item>	
+
+    <style name="old_e_and_four_blunts_PopupMenu" parent="@style/Widget.Sherlock.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_old_e_and_four_blunts</item>
     </style>
-	
+
     <style name="old_e_and_four_blunts_DropDownListView" parent="@style/Widget.Sherlock.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_old_e_and_four_blunts</item>
     </style>
 
     <style name="old_e_and_four_blunts_ActionBarTabStyle" parent="@style/Widget.Sherlock.ActionBar.TabView">
         <item name="background">@drawable/tab_indicator_ab_old_e_and_four_blunts</item>
-
         <item name="android:background">@drawable/tab_indicator_ab_old_e_and_four_blunts</item>
     </style>
-	
+
     <style name="old_e_and_four_blunts_DropDownNav" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
         <item name="background">@drawable/spinner_background_ab_old_e_and_four_blunts</item>
-
         <item name="android:background">@drawable/spinner_background_ab_old_e_and_four_blunts</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_old_e_and_four_blunts</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_old_e_and_four_blunts</item>
     </style>
-    
+
     <style name="old_e_and_four_blunts_ProgressBar" parent="@style/Widget.Sherlock.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_old_e_and_four_blunts</item>
     </style>

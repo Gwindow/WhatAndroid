@@ -10,7 +10,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.R;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -89,26 +88,27 @@ public class AsyncImageGetter implements ImageGetter {
 		protected void onPostExecute(Drawable result) {
 			// set the correct bound according to the result from HTTP call
 
-			double resized_width = result.getIntrinsicWidth();
-			double resized_height = result.getIntrinsicHeight();
-			if (result.getIntrinsicWidth() > width) {
-				resized_width = width;
-				resized_height = width / (result.getIntrinsicWidth() / result.getIntrinsicHeight());
-				Log.d("orig", String.valueOf(width));
-			}
-			urlDrawable.drawable =
-					new BitmapDrawable(Bitmap.createScaledBitmap(((BitmapDrawable) result).getBitmap(), (int) resized_width,
-							(int) resized_height, true));
+			/*
+			 * double resized_width = result.getIntrinsicWidth(); double resized_height = result.getIntrinsicHeight();
+			 * if (result.getIntrinsicWidth() > width) { resized_width = width; resized_height = width /
+			 * (result.getIntrinsicWidth() / result.getIntrinsicHeight()); Log.d("orig", String.valueOf(width)); }
+			 */
+			// urlDrawable.drawable =
+			// new BitmapDrawable(Bitmap.createScaledBitmap(((BitmapDrawable) result).getBitmap(), (int) resized_width,
+			// (int) resized_height, true));
 
-			urlDrawable.setBounds(0, 0, (int) resized_width, (int) resized_height);
+			urlDrawable.drawable = result;
 
-			Log.d("size", "width: " + result.getIntrinsicWidth() + ", resized width:  " + resized_width);
+			// urlDrawable.setBounds(0, 0, (int) width, (int) height);
+
+			Log.d("size", "width: " + (int) width + ", height:  " + (int) height);
 
 			// redraw the image by invalidating the container
 			AsyncImageGetter.this.container.invalidate();
 
 			// For ICS
-			AsyncImageGetter.this.container.setHeight((int) (AsyncImageGetter.this.container.getHeight() + resized_height));
+			AsyncImageGetter.this.container
+					.setHeight((AsyncImageGetter.this.container.getHeight() + result.getIntrinsicHeight()));
 
 			// Pre ICS
 			// AsyncImageGetter.this.textView.setEllipsize(null);
@@ -124,9 +124,9 @@ public class AsyncImageGetter implements ImageGetter {
 			try {
 				InputStream is = fetch(urlString);
 				return new BitmapDrawable(decodeSampledBitmapFromStream(is, width, height));
-				//Drawable drawable = Drawable.createFromStream(is, "src");
-				//drawable.setBounds(0, 0, 0 + drawable.getIntrinsicWidth(), 0 + drawable.getIntrinsicHeight());
-				//return drawable;
+				// Drawable drawable = Drawable.createFromStream(is, "src");
+				// drawable.setBounds(0, 0, 0 + drawable.getIntrinsicWidth(), 0 + drawable.getIntrinsicHeight());
+				// return drawable;
 			} catch (Exception e) {
 				return c.getResources().getDrawable(R.drawable.ic_delete);
 			}
@@ -165,8 +165,7 @@ public class AsyncImageGetter implements ImageGetter {
 		return BitmapFactory.decodeStream(is, null, options);
 	}
 
-	public static int calculateInSampleSize(
-			BitmapFactory.Options options, double reqWidth, double reqHeight) {
+	public static int calculateInSampleSize(BitmapFactory.Options options, double reqWidth, double reqHeight) {
 		// Raw height and width of image
 		final int height = options.outHeight;
 		final int width = options.outWidth;
@@ -174,9 +173,9 @@ public class AsyncImageGetter implements ImageGetter {
 
 		if (height > reqHeight || width > reqWidth) {
 			if (width > height) {
-				inSampleSize = Math.round((float)height / (float)reqHeight);
+				inSampleSize = Math.round(height / (float) reqHeight);
 			} else {
-				inSampleSize = Math.round((float)width / (float)reqWidth);
+				inSampleSize = Math.round(width / (float) reqWidth);
 			}
 		}
 		return inSampleSize;
