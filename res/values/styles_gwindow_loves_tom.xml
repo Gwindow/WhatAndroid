@@ -36,10 +36,9 @@
         <item name="android:textColor">@color/text_colors_gwindow_loves_tom</item>
         <item name="actionbarTitleColor">@color/gwindow_loves_tom</item>
         <item name="vpiTabPageIndicatorStyle">@style/gwindow_loves_tom_ActionBarTabStyle</item>
-        <item name="vpiTabTextStyle">@style/gwindow_loves_tom_CustomTabPageIndicator.Text</item>
+        <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Dark</item>
     </style>
 
-    <style name="gwindow_loves_tom_CustomTabPageIndicator.Text" parent="Widget.TabPageIndicator.Text_Dark"></style>
     
     <style name="gwindow_loves_tom_solid_ActionBar" parent="@style/Widget.Sherlock.ActionBar.Solid">
         <item name="background">@drawable/ab_solid_gwindow_loves_tom</item>
