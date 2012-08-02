@@ -33,6 +33,10 @@
         <item name="android:actionDropDownStyle">@style/ridejkcls_barbie_convertible_DropDownNav</item>
         <item name="android:actionBarStyle">@style/ridejkcls_barbie_convertible_transparent_ActionBar</item>
         <item name="android:panelBackground">@drawable/menu_hardkey_panel_ridejkcls_barbie_convertible</item>
+        <item name="android:textColor">@color/text_colors_ridejkcls_barbie_convertible</item>
+        <item name="actionbarTitleColor">@color/ridejkcls_barbie_convertible</item>
+        <item name="vpiTabPageIndicatorStyle">@style/ridejkcls_barbie_convertible_ActionBarTabStyle</item>
+        <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Dark</item>
     </style>
 
     <style name="ridejkcls_barbie_convertible_solid_ActionBar" parent="@style/Widget.Sherlock.ActionBar.Solid">

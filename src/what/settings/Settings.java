@@ -24,12 +24,10 @@ public class Settings {
 		themes.put("Old E and 4 Blunts by amxtrash", new Tuple<Integer, Integer>(R.style.Theme_old_e_and_four_blunts,
 				R.color.old_e_and_four_blunts));
 		themes.put("Watermelon by senatortom", new Tuple<Integer, Integer>(R.style.Theme_watermelon, R.color.watermelon));
-		/*
-		 * themes.put("Ridejckl's Barbie Convertible by ridejckl", R.style.Theme_ridejkcls_barbie_convertible);
-		 * themes.put("Wonder Orange by Guegs", R.style.Theme_wonder_orange); // themes.put("DarkCD",
-		 * R.style.Theme_darkcd); themes.put("Light", R.style.LightTheme); themes.put("Dark", R.style.DarkTheme); dead
-		 * camels mono newgroove example penis dark meline
-		 */
+		themes.put("Ridejckl's Barbie Convertible by ridejckl", new Tuple<Integer, Integer>(
+				R.style.Theme_ridejkcls_barbie_convertible, R.color.ridejkcls_barbie_convertible));
+		themes.put("Wonder Orange by Guegs", new Tuple<Integer, Integer>(R.style.Theme_wonder_orange, R.color.wonder_orange));
+		// dead camels mono newgroove example penis dark meline
 
 	}
 
