@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- File created by the Android Action Bar Style Generator
+<!--
+     File created by the Android Action Bar Style Generator
 
      Copyright (C) 2012 readyState Software Ltd
 
@@ -25,7 +26,6 @@
         <item name="actionBarTabStyle">@style/penis_ActionBarTabStyle</item>
         <item name="actionDropDownStyle">@style/penis_DropDownNav</item>
         <item name="actionBarStyle">@style/penis_transparent_ActionBar</item>
-
         <item name="android:actionBarItemBackground">@drawable/selectable_background_penis</item>
         <item name="android:popupMenuStyle">@style/penis_PopupMenu</item>
         <item name="android:dropDownListViewStyle">@style/penis_DropDownListView</item>
@@ -33,6 +33,10 @@
         <item name="android:actionDropDownStyle">@style/penis_DropDownNav</item>
         <item name="android:actionBarStyle">@style/penis_transparent_ActionBar</item>
         <item name="android:panelBackground">@drawable/menu_hardkey_panel_penis</item>
+        <item name="android:textColor">@color/text_colors_penis</item>
+        <item name="actionbarTitleColor">@color/penis</item>
+        <item name="vpiTabPageIndicatorStyle">@style/penis_ActionBarTabStyle</item>
+        <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Dark</item>
     </style>
 
     <style name="penis_solid_ActionBar" parent="@style/Widget.Sherlock.ActionBar.Solid">
@@ -40,7 +44,6 @@
         <item name="backgroundStacked">@drawable/ab_stacked_solid_penis</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_penis</item>
         <item name="progressBarStyle">@style/penis_ProgressBar</item>
-
         <item name="android:background">@drawable/ab_solid_penis</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_penis</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_penis</item>
@@ -50,33 +53,30 @@
     <style name="penis_transparent_ActionBar" parent="@style/Widget.Sherlock.ActionBar">
         <item name="background">@drawable/ab_transparent_penis</item>
         <item name="progressBarStyle">@style/penis_ProgressBar</item>
-        
         <item name="android:background">@drawable/ab_transparent_penis</item>
         <item name="android:progressBarStyle">@style/penis_ProgressBar</item>
     </style>
-	
-    <style name="penis_PopupMenu" parent="@style/Widget.Sherlock.ListPopupWindow">	
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_penis</item>	
+
+    <style name="penis_PopupMenu" parent="@style/Widget.Sherlock.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_penis</item>
     </style>
-	
+
     <style name="penis_DropDownListView" parent="@style/Widget.Sherlock.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_penis</item>
     </style>
 
     <style name="penis_ActionBarTabStyle" parent="@style/Widget.Sherlock.ActionBar.TabView">
         <item name="background">@drawable/tab_indicator_ab_penis</item>
-
         <item name="android:background">@drawable/tab_indicator_ab_penis</item>
     </style>
-	
+
     <style name="penis_DropDownNav" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
         <item name="background">@drawable/spinner_background_ab_penis</item>
-
         <item name="android:background">@drawable/spinner_background_ab_penis</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_penis</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_penis</item>
     </style>
-    
+
     <style name="penis_ProgressBar" parent="@style/Widget.Sherlock.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_penis</item>
     </style>
