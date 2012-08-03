@@ -1,9 +1,10 @@
 package what.fragments;
 
 import what.gui.Cancelable;
-import what.gui.ImageLoader;
 import what.gui.MyActivity2;
+import what.gui.MyImageLoader;
 import what.gui.R;
+import what.gui.UrlImageLoader;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -26,6 +27,8 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
 /**
  * @author Gwindow
@@ -62,13 +65,36 @@ public class ArtFragment extends SherlockFragment {
 		artImageView = (ImageView) view.findViewById(R.id.art);
 		progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
-		if (artBitmap == null || artBitmap.isRecycled()) {
-			new Load().execute(url);
-		} else {
-			progressBar.setVisibility(View.GONE);
-			artImageView.setVisibility(View.VISIBLE);
-			artImageView.setImageBitmap(artBitmap);
-		}
+		MyImageLoader imageLoader = new MyImageLoader(getSherlockActivity());
+		imageLoader.displayImage(url, artImageView, new ImageLoadingListener() {
+			@Override
+			public void onLoadingStarted() {
+			}
+
+			@Override
+			public void onLoadingFailed(FailReason failReason) {
+			}
+
+			@Override
+			public void onLoadingComplete(Bitmap loadedImage) {
+				loadedImage = getRefelection(loadedImage);
+				progressBar.setVisibility(View.GONE);
+				artImageView.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onLoadingCancelled() {
+			}
+		});
+
+		// artImageView.setImageBitmap(getRefelection(((BitmapDrawable) artImageView.getDrawable()).getBitmap()));
+
+		/*
+		 * if (artBitmap == null || artBitmap.isRecycled()) { new Load().execute(url); } else {
+		 * progressBar.setVisibility(View.GONE); artImageView.setVisibility(View.VISIBLE);
+		 * artImageView.setImageBitmap(artBitmap); }
+		 */
+
 		return view;
 	}
 
@@ -88,7 +114,7 @@ public class ArtFragment extends SherlockFragment {
 			String url = params[0];
 			if (url.length() > 0) {
 				try {
-					artBitmap = getRefelection(ImageLoader.loadBitmap(url));
+					artBitmap = getRefelection(UrlImageLoader.loadBitmap(url));
 					status = true;
 				} catch (Exception e) {
 				}
@@ -155,7 +181,7 @@ public class ArtFragment extends SherlockFragment {
 	}
 
 	public static void recyle() {
-		artBitmap.recycle();
+		// artBitmap.recycle();
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 	private View v;
 	private String activityName;
 	private TextView actionBarTitle;
-	private DisplayMetrics metrics;
+	protected static DisplayMetrics metrics;
 	private long actionBarTitleTouchedTime;
 	private boolean touchToHome = true;
 	private Cancelable cancelable;
@@ -45,7 +45,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		}
 		setTheme(customTheme, customColor);
 		super.onCreate(savedInstanceState);
-		// new ReportSender(this);
+		new ReportSender(this);
 
 		metrics = new DisplayMetrics();
 

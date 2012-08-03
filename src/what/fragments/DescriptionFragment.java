@@ -1,7 +1,7 @@
 package what.fragments;
 
-import what.gui.AsyncImageGetter;
 import what.gui.MyActivity2;
+import what.gui.MyImageGetter;
 import what.gui.R;
 import android.os.Bundle;
 import android.text.Html;
@@ -41,8 +41,7 @@ public class DescriptionFragment extends SherlockFragment {
 		}
 		int width = ((MyActivity2) getSherlockActivity()).getMetrics().widthPixels;
 		int height = ((MyActivity2) getSherlockActivity()).getMetrics().heightPixels;
-		description_view.setText(Html.fromHtml(description, new AsyncImageGetter(description_view, getSherlockActivity(), width,
-				height), null));
+		description_view.setText(Html.fromHtml(description, new MyImageGetter(getSherlockActivity()), null));
 		Linkify.addLinks(description_view, Linkify.WEB_URLS);
 		return view;
 	}

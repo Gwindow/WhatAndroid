@@ -5,9 +5,9 @@ import java.util.List;
 
 import what.gui.BundleKeys;
 import what.gui.Cancelable;
-import what.gui.ImageLoader;
 import what.gui.MyActivity2;
 import what.gui.R;
+import what.gui.UrlImageLoader;
 import what.torrents.torrents.TorrentGroupActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -124,7 +124,7 @@ public class CoverArtGridFragment extends SherlockFragment {
 		protected Bitmap doInBackground(ImageView... imageViews) {
 			this.imageView = imageViews[0];
 			try {
-				return ImageLoader.loadBitmap((String) imageView.getTag());
+				return UrlImageLoader.loadBitmap((String) imageView.getTag());
 			} catch (IOException e) {
 				return BitmapFactory.decodeResource(CoverArtGridFragment.this.getResources(), R.drawable.dne);
 			}

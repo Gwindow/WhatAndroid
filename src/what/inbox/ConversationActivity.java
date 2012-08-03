@@ -4,11 +4,11 @@ import java.util.List;
 
 import what.forum.QuoteBuffer;
 import what.gui.ActivityNames;
-import what.gui.AsyncImageGetter;
 import what.gui.BundleKeys;
 import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
+import what.gui.MyImageGetter;
 import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.ReplyActivity;
@@ -106,7 +106,7 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 				date.setText(messages.get(i).getSentDate());
 
 				TextView body = (TextView) message_layout.findViewById(R.id.body);
-				body.setText(Html.fromHtml(messages.get(i).getBody(), new AsyncImageGetter(body, this, width, height), null));
+				body.setText(Html.fromHtml(messages.get(i).getBody(), new MyImageGetter(this), null));
 				Linkify.addLinks(body, Linkify.WEB_URLS);
 
 				ImageView reply = (ImageView) message_layout.findViewById(R.id.replyIcon);

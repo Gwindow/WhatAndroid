@@ -5,12 +5,12 @@ import java.util.LinkedList;
 
 import what.forum.QuoteBuffer;
 import what.forum.ThreadActivity;
-import what.gui.AsyncImageGetter;
 import what.gui.BundleKeys;
 import what.gui.Cancelable;
 import what.gui.ErrorToast;
-import what.gui.LoadAvatar;
 import what.gui.MyActivity2;
+import what.gui.MyImageGetter;
+import what.gui.MyImageLoader;
 import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.ReplyActivity;
@@ -55,6 +55,7 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 	private MyScrollView scrollView;
 
 	private TorrentComments torrentComments;
+	private MyImageLoader imageLoader;
 
 	public CommentsFragment(int groupId, MyActivity2 ctx) {
 		this.groupId = groupId;
@@ -70,6 +71,7 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
 		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 		scrollView.attachScrollable(this);
+		imageLoader = new MyImageLoader(getSherlockActivity(), R.drawable.dne);
 		new Load().execute();
 		return view;
 	}
@@ -88,11 +90,7 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 				ImageView avatar = (ImageView) post_layout.findViewById(R.id.avatar);
 				if (Settings.getAvatarsEnabled()) {
 					avatarMap.put(comments.getLast().getPostId().intValue(), avatar);
-					LoadAvatar lAv =
-							new LoadAvatar(mCtx, avatar, comments.getLast().getUserinfo().getAuthorId().intValue(), comments
-									.getLast().getUserinfo().getAvatar());
-					mCtx.attachCancelable(lAv);
-					lAv.execute();
+					imageLoader.displayImage(comments.getLast().getUserinfo().getAvatar(), avatar);
 				} else {
 					avatar.setVisibility(View.GONE);
 				}
@@ -107,7 +105,7 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 				date.setText(comments.getLast().getAddedTime());
 
 				TextView body = (TextView) post_layout.findViewById(R.id.body);
-				body.setText(Html.fromHtml(comments.getLast().getBody(), new AsyncImageGetter(body, mCtx, width, height), null));
+				body.setText(Html.fromHtml(comments.getLast().getBody(), new MyImageGetter(getSherlockActivity()), null));
 				Linkify.addLinks(body, Linkify.WEB_URLS);
 
 				ImageView reply = (ImageView) post_layout.findViewById(R.id.replyIcon);

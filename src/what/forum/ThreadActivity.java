@@ -5,17 +5,18 @@ import java.util.LinkedList;
 
 import what.cache.ImageCache;
 import what.gui.ActivityNames;
-import what.gui.AsyncImageGetter;
 import what.gui.BundleKeys;
 import what.gui.Cancelable;
 import what.gui.ErrorToast;
-import what.gui.ImageLoader;
 import what.gui.JumpToPageDialog;
 import what.gui.MyActivity2;
+import what.gui.MyImageGetter;
+import what.gui.MyImageLoader;
 import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.ReplyActivity;
 import what.gui.Scrollable;
+import what.gui.UrlImageLoader;
 import what.settings.Settings;
 import what.user.UserActivity;
 import android.content.Intent;
@@ -62,6 +63,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	private LinkedList<Posts> posts;
 	private HashMap<Integer, ImageView> avatarMap;
 	private boolean isSubscribed;
+	private MyImageLoader imageLoader;
 
 	/**
 	 * {@inheritDoc}
@@ -93,6 +95,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 
 		posts = new LinkedList<Posts>();
 		avatarMap = new HashMap<Integer, ImageView>();
+		imageLoader = new MyImageLoader(this, R.drawable.dne);
 	}
 
 	/**
@@ -123,7 +126,6 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 		if (thread.getResponse().getPosts() != null) {
 			int width = getMetrics().widthPixels;
 			int height = getMetrics().heightPixels;
-
 			for (int i = 0; i < thread.getResponse().getPosts().size(); i++) {
 				LinearLayout post_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.thread_post, null);
 				posts.add(thread.getResponse().getPosts().get(i));
@@ -131,8 +133,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				ImageView avatar = (ImageView) post_layout.findViewById(R.id.avatar);
 				if (Settings.getAvatarsEnabled()) {
 					avatarMap.put(posts.getLast().getPostId().intValue(), avatar);
-					new LoadAvatar(avatar, posts.getLast().getAuthor().getAuthorId().intValue(), posts.getLast().getAuthor()
-							.getAvatar()).execute();
+					imageLoader.displayImage(posts.getLast().getAuthor().getAvatar(), avatar);
 				} else {
 					avatar.setVisibility(View.GONE);
 				}
@@ -147,7 +148,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				date.setText(posts.getLast().getAddedTime());
 
 				TextView body = (TextView) post_layout.findViewById(R.id.body);
-				body.setText(Html.fromHtml(posts.getLast().getBody(), new AsyncImageGetter(body, this, width, height), null));
+				body.setText(Html.fromHtml(posts.getLast().getBody(), new MyImageGetter(this), null));
 				Linkify.addLinks(body, Linkify.WEB_URLS);
 
 				ImageView reply = (ImageView) post_layout.findViewById(R.id.replyIcon);
@@ -386,7 +387,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 			if (!ImageCache.hasImage(userId, avatarUrl)) {
 				if (avatarUrl.length() > 0) {
 					try {
-						bitmap = ImageLoader.loadBitmap(avatarUrl);
+						bitmap = UrlImageLoader.loadBitmap(avatarUrl);
 						bitmap = Bitmap.createScaledBitmap(bitmap, 110, 110 / (bitmap.getWidth() / bitmap.getHeight()), true);
 						ImageCache.saveImage(userId, avatarUrl, bitmap);
 						status = true;

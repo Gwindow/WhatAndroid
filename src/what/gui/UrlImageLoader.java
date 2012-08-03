@@ -10,7 +10,7 @@ import android.graphics.BitmapFactory;
  * 
  *
  */
-public class ImageLoader {
+public class UrlImageLoader {
 	public static Bitmap loadBitmap(String s) throws IOException {
 		URL url = new URL(s);
 		return loadBitmap(url);

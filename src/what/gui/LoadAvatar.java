@@ -35,7 +35,7 @@ public class LoadAvatar extends AsyncTask<Void, Void, Boolean> implements Cancel
 		if (!ImageCache.hasImage(userId, avatarUrl)) {
 			if (avatarUrl.length() > 0) {
 				try {
-					bitmap = ImageLoader.loadBitmap(avatarUrl);
+					bitmap = UrlImageLoader.loadBitmap(avatarUrl);
 					bitmap = Bitmap.createScaledBitmap(bitmap, 110, 110 / (bitmap.getWidth() / bitmap.getHeight()), true);
 					ImageCache.saveImage(userId, avatarUrl, bitmap);
 					status = true;
