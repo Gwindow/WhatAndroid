@@ -10,9 +10,9 @@ import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.JumpToPageDialog;
 import what.gui.MyActivity2;
-import what.gui.MyImageGetter;
 import what.gui.MyImageLoader;
 import what.gui.MyScrollView;
+import what.gui.MyTextView;
 import what.gui.R;
 import what.gui.ReplyActivity;
 import what.gui.Scrollable;
@@ -24,8 +24,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -147,9 +145,9 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 				TextView date = (TextView) post_layout.findViewById(R.id.date);
 				date.setText(posts.getLast().getAddedTime());
 
-				TextView body = (TextView) post_layout.findViewById(R.id.body);
-				body.setText(Html.fromHtml(posts.getLast().getBody(), new MyImageGetter(this), null));
-				Linkify.addLinks(body, Linkify.WEB_URLS);
+				MyTextView body = (MyTextView) post_layout.findViewById(R.id.body);
+				body.setText(posts.getLast().getBody());
+				// Linkify.addLinks(body, Linkify.WEB_URLS);
 
 				ImageView reply = (ImageView) post_layout.findViewById(R.id.replyIcon);
 				reply.setTag(REPLY_TAG);

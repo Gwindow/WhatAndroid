@@ -40,8 +40,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:maxWidth="110px"
-            android:minWidth="110px"
+            android:maxHeight="370px"
+            android:maxWidth="120px"
+            android:minWidth="120px"
             android:src="@drawable/dne" />
 
         <what.gui.ViewSlider
@@ -54,12 +55,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <what.gui.MyTextView
+                <what.gui.MyWebView
                     android:id="@+id/body"
-                    style="@style/PostBody"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-                </what.gui.MyTextView>
+                    android:layout_height="wrap_content" >
+                </what.gui.MyWebView>
             </LinearLayout>
 
             <LinearLayout

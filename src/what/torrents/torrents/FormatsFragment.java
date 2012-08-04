@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import api.cli.Utils;
 import api.torrents.torrents.Response;
 import api.torrents.torrents.Torrents;
@@ -102,10 +103,10 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == DOWNLOAD_TAG) {
+			Toast.makeText(getSherlockActivity(), "pressed", Toast.LENGTH_SHORT).show();
 			@SuppressWarnings("unchecked")
 			Tuple<Integer, String> tuple = ((Tuple<Integer, String>) v.getTag());
 			new DownloadDialog(getSherlockActivity(), tuple.getA().intValue(), tuple.getB());
 		}
 	}
-
 }
