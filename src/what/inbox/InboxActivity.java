@@ -157,10 +157,11 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 		}
 	}
 
-	private void openMessage(int id) {
+	private void openMessage(int conversationID) {
 		Intent intent = new Intent(this, ConversationActivity.class);
 		Bundle bundle = new Bundle();
-		bundle.putInt(BundleKeys.CONVERSATION_ID, id);
+		bundle.putInt(BundleKeys.CONVERSATION_ID, conversationID);
+
 		intent.putExtras(bundle);
 		startActivity(intent);
 

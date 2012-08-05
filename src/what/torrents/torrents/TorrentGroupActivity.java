@@ -32,6 +32,7 @@ import com.viewpagerindicator.TitleProvider;
  */
 public class TorrentGroupActivity extends MyActivity2 {
 	protected static final String MUSIC_CATEGORY = "Music";
+
 	private static final String ART_TAB = "Art";
 	private static final String DESCRIPTION_TAB = "Description";
 	private static final String FORMATS_TAB = "Formats";
@@ -72,6 +73,7 @@ public class TorrentGroupActivity extends MyActivity2 {
 	// TODO make this less sloppy. Create a custom fragment activity.
 	private void populate() {
 		setContentView(R.layout.torrent_group_tabs);
+		invalidateOptionsMenu();
 
 		setActionBarTitle(torrentGroup.getResponse().getGroup().getName());
 
@@ -87,8 +89,10 @@ public class TorrentGroupActivity extends MyActivity2 {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.torrentgroup_menu, menu);
+		if (torrentGroup != null && torrentGroup.getResponse().getGroup().getCategoryName().equals(MUSIC_CATEGORY)) {
+			MenuInflater inflater = getSupportMenuInflater();
+			inflater.inflate(R.menu.torrentgroup_menu, menu);
+		}
 		return super.onCreateOptionsMenu(menu);
 		// TODO add bookmarks
 	}
@@ -169,6 +173,7 @@ public class TorrentGroupActivity extends MyActivity2 {
 
 	private class TorrentGroupAdapter extends FragmentPagerAdapter implements TitleProvider {
 		MyActivity2 act;
+
 		public TorrentGroupAdapter(FragmentManager fm, MyActivity2 act) {
 			super(fm);
 			this.act = act;

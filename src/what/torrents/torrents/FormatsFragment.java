@@ -43,12 +43,47 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
 		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
 		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
-		// TODO take care of other categories
 		if (response.getGroup().getCategoryName().equals(TorrentGroupActivity.MUSIC_CATEGORY)) {
 			populateMusic(view, inflater);
+		} else {
+			populateOther(view, inflater);
 		}
 
 		return view;
+	}
+
+	private void populateOther(View view, LayoutInflater inflater) {
+		List<Torrents> torrents = response.getTorrents();
+		for (int i = 0; i < torrents.size(); i++) {
+			LinearLayout formats_torrent_layout = (LinearLayout) inflater.inflate(R.layout.formats_torrent, null);
+
+			TextView format = (TextView) formats_torrent_layout.findViewById(R.id.format);
+			String format_string = "";
+			if (torrents.get(i).isFreeTorrent() == true) {
+				format_string += "FreeLeech! ";
+			}
+			if (response.getGroup().getYear() != null && response.getGroup().getYear().intValue() != 0) {
+				format_string += "[" + response.getGroup().getYear() + "] ";
+			}
+			format_string += response.getGroup().getName();
+			format.setText(format_string);
+
+			TextView size = (TextView) formats_torrent_layout.findViewById(R.id.size);
+			size.setText("Size: " + Utils.toHumanReadableSize(torrents.get(i).getSize().longValue()));
+			TextView snatches = (TextView) formats_torrent_layout.findViewById(R.id.snatches);
+			snatches.setText("Snatches: " + torrents.get(i).getSnatched());
+			TextView seeders = (TextView) formats_torrent_layout.findViewById(R.id.seeders);
+			seeders.setText("Seeders: " + torrents.get(i).getSeeders());
+			TextView leechers = (TextView) formats_torrent_layout.findViewById(R.id.leechers);
+			leechers.setText("Leechers: " + torrents.get(i).getLeechers());
+
+			TextView download = (TextView) formats_torrent_layout.findViewById(R.id.download);
+			download.setOnClickListener(this);
+			download.setId(DOWNLOAD_TAG);
+			download.setTag(new Tuple<Integer, String>(torrents.get(i).getId().intValue(), torrents.get(i).getDownloadLink()));
+			scrollLayout.addView(formats_torrent_layout);
+		}
+
 	}
 
 	private void populateMusic(View view, LayoutInflater inflater) {

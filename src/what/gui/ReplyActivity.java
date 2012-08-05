@@ -92,7 +92,6 @@ public class ReplyActivity extends MyActivity2 {
 			}
 			if (type.equals(BundleKeys.REPLY_TYPE_MESSAGE)) {
 				try {
-					// TODO why doesn't replying work?
 					new PrivateMessage(userId, id, params[0]).replyMessage();
 					toReturn = true;
 				} catch (Exception e) {

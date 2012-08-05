@@ -24,7 +24,7 @@ public class ImageDialogActivity extends SherlockActivity {
 		imageView.setMaxHeight(metrics.heightPixels - 50);
 		imageView.setMaxWidth(metrics.widthPixels - 50);
 		imageView.setImageResource(R.drawable.loading);
-		MyImageLoader imageLoader = new MyImageLoader(this);
+		MyImageLoader imageLoader = new MyImageLoader(this, R.drawable.loading);
 		Bundle bundle = getIntent().getExtras();
 		imageLoader.displayImage(bundle.getString(BundleKeys.URL), imageView);
 	}

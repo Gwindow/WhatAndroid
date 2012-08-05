@@ -9,8 +9,7 @@
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dip"
-        android:scaleType="centerInside" />
+        android:layout_margin="15dip"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

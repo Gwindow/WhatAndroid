@@ -39,7 +39,7 @@ public class DetailsFragment extends SherlockFragment {
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.generic_scrollview, container, false);
+		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
 		setHasOptionsMenu(true);
 		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);

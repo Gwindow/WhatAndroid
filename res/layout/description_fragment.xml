@@ -9,11 +9,11 @@
         android:layout_height="fill_parent"
         android:layout_margin="15dip" >
 
-        <gui.what.MyTextView
+        <what.gui.MyTextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-        </gui.what.MyTextView>
+        </what.gui.MyTextView>
     </ScrollView>
 
 </RelativeLayout>

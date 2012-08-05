@@ -34,6 +34,8 @@ public class DownloadDialog extends AlertDialog.Builder implements OnClickListen
 		setCancelable(true);
 		setPositiveButton(DOWNLOAD_BUTTON, this);
 		setNegativeButton(PYWA_BUTTON, this);
+		create();
+		show();
 	}
 
 	@Override

@@ -133,10 +133,6 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 		}
 	}
 
-	private void hideHomeInfo() {
-
-	}
-
 	private void populateSubscriptions() {
 		if (subscriptions.getResponse().getThreads() != null) {
 			threads = subscriptions.getResponse().getThreads();
