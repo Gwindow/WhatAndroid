@@ -81,8 +81,12 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 	@Override
 	public void prepare() {
 		setActionBarTitle(MySoup.getUsername());
-
-		new LoadInfo().execute();
+		if (Settings.getShowHomeInfo()) {
+			new LoadInfo().execute();
+		} else {
+			findViewById(R.id.infoLayout1).setVisibility(View.GONE);
+			findViewById(R.id.infoLayout2).setVisibility(View.GONE);
+		}
 		if (Settings.getSubscriptionsEnabled()) {
 			new LoadSubscriptions().execute();
 		} else {
@@ -127,6 +131,10 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 				notificationsView.setTypeface(null, Typeface.BOLD);
 			}
 		}
+	}
+
+	private void hideHomeInfo() {
+
 	}
 
 	private void populateSubscriptions() {
@@ -238,8 +246,14 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			index = Index.init();
-			return index.getStatus();
+			boolean toReturn = false;
+			try {
+				index = Index.init();
+				toReturn = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return toReturn;
 		}
 
 		@Override

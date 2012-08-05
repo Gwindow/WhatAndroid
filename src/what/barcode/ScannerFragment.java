@@ -14,11 +14,13 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import api.search.crossreference.CrossReference;
@@ -28,7 +30,7 @@ import api.util.Triple;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-public class ScannerFragment extends SherlockFragment implements OnClickListener, DialogInterface.OnClickListener {
+public class ScannerFragment extends SherlockFragment implements OnClickListener {
 	private static final String ZXING_MARKETPLACE_URL =
 			"https://play.google.com/store/apps/details?id=com.google.zxing.client.android";
 	private Intent intent;
@@ -38,21 +40,19 @@ public class ScannerFragment extends SherlockFragment implements OnClickListener
 	private TorrentSearch torrentSearch;
 	private RequestsSearch requestsSearch;
 	private SearchType searchType;
+	private Button requestsButton, torrentsButton, manualButton;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.scanner, container, false);
+		requestsButton = (Button) view.findViewById(R.id.scanbutton_requests);
+		requestsButton.setOnClickListener(this);
+		torrentsButton = (Button) view.findViewById(R.id.scanbutton_torrents);
+		torrentsButton.setOnClickListener(this);
+		manualButton = (Button) view.findViewById(R.id.manualbutton);
+		manualButton.setOnClickListener(this);
+
 		return view;
-	}
-
-	public void scanRequests(View v) {
-		searchType = SearchType.REQUESTSSEARCH;
-		startScanner();
-	}
-
-	public void scanTorrents(View v) {
-		searchType = SearchType.TORRENTSEARCH;
-		startScanner();
 	}
 
 	private void startScanner() {
@@ -94,18 +94,6 @@ public class ScannerFragment extends SherlockFragment implements OnClickListener
 		}
 	}
 
-	public void manual(View v) {
-		displayEditTextPopup();
-	}
-
-	public void torrents(View v) {
-		openTorrentSearch();
-	}
-
-	public void requests(View v) {
-		openRequestSearch();
-	}
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode == 0) {
@@ -119,11 +107,12 @@ public class ScannerFragment extends SherlockFragment implements OnClickListener
 		}
 	}
 
-	public void displayEditTextPopup() {
+	private void displayEditTextPopup() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(getSherlockActivity());
 		alert.setTitle("");
 		alert.setMessage("Enter UPC code");
 		final EditText input = new EditText(getSherlockActivity());
+		input.setInputType(InputType.TYPE_CLASS_NUMBER);
 		alert.setView(input);
 		alert.setPositiveButton("Search", new DialogInterface.OnClickListener() {
 			@Override
@@ -148,7 +137,7 @@ public class ScannerFragment extends SherlockFragment implements OnClickListener
 		alert.show();
 	}
 
-	public void displayManualSearchTypePopup() {
+	private void displayManualSearchTypePopup() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(getSherlockActivity());
 		alert.setTitle("");
 		alert.setMessage("Select a Search Type");
@@ -172,7 +161,7 @@ public class ScannerFragment extends SherlockFragment implements OnClickListener
 		alert.show();
 	}
 
-	public void displayNotFoundPopup() {
+	private void displayNotFoundPopup() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(getSherlockActivity());
 
 		alert.setTitle("");
@@ -211,7 +200,7 @@ public class ScannerFragment extends SherlockFragment implements OnClickListener
 		startActivityForResult(intent, 0);
 	}
 
-	public void displayFoundPopup(int torrents, int requests) {
+	private void displayFoundPopup(int torrents, int requests) {
 		AlertDialog alert = new AlertDialog.Builder(getSherlockActivity()).create();
 
 		alert.setTitle("Results Found");
@@ -275,13 +264,18 @@ public class ScannerFragment extends SherlockFragment implements OnClickListener
 	}
 
 	@Override
-	public void onClick(DialogInterface dialog, int item) {
-
-	}
-
-	@Override
 	public void onClick(View v) {
-
+		if (v.getId() == torrentsButton.getId()) {
+			searchType = SearchType.TORRENTSEARCH;
+			startScanner();
+		}
+		if (v.getId() == requestsButton.getId()) {
+			searchType = SearchType.REQUESTSSEARCH;
+			startScanner();
+		}
+		if (v.getId() == manualButton.getId()) {
+			displayEditTextPopup();
+		}
 	}
 
 	private class LoadSearchResults extends AsyncTask<Void, Void, Triple<Boolean, Integer, Integer>> implements Cancelable {

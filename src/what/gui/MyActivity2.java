@@ -45,7 +45,6 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		}
 		setTheme(customTheme, customColor);
 		super.onCreate(savedInstanceState);
-		new ReportSender(this);
 
 		metrics = new DisplayMetrics();
 

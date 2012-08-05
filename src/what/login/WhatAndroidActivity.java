@@ -5,6 +5,7 @@ import what.gui.Cancelable;
 import what.gui.MenuItems;
 import what.gui.MyActivity2;
 import what.gui.R;
+import what.gui.ReportSender;
 import what.home.HomeActivity;
 import what.settings.Settings;
 import what.status.WhatStatusActivity;
@@ -62,6 +63,9 @@ public class WhatAndroidActivity extends MyActivity2 implements OnClickListener 
 
 	@Override
 	public void init() {
+		if (Settings.getCrashReportsEnabled()) {
+			new ReportSender(this);
+		}
 		MySoup.setSite(SITE, USE_SSL);
 		MySon.setDebugEnabled(Settings.getDebugPreference());
 		MenuItems.init();

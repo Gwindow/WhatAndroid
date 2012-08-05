@@ -35,6 +35,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 		// TODO set theme
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setTitle("Settings");
+		getSupportActionBar().setLogo(Settings.getHomeIconPath());
+
 		addPreferencesFromResource(R.xml.settingsactivity);
 
 		themePreferencesList = new LinkedList<CheckBoxPreference>();

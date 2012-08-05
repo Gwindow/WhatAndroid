@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainMenu"
+            android:name=".ImageDialogActivity"
             android:noHistory="true"
             android:theme="@style/Theme.MenuDialog"
             android:windowSoftInputMode="adjustPan" >

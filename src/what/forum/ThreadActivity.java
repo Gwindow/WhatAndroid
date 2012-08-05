@@ -3,7 +3,6 @@ package what.forum;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import what.cache.ImageCache;
 import what.gui.ActivityNames;
 import what.gui.BundleKeys;
 import what.gui.Cancelable;
@@ -16,12 +15,9 @@ import what.gui.MyTextView;
 import what.gui.R;
 import what.gui.ReplyActivity;
 import what.gui.Scrollable;
-import what.gui.UrlImageLoader;
 import what.settings.Settings;
 import what.user.UserActivity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -61,6 +57,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	private LinkedList<Posts> posts;
 	private HashMap<Integer, ImageView> avatarMap;
 	private boolean isSubscribed;
+	private boolean isSpoilerAlertShown;
 	private MyImageLoader imageLoader;
 
 	/**
@@ -120,10 +117,10 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 		threadPage = thread.getResponse().getCurrentPage().intValue();
 		setActionBarTitle(thread.getResponse().getThreadTitle() + ", " + threadPage + "/"
 				+ thread.getResponse().getPages().intValue());
-
+		if (!isSpoilerAlertShown) {
+			spoilerAlertDialog();
+		}
 		if (thread.getResponse().getPosts() != null) {
-			int width = getMetrics().widthPixels;
-			int height = getMetrics().heightPixels;
 			for (int i = 0; i < thread.getResponse().getPosts().size(); i++) {
 				LinearLayout post_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.thread_post, null);
 				posts.add(thread.getResponse().getPosts().get(i));
@@ -359,64 +356,13 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 		}
 	}
 
-	private class LoadAvatar extends AsyncTask<Void, Void, Boolean> implements Cancelable {
-		private final ImageView avatar;
-		private final int userId;
-		private final String avatarUrl;
-		private Bitmap bitmap;
-
-		public LoadAvatar(ImageView avatar, int userId, String avatarUrl) {
-			this.avatarUrl = avatarUrl;
-			this.avatar = avatar;
-			this.userId = userId;
-			attachCancelable(this);
+	private void spoilerAlertDialog() {
+		if (thread.getResponse().getThreadTitle().toLowerCase().contains("spoiler")
+				|| thread.getResponse().getThreadId().intValue() == 97258) {
+			Toast.makeText(this, "Hide tags do not work and this thread may contain spoilers. Proceed with caution.",
+					Toast.LENGTH_LONG).show();
 		}
-
-		@Override
-		public void cancel() {
-			Log.d("cancel", "cancelled avatar");
-			super.cancel(true);
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			boolean status = false;
-
-			if (!ImageCache.hasImage(userId, avatarUrl)) {
-				if (avatarUrl.length() > 0) {
-					try {
-						bitmap = UrlImageLoader.loadBitmap(avatarUrl);
-						bitmap = Bitmap.createScaledBitmap(bitmap, 110, 110 / (bitmap.getWidth() / bitmap.getHeight()), true);
-						ImageCache.saveImage(userId, avatarUrl, bitmap);
-						status = true;
-						Log.d("cache", "saved : " + String.valueOf(userId));
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			} else {
-				try {
-					bitmap = ImageCache.getImage(userId);
-					status = true;
-					Log.d("cache", "loaded : " + String.valueOf(userId));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-			return status;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean status) {
-			if (status) {
-				avatar.setImageBitmap(bitmap);
-			} else {
-				Bitmap no_avatar = BitmapFactory.decodeResource(getResources(), R.drawable.dne);
-				avatar.setImageBitmap(Bitmap.createScaledBitmap(no_avatar, 110,
-						110 / (no_avatar.getWidth() / (no_avatar.getHeight())), true));
-			}
-		}
+		isSpoilerAlertShown = true;
 	}
 
 }

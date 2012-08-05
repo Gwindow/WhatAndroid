@@ -40,8 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:maxWidth="110px"
-            android:minWidth="110px"
+            android:maxWidth="120px"
+            android:minWidth="120px"
             android:src="@drawable/dne" />
 
         <what.gui.ViewSlider

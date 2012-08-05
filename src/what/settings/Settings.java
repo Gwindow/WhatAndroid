@@ -1,6 +1,7 @@
 package what.settings;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import what.gui.R;
 import android.content.Context;
@@ -15,6 +16,7 @@ public class Settings {
 	protected static HashMap<String, Tuple<Integer, Integer>> themes;
 	static {
 		themes = new HashMap<String, Tuple<Integer, Integer>>();
+		themes.put("newgroove", new Tuple<Integer, Integer>(R.style.Theme_newgroove, R.color.newgroove));
 		themes.put("Schnappi", new Tuple<Integer, Integer>(R.style.Theme_schnappi, R.color.schnappi));
 		themes.put("Moldy Walls by senatortom", new Tuple<Integer, Integer>(R.style.Theme_moldy_walls, R.color.moldy_walls));
 		themes.put("Gwindow Loves Tom by senatortom", new Tuple<Integer, Integer>(R.style.Theme_gwindow_loves_tom,
@@ -58,7 +60,37 @@ public class Settings {
 
 	}
 
-	public static boolean getSubscribetToThreads() {
+	public static boolean getCaching() {
+		return settings.getBoolean("caching_preference", true);
+	}
+
+	public static boolean getShowHomeInfo() {
+		return settings.getBoolean("showhomeinfo_preference", true);
+	}
+
+	public static void saveHomeInfo(Set<String> set) {
+		settingsEditor.putStringSet("homecache_set", set);
+		settingsEditor.commit();
+	}
+
+	public static Set<String> getHomeInfo() {
+		return settings.getStringSet("homecache_set", null);
+	}
+
+	public static void saveHomeInfoCounter(int counter) {
+		settingsEditor.putInt("homecache_counter", counter);
+		commit();
+	}
+
+	public static int getHomeInfoCounter() {
+		return settings.getInt("homecache_counter", 0);
+	}
+
+	public static boolean getCrashReportsEnabled() {
+		return settings.getBoolean("report_preference", true);
+	}
+
+	public static boolean getSubscribedToThreads() {
 		return settings.getBoolean("subscribetothreads_preference", true);
 	}
 
@@ -80,8 +112,8 @@ public class Settings {
 	}
 
 	public static Tuple<Integer, Integer> getTheme() {
-		return new Tuple<Integer, Integer>(settings.getInt("theme_preference_a", R.style.Theme_schnappi), settings.getInt(
-				"theme_preference_b", R.color.schnappi));
+		return new Tuple<Integer, Integer>(settings.getInt("theme_preference_a", R.style.Theme_newgroove), settings.getInt(
+				"theme_preference_b", R.color.newgroove));
 	}
 
 	public static void saveTheme(int theme, int color) {

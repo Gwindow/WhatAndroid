@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dip"
         android:layout_marginBottom="5dip"
-        android:onClick="scanRequests"
         android:padding="5dip"
         android:text="Scan Requests" >
     </Button>
@@ -21,7 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dip"
         android:layout_marginBottom="5dip"
-        android:onClick="scanTorrents"
         android:padding="5dip"
         android:text="Scan Torrents" >
     </Button>
@@ -30,57 +28,13 @@
         android:id="@+id/manualbutton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/quickscan"
         android:layout_margin="10dip"
         android:layout_marginBottom="5dip"
-        android:onClick="manual"
         android:padding="5dip"
         android:text="Enter UPC" >
     </Button>
 
-    <Button
-        android:id="@+id/buybutton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dip"
-        android:layout_marginBottom="5dip"
-        android:onClick="buy"
-        android:padding="5dip"
-        android:text="Buy Music"
-        android:visibility="gone" >
-    </Button>
 
-    <Button
-        android:id="@+id/torrentsbutton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dip"
-        android:layout_marginBottom="5dip"
-        android:onClick="torrents"
-        android:padding="5dip"
-        android:text="Torrents"
-        android:visibility="gone" >
-    </Button>
-
-    <Button
-        android:id="@+id/requestsbutton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dip"
-        android:layout_marginBottom="5dip"
-        android:onClick="requests"
-        android:padding="5dip"
-        android:text="Requests"
-        android:visibility="gone" >
-    </Button>
-
-    <!--
-         <ScrollView android:id="@+id/scrollView" android:layout_below="@id/buybutton" 
-		android:layout_width="fill_parent" android:layout_height="fill_parent"  
-		  android:layout_marginBottom="5dip" 
-		android:padding="5dip"> <LinearLayout android:id="@+id/scrollLayout" android:layout_height="fill_parent" 
-		android:layout_width="fill_parent" android:orientation="vertical"> </LinearLayout> 
-		</ScrollView>
-    -->
+   
 
 </LinearLayout>

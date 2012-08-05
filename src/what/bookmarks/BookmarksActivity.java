@@ -27,7 +27,7 @@ public class BookmarksActivity extends MyActivity2 {
 	private static final String COVERS_TAB = "Covers";
 	private static final String TORRENTS_TAB = "Torrents";
 	private static final String ARTISTS_TAB = "Artists";
-	private static final String[] TABS = new String[] { COVERS_TAB, TORRENTS_TAB, ARTISTS_TAB };
+	private static final String[] TABS = new String[] { TORRENTS_TAB, ARTISTS_TAB };
 
 	private FragmentPagerAdapter adapter;
 	private ViewPager pager;

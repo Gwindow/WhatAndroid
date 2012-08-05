@@ -14,12 +14,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-public class QuickScannerFragment extends SherlockFragment {
+public class QuickScannerFragment extends SherlockFragment implements OnClickListener {
 	private static final String ZXING_MARKETPLACE_URL =
 			"https://play.google.com/store/apps/details?id=com.google.zxing.client.android";
 	private static final String FILENAME = "barcodes.txt";
@@ -27,10 +29,18 @@ public class QuickScannerFragment extends SherlockFragment {
 	private Intent intent;
 	private String upc;
 	private FileOutputStream fileOutputStream;
+	private Button scanButton, clearButton, sendButton;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.quickscanner, container, false);
+		scanButton = (Button) view.findViewById(R.id.scanButton);
+		scanButton.setOnClickListener(this);
+		clearButton = (Button) view.findViewById(R.id.clearButton);
+		clearButton.setOnClickListener(this);
+		sendButton = (Button) view.findViewById(R.id.sendButton);
+		sendButton.setOnClickListener(this);
+
 		if (Settings.getQuickScannerFirstRun()) {
 			showInstructions();
 			Settings.saveQuickScannerFirstRun(false);
@@ -50,24 +60,22 @@ public class QuickScannerFragment extends SherlockFragment {
 	private void showInstructions() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(getSherlockActivity());
 		alert.setTitle("Instructions");
-		alert.setMessage("Scan as many barcodes as your heart desires. These barcodes will be saved to a file which can be analyzed by different program on your computer to determine what the site is missing.");
+		alert.setMessage("Scan as many barcodes as your heart desires. "
+				+ "These barcodes will be saved to a file which can be analyzed by different program on your"
+				+ " computer to determine what the site is missing.");
 		alert.setPositiveButton("Close", null);
 		alert.setCancelable(true);
 		alert.create().show();
 
 	}
 
-	public void scan(View v) {
-		startScanner();
-	}
-
-	public void clear(View v) {
+	private void clear() {
 		File file = new File(extStorageDirectory, FILENAME);
 		file.delete();
 		Toast.makeText(getSherlockActivity(), "Barcodes deleted", Toast.LENGTH_SHORT).show();
 	}
 
-	public void send(View v) {
+	private void send() {
 		Intent intent = new Intent(android.content.Intent.ACTION_SEND);
 		intent.setType("text/plain");
 		File file = new File(extStorageDirectory, FILENAME);
@@ -121,5 +129,18 @@ public class QuickScannerFragment extends SherlockFragment {
 		Intent i = new Intent(Intent.ACTION_VIEW);
 		i.setData(Uri.parse(url));
 		startActivity(i);
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == scanButton.getId()) {
+			startScanner();
+		}
+		if (v.getId() == clearButton.getId()) {
+			clear();
+		}
+		if (v.getId() == sendButton.getId()) {
+			send();
+		}
 	}
 }

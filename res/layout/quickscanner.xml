@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dip"
         android:layout_marginBottom="5dip"
-        android:onClick="scan"
         android:padding="5dip"
         android:text="Scan" >
     </Button>
@@ -22,7 +21,6 @@
         android:layout_below="@+id/scanButton"
         android:layout_margin="10dip"
         android:layout_marginBottom="5dip"
-        android:onClick="clear"
         android:padding="5dip"
         android:text="Clear Barcodes" >
     </Button>
@@ -34,7 +32,6 @@
         android:layout_below="@+id/clearButton"
         android:layout_margin="10dip"
         android:layout_marginBottom="5dip"
-        android:onClick="send"
         android:padding="5dip"
         android:text="Send Barcodes" >
     </Button>

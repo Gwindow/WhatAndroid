@@ -11,6 +11,7 @@ import what.gui.MyActivity2;
 import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.Scrollable;
+import what.settings.Settings;
 import what.torrents.torrents.TorrentGroupActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -59,6 +60,7 @@ public class NotificationsActivity extends MyActivity2 implements OnClickListene
 	 */
 	@Override
 	public void init() {
+		Settings.saveHomeInfoCounter(0);
 		Bundle bundle = getIntent().getExtras();
 		try {
 			notificationsPage = bundle.getInt(BundleKeys.NOTIFICATIONS_PAGE);

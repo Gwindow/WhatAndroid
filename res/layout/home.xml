@@ -5,6 +5,7 @@
     android:orientation="vertical" >
 
     <LinearLayout
+        android:id="@+id/infoLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -45,6 +46,8 @@
     </LinearLayout>
 
     <LinearLayout
+                android:id="@+id/infoLayout2"
+        
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -87,8 +90,8 @@
             style="@style/HomeSubscriptionsHeader"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:onClick="refreshSubscriptions"
             android:clickable="true"
+            android:onClick="refreshSubscriptions"
             android:text="Subscriptions" >
         </TextView>
 

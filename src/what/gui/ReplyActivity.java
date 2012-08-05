@@ -84,7 +84,7 @@ public class ReplyActivity extends MyActivity2 {
 			boolean toReturn = false;
 			if (type.equals(BundleKeys.REPLY_TYPE_THREAD)) {
 				try {
-					Thread.postReply(id, params[0], Settings.getSubscribetToThreads());
+					Thread.postReply(id, params[0], Settings.getSubscribedToThreads());
 					toReturn = true;
 				} catch (Exception e) {
 					e.printStackTrace();

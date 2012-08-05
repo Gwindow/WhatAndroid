@@ -1,13 +1,10 @@
 package what.fragments;
 
-import what.gui.Cancelable;
 import what.gui.MyActivity2;
 import what.gui.MyImageLoader;
 import what.gui.R;
-import what.gui.UrlImageLoader;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
@@ -15,7 +12,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader.TileMode;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,41 +92,6 @@ public class ArtFragment extends SherlockFragment {
 		 */
 
 		return view;
-	}
-
-	private class Load extends AsyncTask<String, Void, Boolean> implements Cancelable {
-		public Load() {
-			((MyActivity2) getSherlockActivity()).attachCancelable(this);
-		}
-
-		@Override
-		public void cancel() {
-			super.cancel(true);
-		}
-
-		@Override
-		protected Boolean doInBackground(String... params) {
-			boolean status = false;
-			String url = params[0];
-			if (url.length() > 0) {
-				try {
-					artBitmap = getRefelection(UrlImageLoader.loadBitmap(url));
-					status = true;
-				} catch (Exception e) {
-				}
-			}
-			return status;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean status) {
-			progressBar.setVisibility(View.GONE);
-			artImageView.setVisibility(View.VISIBLE);
-			if (!status) {
-				artBitmap = getRefelection(BitmapFactory.decodeResource(getResources(), resource));
-			}
-			artImageView.setImageBitmap(artBitmap);
-		}
 	}
 
 	// Taken from http://androidsnips.blogspot.com/2010/08/showing-image-with-reflection-in.html

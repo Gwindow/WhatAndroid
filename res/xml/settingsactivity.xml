@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:orderingFromXml="false">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orderingFromXml="false" >
 
     <PreferenceCategory android:title="Bug Report/Suggestion" >
         <Preference
@@ -30,20 +31,27 @@
             android:summaryOff="Disabled"
             android:summaryOn="Enabled"
             android:title="Subscribe to Threads when replying" />
-          <CheckBoxPreference
+        <CheckBoxPreference
             android:defaultValue="true"
             android:key="boldthreads_preference"
             android:summary="Bold/Unbold Unread Threads"
             android:summaryOff="Disabled"
             android:summaryOn="Enabled"
             android:title="Bold Threads" />
-          <CheckBoxPreference
+        <CheckBoxPreference
             android:defaultValue="true"
             android:key="homeicon_preference"
             android:summary="Icon in Actionbar to jump to top and/or go back"
             android:summaryOff="Disabled"
             android:summaryOn="Enabled"
             android:title="Icon in Actionbar" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="showhomeinfo_preference"
+            android:summary="Show/Hide User info"
+            android:summaryOff="Disabled"
+            android:summaryOn="Enabled"
+            android:title="User stats on home page" />
         <!--
              <CheckBoxPreference android:key="donateButton_preference" android:summaryOn="Enabled" 
 			android:summaryOff="Disabled" android:title="Donate Button" android:summary="Enable/Disable 
@@ -79,6 +87,13 @@
             android:summaryOff="Disabled"
             android:summaryOn="Enabled"
             android:title="Debug Mode" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="report_preference"
+            android:summary="Enable/Disable Crash Reports"
+            android:summaryOff="Disabled"
+            android:summaryOn="Enabled"
+            android:title="Crash Reports" />
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -9,9 +9,9 @@ import what.gui.BundleKeys;
 import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
-import what.gui.MyImageGetter;
 import what.gui.MyImageLoader;
 import what.gui.MyScrollView;
+import what.gui.MyTextView;
 import what.gui.R;
 import what.gui.ReplyActivity;
 import what.gui.Scrollable;
@@ -20,8 +20,6 @@ import what.user.UserActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,8 +78,6 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 		threadPage = response.getPage().intValue();
 
 		if (response.getComments() != null) {
-			int width = ((MyActivity2) getSherlockActivity()).getMetrics().widthPixels;
-			int height = ((MyActivity2) getSherlockActivity()).getMetrics().heightPixels;
 
 			for (Comments comment : response.getComments()) {
 				LinearLayout post_layout = (LinearLayout) LayoutInflater.from(mCtx).inflate(R.layout.thread_post, null);
@@ -104,9 +100,9 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 				TextView date = (TextView) post_layout.findViewById(R.id.date);
 				date.setText(comments.getLast().getAddedTime());
 
-				TextView body = (TextView) post_layout.findViewById(R.id.body);
-				body.setText(Html.fromHtml(comments.getLast().getBody(), new MyImageGetter(getSherlockActivity()), null));
-				Linkify.addLinks(body, Linkify.WEB_URLS);
+				MyTextView body = (MyTextView) post_layout.findViewById(R.id.body);
+				body.setText(comments.getLast().getBody());
+				// Linkify.addLinks(body, Linkify.WEB_URLS);
 
 				ImageView reply = (ImageView) post_layout.findViewById(R.id.replyIcon);
 				reply.setTag(REPLY_TAG);

@@ -12,6 +12,7 @@ import what.gui.MyScrollView;
 import what.gui.R;
 import what.gui.Scrollable;
 import what.gui.ViewSlider;
+import what.settings.Settings;
 import what.user.UserActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -60,6 +61,7 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 	 */
 	@Override
 	public void init() {
+		Settings.saveHomeInfoCounter(0);
 		Bundle bundle = getIntent().getExtras();
 		try {
 			inboxPage = bundle.getInt(BundleKeys.INBOX_PAGE);
