@@ -45,7 +45,7 @@ public class MyScrollView extends ScrollView {
 	protected void onScrollChanged(int l, int t, int oldl, int oldt) {
 		if (scrollable != null) {
 			int calc = getChildAt(getChildCount() - 1).getBottom() - getBottomY();
-			boolean hitBottom = calc == 0;
+			boolean hitBottom = calc <= 15;
 			if (hitBottom) {
 				pages++;
 				scrollable.scrolledToBottom();

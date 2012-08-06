@@ -43,7 +43,7 @@ public class TopTenActivity extends MyActivity2 {
 	private ViewPager pager;
 	private PageIndicator indicator;
 
-	private Top top;
+	protected Top top;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -108,7 +108,7 @@ public class TopTenActivity extends MyActivity2 {
 		}
 	}
 
-	private class Adapater extends FragmentPagerAdapter implements TitleProvider {
+	public class Adapater extends FragmentPagerAdapter implements TitleProvider {
 		public Adapater(FragmentManager fm) {
 			super(fm);
 		}
@@ -118,22 +118,22 @@ public class TopTenActivity extends MyActivity2 {
 			Fragment fragment = null;
 			String tag = TABS[position % TABS.length];
 			if (tag.equals(UPLOADED_PAST_DAY_TAB)) {
-				fragment = new TopTenFragment(top.getResponse(), DAY_TAG);
+				fragment = TopTenFragment.newInstance(top, DAY_TAG);
 			}
 			if (tag.equals(UPLOADED_PAST_WEEK_TAB)) {
-				fragment = new TopTenFragment(top.getResponse(), WEEK_TAG);
+				fragment = TopTenFragment.newInstance(top, WEEK_TAG);
 			}
 			if (tag.equals(ACTIVE_ALL_TIME_TAB)) {
-				fragment = new TopTenFragment(top.getResponse(), OVERALL_TAG);
+				fragment = TopTenFragment.newInstance(top, OVERALL_TAG);
 			}
 			if (tag.equals(SNATCHED_ALL_TIME_TAB)) {
-				fragment = new TopTenFragment(top.getResponse(), SNATCHED_TAG);
+				fragment = TopTenFragment.newInstance(top, SNATCHED_TAG);
 			}
 			if (tag.equals(TRANS_ALL_TIME_TAB)) {
-				fragment = new TopTenFragment(top.getResponse(), DATA_TAG);
+				fragment = TopTenFragment.newInstance(top, DATA_TAG);
 			}
 			if (tag.equals(SEEDED_ALL_TIME_TAB)) {
-				fragment = new TopTenFragment(top.getResponse(), SEEDED_TAG);
+				fragment = TopTenFragment.newInstance(top, SEEDED_TAG);
 			}
 			return fragment;
 		}
