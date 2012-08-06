@@ -134,8 +134,15 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			forumSections = MySoup.loadForumSections();
-			return forumSections.getStatus();
+			boolean toReturn;
+			try {
+				forumSections = MySoup.loadForumSections();
+				toReturn = forumSections.getStatus();
+			} catch (Exception e) {
+				e.printStackTrace();
+				toReturn = false;
+			}
+			return toReturn;
 		}
 
 		@Override

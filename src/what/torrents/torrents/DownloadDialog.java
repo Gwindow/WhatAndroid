@@ -1,5 +1,6 @@
 package what.torrents.torrents;
 
+import what.gui.R;
 import what.settings.Settings;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -7,7 +8,11 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.LayoutInflater;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+import api.cli.Utils;
 import api.soup.MySoup;
 import api.util.CouldNotLoadException;
 
@@ -21,19 +26,61 @@ public class DownloadDialog extends AlertDialog.Builder implements OnClickListen
 	private static final String PYWA_BUTTON = "Send to pyWA";
 	private final int torrentId;
 	private final String downloadUrl;
+	private final Number size;
+	private final Number snatches;
+	private final Number seeders;
+	private final Number leechers;
+	private final Context context;
 
 	/**
 	 * @param arg0
 	 */
-	public DownloadDialog(Context context, int torrentId, String downloadUrl) {
+	public DownloadDialog(Context context, Number torrentId, String downloadUrl, Number size, Number snatches, Number seeders,
+			Number leechers) {
 		super(context);
+		this.context = context;
 		this.downloadUrl = downloadUrl;
-		this.torrentId = torrentId;
+		this.torrentId = torrentId.intValue();
 
+		this.leechers = leechers;
+		this.seeders = seeders;
+		this.snatches = snatches;
+		this.size = size;
+
+		init();
+	}
+
+	private void init() {
 		setTitle(DIALOG_TITLE);
 		setCancelable(true);
 		setPositiveButton(DOWNLOAD_BUTTON, this);
 		setNegativeButton(PYWA_BUTTON, this);
+
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.download_dialog, null);
+
+		TextView size_view = (TextView) layout.findViewById(R.id.size);
+		if (size != null) {
+			size_view.setText("Size: " + Utils.toHumanReadableSize(size.longValue()));
+		}
+
+		TextView snatches_view = (TextView) layout.findViewById(R.id.snatches);
+		if (snatches != null) {
+			snatches_view.setText("Snatches: " + snatches);
+		}
+
+		TextView seeders_view = (TextView) layout.findViewById(R.id.seeders);
+		if (seeders != null) {
+			seeders_view.setText("Seeders: " + seeders);
+		}
+
+		TextView leechers_view = (TextView) layout.findViewById(R.id.leechers);
+		if (leechers != null) {
+			leechers_view.setText("Leechers: " + leechers);
+		}
+
+		setView(layout);
+
 		create();
 		show();
 	}

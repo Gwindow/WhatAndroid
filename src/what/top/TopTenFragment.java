@@ -13,12 +13,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import api.cli.Utils;
 import api.top.Response;
-import api.util.Tuple;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuItem;
@@ -27,7 +26,7 @@ import com.actionbarsherlock.view.MenuItem;
  * @author Gwindow
  * @since Jul 15, 2012 12:20:25 PM
  */
-public class TopTenFragment extends SherlockFragment implements OnClickListener {
+public class TopTenFragment extends SherlockFragment implements OnClickListener, OnLongClickListener {
 	private static final int DOWNLOAD_TAG = 0;
 	private static final int GROUP_TAG = 1;
 	private final List<Response> response;
@@ -74,23 +73,18 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener 
 
 					format.setText(format_string);
 					format.setOnClickListener(this);
+					format.setOnLongClickListener(this);
 					format.setId(GROUP_TAG);
-					format.setTag(response.get(j).getResults().get(i).getGroupId().intValue());
 
-					TextView size = (TextView) formats_torrent_layout.findViewById(R.id.size);
-					size.setText("Data: " + Utils.toHumanReadableSize(response.get(j).getResults().get(i).getData().longValue()));
-					TextView snatches = (TextView) formats_torrent_layout.findViewById(R.id.snatches);
-					snatches.setText("Snatches: " + response.get(j).getResults().get(i).getSnatched());
-					TextView seeders = (TextView) formats_torrent_layout.findViewById(R.id.seeders);
-					seeders.setText("Seeders: " + response.get(j).getResults().get(i).getSeeders());
-					TextView leechers = (TextView) formats_torrent_layout.findViewById(R.id.leechers);
-					leechers.setText("Leechers: " + response.get(j).getResults().get(i).getLeechers());
+					Object[] array = new Object[6];
+					array[0] = response.get(j).getResults().get(i).getGroupId();
+					array[1] = response.get(j).getResults().get(i).getDownloadLink();
+					array[2] = response.get(j).getResults().get(i).getData();
+					array[3] = response.get(j).getResults().get(i).getSnatched();
+					array[4] = response.get(j).getResults().get(i).getSeeders();
+					array[5] = response.get(j).getResults().get(i).getLeechers();
+					format.setTag(array);
 
-					TextView download = (TextView) formats_torrent_layout.findViewById(R.id.download);
-					download.setOnClickListener(this);
-					download.setId(DOWNLOAD_TAG);
-					download.setTag(new Tuple<Integer, String>(response.get(j).getResults().get(i).getTorrentId().intValue(),
-							response.get(j).getResults().get(i).getDownloadLink()));
 					scrollLayout.addView(formats_torrent_layout);
 				}
 			}
@@ -99,19 +93,22 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener 
 
 	@Override
 	public void onClick(View v) {
-		if (v.getId() == DOWNLOAD_TAG) {
-			@SuppressWarnings("unchecked")
-			Tuple<Integer, String> tuple = ((Tuple<Integer, String>) v.getTag());
-			new DownloadDialog(getSherlockActivity(), tuple.getA().intValue(), tuple.getB());
-		}
-
 		if (v.getId() == GROUP_TAG) {
+			Object[] array = (Object[]) v.getTag();
 			Intent intent = new Intent(getActivity(), TorrentGroupActivity.class);
 			Bundle bundle = new Bundle();
-			bundle.putInt(BundleKeys.TORRENT_GROUP_ID, (Integer) v.getTag());
+			bundle.putInt(BundleKeys.TORRENT_GROUP_ID, ((Number) array[0]).intValue());
 			intent.putExtras(bundle);
 			startActivity(intent);
 		}
+	}
+
+	@Override
+	public boolean onLongClick(View v) {
+		Object[] array = (Object[]) v.getTag();
+		new DownloadDialog(getSherlockActivity(), (Number) array[0], (String) array[1], (Number) array[2], (Number) array[3],
+				(Number) array[4], (Number) array[5]);
+		return false;
 	}
 
 	@Override

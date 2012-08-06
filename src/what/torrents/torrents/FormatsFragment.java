@@ -9,10 +9,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import api.cli.Utils;
 import api.torrents.torrents.Response;
 import api.torrents.torrents.Torrents;
@@ -25,7 +25,7 @@ import com.actionbarsherlock.view.MenuItem;
  * @author Gwindow
  * @since Jun 1, 2012 10:58:17 PM
  */
-public class FormatsFragment extends SherlockFragment implements OnClickListener {
+public class FormatsFragment extends SherlockFragment implements OnClickListener, OnLongClickListener {
 	private static final int DOWNLOAD_TAG = 0;
 
 	private LinearLayout scrollLayout;
@@ -108,20 +108,17 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
 					torrents.get(i).isFreeTorrent() == true ? "Freeleech! " + torrents.get(i).getMediaFormatEncoding() : torrents
 							.get(i).getMediaFormatEncoding();
 			format.setText(format_string);
+			format.setOnLongClickListener(this);
 
-			TextView size = (TextView) formats_torrent_layout.findViewById(R.id.size);
-			size.setText("Size: " + Utils.toHumanReadableSize(torrents.get(i).getSize().longValue()));
-			TextView snatches = (TextView) formats_torrent_layout.findViewById(R.id.snatches);
-			snatches.setText("Snatches: " + torrents.get(i).getSnatched());
-			TextView seeders = (TextView) formats_torrent_layout.findViewById(R.id.seeders);
-			seeders.setText("Seeders: " + torrents.get(i).getSeeders());
-			TextView leechers = (TextView) formats_torrent_layout.findViewById(R.id.leechers);
-			leechers.setText("Leechers: " + torrents.get(i).getLeechers());
+			Object[] array = new Object[6];
+			array[0] = torrents.get(i).getId();
+			array[1] = torrents.get(i).getDownloadLink();
+			array[2] = torrents.get(i).getSize();
+			array[3] = torrents.get(i).getSnatched();
+			array[4] = torrents.get(i).getSeeders();
+			array[5] = torrents.get(i).getLeechers();
+			format.setTag(array);
 
-			TextView download = (TextView) formats_torrent_layout.findViewById(R.id.download);
-			download.setOnClickListener(this);
-			download.setId(DOWNLOAD_TAG);
-			download.setTag(new Tuple<Integer, String>(torrents.get(i).getId().intValue(), torrents.get(i).getDownloadLink()));
 			scrollLayout.addView(formats_torrent_layout);
 
 		}
@@ -136,12 +133,15 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
 	}
 
 	@Override
+	public boolean onLongClick(View v) {
+		Object[] array = (Object[]) v.getTag();
+		new DownloadDialog(getSherlockActivity(), (Number) array[0], (String) array[1], (Number) array[2], (Number) array[3],
+				(Number) array[4], (Number) array[5]);
+		return false;
+	}
+
+	@Override
 	public void onClick(View v) {
-		if (v.getId() == DOWNLOAD_TAG) {
-			Toast.makeText(getSherlockActivity(), "pressed", Toast.LENGTH_SHORT).show();
-			@SuppressWarnings("unchecked")
-			Tuple<Integer, String> tuple = ((Tuple<Integer, String>) v.getTag());
-			new DownloadDialog(getSherlockActivity(), tuple.getA().intValue(), tuple.getB());
-		}
+
 	}
 }

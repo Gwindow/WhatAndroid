@@ -23,6 +23,7 @@
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:textSize">17dip</item>
+        <item name="android:clickable">true</item>
     </style>
 
     <style name="ForumCategory">
@@ -58,6 +59,7 @@
     </style>
 
     <style name="InboxMessageSecondary">
+        <item name="android:clickable">true</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
@@ -144,7 +146,13 @@
     <style name="TorrentFormatSecondary">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:singleLine">true</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:textSize">17dip</item>
+    </style>
+
+    <style name="DownloadDialog">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">17dip</item>
     </style>
 

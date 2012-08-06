@@ -5,74 +5,18 @@
     android:orientation="vertical"
     android:padding="15dip" >
 
-    <what.gui.ViewSlider
-        android:id="@+id/viewSlider"
+    <LinearLayout
+        android:id="@+id/primaryLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dip" >
 
-        <LinearLayout
-            android:id="@+id/primaryLayout"
+        <TextView
+            android:id="@+id/format"
+            style="@style/TorrentFormatTitle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <TextView
-                android:id="@+id/format"
-                style="@style/TorrentFormatTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-            </TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/secondaryLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/size"
-                style="@style/TorrentFormatSecondary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/snatches"
-                style="@style/TorrentFormatSecondary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/seeders"
-                style="@style/TorrentFormatSecondary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/leechers"
-                style="@style/TorrentFormatSecondary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/download"
-                android:clickable="true"
-                style="@style/TorrentFormatSecondary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Download"
-                android:textStyle="bold" >
-            </TextView>
-        </LinearLayout>
-    </what.gui.ViewSlider>
+            android:layout_height="wrap_content" >
+        </TextView>
+    </LinearLayout>
 
 </LinearLayout>

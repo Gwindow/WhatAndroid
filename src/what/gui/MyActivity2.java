@@ -54,6 +54,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(Settings.getHomeIcon());
 		getSupportActionBar().setDisplayShowCustomEnabled(true);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
+
 		LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View v = inflator.inflate(R.layout.actionbar_title, null);
