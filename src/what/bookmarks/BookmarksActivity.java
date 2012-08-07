@@ -32,8 +32,8 @@ public class BookmarksActivity extends MyActivity2 {
 	private ViewPager pager;
 	private PageIndicator indicator;
 
-	private Bookmarks artistBookmarks;
-	private Bookmarks torrentBookmarks;
+	protected static Bookmarks artistBookmarks;
+	protected static Bookmarks torrentBookmarks;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -117,10 +117,10 @@ public class BookmarksActivity extends MyActivity2 {
 				// fragment = new CoverArtGridFragment(torrentBookmarks);
 			}
 			if (tag.equals(TORRENTS_TAB)) {
-				fragment = TorrentsFragment.newInstance(torrentBookmarks);
+				fragment = TorrentsFragment.newInstance();
 			}
 			if (tag.equals(ARTISTS_TAB)) {
-				fragment = ArtistsFragment.newInstance(artistBookmarks);
+				fragment = ArtistsFragment.newInstance();
 			}
 			return fragment;
 		}
