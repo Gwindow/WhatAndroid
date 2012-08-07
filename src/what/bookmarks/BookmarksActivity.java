@@ -1,6 +1,5 @@
 package what.bookmarks;
 
-import what.fragments.CoverArtGridFragment;
 import what.gui.ActivityNames;
 import what.gui.Cancelable;
 import what.gui.ErrorToast;
@@ -105,7 +104,7 @@ public class BookmarksActivity extends MyActivity2 {
 
 	}
 
-	private class BookmarksAdapater extends FragmentPagerAdapter implements TitleProvider {
+	public class BookmarksAdapater extends FragmentPagerAdapter implements TitleProvider {
 		public BookmarksAdapater(FragmentManager fm) {
 			super(fm);
 		}
@@ -115,13 +114,13 @@ public class BookmarksActivity extends MyActivity2 {
 			Fragment fragment = null;
 			String tag = TABS[position % TABS.length];
 			if (tag.equals(COVERS_TAB)) {
-				fragment = new CoverArtGridFragment(torrentBookmarks.getResponse().getTorrents());
+				// fragment = new CoverArtGridFragment(torrentBookmarks);
 			}
 			if (tag.equals(TORRENTS_TAB)) {
-				fragment = new TorrentsFragment(torrentBookmarks.getResponse().getTorrents());
+				fragment = TorrentsFragment.newInstance(torrentBookmarks);
 			}
 			if (tag.equals(ARTISTS_TAB)) {
-				fragment = new ArtistsFragment(artistBookmarks.getResponse().getArtists());
+				fragment = ArtistsFragment.newInstance(artistBookmarks);
 			}
 			return fragment;
 		}

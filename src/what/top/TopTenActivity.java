@@ -43,7 +43,7 @@ public class TopTenActivity extends MyActivity2 {
 	private ViewPager pager;
 	private PageIndicator indicator;
 
-	protected Top top;
+	private Top top;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

@@ -31,4 +31,7 @@ public class BundleKeys {
 	public static final String USER_SEARCH_PAGE = "userSearchPage";
 	public static final String REQUESTS_SEARCH_PAGE = "requestsSearchPage";
 	public static final String URL = "url";
+	public static final String SAVED_JSON = "savedJson";
+	public static final String TAG = "tag";
+
 }

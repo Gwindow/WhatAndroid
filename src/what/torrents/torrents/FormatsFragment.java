@@ -2,6 +2,7 @@ package what.torrents.torrents;
 
 import java.util.List;
 
+import what.gui.DownloadDialog;
 import what.gui.MyActivity2;
 import what.gui.MyScrollView;
 import what.gui.R;
@@ -97,16 +98,15 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
 				TextView header = (TextView) inflater.inflate(R.layout.formats_header, null);
 				scrollLayout.addView(header);
 				String header_string =
-						torrents.get(i).isRemastered() == true ? torrents.get(i).getRemaster() : response.getGroup()
-								.getOriginal();
+						torrents.get(i).isRemastered() == true ? torrents.get(i).getRemaster() : response.getGroup().getOriginal();
 				header.setText(header_string);
 			}
 			LinearLayout formats_torrent_layout = (LinearLayout) inflater.inflate(R.layout.formats_torrent, null);
 
 			TextView format = (TextView) formats_torrent_layout.findViewById(R.id.format);
 			String format_string =
-					torrents.get(i).isFreeTorrent() == true ? "Freeleech! " + torrents.get(i).getMediaFormatEncoding() : torrents
-							.get(i).getMediaFormatEncoding();
+					torrents.get(i).isFreeTorrent() == true ? "Freeleech! " + torrents.get(i).getMediaFormatEncoding() : torrents.get(i)
+							.getMediaFormatEncoding();
 			format.setText(format_string);
 			format.setOnLongClickListener(this);
 

@@ -3,14 +3,13 @@ package what.top;
 import java.util.List;
 
 import what.gui.BundleKeys;
+import what.gui.DownloadDialog;
 import what.gui.MyActivity2;
 import what.gui.MyScrollView;
 import what.gui.R;
-import what.torrents.torrents.DownloadDialog;
 import what.torrents.torrents.TorrentGroupActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,8 +29,7 @@ import com.actionbarsherlock.view.MenuItem;
  * @since Jul 15, 2012 12:20:25 PM
  */
 public class TopTenFragment extends SherlockFragment implements OnClickListener, OnLongClickListener {
-	private static final int DOWNLOAD_TAG = 0;
-	private static final int GROUP_TAG = 1;
+	private static final int GROUP_TAG = 0;
 	private Top top;
 	private String tag;
 	private LinearLayout scrollLayout;
@@ -57,16 +55,13 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener,
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if ((savedInstanceState != null)) {
-			top = (Top) MySon.toObjectFromString(savedInstanceState.getString("top"), Top.class);
-			tag = savedInstanceState.getString("tag");
-			Log.d("fragment", top.getResponse().get(0).getCaption());
-		} else {
-			Log.d("fragment", "null");
+			top = (Top) MySon.toObjectFromString(savedInstanceState.getString(BundleKeys.SAVED_JSON), Top.class);
+			tag = savedInstanceState.getString(BundleKeys.TAG);
 		}
 		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
 		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 		scrollLayout = (LinearLayout) view.findViewById(R.id.scrollLayout);
-		// populateMusic();
+		populateMusic();
 		return view;
 	}
 
@@ -141,9 +136,8 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener,
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putString("top", MySon.toJson(top, Top.class));
-		outState.putString("tag", tag);
+		outState.putString(BundleKeys.SAVED_JSON, MySon.toJson(top, Top.class));
+		outState.putString(BundleKeys.TAG, tag);
 
-		Log.d("fragment", "saved");
 	}
 }

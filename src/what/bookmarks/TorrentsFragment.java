@@ -15,7 +15,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import api.bookmarks.Bookmarks;
 import api.bookmarks.Torrents;
+import api.son.MySon;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
@@ -29,15 +31,27 @@ import com.actionbarsherlock.view.MenuItem;
 public class TorrentsFragment extends SherlockFragment implements OnClickListener {
 	private static final int TORRENTGROUP_TAG = 0;
 	private LinearLayout scrollLayout;
-	private List<Torrents> bookmarks;
+	private Bookmarks bookmarks;
 	private MyScrollView scrollView;
 
-	public TorrentsFragment(List<Torrents> bookmarks) {
+	public TorrentsFragment(Bookmarks bookmarks) {
 		this.bookmarks = bookmarks;
+	}
+
+	public TorrentsFragment() {
+		super();
+	}
+
+	public static SherlockFragment newInstance(Bookmarks bookmarks) {
+		return new TorrentsFragment(bookmarks);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		if ((savedInstanceState != null)) {
+			bookmarks = (Bookmarks) MySon.toObjectFromString(savedInstanceState.getString(BundleKeys.SAVED_JSON), Bookmarks.class);
+		}
+
 		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
 		setHasOptionsMenu(true);
 		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
@@ -48,13 +62,13 @@ public class TorrentsFragment extends SherlockFragment implements OnClickListene
 
 	private void populate(View view, LayoutInflater inflater) {
 		if (bookmarks != null) {
-			for (int i = 0; i < bookmarks.size(); i++) {
-				// TODO view slider
+			List<Torrents> torrents = bookmarks.getResponse().getTorrents();
+			for (int i = 0; i < torrents.size(); i++) {
 				TextView torrentgroup_title = (TextView) inflater.inflate(R.layout.bookmarks_torrentgroup_title, null);
-				torrentgroup_title.setText(bookmarks.get(i).getName());
+				torrentgroup_title.setText(torrents.get(i).getName());
 				torrentgroup_title.setOnClickListener(this);
 				torrentgroup_title.setTag(TORRENTGROUP_TAG);
-				torrentgroup_title.setId(bookmarks.get(i).getId().intValue());
+				torrentgroup_title.setId(torrents.get(i).getId().intValue());
 				scrollLayout.addView(torrentgroup_title);
 			}
 		}
@@ -90,5 +104,11 @@ public class TorrentsFragment extends SherlockFragment implements OnClickListene
 			return ((MyActivity2) getSherlockActivity()).homeIconJump(scrollView);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(BundleKeys.SAVED_JSON, MySon.toJson(bookmarks, Bookmarks.class));
 	}
 }
