@@ -50,6 +50,12 @@ public class TorrentGroupActivity extends MyActivity2 {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		if ((savedInstanceState != null)) {
+			boolean refresh = savedInstanceState.getBoolean(BundleKeys.REFRESH);
+			if (refresh) {
+				refresh();
+			}
+		}
 		super.setActivityName(ActivityNames.MUSIC);
 		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
@@ -114,8 +120,7 @@ public class TorrentGroupActivity extends MyActivity2 {
 		if (torrentGroup.getResponse().getGroup().getCategoryName().equals(MUSIC_CATEGORY)) {
 			Intent intent = new Intent(this, ArtistActivity.class);
 			Bundle bundle = new Bundle();
-			bundle.putInt(BundleKeys.ARTIST_ID, torrentGroup.getResponse().getGroup().getMusicInfo().getArtists().get(0).getId()
-					.intValue());
+			bundle.putInt(BundleKeys.ARTIST_ID, torrentGroup.getResponse().getGroup().getMusicInfo().getArtists().get(0).getId().intValue());
 			intent.putExtras(bundle);
 			startActivity(intent);
 		}
@@ -225,6 +230,12 @@ public class TorrentGroupActivity extends MyActivity2 {
 	public void prepare() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(BundleKeys.REFRESH, true);
 	}
 
 }

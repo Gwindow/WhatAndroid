@@ -46,6 +46,13 @@ public class ArtistActivity extends MyActivity2 {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		if ((savedInstanceState != null)) {
+			boolean refresh = savedInstanceState.getBoolean(BundleKeys.REFRESH);
+			if (refresh) {
+				refresh();
+			}
+		}
+
 		super.setActivityName(ActivityNames.MUSIC);
 		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
@@ -203,4 +210,11 @@ public class ArtistActivity extends MyActivity2 {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(BundleKeys.REFRESH, true);
+	}
+
 }

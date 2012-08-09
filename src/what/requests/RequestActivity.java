@@ -40,6 +40,12 @@ public class RequestActivity extends MyActivity2 {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		if ((savedInstanceState != null)) {
+			boolean refresh = savedInstanceState.getBoolean(BundleKeys.REFRESH);
+			if (refresh) {
+				refresh();
+			}
+		}
 		super.setActivityName(ActivityNames.REQUEST);
 		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
@@ -168,4 +174,11 @@ public class RequestActivity extends MyActivity2 {
 	public void prepare() {
 		// TODO Auto-generated method stub
 	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(BundleKeys.REFRESH, true);
+	}
+
 }

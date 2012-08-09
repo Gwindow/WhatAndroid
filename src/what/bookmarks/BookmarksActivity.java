@@ -1,6 +1,7 @@
 package what.bookmarks;
 
 import what.gui.ActivityNames;
+import what.gui.BundleKeys;
 import what.gui.Cancelable;
 import what.gui.ErrorToast;
 import what.gui.MyActivity2;
@@ -37,6 +38,13 @@ public class BookmarksActivity extends MyActivity2 {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		if ((savedInstanceState != null)) {
+			boolean refresh = savedInstanceState.getBoolean(BundleKeys.REFRESH);
+			if (refresh) {
+				refresh();
+			}
+		}
+
 		super.setActivityName(ActivityNames.BOOKMARKS);
 		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
@@ -146,6 +154,12 @@ public class BookmarksActivity extends MyActivity2 {
 	public void prepare() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(BundleKeys.REFRESH, true);
 	}
 
 }

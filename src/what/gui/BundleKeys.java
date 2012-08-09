@@ -33,5 +33,6 @@ public class BundleKeys {
 	public static final String URL = "url";
 	public static final String SAVED_JSON = "savedJson";
 	public static final String TAG = "tag";
+	public static final String REFRESH = "refresh";
 
 }

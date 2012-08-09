@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import api.bookmarks.Bookmarks;
 import api.bookmarks.Torrents;
-import api.son.MySon;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
@@ -48,10 +47,6 @@ public class TorrentsFragment extends SherlockFragment implements OnClickListene
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		if ((savedInstanceState != null)) {
-			bookmarks = (Bookmarks) MySon.toObjectFromString(savedInstanceState.getString(BundleKeys.SAVED_JSON), Bookmarks.class);
-		}
-
 		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
 		setHasOptionsMenu(true);
 		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
@@ -106,9 +101,4 @@ public class TorrentsFragment extends SherlockFragment implements OnClickListene
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putString(BundleKeys.SAVED_JSON, MySon.toJson(bookmarks, Bookmarks.class));
-	}
 }

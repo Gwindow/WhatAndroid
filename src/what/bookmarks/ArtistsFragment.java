@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import api.bookmarks.Artist;
 import api.bookmarks.Bookmarks;
-import api.son.MySon;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
@@ -49,12 +48,6 @@ public class ArtistsFragment extends SherlockFragment implements OnClickListener
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		if (savedInstanceState != null) {
-			bookmarks = (Bookmarks) MySon.toObjectFromString(savedInstanceState.getString(BundleKeys.SAVED_JSON), Bookmarks.class);
-			Log.d("fragment", "loaded");
-		} else {
-			Log.d("fragment", "NULL");
-		}
 		View view = inflater.inflate(R.layout.generic_endless_scrollview, container, false);
 		setHasOptionsMenu(true);
 		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
@@ -111,10 +104,4 @@ public class ArtistsFragment extends SherlockFragment implements OnClickListener
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putString(BundleKeys.SAVED_JSON, MySon.toJson(bookmarks, Bookmarks.class));
-		Log.d("fragment", "saved");
-	}
 }
