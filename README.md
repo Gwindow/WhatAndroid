@@ -1,5 +1,3 @@
-### This branch is no longer under development, [the ics branch](https://github.com/Gwindow/WhatAndroid/tree/ics) is now the active branch and will soon become the master branch. 
-
 The What.CD Android App
 -----------------------
 
