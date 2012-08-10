@@ -55,6 +55,10 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 	private TorrentComments torrentComments;
 	private MyImageLoader imageLoader;
 
+	public CommentsFragment() {
+		super();
+	}
+
 	public CommentsFragment(int groupId, MyActivity2 ctx) {
 		this.groupId = groupId;
 		this.mCtx = ctx;
@@ -239,5 +243,14 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 		private void hideProgressBar() {
 			scrollLayout.removeViewAt(scrollLayout.getChildCount() - 1);
 		}
+	}
+
+	/**
+	 * @param torrentGroupId
+	 * @param act
+	 * @return
+	 */
+	public static SherlockFragment newInstance(int torrentGroupId, MyActivity2 act) {
+		return new CommentsFragment(torrentGroupId, act);
 	}
 }

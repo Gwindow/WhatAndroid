@@ -83,16 +83,6 @@ public class RequestActivity extends MyActivity2 {
 
 	}
 
-	@Override
-	public void onPause() {
-		try {
-			ArtFragment.recyle();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		super.onPause();
-	}
-
 	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		public Load() {
 			attachCancelable(this);
@@ -110,7 +100,7 @@ public class RequestActivity extends MyActivity2 {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			request = Request.requestFromId(requestId);
+			request = Request.fromId(requestId);
 			return request.getStatus();
 		}
 
@@ -136,13 +126,13 @@ public class RequestActivity extends MyActivity2 {
 			Fragment fragment = null;
 			String tag = TABS[position % TABS.length];
 			if (tag.equals(ART_TAB)) {
-				fragment = new ArtFragment(request.getResponse().getImage());
+				fragment = ArtFragment.newInstance(request.getResponse().getImage());
 			}
 			if (tag.equals(DESC_TAB)) {
-				fragment = new DescriptionFragment(request.getResponse().getDescription());
+				fragment = DescriptionFragment.newInstance(request.getResponse().getDescription());
 			}
 			if (tag.equals(DETAILS_TAB)) {
-				fragment = new DetailsFragment(request.getResponse());
+				fragment = DetailsFragment.newInstance(request.getResponse());
 			}
 			return fragment;
 		}

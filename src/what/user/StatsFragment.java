@@ -27,6 +27,10 @@ public class StatsFragment extends SherlockFragment {
 	private Profile profile;
 	private MyScrollView scrollView;
 
+	public StatsFragment() {
+		super();
+	}
+
 	public StatsFragment(Profile profile) {
 		this.profile = profile;
 	}

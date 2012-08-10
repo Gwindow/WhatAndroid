@@ -24,8 +24,12 @@ import com.actionbarsherlock.view.MenuItem;
 public class DetailsFragment extends SherlockFragment {
 
 	private LinearLayout scrollLayout;
-	private final Response response;
+	private Response response;
 	private MyScrollView scrollView;
+
+	public DetailsFragment() {
+		super();
+	}
 
 	/**
 	 * @param response
@@ -89,6 +93,14 @@ public class DetailsFragment extends SherlockFragment {
 			return ((MyActivity2) getSherlockActivity()).homeIconJump(scrollView);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * @param response2
+	 * @return
+	 */
+	public static SherlockFragment newInstance(Response response) {
+		return new DetailsFragment(response);
 	}
 
 }

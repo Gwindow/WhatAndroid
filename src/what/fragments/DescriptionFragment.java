@@ -20,6 +20,10 @@ import com.actionbarsherlock.view.MenuItem;
 public class DescriptionFragment extends SherlockFragment {
 	private String description;
 
+	public DescriptionFragment() {
+		super();
+	}
+
 	public DescriptionFragment(String description) {
 		this.description = description;
 	}
@@ -53,5 +57,13 @@ public class DescriptionFragment extends SherlockFragment {
 			return ((MyActivity2) getSherlockActivity()).homeIconJump(null);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * @param body
+	 * @return
+	 */
+	public static SherlockFragment newInstance(String body) {
+		return new DescriptionFragment(body);
 	}
 }

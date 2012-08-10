@@ -30,6 +30,10 @@ public class MusicFragment extends SherlockFragment implements OnClickListener {
 	private List<TorrentGroup> torrentGroups;
 	private MyScrollView scrollView;
 
+	public MusicFragment() {
+		super();
+	}
+
 	public MusicFragment(List<TorrentGroup> torrentGroups) {
 		this.torrentGroups = torrentGroups;
 	}
@@ -88,6 +92,14 @@ public class MusicFragment extends SherlockFragment implements OnClickListener {
 		bundle.putInt(BundleKeys.TORRENT_GROUP_ID, id);
 		intent.putExtras(bundle);
 		startActivity(intent);
+	}
+
+	/**
+	 * @param torrentgroup
+	 * @return
+	 */
+	public static SherlockFragment newInstance(List<TorrentGroup> torrentgroup) {
+		return new MusicFragment(torrentgroup);
 	}
 
 }

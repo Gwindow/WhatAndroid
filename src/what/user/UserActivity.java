@@ -55,7 +55,6 @@ public class UserActivity extends MyActivity2 {
 				refresh();
 			}
 		}
-
 		super.setActivityName(ActivityNames.USER);
 		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
@@ -66,6 +65,7 @@ public class UserActivity extends MyActivity2 {
 	 */
 	@Override
 	public void init() {
+
 		Bundle bundle = getIntent().getExtras();
 		try {
 			userId = bundle.getInt(BundleKeys.USER_ID);
@@ -140,16 +140,6 @@ public class UserActivity extends MyActivity2 {
 		Toast.makeText(this, "Added to Friends list", Toast.LENGTH_SHORT).show();
 	}
 
-	@Override
-	public void onPause() {
-		try {
-			ArtFragment.recyle();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		super.onPause();
-	}
-
 	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		public Load() {
 			attachCancelable(this);
@@ -167,7 +157,7 @@ public class UserActivity extends MyActivity2 {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			user = User.userFromId(userId);
+			user = User.fromId(userId);
 			return user.getStatus();
 		}
 
@@ -183,7 +173,7 @@ public class UserActivity extends MyActivity2 {
 		}
 	}
 
-	private class UserAdapter extends FragmentPagerAdapter implements TitleProvider {
+	public class UserAdapter extends FragmentPagerAdapter implements TitleProvider {
 		public UserAdapter(FragmentManager fm) {
 			super(fm);
 		}

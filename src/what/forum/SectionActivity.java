@@ -280,7 +280,7 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			section = Section.sectionFromIdAndPage(sectionId, sectionPage);
+			section = Section.fromIdAndPage(sectionId, sectionPage);
 			return section.getStatus();
 		}
 

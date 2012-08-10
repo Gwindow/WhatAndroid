@@ -215,7 +215,7 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			conversation = Conversation.conversationFromId(conversationId);
+			conversation = Conversation.fromId(conversationId);
 			return conversation.getStatus();
 		}
 

@@ -246,7 +246,7 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			inbox = Inbox.inboxFromPage(inboxPage);
+			inbox = Inbox.fromPage(inboxPage);
 			return inbox.getStatus();
 		}
 

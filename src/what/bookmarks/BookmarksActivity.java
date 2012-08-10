@@ -89,10 +89,10 @@ public class BookmarksActivity extends MyActivity2 {
 		protected Boolean doInBackground(Void... params) {
 			Tuple<Boolean, Boolean> tuple = new Tuple<Boolean, Boolean>(false, false);
 			boolean status = false;
-			artistBookmarks = Bookmarks.initArtistBookmarks();
+			artistBookmarks = Bookmarks.artistBookmarks();
 			tuple.setA(artistBookmarks.getStatus());
 
-			torrentBookmarks = Bookmarks.initTorrentBookmarks();
+			torrentBookmarks = Bookmarks.torrentBookmarks();
 			tuple.setB(torrentBookmarks.getStatus());
 			if (tuple.getA() == true || tuple.getB() == true) {
 				status = true;

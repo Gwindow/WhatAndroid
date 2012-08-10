@@ -51,7 +51,11 @@ public class ArtFragment extends SherlockFragment {
 	public ArtFragment(String url, int resource) {
 		this.url = url;
 		this.resource = resource;
+	}
 
+	public ArtFragment() {
+		super();
+		this.resource = R.drawable.noartwork;
 	}
 
 	@Override
@@ -141,10 +145,6 @@ public class ArtFragment extends SherlockFragment {
 		return bitmapWithReflection;
 	}
 
-	public static void recyle() {
-		// artBitmap.recycle();
-	}
-
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -156,6 +156,14 @@ public class ArtFragment extends SherlockFragment {
 			return ((MyActivity2) getSherlockActivity()).homeIconJump(null);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * @param image
+	 * @return
+	 */
+	public static SherlockFragment newInstance(String image) {
+		return new ArtFragment(image);
 	}
 
 }

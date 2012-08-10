@@ -148,7 +148,7 @@ public class ArtistActivity extends MyActivity2 {
 		}
 	}
 
-	private class ArtistAdapater extends FragmentPagerAdapter implements TitleProvider {
+	public class ArtistAdapater extends FragmentPagerAdapter implements TitleProvider {
 		public ArtistAdapater(FragmentManager fm) {
 			super(fm);
 		}
@@ -158,16 +158,16 @@ public class ArtistActivity extends MyActivity2 {
 			Fragment fragment = null;
 			String tag = TABS[position % TABS.length];
 			if (tag.equals(ART_TAB)) {
-				fragment = new ArtFragment(artist.getResponse().getImage());
+				fragment = ArtFragment.newInstance(artist.getResponse().getImage());
 			}
 			if (tag.equals(DESCRIPTION_TAB)) {
-				fragment = new DescriptionFragment(artist.getResponse().getBody());
+				fragment = DescriptionFragment.newInstance(artist.getResponse().getBody());
 			}
 			if (tag.equals(MUSIC_TAB)) {
-				fragment = new MusicFragment(artist.getResponse().getTorrentgroup());
+				fragment = MusicFragment.newInstance(artist.getResponse().getTorrentgroup());
 			}
 			if (tag.equals(REQUESTS_TAB)) {
-				fragment = new RequestFragment(artist.getResponse().getRequests());
+				fragment = RequestFragment.newInstance(artist.getResponse().getRequests());
 			}
 			return fragment;
 		}
@@ -181,16 +181,6 @@ public class ArtistActivity extends MyActivity2 {
 		public String getTitle(int position) {
 			return TABS[position % TABS.length];
 		}
-	}
-
-	@Override
-	public void onPause() {
-		try {
-			ArtFragment.recyle();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		super.onPause();
 	}
 
 	/**

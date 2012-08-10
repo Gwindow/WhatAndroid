@@ -133,16 +133,6 @@ public class TorrentGroupActivity extends MyActivity2 {
 		startActivity(intent);
 	}
 
-	@Override
-	public void onPause() {
-		try {
-			ArtFragment.recyle();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		super.onPause();
-	}
-
 	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		public Load() {
 			attachCancelable(this);
@@ -189,16 +179,16 @@ public class TorrentGroupActivity extends MyActivity2 {
 			Fragment fragment = null;
 			String tag = TABS[position % TABS.length];
 			if (tag.equals(ART_TAB)) {
-				fragment = new ArtFragment(torrentGroup.getResponse().getGroup().getWikiImage());
+				fragment = ArtFragment.newInstance(torrentGroup.getResponse().getGroup().getWikiImage());
 			}
 			if (tag.equals(DESCRIPTION_TAB)) {
-				fragment = new DescriptionFragment(torrentGroup.getResponse().getGroup().getWikiBody());
+				fragment = DescriptionFragment.newInstance(torrentGroup.getResponse().getGroup().getWikiBody());
 			}
 			if (tag.equals(FORMATS_TAB)) {
-				fragment = new FormatsFragment(torrentGroup.getResponse());
+				fragment = FormatsFragment.newInstance(torrentGroup.getResponse());
 			}
 			if (tag.equals(COMMENTS_TAB)) {
-				fragment = new CommentsFragment(torrentGroupId, act);
+				fragment = CommentsFragment.newInstance(torrentGroupId, act);
 			}
 			return fragment;
 		}

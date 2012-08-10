@@ -27,8 +27,12 @@ import com.actionbarsherlock.view.MenuItem;
 public class RequestFragment extends SherlockFragment implements OnClickListener {
 	private static final int REQUEST_TAG = 0;
 	private LinearLayout scrollLayout;
-	private final List<Requests> requests;
+	private List<Requests> requests;
 	private MyScrollView scrollView;
+
+	public RequestFragment() {
+		super();
+	}
 
 	/**
 	 * @param requests
@@ -92,5 +96,13 @@ public class RequestFragment extends SherlockFragment implements OnClickListener
 		bundle.putInt(BundleKeys.REQUEST_ID, id);
 		intent.putExtras(bundle);
 		startActivity(intent);
+	}
+
+	/**
+	 * @param requests2
+	 * @return
+	 */
+	public static SherlockFragment newInstance(List<Requests> requests) {
+		return new RequestFragment(requests);
 	}
 }

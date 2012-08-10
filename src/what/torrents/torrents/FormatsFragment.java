@@ -34,6 +34,10 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
 
 	private MyScrollView scrollView;
 
+	public FormatsFragment() {
+		super();
+	}
+
 	public FormatsFragment(Response response) {
 		this.response = response;
 	}
@@ -143,5 +147,13 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
 	@Override
 	public void onClick(View v) {
 
+	}
+
+	/**
+	 * @param response2
+	 * @return
+	 */
+	public static SherlockFragment newInstance(Response response) {
+		return new FormatsFragment(response);
 	}
 }
