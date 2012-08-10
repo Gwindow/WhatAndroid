@@ -29,8 +29,7 @@ import api.util.Updater;
  * @since Jun 5, 2012 7:02:12 PM
  */
 public class UpdateChecker {
-	public static final double VERSION = 0.50;
-	private static final String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/index.html";
+	private static final String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/updater.html";
 	private Updater updater;
 	private Context context;
 
@@ -87,9 +86,7 @@ public class UpdateChecker {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
-		// TODO remove
-		// return installedVersion;
-		return VERSION;
+		return installedVersion;
 	}
 
 	private class CheckUpdates extends AsyncTask<String, Void, Boolean> {
@@ -160,13 +157,11 @@ public class UpdateChecker {
 			dialog.dismiss();
 			if (status) {
 				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setDataAndType(
-						Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/download/" + "WhatAndroid.apk")),
+				intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/download/" + "WhatAndroid.apk")),
 						"application/vnd.android.package-archive");
 				context.startActivity(intent);
 			} else {
-				Toast.makeText(context, "Update failed, install manually from http://bit.ly/git_wa_build/", Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(context, "Update failed, install manually from http://bit.ly/git_wa_build/", Toast.LENGTH_LONG).show();
 			}
 		}
 	}

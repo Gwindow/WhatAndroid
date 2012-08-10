@@ -26,8 +26,8 @@ public class Settings {
 		themes.put("Old E and 4 Blunts by amxtrash", new Tuple<Integer, Integer>(R.style.Theme_old_e_and_four_blunts,
 				R.color.old_e_and_four_blunts));
 		themes.put("Watermelon by senatortom", new Tuple<Integer, Integer>(R.style.Theme_watermelon, R.color.watermelon));
-		themes.put("Ridejckl's Barbie Convertible by ridejckl", new Tuple<Integer, Integer>(
-				R.style.Theme_ridejkcls_barbie_convertible, R.color.ridejkcls_barbie_convertible));
+		themes.put("Ridejckl's Barbie Convertible by ridejckl", new Tuple<Integer, Integer>(R.style.Theme_ridejkcls_barbie_convertible,
+				R.color.ridejkcls_barbie_convertible));
 		themes.put("Wonder Orange by Guegs", new Tuple<Integer, Integer>(R.style.Theme_wonder_orange, R.color.wonder_orange));
 		themes.put("Dead Camels by Ananke", new Tuple<Integer, Integer>(R.style.Theme_dead_camels, R.color.dead_camels));
 		themes.put("Mono by dr4g0n", new Tuple<Integer, Integer>(R.style.Theme_mono, R.color.mono));
@@ -58,6 +58,33 @@ public class Settings {
 		settings = PreferenceManager.getDefaultSharedPreferences(c);
 		settingsEditor = settings.edit();
 
+	}
+
+	public static boolean getTipsFirstRun() {
+		boolean b = settings.getBoolean("tips_first_run_shown", false);
+		if (!b) {
+			settingsEditor.putBoolean("tips_first_run_shown", true);
+		}
+		return b;
+	}
+
+	public static boolean getFirstHome() {
+		boolean b = settings.getBoolean("tips_home_shown", false);
+		if (!b) {
+			settingsEditor.putBoolean("tips_home_shown", true);
+		}
+		return b;
+	}
+
+	/**
+	 * @return
+	 */
+	public static boolean getFirstForum() {
+		boolean b = settings.getBoolean("tips_forum_shown", false);
+		if (!b) {
+			settingsEditor.putBoolean("tips_forum_shown", true);
+		}
+		return b;
 	}
 
 	public static boolean getCaching() {

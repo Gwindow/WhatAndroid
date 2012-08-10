@@ -7,6 +7,7 @@ import what.gui.ActivityNames;
 import what.gui.BundleKeys;
 import what.gui.Cancelable;
 import what.gui.ErrorToast;
+import what.gui.InstructionDialog;
 import what.gui.JumpToPageDialog;
 import what.gui.MyActivity2;
 import what.gui.MyImageLoader;
@@ -112,14 +113,15 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	}
 
 	private void populate() {
+
 		isSubscribed = thread.getResponse().isSubscribed();
 		invalidateOptionsMenu();
 		threadPage = thread.getResponse().getCurrentPage().intValue();
-		setActionBarTitle(thread.getResponse().getThreadTitle() + ", " + threadPage + "/"
-				+ thread.getResponse().getPages().intValue());
+		setActionBarTitle(thread.getResponse().getThreadTitle() + ", " + threadPage + "/" + thread.getResponse().getPages().intValue());
 		if (!isSpoilerAlertShown) {
 			spoilerAlertDialog();
 		}
+		new InstructionDialog(this, InstructionDialog.FORUM);
 		if (thread.getResponse().getPosts() != null) {
 			for (int i = 0; i < thread.getResponse().getPosts().size(); i++) {
 				LinearLayout post_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.thread_post, null);
@@ -359,8 +361,8 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	private void spoilerAlertDialog() {
 		if (thread.getResponse().getThreadTitle().toLowerCase().contains("spoiler")
 				|| thread.getResponse().getThreadId().intValue() == 97258) {
-			Toast.makeText(this, "Hide tags do not work and this thread may contain spoilers. Proceed with caution.",
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Hide tags do not work and this thread may contain spoilers. Proceed with caution.", Toast.LENGTH_LONG)
+					.show();
 		}
 		isSpoilerAlertShown = true;
 	}

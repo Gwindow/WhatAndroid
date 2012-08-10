@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 import what.gui.R;
 import what.inbox.ReportActivity;
-import what.login.UpdateChecker;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -112,9 +111,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
-		// TODO remove
-		// return installedVersion;
-		return UpdateChecker.VERSION;
+		return installedVersion;
 	}
 
 	@Override

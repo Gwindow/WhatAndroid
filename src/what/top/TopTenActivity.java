@@ -23,12 +23,12 @@ import com.viewpagerindicator.TitleProvider;
  */
 public class TopTenActivity extends MyActivity2 {
 	private static final int LIMIT = 10;
-	private static final String UPLOADED_PAST_DAY_TAB = "Uploaded Past Day";
-	private static final String UPLOADED_PAST_WEEK_TAB = "Uploaded Past Week";
-	private static final String ACTIVE_ALL_TIME_TAB = "Most Active";
-	private static final String SNATCHED_ALL_TIME_TAB = "Most Snatched";
-	private static final String TRANS_ALL_TIME_TAB = "Most Transferred";
-	private static final String SEEDED_ALL_TIME_TAB = "Best Seeded";
+	private static final String UPLOADED_PAST_DAY_TAB = "Day";
+	private static final String UPLOADED_PAST_WEEK_TAB = "Week";
+	private static final String ACTIVE_ALL_TIME_TAB = "Active";
+	private static final String SNATCHED_ALL_TIME_TAB = "Snatched";
+	private static final String TRANS_ALL_TIME_TAB = "Transferred";
+	private static final String SEEDED_ALL_TIME_TAB = "Seeded";
 	private static final String[] TABS = new String[] { UPLOADED_PAST_DAY_TAB, UPLOADED_PAST_WEEK_TAB, ACTIVE_ALL_TIME_TAB,
 			SNATCHED_ALL_TIME_TAB, TRANS_ALL_TIME_TAB, SEEDED_ALL_TIME_TAB };
 

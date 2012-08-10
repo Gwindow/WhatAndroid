@@ -7,6 +7,7 @@ import what.gui.ActivityNames;
 import what.gui.BundleKeys;
 import what.gui.Cancelable;
 import what.gui.ErrorToast;
+import what.gui.InstructionDialog;
 import what.gui.MyActivity2;
 import what.gui.R;
 import what.search.TorrentSearchActivity;
@@ -81,6 +82,7 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 	@Override
 	public void prepare() {
 		setActionBarTitle(MySoup.getUsername());
+		new InstructionDialog(this, InstructionDialog.HOME);
 		if (Settings.getShowHomeInfo()) {
 			new LoadInfo().execute();
 		} else {
@@ -203,8 +205,8 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 
 	@Override
 	public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-		if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE
-				|| event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+		if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN
+				&& event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 			Intent intent = new Intent(HomeActivity.this, TorrentSearchActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putString(BundleKeys.SEARCH_STRING, view.getText().toString());
