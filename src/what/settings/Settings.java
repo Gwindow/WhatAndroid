@@ -85,6 +85,7 @@ public class Settings {
 		boolean b = settings.getBoolean("tips_forum_shown", false);
 		if (!b) {
 			settingsEditor.putBoolean("tips_forum_shown", true);
+			settingsEditor.commit();
 		}
 		return b;
 	}
