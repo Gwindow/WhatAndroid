@@ -10,7 +10,7 @@ import android.content.DialogInterface.OnClickListener;
  * @author Gwindow
  * @since Jun 3, 2012 9:43:25 AM
  */
-public class InstructionDialog extends AlertDialog.Builder implements OnClickListener {
+public class InstructionDialog extends AlertDialog implements OnClickListener {
 	public static final int HOME = 0;
 	public static final int FORUM = 1;
 	private Context context;
@@ -18,6 +18,7 @@ public class InstructionDialog extends AlertDialog.Builder implements OnClickLis
 
 	public InstructionDialog(Context context, int tag) {
 		super(context);
+		this.context = context;
 		this.tag = tag;
 		init();
 	}
@@ -29,7 +30,7 @@ public class InstructionDialog extends AlertDialog.Builder implements OnClickLis
 			case HOME:
 				if (!Settings.getFirstHome()) {
 					message =
-							"Touching the icon in the top left will scroll you to the top of a page, touching it again will take you back a page. Double tapping the title of the page will bring you back home. Long touching posts, search results, etc will bring up more options. Please take a moment to configure settings. they can be found through the menu on the top right.";
+							"Thanks for downloading the app! Here are some tips.\nTouching the icon in the top left will scroll you to the top of a page, touching it again will take you back a page.\nDouble tapping the title of the page will bring you back home.\nLong touching posts, search results, etc will bring up more options.\nPlease take a moment to configure settings, they can be found through the menu on the top right.\nEnjoy!";
 				}
 				break;
 			case FORUM:
@@ -41,8 +42,11 @@ public class InstructionDialog extends AlertDialog.Builder implements OnClickLis
 
 		}
 		if (message != null) {
-			create();
+			setTitle("A tip...");
+			setMessage(message);
 			show();
+		} else {
+			dismiss();
 		}
 	}
 

@@ -2,13 +2,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:orderingFromXml="false" >
 
-    <PreferenceCategory android:title="Bug Report/Suggestion" >
+<!--     <PreferenceCategory android:title="Bug Report/Suggestion" >
         <Preference
             android:key="report_preference"
             android:summary="Send Report"
             android:title="Bug/Suggestion Report" >
         </Preference>
-    </PreferenceCategory>
+    </PreferenceCategory> -->
     <PreferenceCategory android:title="UI" >
         <CheckBoxPreference
             android:defaultValue="true"

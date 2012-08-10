@@ -64,6 +64,7 @@ public class Settings {
 		boolean b = settings.getBoolean("tips_first_run_shown", false);
 		if (!b) {
 			settingsEditor.putBoolean("tips_first_run_shown", true);
+			settingsEditor.commit();
 		}
 		return b;
 	}
@@ -72,6 +73,7 @@ public class Settings {
 		boolean b = settings.getBoolean("tips_home_shown", false);
 		if (!b) {
 			settingsEditor.putBoolean("tips_home_shown", true);
+			settingsEditor.commit();
 		}
 		return b;
 	}

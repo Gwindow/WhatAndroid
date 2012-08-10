@@ -3,8 +3,6 @@ package what.settings;
 import java.util.LinkedList;
 
 import what.gui.R;
-import what.inbox.ReportActivity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -54,8 +52,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 		debugPreference = findPreference("debug_preference");
 		debugPreference.setOnPreferenceClickListener(this);
 
-		reportPreference = findPreference("report_preference");
-		reportPreference.setOnPreferenceClickListener(this);
+		// reportPreference = findPreference("report_preference");
+		// reportPreference.setOnPreferenceClickListener(this);
 	}
 
 	private void populateThemes() {
@@ -152,10 +150,10 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 				MySon.setDebugEnabled(false);
 			}
 		}
-		if (pref == reportPreference) {
-			Intent intent = new Intent(SettingsActivity.this, ReportActivity.class);
-			startActivity(intent);
-		}
+		/*
+		 * if (pref == reportPreference) { Intent intent = new Intent(SettingsActivity.this, ReportActivity.class);
+		 * startActivity(intent); }
+		 */
 		return false;
 	}
 
