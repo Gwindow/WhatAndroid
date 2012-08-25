@@ -7,6 +7,8 @@ The app will work with a default setup of Gazelle, just change the url to point 
 
 ### Have questions? Contact [Gwindow](https://github.com/Gwindow/) through GitHub, What.CD, or in #whatAndroid.
 
+Licensed under the 2-Clause BSD License, see LICENSE for full terms.
+
 ### Screenshots
 
 <img src="http://gwindow.github.com/WhatAndroid/images/device-2012-05-28-174047-resized.png"></img>
