@@ -6,5 +6,7 @@ bin/what/
 gen/
 out/
 *.iml
-.idea/
 R.java
+lint.xml
+.idea/
+.settings/
