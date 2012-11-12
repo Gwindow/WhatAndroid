@@ -7,3 +7,4 @@ gen/
 out/
 *.iml
 .idea/
+R.java
