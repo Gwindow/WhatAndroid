@@ -157,7 +157,7 @@ public class UserActivity extends MyActivity2 {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			user = User.fromId(userId);
+			user = User.userFromId(userId);
 			return user.getStatus();
 		}
 

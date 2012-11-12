@@ -228,7 +228,7 @@ public class NotificationsActivity extends MyActivity2 implements OnClickListene
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			notifications = Notifications.fromPage(notificationsPage);
+			notifications = Notifications.notificationsFromPage(notificationsPage);
 			return notifications.getStatus();
 		}
 

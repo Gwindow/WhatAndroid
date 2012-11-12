@@ -7,7 +7,7 @@
     <!-- Because of some weirdness must use auto instead of preferExternal -->
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="16" />
 
     <uses-permission

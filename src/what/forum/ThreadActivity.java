@@ -325,12 +325,12 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			if (useEmbeddedDialog) {
-				thread = api.forum.thread.Thread.fromIdAndPage(threadId, threadPage);
+				thread = api.forum.thread.Thread.threadFromIdAndPage(threadId, threadPage);
 			} else {
 				if (lastReadPostId != NON_EXISTANT) {
-					thread = api.forum.thread.Thread.fromIdAndPostId(threadId, lastReadPostId);
+					thread = api.forum.thread.Thread.threadFromIdAndPostId(threadId, lastReadPostId);
 				} else {
-					thread = api.forum.thread.Thread.fromIdAndPage(threadId, threadPage);
+					thread = api.forum.thread.Thread.threadFromIdAndPage(threadId, threadPage);
 				}
 			}
 			return thread.getStatus();

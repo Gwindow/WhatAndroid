@@ -100,7 +100,7 @@ public class RequestActivity extends MyActivity2 {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			request = Request.fromId(requestId);
+			request = Request.requestFromId(requestId);
 			return request.getStatus();
 		}
 

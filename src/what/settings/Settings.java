@@ -34,7 +34,6 @@ public class Settings {
 		themes.put("Example by Skboud", new Tuple<Integer, Integer>(R.style.Theme_example, R.color.example));
 		themes.put("Penis by Entrapment", new Tuple<Integer, Integer>(R.style.Theme_penis, R.color.penis));
 		themes.put("Dark Meline by Santigasm", new Tuple<Integer, Integer>(R.style.Theme_dark_meline, R.color.white));
-
 	}
 
 	protected static HashMap<String, Integer> icons;
@@ -45,7 +44,6 @@ public class Settings {
 		icons.put("Icon C", R.drawable.icon_c);
 		icons.put("Icon D", R.drawable.icon_d);
 		icons.put("Icon E", R.drawable.icon_e);
-
 	}
 
 	/**
@@ -57,7 +55,6 @@ public class Settings {
 	public static void init(Context c) {
 		settings = PreferenceManager.getDefaultSharedPreferences(c);
 		settingsEditor = settings.edit();
-
 	}
 
 	public static boolean getTipsFirstRun() {
