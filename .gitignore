@@ -1,3 +1,6 @@
+# source of this .gitignore file is github
+# https://raw.github.com/github/gitignore/master/Android.gitignore
+
 # built application files
 *.apk
 *.ap_
