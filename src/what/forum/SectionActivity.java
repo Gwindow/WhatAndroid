@@ -2,6 +2,7 @@ package what.forum;
 
 import java.util.List;
 
+import api.forum.section.ForumThread;
 import what.gui.ActivityNames;
 import what.gui.BundleKeys;
 import what.gui.Cancelable;
@@ -24,7 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import api.forum.section.Section;
-import api.forum.section.Threads;
 import api.util.Tuple;
 
 import com.actionbarsherlock.view.Menu;
@@ -97,34 +97,34 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 	private void populate() {
 		setActionBarTitle(section.getResponse().getForumName() + ", " + sectionPage + "/" + section.getResponse().getPages());
 
-		List<Threads> threads = section.getResponse().getThreads();
+		List<ForumThread> threads = section.getResponse().getThreads();
 		if (threads != null) {
-			for (int i = 0; i < threads.size(); i++) {
+            for (ForumThread thread : threads){
 				ViewSlider thread_layout = (ViewSlider) getLayoutInflater().inflate(R.layout.section_thread, null);
 				TextView thread_title = (TextView) thread_layout.findViewById(R.id.threadTitle);
-				String title = threads.get(i).getTitle();
-				if (threads.get(i).isLocked()) {
+				String title = thread.getTitle();
+				if (thread.isLocked()) {
 					title = "[L] " + title;
 				}
-				if (threads.get(i).isSticky()) {
+				if (thread.isSticky()) {
 					title = "[S] " + title;
 				}
-				if (!threads.get(i).isRead() && Settings.getBoldSetting()) {
+				if (!thread.isRead() && Settings.getBoldSetting()) {
 					thread_title.setTypeface(null, Typeface.BOLD);
 				}
 				thread_title.setText(title);
-				thread_title.setTag(new Tuple<Number, Number>(threads.get(i).getTopicId(), threads.get(i).getLastReadPostId()));
+				thread_title.setTag(new Tuple<Number, Number>(thread.getTopicId(), thread.getLastReadPostId()));
 				thread_title.setHorizontallyScrolling(true);
 				thread_title.setOnClickListener(this);
 
 				TextView thread_last_poster = (TextView) thread_layout.findViewById(R.id.threadLastPoster);
-				thread_last_poster.setText("Last Poster: " + threads.get(i).getLastAuthorName());
-				thread_last_poster.setId(threads.get(i).getLastAuthorId().intValue());
+				thread_last_poster.setText("Last Poster: " + thread.getLastAuthorName());
+				thread_last_poster.setId(thread.getLastAuthorId().intValue());
 				thread_last_poster.setTag(LAST_POSTER_TAG);
 
 				TextView thread_author = (TextView) thread_layout.findViewById(R.id.threadAuthor);
-				thread_author.setText("Author: " + threads.get(i).getAuthorName());
-				thread_author.setId(threads.get(i).getAuthorId().intValue());
+				thread_author.setText("Author: " + thread.getAuthorName());
+				thread_author.setId(thread.getAuthorId().intValue());
 				thread_author.setTag(AUTHOR_TAG);
 
 				scrollLayout.addView(thread_layout);
@@ -280,7 +280,7 @@ public class SectionActivity extends MyActivity2 implements Scrollable, OnClickL
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			section = Section.sectionFromIdAndPage(sectionId, sectionPage);
+			section = Section.fromIdAndPage(sectionId, sectionPage);
 			return section.getStatus();
 		}
 

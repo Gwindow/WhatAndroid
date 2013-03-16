@@ -1,13 +1,13 @@
 package what.settings;
 
-import java.util.HashMap;
-import java.util.Set;
-
-import what.gui.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import api.util.Tuple;
+import what.gui.R;
+
+import java.util.HashMap;
+import java.util.Set;
 
 public class Settings {
 	private static SharedPreferences settings;

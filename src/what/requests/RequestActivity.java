@@ -18,7 +18,6 @@ import api.requests.Request;
 
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.TitleProvider;
 
 /**
  * @author Gwindow
@@ -100,7 +99,7 @@ public class RequestActivity extends MyActivity2 {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			request = Request.requestFromId(requestId);
+			request = Request.fromId(requestId);
 			return request.getStatus();
 		}
 
@@ -116,7 +115,7 @@ public class RequestActivity extends MyActivity2 {
 		}
 	}
 
-	private class Adapter extends FragmentPagerAdapter implements TitleProvider {
+	private class Adapter extends FragmentPagerAdapter {
 		public Adapter(FragmentManager fm) {
 			super(fm);
 		}
@@ -142,8 +141,8 @@ public class RequestActivity extends MyActivity2 {
 			return TABS.length;
 		}
 
-		@Override
-		public String getTitle(int position) {
+        @Override
+        public String getPageTitle(int position) {
 			return TABS[position % TABS.length];
 		}
 	}

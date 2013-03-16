@@ -23,7 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import api.bookmarks.Torrents;
+import api.bookmarks.TorrentGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
@@ -36,9 +36,9 @@ import com.actionbarsherlock.view.MenuItem;
  */
 public class CoverArtGridFragment extends SherlockFragment {
 	private GridView gridView;
-	private final List<Torrents> torrents;
+	private final List<TorrentGroup> torrents;
 
-	public CoverArtGridFragment(List<Torrents> torrents) {
+	public CoverArtGridFragment(List<TorrentGroup> torrents) {
 		this.torrents = torrents;
 	}
 

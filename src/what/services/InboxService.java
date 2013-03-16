@@ -103,7 +103,7 @@ public class InboxService extends Service {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			inbox = Inbox.inboxFromPage(1);
+			inbox = Inbox.fromPage(1);
 			return inbox.getStatus();
 		}
 

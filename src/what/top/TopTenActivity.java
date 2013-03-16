@@ -15,7 +15,6 @@ import api.top.Top;
 
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.TitleProvider;
 
 /**
  * @author Gwindow
@@ -108,7 +107,7 @@ public class TopTenActivity extends MyActivity2 {
 		}
 	}
 
-	public class Adapater extends FragmentPagerAdapter implements TitleProvider {
+	public class Adapater extends FragmentPagerAdapter {
 		public Adapater(FragmentManager fm) {
 			super(fm);
 		}
@@ -143,8 +142,8 @@ public class TopTenActivity extends MyActivity2 {
 			return TABS.length;
 		}
 
-		@Override
-		public String getTitle(int position) {
+        @Override
+        public String getPageTitle(int position) {
 			return TABS[position % TABS.length];
 		}
 	}

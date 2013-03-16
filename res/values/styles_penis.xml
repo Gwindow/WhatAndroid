@@ -36,7 +36,9 @@
         <item name="android:textColor">@color/text_colors_penis</item>
         <item name="actionbarTitleColor">@color/penis</item>
         <item name="vpiTabPageIndicatorStyle">@style/penis_ActionBarTabStyle</item>
+        <!-- no longer exists?
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Dark</item>
+        -->
     </style>
 
     <style name="penis_solid_ActionBar" parent="@style/Widget.Sherlock.ActionBar.Solid">

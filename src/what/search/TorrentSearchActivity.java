@@ -1,18 +1,5 @@
 package what.search;
 
-import java.util.List;
-
-import what.gui.ActivityNames;
-import what.gui.BundleKeys;
-import what.gui.Cancelable;
-import what.gui.ErrorToast;
-import what.gui.JumpToPageDialog;
-import what.gui.MyActivity2;
-import what.gui.MyScrollView;
-import what.gui.R;
-import what.gui.Scrollable;
-import what.torrents.artist.ArtistActivity;
-import what.torrents.torrents.TorrentGroupActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -28,12 +15,16 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import api.search.torrents.Results;
+import api.search.torrents.TorrentGroup;
 import api.search.torrents.TorrentSearch;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import what.gui.*;
+import what.torrents.artist.ArtistActivity;
+import what.torrents.torrents.TorrentGroupActivity;
+
+import java.util.List;
 
 /**
  * @author Gwindow
@@ -115,29 +106,28 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 	 */
 	public void populate() {
 		setActionBarTitle("Torrent Search, " + torrentSearchPage + "/" + torrentSearch.getResponse().getPages());
-
-		List<Results> results = torrentSearch.getResponse().getResults();
+		List<TorrentGroup> results = torrentSearch.getResponse().getResults();
 
 		if (results != null) {
-			for (int i = 0; i < results.size(); i++) {
+            for (TorrentGroup torrentGroup : results){
 				LinearLayout result_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.torrent_search_result, null);
 
 				// not all results have artists
-				if (results.get(i).getArtist() != null) {
+				if (torrentGroup.getArtist() != null) {
 					TextView artist = (TextView) result_layout.findViewById(R.id.artistTitle);
-					artist.setText(results.get(i).getArtist() + " - ");
-					if (results.get(i).getTorrents().get(0).getArtists() != null
-							&& !results.get(i).getTorrents().get(0).getArtists().isEmpty()) {
-						artist.setId(results.get(i).getTorrents().get(0).getArtists().get(0).getAliasid().intValue());
+					artist.setText(torrentGroup.getArtist() + " - ");
+					if (torrentGroup.getTorrents().get(0).getArtists() != null
+                        && !torrentGroup.getTorrents().get(0).getArtists().isEmpty())
+                    {
+						artist.setId(torrentGroup.getTorrents().get(0).getArtists().get(0).getAliasid().intValue());
 					}
 					artist.setTag(ARTIST_TAG);
 					artist.setOnClickListener(this);
 				}
-
 				TextView group = (TextView) result_layout.findViewById(R.id.groupTitle);
-				group.setText(results.get(i).getGroupName());
+				group.setText(torrentGroup.getGroupName());
 				group.setTag(TORRENT_GROUP_TAG);
-				group.setId(results.get(i).getGroupId().intValue());
+				group.setId(torrentGroup.getGroupId().intValue());
 				group.setOnClickListener(this);
 
 				scrollLayout.addView(result_layout);
@@ -331,6 +321,8 @@ public class TorrentSearchActivity extends MyActivity2 implements Scrollable, On
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
+            //Strip spaces from the tags, leaving them in results in an illegal character exception
+            tagSearchTerm = tagSearchTerm.replaceAll("\\s", "");
 			torrentSearch = TorrentSearch.torrentSearchFromSearchTermAndTags(searchTerm, tagSearchTerm, torrentSearchPage);
 			return torrentSearch.getStatus();
 		}

@@ -5,8 +5,7 @@ bin/resources.ap_
 bin/what/
 gen/
 out/
-*.iml
 R.java
-lint.xml
-.idea/
-.settings/
+#ignore IntelliJ Project files
+.idea/*
+*.iml

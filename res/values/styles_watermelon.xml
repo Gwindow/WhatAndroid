@@ -36,7 +36,9 @@
         <item name="android:textColor">@color/text_colors_watermelon</item>
         <item name="actionbarTitleColor">@color/watermelon</item>
         <item name="vpiTabPageIndicatorStyle">@style/watermelon_ActionBarTabStyle</item>
+        <!-- no longer exists?
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Light</item>
+        -->
     </style>
 
     <style name="watermelon_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">

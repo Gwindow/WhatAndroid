@@ -25,7 +25,6 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.TitleProvider;
 
 /**
  * @author Gwindow
@@ -58,6 +57,7 @@ public class UserActivity extends MyActivity2 {
 		super.setActivityName(ActivityNames.USER);
 		super.requestIndeterminateProgress();
 		super.onCreate(savedInstanceState);
+        //Set the titles
 	}
 
 	/**
@@ -90,7 +90,6 @@ public class UserActivity extends MyActivity2 {
 
 		indicator = (TabPageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
-
 	}
 
 	@Override
@@ -173,7 +172,7 @@ public class UserActivity extends MyActivity2 {
 		}
 	}
 
-	public class UserAdapter extends FragmentPagerAdapter implements TitleProvider {
+	public class UserAdapter extends FragmentPagerAdapter {
 		public UserAdapter(FragmentManager fm) {
 			super(fm);
 		}
@@ -199,10 +198,10 @@ public class UserActivity extends MyActivity2 {
 			return TABS.length;
 		}
 
-		@Override
-		public String getTitle(int position) {
-			return TABS[position % TABS.length];
-		}
+        @Override
+        public String getPageTitle(int position) {
+            return TABS[position % TABS.length];
+        }
 	}
 
 	/**

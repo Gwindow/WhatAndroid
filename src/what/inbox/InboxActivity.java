@@ -23,7 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import api.inbox.inbox.Inbox;
-import api.inbox.inbox.Messages;
+import api.inbox.inbox.Message;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -92,31 +92,30 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 	 */
 	private void populate() {
 		setActionBarTitle("Inbox, " + inboxPage + "/" + inbox.getResponse().getPages());
-
-		List<Messages> messages = inbox.getResponse().getMessages();
+		List<Message> messages = inbox.getResponse().getMessages();
 
 		if (messages != null) {
-			for (int i = 0; i < messages.size(); i++) {
-				ViewSlider message_layout = (ViewSlider) getLayoutInflater().inflate(R.layout.inbox_message, null);
+            for (Message message : messages){
+                ViewSlider message_layout = (ViewSlider) getLayoutInflater().inflate(R.layout.inbox_message, null);
 
-				TextView message_title = (TextView) message_layout.findViewById(R.id.messageTitle);
-				message_title.setText(messages.get(i).getSubject());
-				message_title.setId(messages.get(i).getConvId().intValue());
-				message_title.setTag(MESSAGE_TAG);
-				message_title.setOnClickListener(this);
+                TextView message_title = (TextView) message_layout.findViewById(R.id.messageTitle);
+                message_title.setText(message.getSubject());
+                message_title.setId(message.getConvId().intValue());
+                message_title.setTag(MESSAGE_TAG);
+                message_title.setOnClickListener(this);
 
-				TextView sender = (TextView) message_layout.findViewById(R.id.messageSender);
-				sender.setText("Sender: " + messages.get(i).getUsername());
-				if (!messages.get(i).isSystem()) {
-					sender.setId(messages.get(i).getSenderId().intValue());
-					sender.setTag(SENDER_TAG);
-					sender.setOnClickListener(this);
-				}
-				TextView date = (TextView) message_layout.findViewById(R.id.messageDate);
-				date.setText("Date: " + messages.get(i).getDate());
+                TextView sender = (TextView) message_layout.findViewById(R.id.messageSender);
+                sender.setText("Sender: " + message.getUsername());
+                if (!message.isSystem()) {
+                    sender.setId(message.getSenderId().intValue());
+                    sender.setTag(SENDER_TAG);
+                    sender.setOnClickListener(this);
+                }
+                TextView date = (TextView) message_layout.findViewById(R.id.messageDate);
+                date.setText("Date: " + message.getDate());
 
-				scrollLayout.addView(message_layout);
-			}
+                scrollLayout.addView(message_layout);
+            }
 		}
 	}
 
@@ -246,7 +245,7 @@ public class InboxActivity extends MyActivity2 implements Scrollable, OnClickLis
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			inbox = Inbox.inboxFromPage(inboxPage);
+			inbox = Inbox.fromPage(inboxPage);
 			return inbox.getStatus();
 		}
 

@@ -1,5 +1,6 @@
 package what.torrents.torrents;
 
+import android.widget.Toast;
 import what.fragments.ArtFragment;
 import what.fragments.DescriptionFragment;
 import what.gui.ActivityNames;
@@ -24,7 +25,6 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.TitleProvider;
 
 /**
  * @author Gwindow
@@ -73,7 +73,6 @@ public class TorrentGroupActivity extends MyActivity2 {
 		}
 
 		new Load().execute();
-
 	}
 
 	// TODO make this less sloppy. Create a custom fragment activity.
@@ -90,7 +89,6 @@ public class TorrentGroupActivity extends MyActivity2 {
 
 		indicator = (TabPageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
-
 	}
 
 	@Override
@@ -99,9 +97,29 @@ public class TorrentGroupActivity extends MyActivity2 {
 			MenuInflater inflater = getSupportMenuInflater();
 			inflater.inflate(R.menu.torrentgroup_menu, menu);
 		}
+        System.out.println("On create options menu");
 		return super.onCreateOptionsMenu(menu);
-		// TODO add bookmarks
 	}
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        System.out.println("On prepare options menu");
+        //Update the bookmark option text to reflect the change that will be executed
+        MenuItem bookmarkItem = menu.findItem(R.id.torrent_group_bookmark);
+        //Is there a way I can do this where neither will be null?
+        //Will bookmarkItem ever be null? I don't think so. onPrepare calls after on create
+        if (torrentGroup == null || bookmarkItem == null){
+            System.out.println("on Prepare options "
+                    + (torrentGroup == null ? "torrentGroup" : "bookmarkItem")
+                    +" null");
+        }
+        else if (torrentGroup.getResponse().getGroup().isBookmarked())
+            bookmarkItem.setTitle("Remove Bookmark");
+        else
+            bookmarkItem.setTitle("Bookmark");
+
+        return super.onPrepareOptionsMenu(menu);
+    }
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -112,6 +130,9 @@ public class TorrentGroupActivity extends MyActivity2 {
 			case R.id.lastfm:
 				openLastFM();
 				break;
+            case R.id.torrent_group_bookmark:
+                new ChangeBookmark().execute();
+                break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -133,7 +154,31 @@ public class TorrentGroupActivity extends MyActivity2 {
 		startActivity(intent);
 	}
 
-	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void load() {
+        // TODO Auto-generated method stub
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(BundleKeys.REFRESH, true);
+    }
+
+    private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		public Load() {
 			attachCancelable(this);
 		}
@@ -161,12 +206,15 @@ public class TorrentGroupActivity extends MyActivity2 {
 
 			if (status) {
 				populate();
-			} else
+			}
+            else
 				ErrorToast.show(TorrentGroupActivity.this, TorrentGroupActivity.class);
+
+            System.out.println("On load finished");
 		}
 	}
 
-	private class TorrentGroupAdapter extends FragmentPagerAdapter implements TitleProvider {
+	private class TorrentGroupAdapter extends FragmentPagerAdapter {
 		MyActivity2 act;
 
 		public TorrentGroupAdapter(FragmentManager fm, MyActivity2 act) {
@@ -198,34 +246,56 @@ public class TorrentGroupActivity extends MyActivity2 {
 			return TABS.length;
 		}
 
-		@Override
-		public String getTitle(int position) {
+        @Override
+        public String getPageTitle(int position) {
 			return TABS[position % TABS.length];
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void load() {
-		// TODO Auto-generated method stub
+    /**
+     * Class for Async changing of the bookmark status of the TorrentGroup
+     */
+    private class ChangeBookmark extends AsyncTask<Void, Void, Boolean> implements Cancelable {
+        public ChangeBookmark(){
+            attachCancelable(this);
+        }
 
-	}
+        @Override
+        public void cancel() {
+            super.cancel(true);
+        }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void prepare() {
-		// TODO Auto-generated method stub
+        @Override
+        protected void onPreExecute() {
+            lockScreenRotation();
+        }
 
-	}
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            System.out.println("Trying to change bookmark status");
+            Boolean isBookmarked = torrentGroup.getResponse().getGroup().isBookmarked();
+            if (!isBookmarked){
+                System.out.println("Adding bookmark");
+                return torrentGroup.addBookmark();
+            }
+            else {
+                System.out.println("Removing bookmark");
+                return torrentGroup.removeBookmark();
+            }
+        }
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putBoolean(BundleKeys.REFRESH, true);
-	}
+        @Override
+        protected void onPostExecute(Boolean status){
+            //If it didn't go well, show error message
+            if (!status){
+                String err;
+                if (torrentGroup.getResponse().getGroup().isBookmarked())
+                    err = "Failed to remove bookmark";
+                else
+                    err = "Failed to add bookmark";
 
+                Toast.makeText(TorrentGroupActivity.this, err, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

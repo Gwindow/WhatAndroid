@@ -1,39 +1,23 @@
 package what.forum;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-
-import what.gui.ActivityNames;
-import what.gui.BundleKeys;
-import what.gui.Cancelable;
-import what.gui.ErrorToast;
-import what.gui.InstructionDialog;
-import what.gui.JumpToPageDialog;
-import what.gui.MyActivity2;
-import what.gui.MyImageLoader;
-import what.gui.MyScrollView;
-import what.gui.MyTextView;
-import what.gui.R;
-import what.gui.ReplyActivity;
-import what.gui.Scrollable;
-import what.settings.Settings;
-import what.user.UserActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import api.forum.thread.Posts;
-
+import android.widget.*;
+import api.forum.thread.ForumThread;
+import api.forum.thread.Post;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import what.gui.*;
+import what.settings.Settings;
+import what.user.UserActivity;
+
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * @author Gwindow
@@ -49,13 +33,13 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	private MyScrollView scrollView;
 	private LinearLayout scrollLayout;
 
-	private api.forum.thread.Thread thread;
+	private ForumThread thread;
 	private int threadPage;
 	private int threadId;
 	private int lastReadPostId;
 	private boolean isLoaded;
 
-	private LinkedList<Posts> posts;
+	private LinkedList<Post> posts;
 	private HashMap<Integer, ImageView> avatarMap;
 	private boolean isSubscribed;
 	private boolean isSpoilerAlertShown;
@@ -89,7 +73,7 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 			lastReadPostId = NON_EXISTANT;
 		}
 
-		posts = new LinkedList<Posts>();
+		posts = new LinkedList<Post>();
 		avatarMap = new HashMap<Integer, ImageView>();
 		imageLoader = new MyImageLoader(this, R.drawable.dne);
 	}
@@ -113,7 +97,6 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 	}
 
 	private void populate() {
-
 		isSubscribed = thread.getResponse().isSubscribed();
 		invalidateOptionsMenu();
 		threadPage = thread.getResponse().getCurrentPage().intValue();
@@ -122,49 +105,50 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 			spoilerAlertDialog();
 		}
 		new InstructionDialog(this, InstructionDialog.FORUM);
+
 		if (thread.getResponse().getPosts() != null) {
-			for (int i = 0; i < thread.getResponse().getPosts().size(); i++) {
-				LinearLayout post_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.thread_post, null);
-				posts.add(thread.getResponse().getPosts().get(i));
+            for (Post post : thread.getResponse().getPosts()){
+                LinearLayout post_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.thread_post, null);
+                posts.add(post);
 
-				ImageView avatar = (ImageView) post_layout.findViewById(R.id.avatar);
-				if (Settings.getAvatarsEnabled()) {
-					avatarMap.put(posts.getLast().getPostId().intValue(), avatar);
-					imageLoader.displayImage(posts.getLast().getAuthor().getAvatar(), avatar);
-				} else {
-					avatar.setVisibility(View.GONE);
-				}
+                ImageView avatar = (ImageView) post_layout.findViewById(R.id.avatar);
+                if (Settings.getAvatarsEnabled()) {
+                    avatarMap.put(post.getPostId().intValue(), avatar);
+                    imageLoader.displayImage(post.getAuthor().getAvatar(), avatar);
+                } else {
+                    avatar.setVisibility(View.GONE);
+                }
 
-				TextView author = (TextView) post_layout.findViewById(R.id.author);
-				author.setText(posts.getLast().getAuthor().getAuthorName());
-				author.setId(posts.getLast().getAuthor().getAuthorId().intValue());
-				author.setTag(USER_TAG);
-				author.setOnClickListener(this);
+                TextView author = (TextView) post_layout.findViewById(R.id.author);
+                author.setText(post.getAuthor().getAuthorName());
+                author.setId(post.getAuthor().getAuthorId().intValue());
+                author.setTag(USER_TAG);
+                author.setOnClickListener(this);
 
-				TextView date = (TextView) post_layout.findViewById(R.id.date);
-				date.setText(posts.getLast().getAddedTime());
+                TextView date = (TextView) post_layout.findViewById(R.id.date);
+                date.setText(post.getAddedTime());
 
-				MyTextView body = (MyTextView) post_layout.findViewById(R.id.body);
-				body.setText(posts.getLast().getBody());
-				// Linkify.addLinks(body, Linkify.WEB_URLS);
+                MyTextView body = (MyTextView) post_layout.findViewById(R.id.body);
+                body.setText(post.getBody());
+                // Linkify.addLinks(body, Linkify.WEB_URLS);
 
-				ImageView reply = (ImageView) post_layout.findViewById(R.id.replyIcon);
-				reply.setTag(REPLY_TAG);
-				reply.setId(posts.size() - 1);
-				reply.setOnClickListener(this);
+                ImageView reply = (ImageView) post_layout.findViewById(R.id.replyIcon);
+                reply.setTag(REPLY_TAG);
+                reply.setId(posts.size() - 1);
+                reply.setOnClickListener(this);
 
-				ImageView quote = (ImageView) post_layout.findViewById(R.id.quoteIcon);
-				quote.setTag(QUOTE_TAG);
-				quote.setId(posts.size() - 1);
-				quote.setOnClickListener(this);
+                ImageView quote = (ImageView) post_layout.findViewById(R.id.quoteIcon);
+                quote.setTag(QUOTE_TAG);
+                quote.setId(posts.size() - 1);
+                quote.setOnClickListener(this);
 
-				ImageView user = (ImageView) post_layout.findViewById(R.id.userIcon);
-				user.setTag(USER_TAG);
-				user.setId(posts.getLast().getAuthor().getAuthorId().intValue());
-				user.setOnClickListener(this);
+                ImageView user = (ImageView) post_layout.findViewById(R.id.userIcon);
+                user.setTag(USER_TAG);
+                user.setId(post.getAuthor().getAuthorId().intValue());
+                user.setOnClickListener(this);
 
-				scrollLayout.addView(post_layout);
-			}
+                scrollLayout.addView(post_layout);
+            }
 		}
 	}
 
@@ -325,12 +309,13 @@ public class ThreadActivity extends MyActivity2 implements Scrollable, OnClickLi
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			if (useEmbeddedDialog) {
-				thread = api.forum.thread.Thread.threadFromIdAndPage(threadId, threadPage);
+
+				thread = ForumThread.fromIdAndPage(threadId, threadPage);
 			} else {
 				if (lastReadPostId != NON_EXISTANT) {
-					thread = api.forum.thread.Thread.threadFromIdAndPostId(threadId, lastReadPostId);
+					thread = ForumThread.fromIdAndPostId(threadId, lastReadPostId);
 				} else {
-					thread = api.forum.thread.Thread.threadFromIdAndPage(threadId, threadPage);
+					thread = ForumThread.fromIdAndPage(threadId, threadPage);
 				}
 			}
 			return thread.getStatus();

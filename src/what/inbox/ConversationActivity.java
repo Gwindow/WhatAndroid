@@ -23,7 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.inbox.conversation.Conversation;
-import api.inbox.conversation.Messages;
+import api.inbox.conversation.Message;
 import api.soup.MySoup;
 
 import com.actionbarsherlock.view.Menu;
@@ -91,23 +91,24 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 	private void populate() {
 		setActionBarTitle(conversation.getResponse().getSubject());
 
-		List<Messages> messages = conversation.getResponse().getMessages();
+		List<Message> messages = conversation.getResponse().getMessages();
 
 		if (messages != null) {
 			for (int i = 0; i < messages.size(); i++) {
-				if (messages.get(i).getSenderId().intValue() != MySoup.getUserId()) {
-					userId = messages.get(i).getSenderId().intValue();
-				}
+                Message message = messages.get(i);
+				if (message.getSenderId().intValue() != MySoup.getUserId())
+					userId = message.getSenderId().intValue();
+
 				LinearLayout message_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.conversation_message, null);
 
 				TextView author = (TextView) message_layout.findViewById(R.id.author);
-				author.setText(messages.get(i).getSenderName());
+				author.setText(message.getSenderName());
 
 				TextView date = (TextView) message_layout.findViewById(R.id.date);
-				date.setText(messages.get(i).getSentDate());
+				date.setText(message.getSentDate());
 
 				MyTextView body = (MyTextView) message_layout.findViewById(R.id.body);
-				body.setText(messages.get(i).getBody());
+				body.setText(message.getBody());
 				// Linkify.addLinks(body, Linkify.WEB_URLS);
 
 				ImageView reply = (ImageView) message_layout.findViewById(R.id.replyIcon);
@@ -121,7 +122,7 @@ public class ConversationActivity extends MyActivity2 implements OnClickListener
 				quote.setOnClickListener(this);
 
 				ImageView user = (ImageView) message_layout.findViewById(R.id.userIcon);
-				if (!messages.get(i).isSystem()) {
+				if (!message.isSystem()) {
 					user.setTag(USER_TAG);
 					user.setId(i);
 					user.setOnClickListener(this);

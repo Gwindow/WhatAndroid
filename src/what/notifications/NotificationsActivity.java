@@ -23,7 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.notifications.Notifications;
-import api.notifications.Results;
+import api.notifications.Torrent;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -91,20 +91,21 @@ public class NotificationsActivity extends MyActivity2 implements OnClickListene
 	 */
 	private void populate() {
 		setActionBarTitle("Notifications, " + notificationsPage + "/" + notifications.getResponse().getPages());
-
-		List<Results> results = notifications.getResponse().getResults();
+		List<Torrent> results = notifications.getResponse().getResults();
 
 		if (results != null) {
-			for (int i = 0; i < results.size(); i++) {
+			for (Torrent torrent : results) {
 				TextView torrentgroup_title =
-						(TextView) getLayoutInflater().inflate(R.layout.notifications_torrentgroup_title, null);
-				String title = results.get(i).getGroupName() + " - " + results.get(i).getMediaFormatEncoding();
-				String displayed_title = results.get(i).isUnread() ? "New! " + title : title;
+                    (TextView) getLayoutInflater().inflate(R.layout.notifications_torrentgroup_title, null);
+				String title = torrent.getGroupName() + " - " + torrent.getMediaFormatEncoding();
+				String displayed_title = torrent.isUnread() ? "New! " + title : title;
+
 				torrentgroup_title.setText(displayed_title);
-				torrentgroup_title.setId(results.get(i).getGroupId().intValue());
+				torrentgroup_title.setId(torrent.getGroupId().intValue());
 				torrentgroup_title.setTag(TORRENTGROUP_TAG);
 				torrentgroup_title.setOnClickListener(this);
-				scrollLayout.addView(torrentgroup_title);
+
+                scrollLayout.addView(torrentgroup_title);
 			}
 		}
 	}

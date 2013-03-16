@@ -36,7 +36,9 @@
         <item name="android:textColor">@color/text_colors_moldy_walls</item>
         <item name="actionbarTitleColor">@color/moldy_walls</item>
         <item name="vpiTabPageIndicatorStyle">@style/moldy_walls_ActionBarTabStyle</item>
+        <!-- no longer exists?
         <item name="vpiTabTextStyle">@style/moldy_walls_CustomTabPageIndicator.Text</item>
+        -->
     </style>
 
     <style name="moldy_walls_CustomTabPageIndicator.Text" parent="Widget.TabPageIndicator.Text_Dark"></style>

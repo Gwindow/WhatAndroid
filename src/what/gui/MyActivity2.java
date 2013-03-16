@@ -40,7 +40,6 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 	private int color;
 
 	public void onCreate(Bundle savedInstanceState, Integer customTheme, Integer customColor) {
-		System.out.println("Init settings?");
 		if ((Settings.getSettings() == null) || (Settings.getSettingsEditor() == null)) {
 			Settings.init(this);
 		}

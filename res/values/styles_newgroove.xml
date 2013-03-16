@@ -36,7 +36,9 @@
         <item name="android:textColor">@color/text_colors_newgroove</item>
         <item name="actionbarTitleColor">@color/newgroove</item>
         <item name="vpiTabPageIndicatorStyle">@style/newgroove_ActionBarTabStyle</item>
+        <!-- no longer exists?
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Light</item>
+        -->
     </style>
 
     <style name="newgroove_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">

@@ -4,4 +4,13 @@
         android:id="@+id/lastfm"
         android:title="Last.FM">
     </item>
+    <item
+        android:id="@+id/artist_bookmark"
+        android:title="@string/toggle_bookmark" >
+    </item>
+    <item
+        android:id="@+id/artist_notifications"
+        android:title="Toggle Notifications" >
+    </item>
+
 </menu>
