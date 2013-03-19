@@ -71,7 +71,8 @@
             android:dialogMessage="Set the Port"
             android:dialogTitle="Port"
             android:key="port_preference"
-            android:title="Port" />
+            android:title="Port"
+            android:inputType="number"/>
         <EditTextPreference
             android:defaultValue=""
             android:dialogMessage="Set the Password"

@@ -32,7 +32,7 @@ public class DownloadDialog extends AlertDialog.Builder implements OnClickListen
 	private final Context context;
 
 	/**
-	 * @param arg0
+	 * @todo descriptions
 	 */
 	public DownloadDialog(Context context, Number torrentId, String downloadUrl,
 			Number size, Number snatches, Number seeders, Number leechers) {
@@ -106,11 +106,17 @@ public class DownloadDialog extends AlertDialog.Builder implements OnClickListen
 		String host = Settings.getHostPreference();
 		String port = Settings.getPortPreference();
 		String password = Settings.getPasswordPreference();
-		if ((host.length() > 0) && (port.length() > 0) && (password.length() > 0)) {
+		if (host.length() > 0 && port.length() > 0 && password.length() > 0) {
 			String pyWaUrl =
 					host + ":" + port + "/dl.pywa?pass=" + password + "&site=whatcd&id="
 							+ torrentId;
 			try {
+                /*
+                TODO: this is why send to pywa doesn't work, we can't call MySoup.scrape directly here
+                because it will run on the main thread, it needs to be an async task
+                that will then make the appropriate toast when it completes/fails
+                 */
+
 				MySoup.scrapeOther(pyWaUrl);
 				Toast.makeText(context, "Torrent sent", Toast.LENGTH_SHORT).show();
 			} catch (CouldNotLoadException e) {
