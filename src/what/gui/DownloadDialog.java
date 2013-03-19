@@ -1,6 +1,6 @@
 package what.gui;
 
-import what.settings.Settings;
+import android.os.AsyncTask;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +14,7 @@ import android.widget.Toast;
 import api.cli.Utils;
 import api.soup.MySoup;
 import api.util.CouldNotLoadException;
+import what.settings.Settings;
 
 /**
  * @author Gwindow
@@ -107,26 +108,60 @@ public class DownloadDialog extends AlertDialog.Builder implements OnClickListen
 		String port = Settings.getPortPreference();
 		String password = Settings.getPasswordPreference();
 		if (host.length() > 0 && port.length() > 0 && password.length() > 0) {
-			String pyWaUrl =
-					host + ":" + port + "/dl.pywa?pass=" + password + "&site=whatcd&id="
-							+ torrentId;
-			try {
-                /*
-                TODO: this is why send to pywa doesn't work, we can't call MySoup.scrape directly here
-                because it will run on the main thread, it needs to be an async task
-                that will then make the appropriate toast when it completes/fails
-                 */
-
-				MySoup.scrapeOther(pyWaUrl);
-				Toast.makeText(context, "Torrent sent", Toast.LENGTH_SHORT).show();
-			} catch (CouldNotLoadException e) {
-				Toast.makeText(context, "Could not send torrent", Toast.LENGTH_SHORT)
-						.show();
-			}
+            new SendPyWa().execute(host, port, password, Integer.toString(torrentId));
 		} else {
 			Toast.makeText(context, "Fill out pyWA information in Settings",
 					Toast.LENGTH_LONG).show();
 		}
 	}
 
+
+    /**
+     * Async task to send a torrent to the pyWa server desired
+     * TODO: How to make this Cancelable? What is the cancelable interface?
+     * does it actually cancel? look into how it works
+     * How do i get a valid credential to the bot? It works if i send
+     * from my browser then from the app, but if I don't give the bot an auth
+     * key/cookie it fails.
+     * Should some kind of timeout be setup? When I tried to send without pyWa running
+     * I didn't hear back from the task for ~3min
+     * Also I'd like to show artist/torrentname in the toast we make in case it took a while
+     * or multiple torrents have been trying to send. This would mean adding more
+     * params sent to the download dialog
+     */
+    private class SendPyWa extends AsyncTask<String, Void, Boolean> {
+        /**
+         * Have the task send a torrent to the pyWa server
+         * @param params 4 strings, 0: hostname, 1: port, 2: pyWa password
+         *               3: torrent id
+         * @return true if sent successfully, false if failed
+         */
+        @Override
+        protected Boolean doInBackground(String... params){
+            String url = params[0] + ":" + params[1] + "/dl.pywa?pass=" + params[2]
+                    + "&site=whatcd&id=" + params[3];
+            System.out.println("Sending torrent to: " + url);
+            try {
+                MySoup.scrapeOther(url);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean status){
+            if (status){
+                System.out.println("Torrent passed!");
+                Toast.makeText(context, "Torrent sent", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                System.out.println("Failed sending");
+                Toast.makeText(context, "Couldn't send torrent", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

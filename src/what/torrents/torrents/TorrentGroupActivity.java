@@ -97,21 +97,15 @@ public class TorrentGroupActivity extends MyActivity2 {
 			MenuInflater inflater = getSupportMenuInflater();
 			inflater.inflate(R.menu.torrentgroup_menu, menu);
 		}
-        System.out.println("On create options menu");
 		return super.onCreateOptionsMenu(menu);
 	}
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
-        System.out.println("On prepare options menu");
         //Update the bookmark option text to reflect the change that will be executed
         MenuItem bookmarkItem = menu.findItem(R.id.torrent_group_bookmark);
-        //Is there a way I can do this where neither will be null?
-        //Will bookmarkItem ever be null? I don't think so. onPrepare calls after on create
+        //Make sure the group has loaded before working with it
         if (torrentGroup == null || bookmarkItem == null){
-            System.out.println("on Prepare options "
-                    + (torrentGroup == null ? "torrentGroup" : "bookmarkItem")
-                    +" null");
         }
         else if (torrentGroup.getResponse().getGroup().isBookmarked())
             bookmarkItem.setTitle("Remove Bookmark");
@@ -209,8 +203,6 @@ public class TorrentGroupActivity extends MyActivity2 {
 			}
             else
 				ErrorToast.show(TorrentGroupActivity.this, TorrentGroupActivity.class);
-
-            System.out.println("On load finished");
 		}
 	}
 
