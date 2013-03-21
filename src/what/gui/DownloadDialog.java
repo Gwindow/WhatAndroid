@@ -21,7 +21,7 @@ import what.settings.Settings;
  * @since Jun 3, 2012 9:43:25 AM
  */
 public class DownloadDialog extends AlertDialog.Builder implements OnClickListener {
-	private static final String DIALOG_TITLE = "Download...";
+	private static final String DIALOG_TITLE = "Download: ";
 	private static final String DOWNLOAD_BUTTON = "Download Torrent";
 	private static final String PYWA_BUTTON = "Send to pyWA";
 	private final int torrentId;
@@ -30,13 +30,14 @@ public class DownloadDialog extends AlertDialog.Builder implements OnClickListen
 	private final Number snatches;
 	private final Number seeders;
 	private final Number leechers;
+    private final String name;
 	private final Context context;
 
 	/**
 	 * @todo descriptions
 	 */
 	public DownloadDialog(Context context, Number torrentId, String downloadUrl,
-			Number size, Number snatches, Number seeders, Number leechers) {
+			Number size, Number snatches, Number seeders, Number leechers, String name) {
 		super(context);
 		this.context = context;
 		this.downloadUrl = downloadUrl;
@@ -46,12 +47,13 @@ public class DownloadDialog extends AlertDialog.Builder implements OnClickListen
 		this.seeders = seeders;
 		this.snatches = snatches;
 		this.size = size;
+        this.name = name;
 
 		init();
 	}
 
 	private void init() {
-		setTitle(DIALOG_TITLE);
+		setTitle(DIALOG_TITLE + name);
 		setCancelable(true);
 		setPositiveButton(DOWNLOAD_BUTTON, this);
 		setNegativeButton(PYWA_BUTTON, this);
@@ -108,7 +110,7 @@ public class DownloadDialog extends AlertDialog.Builder implements OnClickListen
 		String port = Settings.getPortPreference();
 		String password = Settings.getPasswordPreference();
 		if (host.length() > 0 && port.length() > 0 && password.length() > 0) {
-            new SendPyWa().execute(host, port, password, Integer.toString(torrentId));
+            new SendPyWa().execute(host, port, password, Integer.toString(torrentId), name);
 		} else {
 			Toast.makeText(context, "Fill out pyWA information in Settings",
 					Toast.LENGTH_LONG).show();
@@ -118,11 +120,6 @@ public class DownloadDialog extends AlertDialog.Builder implements OnClickListen
 
     /**
      * Async task to send a torrent to the pyWa server desired
-     * TODO: How to make this Cancelable? What is the cancelable interface?
-     * does it actually cancel? look into how it works
-     * How do i get a valid credential to the bot? It works if i send
-     * from my browser then from the app, but if I don't give the bot an auth
-     * key/cookie it fails.
      * Should some kind of timeout be setup? When I tried to send without pyWa running
      * I didn't hear back from the task for ~3min
      * Also I'd like to show artist/torrentname in the toast we make in case it took a while
@@ -130,14 +127,16 @@ public class DownloadDialog extends AlertDialog.Builder implements OnClickListen
      * params sent to the download dialog
      */
     private class SendPyWa extends AsyncTask<String, Void, Boolean> {
+        private String name;
         /**
          * Have the task send a torrent to the pyWa server
          * @param params 4 strings, 0: hostname, 1: port, 2: pyWa password
-         *               3: torrent id
+         *               3: torrent id, 4: torrent name
          * @return true if sent successfully, false if failed
          */
         @Override
         protected Boolean doInBackground(String... params){
+            name = params[4];
             String url = params[0] + ":" + params[1] + "/dl.pywa?pass=" + params[2]
                     + "&site=whatcd&id=" + params[3];
             System.out.println("Sending torrent to: " + url);
@@ -156,11 +155,11 @@ public class DownloadDialog extends AlertDialog.Builder implements OnClickListen
         protected void onPostExecute(Boolean status){
             if (status){
                 System.out.println("Torrent passed!");
-                Toast.makeText(context, "Torrent sent", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Sent: " + name, Toast.LENGTH_SHORT).show();
             }
             else {
                 System.out.println("Failed sending");
-                Toast.makeText(context, "Couldn't send torrent", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Failed sending: " + name, Toast.LENGTH_SHORT).show();
             }
         }
     }
