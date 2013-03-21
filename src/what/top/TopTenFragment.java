@@ -2,6 +2,7 @@ package what.top;
 
 import java.util.List;
 
+import api.top.Results;
 import what.gui.BundleKeys;
 import what.gui.DownloadDialog;
 import what.gui.MyActivity2;
@@ -36,8 +37,8 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener,
 	private MyScrollView scrollView;
 
 	/**
-	 * @param response
-	 * @param snatchedTag
+	 * @param
+	 * @param
 	 */
 	public TopTenFragment(Top top, String tag) {
 		this.tag = tag;
@@ -54,6 +55,7 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener,
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //TODO: should we call super.onCreateView()?
 		if ((savedInstanceState != null)) {
 			top = (Top) MySon.toObjectFromString(savedInstanceState.getString(BundleKeys.SAVED_JSON), Top.class);
 			tag = savedInstanceState.getString(BundleKeys.TAG);
@@ -67,42 +69,45 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener,
 
 	private void populateMusic() {
 		List<Response> response = top.getResponse();
-		for (int j = 0; j < response.size(); j++) {
-			if (response.get(j).getTag().equals(tag)) {
-				for (int i = 0; i < response.get(j).getResults().size(); i++) {
-					LinearLayout formats_torrent_layout =
-							(LinearLayout) View.inflate(getSherlockActivity(), R.layout.formats_torrent, null);
-					TextView format = (TextView) formats_torrent_layout.findViewById(R.id.format);
+        for (Response resp : response){
+            if (resp.getTag().equals(tag)){
+                //can't we break after this?
+                for (Results res : resp.getResults()){
+                    LinearLayout formats_torrent_layout =
+                            (LinearLayout) View.inflate(getSherlockActivity(), R.layout.formats_torrent, null);
+                    TextView format = (TextView) formats_torrent_layout.findViewById(R.id.format);
 
-					String format_string = "";
-					if (response.get(j).getResults().get(i).getArtist() != null
-							&& !response.get(j).getResults().get(i).getArtist().equalsIgnoreCase("false")) {
-						format_string += response.get(j).getResults().get(i).getArtist() + " - ";
-					}
-					format_string += response.get(j).getResults().get(i).getGroupName();
-					if (response.get(j).getResults().get(i).getGroupYear() != null
-							&& response.get(j).getResults().get(i).getGroupYear().intValue() != 0) {
-						format_string += " [" + response.get(j).getResults().get(i).getGroupYear() + "]";
-					}
+                    String format_string = "";
+                    if (res.getArtist() != null && !res.getArtist().equalsIgnoreCase("false")) {
+                        format_string += res.getArtist() + " - ";
+                    }
+                    format_string += res.getGroupName();
+                    if (res.getGroupYear() != null && res.getGroupYear().intValue() != 0) {
+                        format_string += " [" + res.getGroupYear() + "]" + "[" + res.getEncoding() + "]";
+                    }
 
-					format.setText(format_string);
-					format.setOnClickListener(this);
-					format.setOnLongClickListener(this);
-					format.setId(GROUP_TAG);
+                    format.setText(format_string);
+                    format.setOnClickListener(this);
+                    format.setOnLongClickListener(this);
+                    format.setId(GROUP_TAG);
 
-					Object[] array = new Object[6];
-					array[0] = response.get(j).getResults().get(i).getGroupId();
-					array[1] = response.get(j).getResults().get(i).getDownloadLink();
-					array[2] = response.get(j).getResults().get(i).getData();
-					array[3] = response.get(j).getResults().get(i).getSnatched();
-					array[4] = response.get(j).getResults().get(i).getSeeders();
-					array[5] = response.get(j).getResults().get(i).getLeechers();
-					format.setTag(array);
+                    Object[] array = new Object[7];
+                    array[0] = res.getTorrentId();
+                    array[1] = res.getDownloadLink();
+                    //TODO: Data is not the size of the torrent, how can I get the size?
+                    array[2] = res.getData();
+                    array[3] = res.getSnatched();
+                    array[4] = res.getSeeders();
+                    array[5] = res.getLeechers();
+                    array[6] = res.getGroupName();
+                    format.setTag(array);
 
-					scrollLayout.addView(formats_torrent_layout);
-				}
-			}
-		}
+                    scrollLayout.addView(formats_torrent_layout);
+                }
+                //We found the tag we're interested in and populated with it, so now we can break
+                break;
+            }
+        }
 	}
 
 	@Override
@@ -121,7 +126,7 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener,
 	public boolean onLongClick(View v) {
 		Object[] array = (Object[]) v.getTag();
 		new DownloadDialog(getSherlockActivity(), (Number) array[0], (String) array[1], (Number) array[2], (Number) array[3],
-				(Number) array[4], (Number) array[5]);
+				(Number) array[4], (Number) array[5], (String)array[6]);
 		return false;
 	}
 
