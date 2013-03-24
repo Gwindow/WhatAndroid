@@ -71,7 +71,6 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener,
 		List<Response> response = top.getResponse();
         for (Response resp : response){
             if (resp.getTag().equals(tag)){
-                //can't we break after this?
                 for (Results res : resp.getResults()){
                     LinearLayout formats_torrent_layout =
                             (LinearLayout) View.inflate(getSherlockActivity(), R.layout.formats_torrent, null);
@@ -95,7 +94,9 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener,
                     array[0] = res.getTorrentId();
                     array[1] = res.getDownloadLink();
                     //TODO: Data is not the size of the torrent, how can I get the size?
-                    array[2] = res.getData();
+                    //Temp fix: data/snatched is within +/-5mb of the torrent size, or permanent fix if
+                    //we can't get the torrent size added to the top 10 api response
+                    array[2] = res.getData().doubleValue() / res.getSnatched().doubleValue();
                     array[3] = res.getSnatched();
                     array[4] = res.getSeeders();
                     array[5] = res.getLeechers();
