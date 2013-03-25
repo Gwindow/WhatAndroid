@@ -2,6 +2,7 @@ package what.search;
 
 import java.util.List;
 
+import api.search.user.User;
 import what.gui.ActivityNames;
 import what.gui.BundleKeys;
 import what.gui.Cancelable;
@@ -98,16 +99,15 @@ public class UserSearchActivity extends MyActivity2 implements Scrollable, OnCli
 	 */
 	public void populate() {
 		setActionBarTitle("User Search, " + userSearchPage + "/" + userSearch.getResponse().getPages());
-
-		List<api.search.user.Results> results = userSearch.getResponse().getResults();
+		List<User> results = userSearch.getResponse().getResults();
 
 		if (results != null) {
-			for (int i = 0; i < results.size(); i++) {
+            for (User user : results){
 				TextView username = (TextView) getLayoutInflater().inflate(R.layout.user_search_result, null);
 
-				username.setText(results.get(i).getUsername());
+				username.setText(user.getUsername());
 				username.setTag(USER_TAG);
-				username.setId(results.get(i).getUserId().intValue());
+				username.setId(user.getUserId().intValue());
 				username.setOnClickListener(this);
 
 				scrollLayout.addView(username);

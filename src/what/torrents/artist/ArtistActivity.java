@@ -1,5 +1,6 @@
 package what.torrents.artist;
 
+import android.widget.Toast;
 import what.fragments.ArtFragment;
 import what.fragments.DescriptionFragment;
 import what.gui.ActivityNames;
@@ -23,7 +24,6 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.TitleProvider;
 
 /**
  * @author Gwindow
@@ -98,12 +98,47 @@ public class ArtistActivity extends MyActivity2 {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        //Set the bookmark item text to match the current state
+        MenuItem bookmarkItem = menu.findItem(R.id.artist_bookmark);
+        if (artist == null || bookmarkItem == null){
+            System.out.println("on Prepare options "
+                    + (artist == null ? "artist" : "bookmarkItem")
+                    +" null");
+        }
+        else if (artist.getResponse().isBookmarked())
+            bookmarkItem.setTitle("Remove Bookmark");
+        else
+            bookmarkItem.setTitle("Bookmark");
+
+        //Set the notifications item text to match the current state
+        MenuItem notificationsItem = menu.findItem(R.id.artist_notifications);
+        if (artist == null || notificationsItem == null){
+            System.out.println("on Prepare options "
+                    + (artist == null ? "artist" : "notificationsItem")
+                    +" null");
+        }
+        else if (artist.getResponse().hasNotificationsEnabled())
+            notificationsItem.setTitle("Do not notify of new uploads");
+        else
+            notificationsItem.setTitle("Notify of new uploads");
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.lastfm:
 				openLastFM();
 				break;
+            case R.id.artist_bookmark:
+                new ChangeBookmark().execute();
+                break;
+            case R.id.artist_notifications:
+                new ChangeNotifications().execute();
+                break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -114,6 +149,30 @@ public class ArtistActivity extends MyActivity2 {
 		intent.setAction("android.intent.action.VIEW");
 		startActivity(intent);
 	}
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void load() {
+        // TODO Auto-generated method stub
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(BundleKeys.REFRESH, true);
+    }
 
 	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		public Load() {
@@ -132,7 +191,7 @@ public class ArtistActivity extends MyActivity2 {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			artist = Artist.artistFromId(artistId);
+			artist = Artist.fromId(artistId);
 			return artist.getStatus();
 		}
 
@@ -148,7 +207,7 @@ public class ArtistActivity extends MyActivity2 {
 		}
 	}
 
-	public class ArtistAdapater extends FragmentPagerAdapter implements TitleProvider {
+	public class ArtistAdapater extends FragmentPagerAdapter {
 		public ArtistAdapater(FragmentManager fm) {
 			super(fm);
 		}
@@ -177,34 +236,103 @@ public class ArtistActivity extends MyActivity2 {
 			return TABS.length;
 		}
 
-		@Override
-		public String getTitle(int position) {
+        @Override
+        public String getPageTitle(int position) {
 			return TABS[position % TABS.length];
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void load() {
-		// TODO Auto-generated method stub
+    /**
+     * Class for Async changing of the bookmark status of the Artist
+     */
+    private class ChangeBookmark extends AsyncTask<Void, Void, Boolean> implements Cancelable {
+        public ChangeBookmark(){
+            attachCancelable(this);
+        }
 
-	}
+        @Override
+        public void cancel() {
+            super.cancel(true);
+        }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void prepare() {
-		// TODO Auto-generated method stub
+        @Override
+        protected void onPreExecute() {
+            lockScreenRotation();
+        }
 
-	}
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            System.out.println("Trying to change bookmark status");
+            Boolean isBookmarked = artist.getResponse().isBookmarked();
+            if (!isBookmarked){
+                System.out.println("Adding bookmark");
+                return artist.addBookmark();
+            }
+            else {
+                System.out.println("Removing bookmark");
+                return artist.removeBookmark();
+            }
+        }
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putBoolean(BundleKeys.REFRESH, true);
-	}
+        @Override
+        protected void onPostExecute(Boolean status){
+            //If it didn't go well, show error message
+            if (!status){
+                String err;
+                if (artist.getResponse().isBookmarked())
+                    err = "Failed to remove bookmark";
+                else
+                    err = "Failed to add bookmark";
 
+                Toast.makeText(ArtistActivity.this, err, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    /**
+     * Class for Async changing of the notification enabled status of the Artist
+     */
+    private class ChangeNotifications extends AsyncTask<Void, Void, Boolean> implements Cancelable {
+        public ChangeNotifications(){
+            attachCancelable(this);
+        }
+
+        @Override
+        public void cancel() {
+            super.cancel(true);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            lockScreenRotation();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            System.out.println("Trying to change notification status");
+            Boolean notificationsEnabled = artist.getResponse().hasNotificationsEnabled();
+            if (!notificationsEnabled){
+                System.out.println("Enabling notifications");
+                return artist.enableNotifications();
+            }
+            else {
+                System.out.println("Disabling notifications");
+                return artist.disableNotifications();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean status){
+            //If it didn't go well, show error message
+            if (!status){
+                String err;
+                if (artist.getResponse().hasNotificationsEnabled())
+                    err = "Failed to disable notifications";
+                else
+                    err = "Failed to enable notifications";
+
+                Toast.makeText(ArtistActivity.this, err, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

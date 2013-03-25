@@ -34,7 +34,6 @@ public class NewThreadActivity extends MyActivity2 {
 	public void init() {
 		Bundle bundle = getIntent().getExtras();
 		sectionId = bundle.getInt(BundleKeys.SECTION_ID);
-
 	}
 
 	/**

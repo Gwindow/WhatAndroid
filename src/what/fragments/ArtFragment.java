@@ -77,7 +77,12 @@ public class ArtFragment extends SherlockFragment {
 
 			@Override
 			public void onLoadingComplete(Bitmap loadedImage) {
-				loadedImage = getRefelection(loadedImage);
+                //TODO: Turn this band-aid fix into a real fix. Why is it that
+                //TODO: sometimes we get a null loadedImage?
+                if (loadedImage == null)
+                    System.out.println("ALBUM ART NULL");
+				else
+                    loadedImage = getReflection(loadedImage);
 				progressBar.setVisibility(View.GONE);
 				artImageView.setVisibility(View.VISIBLE);
 			}
@@ -99,11 +104,12 @@ public class ArtFragment extends SherlockFragment {
 	}
 
 	// Taken from http://androidsnips.blogspot.com/2010/08/showing-image-with-reflection-in.html
-	private Bitmap getRefelection(Bitmap image) {
+	private Bitmap getReflection(Bitmap image) {
 		// The gap we want between the reflection and the original image
 		final int reflectionGap = 4;
 
 		// Get you bit map from drawable folder
+        //TODO Why does originalImage exist?
 		Bitmap originalImage = image;
 
 		int width = originalImage.getWidth();
@@ -126,8 +132,8 @@ public class ArtFragment extends SherlockFragment {
 		// Draw in the original image
 		canvas.drawBitmap(originalImage, 0, 0, null);
 		// Draw in the gap
-		Paint deafaultPaint = new Paint();
-		canvas.drawRect(0, height, width, height + reflectionGap, deafaultPaint);
+		Paint defaultPaint = new Paint();
+		canvas.drawRect(0, height, width, height + reflectionGap, defaultPaint);
 		// Draw in the reflection
 		canvas.drawBitmap(reflectionImage, 0, height + reflectionGap, null);
 

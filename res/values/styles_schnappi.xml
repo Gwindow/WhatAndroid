@@ -36,7 +36,9 @@
         <item name="android:textColor">@color/text_colors_schnappi</item>
         <item name="actionbarTitleColor">@color/schnappi</item>
         <item name="vpiTabPageIndicatorStyle">@style/schnappi_ActionBarTabStyle</item>
+        <!-- no longer exists?
         <item name="vpiTabTextStyle">@style/CustomTabPageIndicator.Text</item>
+        -->
     </style>
 
     <style name="CustomTabPageIndicator.Text" parent="Widget">

@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="what.gui"
-    android:installLocation="preferExternal"
+    android:installLocation="auto"
     android:versionCode="1"
-    android:versionName="0.1" >
+    android:versionName=".11" >
+    <!-- Because of some weirdness must use auto instead of preferExternal -->
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="14" />
+        android:targetSdkVersion="17" />
 
-    <uses-permission
-        android:name="android.permission.INTERNET"
+    <uses-permission android:name="android.permission.INTERNET"
         android:screenOrientation="portrait" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
-    </uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
-    </uses-permission>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" >
-    </uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.flattr4android.permission.READ_THING" />
 
     <application
@@ -92,11 +89,13 @@
             android:theme="@style/Theme.Sherlock"
             android:windowSoftInputMode="adjustPan" >
         </activity>
+        <!-- Duplicate?
         <activity
             android:name="what.forum.SectionActivity"
             android:theme="@style/Theme.Sherlock"
             android:windowSoftInputMode="adjustPan" >
         </activity>
+        -->
         <activity
             android:name="what.forum.ThreadActivity"
             android:theme="@style/Theme.Sherlock"
@@ -333,11 +332,13 @@
             android:theme="@style/Theme.Sherlock"
             android:windowSoftInputMode="adjustPan" >
         </activity>
+        <!-- Duplicate?
         <activity
             android:name="what.forum.NewThreadActivity"
             android:theme="@style/Theme.Sherlock"
             android:windowSoftInputMode="adjustPan" >
         </activity>
+        -->
         <activity
             android:name="what.sherlockbot.SherlockActivity"
             android:theme="@style/Theme.Sherlock"

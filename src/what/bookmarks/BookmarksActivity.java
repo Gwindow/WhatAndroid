@@ -17,7 +17,6 @@ import api.util.Tuple;
 
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.TitleProvider;
 
 /**
  * @author Gwindow
@@ -89,10 +88,10 @@ public class BookmarksActivity extends MyActivity2 {
 		protected Boolean doInBackground(Void... params) {
 			Tuple<Boolean, Boolean> tuple = new Tuple<Boolean, Boolean>(false, false);
 			boolean status = false;
-			artistBookmarks = Bookmarks.artistBookmarks();
+			artistBookmarks = Bookmarks.initArtistBookmarks();
 			tuple.setA(artistBookmarks.getStatus());
 
-			torrentBookmarks = Bookmarks.torrentBookmarks();
+			torrentBookmarks = Bookmarks.initTorrentBookmarks();
 			tuple.setB(torrentBookmarks.getStatus());
 			if (tuple.getA() == true || tuple.getB() == true) {
 				status = true;
@@ -112,7 +111,7 @@ public class BookmarksActivity extends MyActivity2 {
 
 	}
 
-	public class BookmarksAdapater extends FragmentPagerAdapter implements TitleProvider {
+	public class BookmarksAdapater extends FragmentPagerAdapter {
 		public BookmarksAdapater(FragmentManager fm) {
 			super(fm);
 		}
@@ -138,8 +137,8 @@ public class BookmarksActivity extends MyActivity2 {
 			return TABS.length;
 		}
 
-		@Override
-		public String getTitle(int position) {
+        @Override
+        public String getPageTitle(int position) {
 			return TABS[position % TABS.length];
 		}
 	}

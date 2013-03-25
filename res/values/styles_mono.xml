@@ -36,7 +36,9 @@
         <item name="android:textColor">@color/text_colors_mono</item>
         <item name="actionbarTitleColor">@color/mono</item>
         <item name="vpiTabPageIndicatorStyle">@style/mono_ActionBarTabStyle</item>
+        <!-- no longer exists?
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Light</item>
+        -->
     </style>
 
     <style name="mono_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
@@ -54,15 +56,15 @@
     <style name="mono_transparent_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar">
         <item name="background">@drawable/ab_transparent_mono</item>
         <item name="progressBarStyle">@style/mono_ProgressBar</item>
-        
+
         <item name="android:background">@drawable/ab_transparent_mono</item>
         <item name="android:progressBarStyle">@style/mono_ProgressBar</item>
     </style>
-	
-    <style name="mono_PopupMenu" parent="@style/Widget.Sherlock.Light.ListPopupWindow">	
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_mono</item>	
+
+    <style name="mono_PopupMenu" parent="@style/Widget.Sherlock.Light.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_mono</item>
     </style>
-	
+
     <style name="mono_DropDownListView" parent="@style/Widget.Sherlock.Light.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_mono</item>
     </style>
@@ -72,7 +74,7 @@
 
         <item name="android:background">@drawable/tab_indicator_ab_mono</item>
     </style>
-	
+
     <style name="mono_DropDownNav" parent="@style/Widget.Sherlock.Light.Spinner.DropDown.ActionBar">
         <item name="background">@drawable/spinner_background_ab_mono</item>
 
@@ -80,7 +82,7 @@
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_mono</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_mono</item>
     </style>
-    
+
     <style name="mono_ProgressBar" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_mono</item>
     </style>

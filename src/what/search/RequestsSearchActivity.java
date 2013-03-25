@@ -2,6 +2,7 @@ package what.search;
 
 import java.util.List;
 
+import api.search.requests.Request;
 import what.gui.ActivityNames;
 import what.gui.BundleKeys;
 import what.gui.Cancelable;
@@ -102,16 +103,16 @@ public class RequestsSearchActivity extends MyActivity2 implements Scrollable, O
 	public void populate() {
 		setActionBarTitle("Requests Search, " + requestsSearchPage + "/" + requestsSearch.getResponse().getPages());
 
-		List<api.search.requests.Results> results = requestsSearch.getResponse().getResults();
+		List<Request> results = requestsSearch.getResponse().getResults();
 
 		if (results != null) {
-			for (int i = 0; i < results.size(); i++) {
+            for (Request request : results){
 				LinearLayout result_layout = (LinearLayout) getLayoutInflater().inflate(R.layout.torrent_search_result, null);
 
 				TextView group = (TextView) result_layout.findViewById(R.id.groupTitle);
-				group.setText(results.get(i).getTitle());
+				group.setText(request.getTitle());
 				group.setTag(REQUEST_TAG);
-				group.setId(results.get(i).getRequestId().intValue());
+				group.setId(request.getRequestId().intValue());
 				group.setOnClickListener(this);
 				scrollLayout.addView(result_layout);
 			}
@@ -277,6 +278,8 @@ public class RequestsSearchActivity extends MyActivity2 implements Scrollable, O
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
+            //Strip spaces from the tags, leaving them in results in an illegal character exception
+            tagSearchTerm = tagSearchTerm.replaceAll("\\s", "");
 			requestsSearch = RequestsSearch.requestSearchFromSearchTermAndTags(searchTerm, tagSearchTerm, requestsSearchPage);
 			return requestsSearch.getStatus();
 		}

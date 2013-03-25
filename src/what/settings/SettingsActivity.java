@@ -1,23 +1,18 @@
 package what.settings;
 
-import java.util.LinkedList;
-
-import what.gui.R;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
+import android.preference.*;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.util.Log;
 import android.widget.Toast;
 import api.son.MySon;
-
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import what.gui.R;
+
+import java.util.LinkedList;
 
 public class SettingsActivity extends SherlockPreferenceActivity implements OnPreferenceClickListener {
 	private Preference debugPreference;

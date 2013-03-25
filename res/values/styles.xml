@@ -93,7 +93,7 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="SearchResult">
+    <style name="SearchResult" parent="SimpleFont">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
@@ -102,10 +102,9 @@
         <item name="android:scrollHorizontally">true</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
-        <item name="android:textSize">22dip</item>
     </style>
 
-    <style name="UserSearchResult">
+    <style name="UserSearchResult" parent="SimpleFont">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
@@ -114,7 +113,6 @@
         <item name="android:scrollHorizontally">true</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
-        <item name="android:textSize">22dip</item>
     </style>
 
     <style name="TorrentFormatHeader">
@@ -220,7 +218,7 @@
         <item name="android:textSize">22dip</item>
     </style>
 
-    <style name="BookmarksTorrentGroupTitle">
+    <style name="BookmarksTorrentGroupTitle" parent="SimpleFont">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
@@ -229,10 +227,9 @@
         <item name="android:scrollHorizontally">true</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
-        <item name="android:textSize">22dip</item>
     </style>
 
-    <style name="NotificationsTorrentGroupTitle">
+    <style name="NotificationsTorrentGroupTitle" parent="SimpleFont">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
@@ -241,7 +238,6 @@
         <item name="android:scrollHorizontally">true</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
-        <item name="android:textSize">22dip</item>
     </style>
 
     <style name="PostBody">
@@ -266,10 +262,10 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="HomeInfo">
+    <style name="HomeInfo" parent="SimpleFont">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">17dip</item>
+        <item name="android:textSize">18dip</item>
     </style>
 
     <style name="HomeSubscriptionsHeader">
@@ -319,22 +315,30 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
     </style>
 
-    <style name="DarkTheme" parent="Theme.Sherlock.ForceOverflow">
+    <!-- ForceOverflow is removed from the latest ActionBarSherlock. How to migrate?
+    Probably should just learn how to use ABS and then apply the knowledge here -->
+    <!-- No Theme.Sherlock.Dark? -->
+    <style name="DarkTheme" parent="Theme.Sherlock.Light.DarkActionBar">
+        <!-- no longer exists?
         <item name="vpiTitlePageIndicatorStyle">@style/Widget.TitlePageIndicator</item>
+        -->
         <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+        <!-- no longer exists?
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Dark</item>
+        -->
         <item name="textColorPrimary">@color/textview_colors_dark</item>
-        <item name="android:textColor">?textColorPrimary</item>
+        <item name="android:textColor">@android:color/primary_text_light</item>
         <item name="actionBarStyle">@style/ActionBar.Dark</item>
     </style>
 
-    <style name="LightTheme" parent="Theme.Sherlock.Light.ForceOverflow">
-
+    <style name="LightTheme" parent="Theme.Sherlock.Light.DarkActionBar">
         <!-- <item name="vpiTitlePageIndicatorStyle">@style/Widget.TitlePageIndicator</item> -->
         <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+        <!-- no longer exists?
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Light</item>
+        -->
         <item name="textColorPrimary">@color/textview_colors_light</item>
-        <item name="android:textColor">?textColorPrimary</item>
+        <item name="android:textColor">@android:color/primary_text_light</item>
         <item name="actionBarStyle">@style/ActionBar.Light</item>
     </style>
 

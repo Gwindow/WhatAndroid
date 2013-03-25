@@ -149,7 +149,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 			v.setBackgroundDrawable(bd);
 		} catch (Exception e) {
 			e.printStackTrace();
-			v.setBackgroundColor(R.color.black);
+			v.setBackgroundColor(getResources().getColor(R.color.black));
 			Toast.makeText(this, "default background failed", Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -165,7 +165,7 @@ public abstract class MyActivity2 extends SherlockFragmentActivity {
 			v.setBackgroundDrawable(bd);
 		} catch (Exception e) {
 			e.printStackTrace();
-			v.setBackgroundColor(R.color.black);
+			v.setBackgroundColor(getResources().getColor(R.color.black));
 			Toast.makeText(this, "default background failed", Toast.LENGTH_SHORT).show();
 		}
 	}

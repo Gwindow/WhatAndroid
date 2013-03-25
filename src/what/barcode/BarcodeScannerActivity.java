@@ -12,7 +12,6 @@ import api.soup.MySoup;
 
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.TitleProvider;
 
 /**
  * @author Gwindow
@@ -56,7 +55,7 @@ public class BarcodeScannerActivity extends MyActivity2 {
 		setActionBarTitle("Barcode Scanner");
 		setActionBarTouchToHome(MySoup.isLoggedIn());
 
-		adapter = new ScannerAdapater(getSupportFragmentManager());
+		adapter = new ScannerAdapter(getSupportFragmentManager());
 
 		pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
@@ -66,8 +65,8 @@ public class BarcodeScannerActivity extends MyActivity2 {
 
 	}
 
-	private class ScannerAdapater extends FragmentPagerAdapter implements TitleProvider {
-		public ScannerAdapater(FragmentManager fm) {
+	private class ScannerAdapter extends FragmentPagerAdapter  {
+		public ScannerAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
@@ -91,8 +90,8 @@ public class BarcodeScannerActivity extends MyActivity2 {
 			return tabs.length;
 		}
 
-		@Override
-		public String getTitle(int position) {
+        @Override
+        public String getPageTitle(int position) {
 			return tabs[position % tabs.length];
 		}
 	}

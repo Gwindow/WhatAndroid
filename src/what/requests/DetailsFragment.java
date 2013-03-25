@@ -96,7 +96,7 @@ public class DetailsFragment extends SherlockFragment {
 	}
 
 	/**
-	 * @param response2
+	 * @param response
 	 * @return
 	 */
 	public static SherlockFragment newInstance(Response response) {

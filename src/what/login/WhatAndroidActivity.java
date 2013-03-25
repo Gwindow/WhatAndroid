@@ -1,14 +1,5 @@
 package what.login;
 
-import what.cache.ImageCache;
-import what.gui.Cancelable;
-import what.gui.MenuItems;
-import what.gui.MyActivity2;
-import what.gui.R;
-import what.gui.ReportSender;
-import what.home.HomeActivity;
-import what.settings.Settings;
-import what.status.WhatStatusActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -18,18 +9,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import api.son.MySon;
 import api.soup.MySoup;
 import api.util.CouldNotLoadException;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import what.cache.ImageCache;
+import what.gui.*;
+import what.home.HomeActivity;
+import what.settings.Settings;
+import what.status.WhatStatusActivity;
 
 /**
  * The Login activity.
@@ -84,7 +75,7 @@ public class WhatAndroidActivity extends MyActivity2 implements OnClickListener 
 		login.setOnClickListener(this);
 
 		rememberme.setChecked(Settings.getRememberMe());
-
+        //Is this necessary?
 		username.setText("");
 		password.setText("");
 	}
@@ -93,6 +84,8 @@ public class WhatAndroidActivity extends MyActivity2 implements OnClickListener 
 	public void actionbar() {
 		setActionBarTitle("The What.CD Android App");
 		setActionBarTouchToHome(false);
+        //Hide the little back arrow indicator since it doesn't do anything
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 	}
 
 	@Override
@@ -293,5 +286,4 @@ public class WhatAndroidActivity extends MyActivity2 implements OnClickListener 
 			}
 		}
 	}
-
 }

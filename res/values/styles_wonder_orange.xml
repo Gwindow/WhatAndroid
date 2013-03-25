@@ -36,7 +36,9 @@
         <item name="android:textColor">@color/text_colors_wonder_orange</item>
         <item name="actionbarTitleColor">@color/wonder_orange</item>
         <item name="vpiTabPageIndicatorStyle">@style/wonder_orange_ActionBarTabStyle</item>
+        <!-- no longer exists?
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Light</item>
+        -->
     </style>
 
     <style name="wonder_orange_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
