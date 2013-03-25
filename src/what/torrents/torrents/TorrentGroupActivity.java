@@ -264,30 +264,26 @@ public class TorrentGroupActivity extends MyActivity2 {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            System.out.println("Trying to change bookmark status");
             Boolean isBookmarked = torrentGroup.getResponse().getGroup().isBookmarked();
-            if (!isBookmarked){
-                System.out.println("Adding bookmark");
+            if (!isBookmarked)
                 return torrentGroup.addBookmark();
-            }
-            else {
-                System.out.println("Removing bookmark");
+            else
                 return torrentGroup.removeBookmark();
-            }
         }
 
         @Override
         protected void onPostExecute(Boolean status){
-            //If it didn't go well, show error message
-            if (!status){
-                String err;
-                if (torrentGroup.getResponse().getGroup().isBookmarked())
-                    err = "Failed to remove bookmark";
-                else
-                    err = "Failed to add bookmark";
+            //Display some status information, note that we use !bookmarked if we suceeded
+            //since the status we know have has changed
+            String info;
+            if (status)
+                info = (!torrentGroup.getResponse().getGroup().isBookmarked() ? "Removed" : "Added")
+                        + " torrent bookmark";
+            else
+                info = "Failed to " + (torrentGroup.getResponse().getGroup().isBookmarked() ? "remove" : "add")
+                        + " torrent bookmark";
 
-                Toast.makeText(TorrentGroupActivity.this, err, Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(TorrentGroupActivity.this, info, Toast.LENGTH_SHORT).show();
         }
     }
 }

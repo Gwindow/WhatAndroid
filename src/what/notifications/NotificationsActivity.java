@@ -87,6 +87,7 @@ public class NotificationsActivity extends MyActivity2 implements OnClickListene
 	}
 
 	/**
+     * TODO: I'd like to show the artist name as well, I feel like it's kind of important to the info
 	 * Populate notifications.
 	 */
 	private void populate() {

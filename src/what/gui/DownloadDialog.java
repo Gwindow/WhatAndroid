@@ -139,7 +139,6 @@ public class DownloadDialog extends AlertDialog.Builder implements OnClickListen
             name = params[4];
             String url = params[0] + ":" + params[1] + "/dl.pywa?pass=" + params[2]
                     + "&site=whatcd&id=" + params[3];
-            System.out.println("Sending torrent to: " + url);
             try {
                 MySoup.scrapeOther(url);
             }
@@ -153,14 +152,14 @@ public class DownloadDialog extends AlertDialog.Builder implements OnClickListen
 
         @Override
         protected void onPostExecute(Boolean status){
-            if (status){
-                System.out.println("Torrent passed!");
-                Toast.makeText(context, "Sent: " + name, Toast.LENGTH_SHORT).show();
-            }
-            else {
-                System.out.println("Failed sending");
-                Toast.makeText(context, "Failed sending: " + name, Toast.LENGTH_SHORT).show();
-            }
+            //Show some status information
+            String info;
+            if (status)
+                info = "Sent: " + name;
+            else
+                info = "Failed sending: " + name;
+
+            Toast.makeText(context, info, Toast.LENGTH_SHORT).show();
         }
     }
 }

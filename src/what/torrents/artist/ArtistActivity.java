@@ -262,30 +262,28 @@ public class ArtistActivity extends MyActivity2 {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            System.out.println("Trying to change bookmark status");
             Boolean isBookmarked = artist.getResponse().isBookmarked();
             if (!isBookmarked){
-                System.out.println("Adding bookmark");
                 return artist.addBookmark();
             }
             else {
-                System.out.println("Removing bookmark");
                 return artist.removeBookmark();
             }
         }
 
         @Override
         protected void onPostExecute(Boolean status){
-            //If it didn't go well, show error message
-            if (!status){
-                String err;
-                if (artist.getResponse().isBookmarked())
-                    err = "Failed to remove bookmark";
-                else
-                    err = "Failed to add bookmark";
+            //Display some status information, note that we use !bookmarked if we suceeded
+            //since the status we know have has changed
+            String info;
+            if (status)
+                info = (!artist.getResponse().isBookmarked() ? "Removed" : "Added")
+                        + " artist bookmark";
+            else
+                info = "Failed to " + (artist.getResponse().isBookmarked() ? "remove" : "add")
+                        + " artist bookmark";
 
-                Toast.makeText(ArtistActivity.this, err, Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(ArtistActivity.this, info, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -309,30 +307,26 @@ public class ArtistActivity extends MyActivity2 {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            System.out.println("Trying to change notification status");
             Boolean notificationsEnabled = artist.getResponse().hasNotificationsEnabled();
-            if (!notificationsEnabled){
-                System.out.println("Enabling notifications");
+            if (!notificationsEnabled)
                 return artist.enableNotifications();
-            }
-            else {
-                System.out.println("Disabling notifications");
+            else
                 return artist.disableNotifications();
-            }
         }
 
         @Override
         protected void onPostExecute(Boolean status){
-            //If it didn't go well, show error message
-            if (!status){
-                String err;
-                if (artist.getResponse().hasNotificationsEnabled())
-                    err = "Failed to disable notifications";
-                else
-                    err = "Failed to enable notifications";
+            //Display some status information, note that we use !enabled if we succeeded since
+            //if we were successful the status has changed
+            String info;
+            if (status)
+                info = (!artist.getResponse().hasNotificationsEnabled() ? "Disabled" : "Enabled")
+                        + " notifications";
+            else
+                info = "Failed to " + (artist.getResponse().hasNotificationsEnabled() ? "disable" : "enable")
+                        + " notifications";
 
-                Toast.makeText(ArtistActivity.this, err, Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(ArtistActivity.this, info, Toast.LENGTH_SHORT).show();
         }
     }
 }
