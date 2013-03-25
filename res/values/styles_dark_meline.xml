@@ -36,7 +36,9 @@
         <item name="android:textColor">@color/text_colors_dark_meline</item>
         <item name="actionbarTitleColor">@color/dark_meline</item>
         <item name="vpiTabPageIndicatorStyle">@style/dark_meline_ActionBarTabStyle</item>
+        <!-- no longer exists?
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Dark</item>
+        -->
     </style>
 
 

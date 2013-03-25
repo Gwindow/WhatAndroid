@@ -30,7 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import api.comments.Comments;
+import api.comments.Comment;
 import api.comments.Response;
 import api.comments.TorrentComments;
 
@@ -46,7 +46,7 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 	private boolean isLoaded = true;
 	private MyActivity2 mCtx;
 
-	private LinkedList<Comments> comments;
+	private LinkedList<Comment> comments;
 	private HashMap<Integer, ImageView> avatarMap;
 
 	private LinearLayout scrollLayout;
@@ -63,7 +63,7 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 		this.groupId = groupId;
 		this.mCtx = ctx;
 
-		comments = new LinkedList<Comments>();
+		comments = new LinkedList<Comment>();
 		avatarMap = new HashMap<Integer, ImageView>();
 	}
 
@@ -83,7 +83,7 @@ public class CommentsFragment extends SherlockFragment implements OnClickListene
 
 		if (response.getComments() != null) {
 
-			for (Comments comment : response.getComments()) {
+			for (Comment comment : response.getComments()) {
 				LinearLayout post_layout = (LinearLayout) LayoutInflater.from(mCtx).inflate(R.layout.thread_post, null);
 				comments.add(comment);
 

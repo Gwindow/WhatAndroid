@@ -36,7 +36,9 @@
         <item name="android:textColor">@color/text_colors_example</item>
         <item name="actionbarTitleColor">@color/example</item>
         <item name="vpiTabPageIndicatorStyle">@style/example_ActionBarTabStyle</item>
+        <!-- no longer exists?
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Dark</item>
+        -->
     </style>
     <style name="example_solid_ActionBar" parent="@style/Widget.Sherlock.ActionBar.Solid">
         <item name="background">@drawable/ab_solid_example</item>

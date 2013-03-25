@@ -29,6 +29,7 @@ public class InstructionDialog extends AlertDialog implements OnClickListener {
 		switch (tag) {
 			case HOME:
 				if (!Settings.getFirstHome()) {
+					//TODO: Legibilty, split onto multiple lines.
 					message =
 							"Thanks for downloading the app! Here are some tips .\nTouching the icon in the top left will scroll you to the top of a page, touching it again will take you back a page.\nDouble tapping the title of the page will bring you back home.\nLong touching posts, search results, etc will bring up more options.\nPlease take a moment to configure settings, they can be found through the menu on the top right.\nEnjoy!";
 				}

@@ -1,18 +1,5 @@
 package what.home;
 
-import java.util.List;
-
-import what.forum.ThreadActivity;
-import what.gui.ActivityNames;
-import what.gui.BundleKeys;
-import what.gui.Cancelable;
-import what.gui.ErrorToast;
-import what.gui.InstructionDialog;
-import what.gui.MyActivity2;
-import what.gui.R;
-import what.search.TorrentSearchActivity;
-import what.settings.Settings;
-import what.user.UserActivity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -30,11 +17,17 @@ import api.cli.Utils;
 import api.index.Index;
 import api.soup.MySoup;
 import api.subscriptions.Subscriptions;
-import api.subscriptions.Threads;
+import api.subscriptions.ForumThread;
 import api.util.Tuple;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import what.forum.ThreadActivity;
+import what.gui.*;
+import what.search.TorrentSearchActivity;
+import what.settings.Settings;
+import what.user.UserActivity;
+
+import java.util.List;
 
 /**
  * @author Gwindow
@@ -49,13 +42,15 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 
 	private Index index;
 	private Subscriptions subscriptions;
-	private List<Threads> threads;
+	private List<ForumThread> threads;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.setActivityName(ActivityNames.HOME);
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home, false);
+        //Hide the little back arrow indicator since it doesn't do anything
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 	}
 
 	@Override
@@ -87,12 +82,11 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 			new LoadInfo().execute();
 		} else {
 			findViewById(R.id.infoLayout1).setVisibility(View.GONE);
-			findViewById(R.id.infoLayout2).setVisibility(View.GONE);
 		}
 		if (Settings.getSubscriptionsEnabled()) {
 			new LoadSubscriptions().execute();
 		} else {
-			((TextView) this.findViewById(R.id.subscriptionsHeader)).setVisibility(View.GONE);
+			this.findViewById(R.id.subscriptionsHeader).setVisibility(View.GONE);
 		}
 	}
 

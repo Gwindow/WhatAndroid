@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public abstract class MyActivity extends SherlockFragmentActivity {
-	private static int DEFAULT_THEME = com.actionbarsherlock.R.style.Theme_Sherlock_ForceOverflow;
+	private static int DEFAULT_THEME = com.actionbarsherlock.R.style.Theme_Sherlock_Light_DarkActionBar;
 	private static DisplayMetrics displaymetrics = null;
 	private static BitmapDrawable customBackground;
 	private static String customBackgroundPath = "";

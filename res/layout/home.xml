@@ -1,67 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:paddingLeft="15dip"
+    android:paddingTop="15dip"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/infoLayout1"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:padding="10dip" >
+        android:layout_centerHorizontal="true" >
 
         <TextView
             android:id="@+id/upload"
             style="@style/HomeInfo"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="Up: " />
 
         <TextView
             android:id="@+id/download"
             style="@style/HomeInfo"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_toRightOf="@+id/upload"
+            android:layout_alignBaseline="@+id/upload"
+            android:layout_marginLeft="30dip"
             android:text="Down: " />
 
         <TextView
             android:id="@+id/ratio"
             style="@style/HomeInfo"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_below="@+id/upload"
+            android:layout_alignLeft="@+id/upload"
             android:text="Ratio: " />
 
         <TextView
             android:id="@+id/buffer"
             style="@style/HomeInfo"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_alignBaseline="@+id/ratio"
+            android:layout_alignLeft="@+id/download"
             android:text="Buffer: " />
-    </LinearLayout>
-
-    <LinearLayout
-                android:id="@+id/infoLayout2"
-        
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:paddingBottom="10dip"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip" >
 
         <TextView
             android:id="@+id/inbox"
             style="@style/HomeInfo"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_alignLeft="@+id/ratio"
+            android:layout_below="@+id/ratio"
             android:clickable="true"
             android:onClick="openInbox"
             android:text="Inbox: 0" />
@@ -69,21 +61,21 @@
         <TextView
             android:id="@+id/notifications"
             style="@style/HomeInfo"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_alignLeft="@+id/buffer"
+            android:layout_alignBaseline="@+id/inbox"
             android:clickable="true"
             android:onClick="openNotifications"
             android:text="Notifications: 0" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:paddingBottom="10dip"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip" >
+        android:layout_below="@+id/infoLayout1"
+        android:layout_marginTop="15dip" >
 
         <TextView
             android:id="@+id/subscriptionsHeader"
@@ -111,4 +103,4 @@
         </ScrollView>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

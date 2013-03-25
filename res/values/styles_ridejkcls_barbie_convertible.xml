@@ -36,7 +36,9 @@
         <item name="android:textColor">@color/text_colors_ridejkcls_barbie_convertible</item>
         <item name="actionbarTitleColor">@color/ridejkcls_barbie_convertible</item>
         <item name="vpiTabPageIndicatorStyle">@style/ridejkcls_barbie_convertible_ActionBarTabStyle</item>
+        <!-- no longer exists?
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Dark</item>
+        -->
     </style>
 
     <style name="ridejkcls_barbie_convertible_solid_ActionBar" parent="@style/Widget.Sherlock.ActionBar.Solid">

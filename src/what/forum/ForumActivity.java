@@ -1,13 +1,5 @@
 package what.forum;
 
-import java.util.List;
-
-import what.gui.ActivityNames;
-import what.gui.Cancelable;
-import what.gui.ErrorToast;
-import what.gui.MyActivity2;
-import what.gui.MyScrollView;
-import what.gui.R;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,11 +7,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import api.forum.forumsections.Categories;
+import api.forum.forumsections.Category;
+import api.forum.forumsections.Forum;
 import api.forum.forumsections.ForumSections;
 import api.soup.MySoup;
-
 import com.actionbarsherlock.view.MenuItem;
+import what.gui.*;
+
+import java.util.List;
 
 /**
  * @author Gwindow
@@ -72,22 +67,23 @@ public class ForumActivity extends MyActivity2 implements OnClickListener {
 	private void populate() {
 		setActionBarTitle("Forum");
 
-		List<Categories> categories = forumSections.getResponse().getCategories();
+		List<Category> categories = forumSections.getResponse().getCategories();
 
-		for (int i = 0; i < categories.size(); i++) {
-			TextView category_title = new TextView(this);
-			category_title.setTextAppearance(this, R.style.ForumCategory);
-			category_title.setText(categories.get(i).getCategoryName());
-			scrollLayout.addView(category_title);
-			for (int j = 0; j < categories.get(i).getForums().size(); j++) {
-				TextView section_title = new TextView(this);
-				section_title.setTextAppearance(this, R.style.ForumSection);
-				section_title.setText("\t" + categories.get(i).getForums().get(j).getForumName());
-				section_title.setTag(SECTION_TAG);
-				section_title.setId(categories.get(i).getForums().get(j).getForumId().intValue());
-				section_title.setOnClickListener(this);
-				scrollLayout.addView(section_title);
-			}
+        for (Category category : categories){
+            TextView category_title = new TextView(this);
+            category_title.setTextAppearance(this, R.style.ForumCategory);
+            category_title.setText(category.getCategoryName());
+            scrollLayout.addView(category_title);
+
+            for (Forum forum : category.getForums()){
+                TextView section_title = new TextView(this);
+                section_title.setTextAppearance(this, R.style.ForumSection);
+                section_title.setText("\t" + forum.getForumName());
+                section_title.setTag(SECTION_TAG);
+                section_title.setId(forum.getForumId().intValue());
+                section_title.setOnClickListener(this);
+                scrollLayout.addView(section_title);
+            }
 		}
 	}
 

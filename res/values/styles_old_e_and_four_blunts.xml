@@ -35,7 +35,9 @@
         <item name="android:panelBackground">@drawable/menu_hardkey_panel_old_e_and_four_blunts</item>
         <item name="android:textColor">@color/old_e_and_four_blunts</item>
         <item name="vpiTabPageIndicatorStyle">@style/old_e_and_four_blunts_ActionBarTabStyle</item>
+        <!-- no longer exists?
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text_Dark</item>
+        -->
     </style>
 
     <style name="old_e_and_four_blunts_solid_ActionBar" parent="@style/Widget.Sherlock.ActionBar.Solid">

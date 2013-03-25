@@ -4,3 +4,8 @@ bin/res/
 bin/resources.ap_
 bin/what/
 gen/
+out/
+R.java
+#ignore IntelliJ Project files
+.idea/*
+*.iml

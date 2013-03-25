@@ -2,6 +2,7 @@ package what.bookmarks;
 
 import java.util.List;
 
+import android.util.TypedValue;
 import what.gui.BundleKeys;
 import what.gui.MyActivity2;
 import what.gui.MyScrollView;
@@ -16,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import api.bookmarks.Bookmarks;
-import api.bookmarks.Torrents;
+import api.bookmarks.TorrentGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
@@ -57,9 +58,11 @@ public class TorrentsFragment extends SherlockFragment implements OnClickListene
 
 	private void populate(View view, LayoutInflater inflater) {
 		if (bookmarks != null) {
-			List<Torrents> torrents = bookmarks.getResponse().getTorrents();
+			List<TorrentGroup> torrents = bookmarks.getResponse().getTorrents();
 			for (int i = 0; i < torrents.size(); i++) {
 				TextView torrentgroup_title = (TextView) inflater.inflate(R.layout.bookmarks_torrentgroup_title, null);
+                //TODO: How to get the artist name when it's not part of the response? I don't really want to do
+                //TODO: mulitiple api requests for every bookmarked torrent.
 				torrentgroup_title.setText(torrents.get(i).getName());
 				torrentgroup_title.setOnClickListener(this);
 				torrentgroup_title.setTag(TORRENTGROUP_TAG);

@@ -111,7 +111,7 @@ public class NotificationService extends Service {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			notifications = Notifications.fromPage(1);
+			notifications = Notifications.notificationsFromPage(1);
 			return notifications.getStatus();
 		}
 
