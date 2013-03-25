@@ -3,7 +3,7 @@
     package="what.gui"
     android:installLocation="auto"
     android:versionCode="1"
-    android:versionName=".02" >
+    android:versionName=".11" >
     <!-- Because of some weirdness must use auto instead of preferExternal -->
 
     <uses-sdk

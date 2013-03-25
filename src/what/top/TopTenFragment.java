@@ -93,10 +93,7 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener,
                     Object[] array = new Object[7];
                     array[0] = res.getTorrentId();
                     array[1] = res.getDownloadLink();
-                    //TODO: Data is not the size of the torrent, how can I get the size?
-                    //Temp fix: data/snatched is within +/-5mb of the torrent size, or permanent fix if
-                    //we can't get the torrent size added to the top 10 api response
-                    array[2] = res.getData().doubleValue() / res.getSnatched().doubleValue();
+                    array[2] = res.getSize();
                     array[3] = res.getSnatched();
                     array[4] = res.getSeeders();
                     array[5] = res.getLeechers();
