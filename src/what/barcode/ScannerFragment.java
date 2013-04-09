@@ -331,7 +331,7 @@ public class ScannerFragment extends SherlockFragment implements OnClickListener
 		protected void onPostExecute(Triple<Boolean, Integer, Integer> status) {
 			dialog.dismiss();
 			searchTerm = CrossReference.getDeterminedSearchTerm();
-			if (status.getA() == true) {
+			if (status.getA()) {
 				if ((status.getB() > 0) || (status.getC() > 0)) {
 					displayFoundPopup(status.getB(), status.getC());
 					unlockScreenRotation();
@@ -340,9 +340,8 @@ public class ScannerFragment extends SherlockFragment implements OnClickListener
 					unlockScreenRotation();
 				}
 			}
-			if (status.getA() == false) {
+			else {
 				Toast.makeText(getSherlockActivity(), "Scan Failed", Toast.LENGTH_SHORT).show();
-				// displayNotFoundPopup();
 				unlockScreenRotation();
 			}
 		}

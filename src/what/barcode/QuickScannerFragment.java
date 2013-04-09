@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import android.os.Environment;
 import what.gui.R;
 import what.settings.Settings;
 import android.app.Activity;
@@ -25,7 +26,8 @@ public class QuickScannerFragment extends SherlockFragment implements OnClickLis
 	private static final String ZXING_MARKETPLACE_URL =
 			"https://play.google.com/store/apps/details?id=com.google.zxing.client.android";
 	private static final String FILENAME = "barcodes.txt";
-	private static String extStorageDirectory = null;
+    //Patch from fabbel/6c6f6c to get the file correctly
+    private static File extStorageDirectory = Environment.getExternalStorageDirectory();
 	private Intent intent;
 	private String upc;
 	private FileOutputStream fileOutputStream;
