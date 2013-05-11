@@ -3,9 +3,14 @@ The What.CD Android App
 
 An android app for What.CD, includes everything you love about What.CD as well as barcode scanning for quick music look ups.
 
-The app will work with a default setup of Gazelle, just change the url to point to your site and enjoy. The [WhatAPI](https://github.com/Gwindow/WhatAPI) project is required to build the app, it can be found [here](https://github.com/Gwindow/WhatAPI).
+The app will work with a default setup of Gazelle, just change the url to point to your site and enjoy. 
 
-### Have questions? Contact [Gwindow](https://github.com/Gwindow/) through GitHub, What.CD, or in #whatAndroid.
+### Building
+The [WhatAPI](https://github.com/Gwindow/WhatAPI) project is required to provide interaction with the site, and the
+[ActionBarSherlock](http://actionbarsherlock.com/), [ViewPagerIndicator](http://viewpagerindicator.com/) 
+and [Universal Image Loader for Android](https://github.com/nostra13/Android-Universal-Image-Loader) libraries are also
+required by the app.
+#### Have questions? Contact [Gwindow](https://github.com/Gwindow/) or [Twinklebear](https://github.com/Twinklebear) through GitHub, What.CD, or in #whatAndroid.
 
 Licensed under the 2-Clause BSD License, see LICENSE for full terms.
 
