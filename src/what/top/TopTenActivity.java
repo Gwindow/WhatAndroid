@@ -65,7 +65,7 @@ public class TopTenActivity extends MyActivity2 {
 
 		setActionBarTitle("Top 10");
 
-		adapter = new Adapater(getSupportFragmentManager());
+		adapter = new Adapter(getSupportFragmentManager());
 
 		pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
@@ -107,8 +107,8 @@ public class TopTenActivity extends MyActivity2 {
 		}
 	}
 
-	public class Adapater extends FragmentPagerAdapter {
-		public Adapater(FragmentManager fm) {
+	public class Adapter extends FragmentPagerAdapter {
+		public Adapter(FragmentManager fm) {
 			super(fm);
 		}
 

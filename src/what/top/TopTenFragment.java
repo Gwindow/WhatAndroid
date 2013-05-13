@@ -55,8 +55,7 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener,
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //TODO: should we call super.onCreateView()?
-		if ((savedInstanceState != null)) {
+		if (savedInstanceState != null) {
 			top = (Top) MySon.toObjectFromString(savedInstanceState.getString(BundleKeys.SAVED_JSON), Top.class);
 			tag = savedInstanceState.getString(BundleKeys.TAG);
 		}
@@ -91,7 +90,8 @@ public class TopTenFragment extends SherlockFragment implements OnClickListener,
                     format.setId(GROUP_TAG);
 
                     Object[] array = new Object[7];
-                    array[0] = res.getTorrentId();
+                    //TODO: Is there a way to link directly to the torrent within the group? or like highlight it?
+                    array[0] = res.getGroupId();
                     array[1] = res.getDownloadLink();
                     array[2] = res.getSize();
                     array[3] = res.getSnatched();
