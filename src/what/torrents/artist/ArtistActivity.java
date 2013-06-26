@@ -1,6 +1,7 @@
 package what.torrents.artist;
 
 import android.widget.Toast;
+import api.soup.MySoup;
 import what.fragments.ArtFragment;
 import what.fragments.DescriptionFragment;
 import what.gui.ActivityNames;
@@ -119,6 +120,8 @@ public class ArtistActivity extends MyActivity2 {
                     + (artist == null ? "artist" : "notificationsItem")
                     +" null");
         }
+        else if (!MySoup.canNotifications())
+            notificationsItem.setVisible(false);
         else if (artist.getResponse().hasNotificationsEnabled())
             notificationsItem.setTitle("Do not notify of new uploads");
         else

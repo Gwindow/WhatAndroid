@@ -68,6 +68,8 @@ public class HomeActivity extends MyActivity2 implements OnClickListener, OnEdit
 		bufferView = (TextView) this.findViewById(R.id.buffer);
 		inboxView = (TextView) this.findViewById(R.id.inbox);
 		notificationsView = (TextView) this.findViewById(R.id.notifications);
+        if (!MySoup.canNotifications())
+            notificationsView.setVisibility(View.INVISIBLE);
 
 		searchView = (EditText) this.getLayoutInflater().inflate(R.layout.collapsible_edittext, null);
 		searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
