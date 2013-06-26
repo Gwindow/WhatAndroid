@@ -96,6 +96,8 @@ public class Settings {
 	}
 
 	public static void saveHomeInfo(Set<String> set) {
+        //TODO: Android Studio tells me putStringSet requires api level 11
+        //should we just ditch Android <3 ? It's a pretty small market share after all
 		settingsEditor.putStringSet("homecache_set", set);
 		settingsEditor.commit();
 	}
