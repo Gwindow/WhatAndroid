@@ -245,7 +245,7 @@ public class WhatAndroidActivity extends MyActivity2 implements OnClickListener 
 			}
 			Settings.commit();
 			try {
-				MySoup.login("login.php", username, password);
+				MySoup.login("login.php", username, password, rememberme.isChecked());
 				return true;
 			} catch (CouldNotLoadException e) {
 				return false;
