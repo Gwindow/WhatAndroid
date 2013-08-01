@@ -127,6 +127,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 			}
 		}
 
+		//TODO: why is the same code duplicated here?
 		if (pref == debugPreference) {
 			if (sharedPreferences.getBoolean("debug_preference", true)) {
 				MySon.setDebugEnabled(true);
@@ -142,6 +143,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 			}
 		}
 		/*
+		* TODO What's this for?
 		 * if (pref == reportPreference) { Intent intent = new Intent(SettingsActivity.this, ReportActivity.class);
 		 * startActivity(intent); }
 		 */

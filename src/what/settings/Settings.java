@@ -343,6 +343,14 @@ public class Settings {
 	}
 
 	/**
+	 * Check if the user is ok with running a developer build
+	 * @return true if ok with running a dev build
+	 */
+	public static boolean useDevBuilds(){
+		return settings.getBoolean("useDevBuilds", false);
+	}
+
+	/**
 	 * @return the settings
 	 */
 	public static SharedPreferences getSettings() {

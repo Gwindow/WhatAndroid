@@ -9,6 +9,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import api.son.MySon;
+import what.settings.Settings;
 import what.util.GitRelease;
 
 /**
@@ -80,9 +81,8 @@ public class UpdateChecker {
 			if (releases != null){
 				Double currentVer = getInstalledVersion();
 				for (GitRelease gr : releases){
-					//TODO: If we want to do dev previews we could do them as pre-releases
-					//and have the user toggle a setting to not filter out pre-releases here
-					if (gr.isDraft() || gr.isPrerelease())
+					//Ignore draft builds, also pre-releases if we don't want dev builds
+					if (gr.isDraft() || (gr.isPrerelease() && !Settings.useDevBuilds()))
 						continue;
 					//If there's a new release
 					if (currentVer < Double.parseDouble(gr.getTagName())){
