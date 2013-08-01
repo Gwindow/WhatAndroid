@@ -1,5 +1,6 @@
 package what.status;
 
+import api.whatstatus.Status;
 import what.gui.ActivityNames;
 import what.gui.Cancelable;
 import what.gui.ErrorToast;
@@ -42,59 +43,26 @@ public class WhatStatusActivity extends MyActivity2 {
 	}
 
 	public void populateLayout() {
-		switch (whatStatus.getStatus().getSite()) {
-			case 0:
-				siteStatus.setImageResource((R.drawable.site_up));
-				break;
-			case 1:
-				siteStatus.setImageResource((R.drawable.site_down));
-				break;
-			case 2:
-				siteStatus.setImageResource((R.drawable.site_maintenance));
-				break;
-			default:
-				siteStatus.setImageResource((R.drawable.site_up));
-				break;
-		}
-		switch (whatStatus.getStatus().getTracker()) {
-			case 0:
-				trackerStatus.setImageResource((R.drawable.site_up));
-				break;
-			case 1:
-				trackerStatus.setImageResource((R.drawable.site_down));
-				break;
-			case 2:
-				trackerStatus.setImageResource((R.drawable.site_maintenance));
-				break;
-			default:
-				trackerStatus.setImageResource((R.drawable.site_up));
-				break;
-		}
-		switch (whatStatus.getStatus().getIrc()) {
-			case 0:
-				ircStatus.setImageResource((R.drawable.site_up));
-				break;
-			case 1:
-				ircStatus.setImageResource((R.drawable.site_up));
-				break;
-		}
-		/*
-		 * try { for (int i = 0; i < status.getTweets().size(); i++) { tweetList.add(new TextView(this));
-		 * tweetList.get(i).setTextSize(18); tweetList.get(i).setText(status.getTweets().get(i).getA() + "\n \t" +
-		 * status.getTweets().get(i).getB()); twitterScroll.addView(tweetList.get(i)); } } catch (TwitterException e) {
-		 * Toast.makeText(this, "Could not load tweets", Toast.LENGTH_LONG).show(); e.printStackTrace(); }
-		 */
+		//Having some issues with getting the whatstatus site information for some reason (SSL errors??)
+		//so do a null check for now so we don't crash
+		if (whatStatus == null || whatStatus.getStatus() == null)
+			return;
+
+		Status status = whatStatus.getStatus();
+		if (status.siteUp())
+			siteStatus.setImageResource(R.drawable.site_up);
+		else
+			siteStatus.setImageResource(R.drawable.site_down);
+		if (status.trackerUp())
+			trackerStatus.setImageResource(R.drawable.site_up);
+		else
+			trackerStatus.setImageResource(R.drawable.site_down);
+		if (status.ircUp())
+			ircStatus.setImageResource(R.drawable.site_up);
+		else
+			ircStatus.setImageResource(R.drawable.site_down);
+
 	}
-
-	/*
-	 * public void openTwitter(View v) { String url = "http://twitter.com/#!/whatcd"; Intent i = new
-	 * Intent(Intent.ACTION_VIEW); i.setData(Uri.parse(url)); startActivity(i); }
-	 */
-
-	/*
-	 * public void openWhatStatus(View v) { String url = "http://whatstatus.info/"; Intent i = new
-	 * Intent(Intent.ACTION_VIEW); i.setData(Uri.parse(url)); startActivity(i); }
-	 */
 
 	private class Load extends AsyncTask<Void, Void, Boolean> implements Cancelable {
 		public Load() {
@@ -116,21 +84,19 @@ public class WhatStatusActivity extends MyActivity2 {
 				e.printStackTrace();
 				return false;
 			}
-
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
+			//TODO Is there a need for this ordering? couldn't it just be an if/else
+			//and put unlockScreenRotation before the if?
 			hideIndeterminateProgress();
-			if (status == true) {
-				populateLayout();
-			}
 			unlockScreenRotation();
-			if (status == false) {
+			if (status)
+				populateLayout();
+			else
 				ErrorToast.show(WhatStatusActivity.this, WhatStatusActivity.class);
-			}
 		}
 
 	}
-
 }
