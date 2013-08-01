@@ -52,10 +52,10 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 	}
 
 	private void populateThemes() {
-		PreferenceScreen prefenceScreen = getPreferenceScreen();
+		PreferenceScreen preferenceScreen = getPreferenceScreen();
 		PreferenceCategory preferenceCategory = new PreferenceCategory(this);
 		preferenceCategory.setTitle("Themes");
-		prefenceScreen.addPreference(preferenceCategory);
+        preferenceScreen.addPreference(preferenceCategory);
 
 		for (String title : Settings.themes.keySet()) {
 			CheckBoxPreference preference = new CheckBoxPreference(this);
@@ -74,10 +74,10 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 	}
 
 	private void populateIcons() {
-		PreferenceScreen prefenceScreen = getPreferenceScreen();
+		PreferenceScreen preferenceScreen = getPreferenceScreen();
 		PreferenceCategory preferenceCategory = new PreferenceCategory(this);
 		preferenceCategory.setTitle("Actionbar Icon");
-		prefenceScreen.addPreference(preferenceCategory);
+        preferenceScreen.addPreference(preferenceCategory);
 
 		for (String title : Settings.icons.keySet()) {
 			CheckBoxPreference preference = new CheckBoxPreference(this);
@@ -93,14 +93,10 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 	}
 
 	private double getInstalledVersion() {
-		int versionCode;
-		String versionName;
 		double installedVersion = 0;
 		try {
 			PackageInfo manager = getPackageManager().getPackageInfo(getPackageName(), 0);
-			versionCode = manager.versionCode;
-			versionName = manager.versionName;
-			installedVersion = versionCode + Double.parseDouble(versionName);
+			installedVersion = Double.parseDouble(manager.versionName);
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}

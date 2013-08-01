@@ -1,15 +1,6 @@
 package what.login;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import what.settings.Settings;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,151 +8,102 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.webkit.WebView;
-import android.widget.Toast;
-import api.util.CouldNotLoadException;
-import api.util.Triple;
-import api.util.Updater;
+import api.son.MySon;
+import what.util.GitRelease;
 
 /**
  * @author Gwindow
  * @since Jun 5, 2012 7:02:12 PM
  */
 public class UpdateChecker {
-	private static final String UPDATE_SITE = "http://gwindow.github.com/WhatAndroid/updater.html";
-	private Updater updater;
+	//The url for the app's releases page
+	private static final String GH_RELEASES = "https://api.github.com/repos/Gwindow/WhatAndroid/releases";
 	private Context context;
 
 	public UpdateChecker(Context context) {
 		this.context = context;
-		updater = new Updater(UPDATE_SITE);
 	}
 
+	/**
+	 * Run the Update checker async task, an Alert dialog will be created
+	 * if a new version is available
+	 */
 	public void checkForUpdates() {
 		new CheckUpdates().execute();
 	}
 
-	private void showUpdates() {
-		final Triple<String, String, String> message = updater.getMessage();
-		final Double version = updater.getVersion();
-		final String link = updater.getDownloadLink();
-		if (version > getInstalledVersion()) {
-			AlertDialog.Builder alert = new AlertDialog.Builder(context);
-			alert.setTitle("Update available");
-			alert.setMessage("Version " + version + " has been released, would you like to update?");
-			alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					new UpdateDownloader().execute(link);
-				}
-			});
-			alert.setNegativeButton("No", null);
-			alert.setCancelable(true);
-			alert.create().show();
-		}
-		if (message.getB().hashCode() != Settings.getMessageHashCode()) {
-			AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-			dialog.setTitle(message.getA());
-			WebView webView = new WebView(context);
-			webView.loadData(message.getB(), "text/html", "UTF-8");
-			dialog.setView(webView);
-			dialog.setPositiveButton(message.getC(), null);
-			dialog.setCancelable(true);
-			dialog.create().show();
-			Settings.saveMessageHashCode(message.getB().hashCode());
-			Settings.commit();
-		}
+	/**
+	 * Show an Alert Dialog to see if the user wants to view the information and downloads for the latest
+	 * release of the app on our Github releases page
+	 * @param release The latest release of the app
+	 */
+	private void showUpdates(final GitRelease release) {
+		//If there's a new release available prompt the user if they'd like to view it on the Github release page
+		AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		alert.setTitle("New Version Available");
+		alert.setMessage("Version " + release.getTagName() + " has been released, would you like to update?");
+		alert.setPositiveButton("Update", new DialogInterface.OnClickListener(){
+			@Override
+			public void onClick(DialogInterface dialog, int which){
+				Intent viewRelease = new Intent(Intent.ACTION_VIEW);
+				viewRelease.setData(Uri.parse(release.getHtmlUrl()));
+				context.startActivity(viewRelease);
+			}
+		});
+		alert.setNegativeButton("Not Now", null);
+		alert.setCancelable(true);
+		alert.create().show();
 	}
 
 	private double getInstalledVersion() {
-		int versionCode;
-		String versionName;
 		double installedVersion = 0;
 		try {
 			PackageInfo manager = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-			versionCode = manager.versionCode;
-			versionName = manager.versionName;
-			installedVersion = versionCode + Double.parseDouble(versionName);
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-		}
-		return installedVersion;
+            installedVersion = Double.parseDouble(manager.versionName);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return installedVersion;
 	}
 
+	/**
+	 * An AsyncTask to check the Github releases page for new releases, will call
+	 * showUpdates if a new release is available
+	 */
 	private class CheckUpdates extends AsyncTask<String, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(String... params) {
-			boolean status = false;
-			try {
-				updater.checkForUpdates();
-				status = true;
-			} catch (CouldNotLoadException e) {
-				e.printStackTrace();
-			}
-			return status;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean status) {
-			if (status) {
-				showUpdates();
-			}
-		}
-	}
-
-	private class UpdateDownloader extends AsyncTask<String, Void, Boolean> {
-		private ProgressDialog dialog;
-
-		@Override
-		protected void onPreExecute() {
-			dialog = new ProgressDialog(context);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Updating...");
-			dialog.show();
-		}
+		//The latest release of the app, or null if we're on the latest release
+		private GitRelease latestRelease;
 
 		@Override
 		protected Boolean doInBackground(String... params) {
-			boolean status = false;
-			try {
-				URL url = new URL(params[0]);
-				HttpURLConnection c = (HttpURLConnection) url.openConnection();
-				c.setRequestMethod("GET");
-				c.setDoOutput(true);
-				c.connect();
-
-				String PATH = Environment.getExternalStorageDirectory() + "/download/";
-				File file = new File(PATH);
-				file.mkdirs();
-				File outputFile = new File(file, "WhatAndroid.apk");
-				FileOutputStream fos = new FileOutputStream(outputFile);
-
-				InputStream is = c.getInputStream();
-
-				byte[] buffer = new byte[1024];
-				int len1 = 0;
-				while ((len1 = is.read(buffer)) != -1) {
-					fos.write(buffer, 0, len1);
+			GitRelease[] releases = (GitRelease[])MySon.toObjectOther(GH_RELEASES, GitRelease[].class);
+			if (releases != null){
+				Double currentVer = getInstalledVersion();
+				for (GitRelease gr : releases){
+					//TODO: If we want to do dev previews we could do them as pre-releases
+					//and have the user toggle a setting to not filter out pre-releases here
+					if (gr.isDraft() || gr.isPrerelease())
+						continue;
+					//If there's a new release
+					if (currentVer < Double.parseDouble(gr.getTagName())){
+						latestRelease = gr;
+						return true;
+					}
+					//If the current version is the same as that on Github then we're on the latest and there's no
+					//point against any more releases, since the releases are in chronological order it's
+					//ok to break at the first release encountered with a <= version number.
+					else
+						return false;
 				}
-				fos.close();
-				is.close();
-				status = true;
-			} catch (IOException e) {
 			}
-			return status;
+			return false;
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status) {
-			dialog.dismiss();
+			//If there's a new release show the alert
 			if (status) {
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/download/" + "WhatAndroid.apk")),
-						"application/vnd.android.package-archive");
-				context.startActivity(intent);
-			} else {
-				Toast.makeText(context, "Update failed, install manually from http://bit.ly/git_wa_build/", Toast.LENGTH_LONG).show();
+				showUpdates(latestRelease);
 			}
 		}
 	}

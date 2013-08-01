@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="what.gui"
     android:installLocation="auto"
-    android:versionCode="1"
-    android:versionName=".11" >
+    android:versionCode="2"
+    android:versionName="1.2" >
+    <!--The version code should be incremented each release? The version name follows: Major.Minor-->
     <!-- Because of some weirdness must use auto instead of preferExternal -->
 
     <uses-sdk
