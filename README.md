@@ -14,7 +14,7 @@ Screenshots of the app can be founded on the [webpage](http://gwindow.github.io/
 Dependencies
 --
 - [WhatAPI](https://github.com/Gwindow/WhatAPI) to provide interaction with the site
-- [ActionBarSherlock](http://actionbarsherlock.com/) Note that this is being phased out now that the Android support library provides the same functionality.
+- [ActionBarSherlock](http://actionbarsherlock.com/)
 - [ViewPagerIndicator](http://viewpagerindicator.com/) 
 - [Universal Image Loader for Android](https://github.com/nostra13/Android-Universal-Image-Loader) 
 
