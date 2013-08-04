@@ -1,18 +1,12 @@
 package what.barcode;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import android.os.Environment;
-import what.gui.R;
-import what.settings.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,12 +15,25 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
+import api.barcode.Barcode;
+import api.son.MySon;
+import what.gui.R;
+import what.settings.Settings;
 
 public class QuickScannerFragment extends SherlockFragment implements OnClickListener {
 	private static final String ZXING_MARKETPLACE_URL =
 			"https://play.google.com/store/apps/details?id=com.google.zxing.client.android";
-	private static final String FILENAME = "barcodes.txt";
-    //Patch from fabbel/6c6f6c to get the file correctly
+	private static final String FILENAME = "barcodes.json";
     private static File extStorageDirectory = Environment.getExternalStorageDirectory();
 	private Intent intent;
 	private String upc;
@@ -43,6 +50,9 @@ public class QuickScannerFragment extends SherlockFragment implements OnClickLis
 		sendButton = (Button) view.findViewById(R.id.sendButton);
 		sendButton.setOnClickListener(this);
 
+		Button bulkSearch = (Button)view.findViewById(R.id.searchBarcodesBtn);
+		bulkSearch.setOnClickListener(this);
+
 		if (Settings.getQuickScannerFirstRun()) {
 			showInstructions();
 			Settings.saveQuickScannerFirstRun(false);
@@ -52,11 +62,18 @@ public class QuickScannerFragment extends SherlockFragment implements OnClickLis
 
 	private void writeToFile(String s) throws IOException {
 		File file = new File(extStorageDirectory, FILENAME);
-		fileOutputStream = new FileOutputStream(file, true);
-		String barcode = s + ",";
-		fileOutputStream.write(barcode.getBytes());
-		fileOutputStream.flush();
-		fileOutputStream.close();
+		//Read in any existing data in the file
+		Type barcodeListType = new TypeToken<List<Barcode>>(){}.getType();
+		List<Barcode> barcodes = (List<Barcode>)MySon.toObjectFromFile(file, barcodeListType);
+		//If there's nothing in the file create a new list
+		if (barcodes == null)
+			barcodes = new ArrayList<Barcode>();
+
+		barcodes.add(new Barcode(s));
+		FileWriter writer = new FileWriter(file);
+		writer.write(MySon.toJson(barcodes, barcodeListType));
+		writer.flush();
+		writer.close();
 	}
 
 	private void showInstructions() {
@@ -135,14 +152,19 @@ public class QuickScannerFragment extends SherlockFragment implements OnClickLis
 
 	@Override
 	public void onClick(View v) {
+		//TODO: Shouldn't these use resource lookup via R as well?
 		if (v.getId() == scanButton.getId()) {
 			startScanner();
 		}
-		if (v.getId() == clearButton.getId()) {
+		else if (v.getId() == clearButton.getId()) {
 			clear();
 		}
-		if (v.getId() == sendButton.getId()) {
+		else if (v.getId() == sendButton.getId()) {
 			send();
+		}
+		else if (v.getId() == R.id.searchBarcodesBtn){
+			Intent startBatchSearch = new Intent(getSherlockActivity(), BatchSearchActivity.class);
+			startActivity(startBatchSearch);
 		}
 	}
 }

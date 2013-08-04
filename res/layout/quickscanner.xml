@@ -36,4 +36,15 @@
         android:text="Send Barcodes" >
     </Button>
 
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dip"
+        android:layout_marginBottom="5dip"
+        android:padding="5dip"
+        android:text="@string/search_barcodes"
+        android:id="@+id/searchBarcodesBtn"
+        android:layout_below="@+id/sendButton"
+        android:layout_centerHorizontal="true"/>
+
 </RelativeLayout>

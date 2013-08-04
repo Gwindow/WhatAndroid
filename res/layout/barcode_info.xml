@@ -1,13 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-          android:orientation="vertical"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp" >
 
-    <ListView android:id="@+id/barcode_list"
-              android:layout_width="match_parent"
-              android:layout_height="0dip"
-              android:layout_weight="1" />
+    <TextView android:id="@+id/barcode_title"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentTop="true"
+              android:layout_alignParentLeft="true"
+              android:textSize="18sp" />
 
-</LinearLayout>
+    <TextView android:id="@+id/barcode_detail"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@id/barcode_title"
+              android:layout_alignParentLeft="true"
+              android:textSize="14sp" />
+
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/barcode_delete"
+            android:background="@drawable/ic_content_remove"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/remove" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/barcode_search_torrents"
+        android:layout_below="@id/barcode_detail"
+        android:layout_alignParentLeft="true"
+        android:text="@string/search_torrents" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/barcode_search_requests"
+        android:layout_alignTop="@id/barcode_search_torrents"
+        android:layout_toRightOf="@id/barcode_search_torrents"
+        android:layout_marginLeft="8dp"
+        android:text="@string/search_requests" />
+
+</RelativeLayout>
