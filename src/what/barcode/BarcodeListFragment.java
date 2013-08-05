@@ -33,8 +33,6 @@ public class BarcodeListFragment extends SherlockListFragment {
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
 
-		writeTestBarcodes();
-
 		File file = new File(extStorageDirectory, FILENAME);
 		List<Barcode> barcodes = (List<Barcode>) MySon.toObjectFromFile(file, barcodeListType);
 		//If the file was empty/not found just put an empty list
