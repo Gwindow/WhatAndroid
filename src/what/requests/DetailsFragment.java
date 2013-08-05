@@ -62,9 +62,11 @@ public class DetailsFragment extends SherlockFragment {
 		addToList("Category", response.getCategoryName());
 		addToList("Catalogue Number", response.getCatalogueNumber());
 		addToList("Release Type", response.getReleaseName());
-		addToList("Bitrates", response.getBitrateList());
-		addToList("Formats", response.getFormatList());
-		addToList("Media", response.getMediaList());
+		//Quick patch to get these lists as a string, but in future a better display should
+		//be used instead of just a string
+		addToList("Bitrates", response.getBitrateList().toString());
+		addToList("Formats", response.getFormatList().toString());
+		addToList("Media", response.getMediaList().toString());
 		if (response.getLogCue().length() > 0) {
 			addToList("Required Extras", response.getLogCue());
 		}
