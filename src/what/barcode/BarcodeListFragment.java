@@ -1,6 +1,5 @@
 package what.barcode;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -34,6 +33,8 @@ public class BarcodeListFragment extends SherlockListFragment {
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
 
+		writeTestBarcodes();
+
 		File file = new File(extStorageDirectory, FILENAME);
 		List<Barcode> barcodes = (List<Barcode>) MySon.toObjectFromFile(file, barcodeListType);
 		//If the file was empty/not found just put an empty list
@@ -44,11 +45,27 @@ public class BarcodeListFragment extends SherlockListFragment {
 		setListAdapter(adapter);
 	}
 
-	@Override
-	public void onListItemClick(ListView l, View v, int pos, long id){
-		super.onListItemClick(l, v, pos, id);
-		Barcode b = (Barcode)getListAdapter().getItem(pos);
-		new LoadTerms().execute(b);
+	/**
+	 * Testing function only, writes a bunch of barcodes to the file
+	 */
+	private void writeTestBarcodes(){
+		String[] vals = new String[]{ "675640912725","886974388623","093624574927",
+			"731455512021","081227427221","077779611126","808132003926",
+			"042282289827","093624590125","020831471022" };
+		List<Barcode> barcodes = new ArrayList<Barcode>();
+		for (String s : vals)
+			barcodes.add(new Barcode(s));
+
+		File file = new File(extStorageDirectory, FILENAME);
+		try {
+			FileWriter writer = new FileWriter(file);
+			writer.write(MySon.toJson(barcodes, barcodeListType));
+			writer.flush();
+			writer.close();
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -69,30 +86,6 @@ public class BarcodeListFragment extends SherlockListFragment {
 		catch (IOException e){
 			//TODO Put up a toast saying we failed saving barcode changes?
 			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Async task that takes a barcode and loads its search terms
-	 * TODO: Would like to put a spinner on the selected item while the data is loaded
-	 * to provide some feedback
-	 */
-	private class LoadTerms extends AsyncTask<Barcode, Void, Boolean>{
-		Barcode barcode;
-
-		@Override
-		protected Boolean doInBackground(Barcode... params){
-			barcode = params[0];
-			barcode.determineSearchTerms();
-			return (barcode.hasSearchTerms() && !barcode.getSearchTerms().equals(""));
-		}
-
-		@Override
-		protected void onPostExecute(Boolean status){
-			if (status){
-				adapter.notifyDataSetChanged();
-			}
-			//TODO: Maybe a toast saying loading terms failed for the else?
 		}
 	}
 }
