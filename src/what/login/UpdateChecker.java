@@ -71,12 +71,12 @@ public class UpdateChecker {
 	 * An AsyncTask to check the Github releases page for new releases, will call
 	 * showUpdates if a new release is available
 	 */
-	private class CheckUpdates extends AsyncTask<String, Void, Boolean> {
+	private class CheckUpdates extends AsyncTask<Void, Void, Boolean> {
 		//The latest release of the app, or null if we're on the latest release
 		private GitRelease latestRelease;
 
 		@Override
-		protected Boolean doInBackground(String... params) {
+		protected Boolean doInBackground(Void... params) {
 			GitRelease[] releases = (GitRelease[])MySon.toObjectOther(GH_RELEASES, GitRelease[].class);
 			if (releases != null){
 				VersionNumber currentVer = getInstalledVersion();

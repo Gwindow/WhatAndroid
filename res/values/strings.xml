@@ -39,6 +39,10 @@
 	<string name="background_list_preference_title">App Background</string>
 	<string name="refresh_preferences">Refresh Interval for something</string>
     <string name="toggle_bookmark">Toggle Bookmark</string>
+    <string name="search_barcodes">Search Barcodes</string>
+    <string name="remove">Remove</string>
+    <string name="search_torrents">Search Torrents</string>
+    <string name="search_requests">Search Requests</string>
 
 	<style name="ButtonText">
 		<item name="android:layout_width">fill_parent</item>
