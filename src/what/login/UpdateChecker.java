@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import api.son.MySon;
 import what.settings.Settings;
 import what.util.GitRelease;
+import what.util.VersionNumber;
 
 /**
  * @author Gwindow
@@ -42,7 +43,7 @@ public class UpdateChecker {
 		//If there's a new release available prompt the user if they'd like to view it on the Github release page
 		AlertDialog.Builder alert = new AlertDialog.Builder(context);
 		alert.setTitle("New Version Available");
-		alert.setMessage("Version " + release.getTagName() + " has been released, would you like to update?");
+		alert.setMessage("Version " + release.getVersionNumber() + " has been released, would you like to update?");
 		alert.setPositiveButton("Update", new DialogInterface.OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which){
@@ -56,36 +57,36 @@ public class UpdateChecker {
 		alert.create().show();
 	}
 
-	private double getInstalledVersion() {
-		double installedVersion = 0;
+	private VersionNumber getInstalledVersion() {
 		try {
 			PackageInfo manager = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            installedVersion = Double.parseDouble(manager.versionName);
+			return new VersionNumber(manager.versionName);
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
-        return installedVersion;
+        return null;
 	}
 
 	/**
 	 * An AsyncTask to check the Github releases page for new releases, will call
 	 * showUpdates if a new release is available
 	 */
-	private class CheckUpdates extends AsyncTask<String, Void, Boolean> {
+	private class CheckUpdates extends AsyncTask<Void, Void, Boolean> {
 		//The latest release of the app, or null if we're on the latest release
 		private GitRelease latestRelease;
 
 		@Override
-		protected Boolean doInBackground(String... params) {
+		protected Boolean doInBackground(Void... params) {
 			GitRelease[] releases = (GitRelease[])MySon.toObjectOther(GH_RELEASES, GitRelease[].class);
 			if (releases != null){
-				Double currentVer = getInstalledVersion();
+				VersionNumber currentVer = getInstalledVersion();
+
 				for (GitRelease gr : releases){
 					//Ignore draft builds, also pre-releases if we don't want dev builds
 					if (gr.isDraft() || (gr.isPrerelease() && !Settings.useDevBuilds()))
 						continue;
 					//If there's a new release
-					if (currentVer < Double.parseDouble(gr.getTagName())){
+					if (currentVer == null || gr.getVersionNumber().isHigher(currentVer)){
 						latestRelease = gr;
 						return true;
 					}

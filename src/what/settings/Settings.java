@@ -3,11 +3,12 @@ package what.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import api.util.Tuple;
-import what.gui.R;
 
 import java.util.HashMap;
 import java.util.Set;
+
+import api.util.Tuple;
+import what.gui.R;
 
 public class Settings {
 	private static SharedPreferences settings;

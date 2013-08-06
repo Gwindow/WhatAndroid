@@ -11,6 +11,7 @@ import android.widget.Toast;
 import api.son.MySon;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import what.gui.R;
+import what.util.VersionNumber;
 
 import java.util.LinkedList;
 
@@ -36,8 +37,12 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 
 		PreferenceScreen prefenceScreen = getPreferenceScreen();
 		PreferenceCategory preferenceCategory = new PreferenceCategory(this);
-		// TODO fix
-		preferenceCategory.setTitle("Version " + getInstalledVersion());
+		VersionNumber version = getInstalledVersion();
+		if (version != null)
+			preferenceCategory.setTitle("Version " + version);
+		else
+			preferenceCategory.setTitle("Version ?.?.? Error");
+
 		prefenceScreen.addPreference(preferenceCategory);
 
 		populateThemes();
@@ -92,15 +97,15 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnPr
 
 	}
 
-	private double getInstalledVersion() {
-		double installedVersion = 0;
+	//TODO: How can we not have copies of this function littered about? In UpdateChecker and in this class
+	private VersionNumber getInstalledVersion() {
 		try {
 			PackageInfo manager = getPackageManager().getPackageInfo(getPackageName(), 0);
-			installedVersion = Double.parseDouble(manager.versionName);
+			return new VersionNumber(manager.versionName);
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
-		return installedVersion;
+		return null;
 	}
 
 	@Override
