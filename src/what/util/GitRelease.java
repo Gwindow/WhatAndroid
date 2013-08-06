@@ -13,6 +13,8 @@ public class GitRelease {
 	private int id;
 	//The release tag_name, these correspond to the release's versionName
 	private String tag_name;
+	//The version number of the release, determined from the tag_name
+	private VersionNumber versionNumber;
 	private String target_commitish;
 	//Release's name
 	private String name;
@@ -67,6 +69,17 @@ public class GitRelease {
 	 */
 	public String getTagName(){
 		return tag_name;
+	}
+
+	/**
+	 * Get the release's version number
+	 * @return the version number
+	 */
+	public VersionNumber getVersionNumber(){
+		//The version number we make ourselves so if we haven't created it yet, do so now
+		if (versionNumber == null)
+			versionNumber = new VersionNumber(tag_name);
+		return versionNumber;
 	}
 
 	/**
