@@ -44,29 +44,6 @@ public class BarcodeListFragment extends SherlockListFragment {
 	}
 
 	/**
-	 * Testing function only, writes a bunch of barcodes to the file
-	 */
-	private void writeTestBarcodes(){
-		String[] vals = new String[]{ "675640912725","886974388623","093624574927",
-			"731455512021","081227427221","077779611126","808132003926",
-			"042282289827","093624590125","020831471022" };
-		List<Barcode> barcodes = new ArrayList<Barcode>();
-		for (String s : vals)
-			barcodes.add(new Barcode(s));
-
-		File file = new File(extStorageDirectory, FILENAME);
-		try {
-			FileWriter writer = new FileWriter(file);
-			writer.write(MySon.toJson(barcodes, barcodeListType));
-			writer.flush();
-			writer.close();
-		}
-		catch (Exception e){
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * When the fragment is going to be killed save any changes made to the barcode file
  	 */
 	@Override
