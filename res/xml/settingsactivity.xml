@@ -84,10 +84,10 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="useDevBuilds"
-            android:summary="Download new developer builds when available"
+            android:summary="Download new preview builds when available"
             android:summaryOff="Disabled"
             android:summaryOn="Enabled"
-            android:title="Check for new developer builds" />
+            android:title="Check for new preview builds" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="debug_preference"
