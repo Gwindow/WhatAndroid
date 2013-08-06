@@ -43,7 +43,7 @@ public class UpdateChecker {
 		//If there's a new release available prompt the user if they'd like to view it on the Github release page
 		AlertDialog.Builder alert = new AlertDialog.Builder(context);
 		alert.setTitle("New Version Available");
-		alert.setMessage("Version " + release.getTagName() + " has been released, would you like to update?");
+		alert.setMessage("Version " + release.getVersionNumber() + " has been released, would you like to update?");
 		alert.setPositiveButton("Update", new DialogInterface.OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which){
@@ -86,8 +86,7 @@ public class UpdateChecker {
 					if (gr.isDraft() || (gr.isPrerelease() && !Settings.useDevBuilds()))
 						continue;
 					//If there's a new release
-					VersionNumber latest = new VersionNumber(gr.getTagName());
-					if (currentVer == null || latest.isHigher(currentVer)){
+					if (currentVer == null || gr.getVersionNumber().isHigher(currentVer)){
 						latestRelease = gr;
 						return true;
 					}
