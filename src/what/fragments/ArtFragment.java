@@ -38,6 +38,7 @@ public class ArtFragment extends SherlockFragment {
 
 	/**
 	 * Instantiates a new art fragment.
+	 * TODO: Should we really provide a default drawable?
 	 */
 	public ArtFragment(String url) {
 		this(url, R.drawable.noartwork);
@@ -60,7 +61,6 @@ public class ArtFragment extends SherlockFragment {
 		imageLoader.displayImage(url, artImageView, new ImageLoadingListener() {
 			@Override
 			public void onLoadingStarted(String imageUri, View view) {
-
 			}
 
 			@Override
@@ -90,7 +90,7 @@ public class ArtFragment extends SherlockFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
-			return ((MyActivity2) getSherlockActivity()).homeIconJump(null);
+			return ((MyActivity2)getSherlockActivity()).homeIconJump(null);
 		}
 		return super.onOptionsItemSelected(item);
 	}
