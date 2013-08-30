@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -40,23 +41,31 @@ public class MyImageLoader {
 	private void initImageLoader() {
 		cacheDir = StorageUtils.getOwnCacheDirectory(context, "UniversalImageLoader/Cache");
 
+		//Setup default options for images
+		options =
+			new DisplayImageOptions.Builder()
+				.showStubImage(defaultImageResource)
+				.showImageForEmptyUri(defaultImageResource)
+				.cacheInMemory(true)
+				.cacheOnDisc(true)
+				.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
+				.build();
+
+		//Setup options for the image loader
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		ImageLoaderConfiguration config =
 			new ImageLoaderConfiguration.Builder(context)
 				.memoryCacheExtraOptions(480, 800)
+				.memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024))
+				.denyCacheImageMultipleSizesInMemory()
 				.discCacheExtraOptions(480, 800, CompressFormat.JPEG, 75, null)
 				.discCache(new UnlimitedDiscCache(cacheDir))
-				.denyCacheImageMultipleSizesInMemory()
 				.discCacheFileNameGenerator(new HashCodeFileNameGenerator())
 				.defaultDisplayImageOptions(DisplayImageOptions.createSimple())
 				.writeDebugLogs()
+				.defaultDisplayImageOptions(options)
 				.build();
 		imageLoader.init(config);
-
-		options =
-				new DisplayImageOptions.Builder().showStubImage(defaultImageResource).showImageForEmptyUri(defaultImageResource)
-						.cacheInMemory().cacheOnDisc().imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).build();
-		// transform(matrix);
 	}
 
 	public void displayImage(String imageUrl, ImageView imageView) {
@@ -65,15 +74,25 @@ public class MyImageLoader {
 
 	public void displayImage(String imageUrl, ImageView imageView, int resource, ImageLoadingListener imageLoadingListener) {
 		options =
-				new DisplayImageOptions.Builder().showStubImage(resource).showImageForEmptyUri(resource).cacheInMemory()
-						.cacheOnDisc().imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).build();
+				new DisplayImageOptions.Builder()
+					.showStubImage(resource)
+					.showImageForEmptyUri(resource)
+					.cacheInMemory(true)
+					.cacheOnDisc(true)
+					.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
+					.build();
 		imageLoader.displayImage(imageUrl, imageView, options, imageLoadingListener);
 	}
 
 	public void displayImage(String imageUrl, ImageView imageView, int resource) {
 		options =
-				new DisplayImageOptions.Builder().showStubImage(resource).showImageForEmptyUri(resource).cacheInMemory()
-						.cacheOnDisc().imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).build();
+				new DisplayImageOptions.Builder()
+					.showStubImage(resource)
+					.showImageForEmptyUri(resource)
+					.cacheInMemory(true)
+					.cacheOnDisc(true)
+					.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
+					.build();
 		imageLoader.displayImage(imageUrl, imageView, options);
 	}
 
