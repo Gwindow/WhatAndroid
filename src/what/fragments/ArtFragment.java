@@ -39,10 +39,6 @@ public class ArtFragment extends SherlockFragment {
 
 	/**
 	 * Instantiates a new art fragment.
-	 * 
-	 * @param title
-	 *            the title
-	 * @param torrentGroup
 	 */
 	public ArtFragment(String url) {
 		this(url, R.drawable.noartwork);
@@ -66,44 +62,39 @@ public class ArtFragment extends SherlockFragment {
 		progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
 		MyImageLoader imageLoader = new MyImageLoader(getSherlockActivity());
+
 		imageLoader.displayImage(url, artImageView, new ImageLoadingListener() {
 			@Override
-			public void onLoadingStarted() {
+			public void onLoadingStarted(String imageUri, View view) {
+
 			}
 
 			@Override
-			public void onLoadingFailed(FailReason failReason) {
+			public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
 			}
 
 			@Override
-			public void onLoadingComplete(Bitmap loadedImage) {
-                //TODO: Turn this band-aid fix into a real fix. Why is it that
-                //TODO: sometimes we get a null loadedImage?
-                if (loadedImage == null)
-                    System.out.println("ALBUM ART NULL");
+			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+				//TODO: What is going on here?
+				if (loadedImage == null)
+					System.out.println("ALBUM ART NULL");
 				else
-                    loadedImage = getReflection(loadedImage);
+					loadedImage = getReflection(loadedImage);
 				progressBar.setVisibility(View.GONE);
 				artImageView.setVisibility(View.VISIBLE);
 			}
 
 			@Override
-			public void onLoadingCancelled() {
+			public void onLoadingCancelled(String imageUri, View view) {
+
 			}
 		});
-
-		// artImageView.setImageBitmap(getRefelection(((BitmapDrawable) artImageView.getDrawable()).getBitmap()));
-
-		/*
-		 * if (artBitmap == null || artBitmap.isRecycled()) { new Load().execute(url); } else {
-		 * progressBar.setVisibility(View.GONE); artImageView.setVisibility(View.VISIBLE);
-		 * artImageView.setImageBitmap(artBitmap); }
-		 */
-
 		return view;
 	}
 
 	// Taken from http://androidsnips.blogspot.com/2010/08/showing-image-with-reflection-in.html
+	//TODO: What is this for?
 	private Bitmap getReflection(Bitmap image) {
 		// The gap we want between the reflection and the original image
 		final int reflectionGap = 4;
@@ -164,10 +155,6 @@ public class ArtFragment extends SherlockFragment {
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * @param image
-	 * @return
-	 */
 	public static SherlockFragment newInstance(String image) {
 		return new ArtFragment(image);
 	}
