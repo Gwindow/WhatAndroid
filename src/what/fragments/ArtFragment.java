@@ -33,7 +33,6 @@ import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 public class ArtFragment extends SherlockFragment {
 	private ProgressBar progressBar;
 	private ImageView artImageView;
-	private static Bitmap artBitmap;
 	private String url;
 	private int resource;
 
@@ -49,11 +48,6 @@ public class ArtFragment extends SherlockFragment {
 		this.resource = resource;
 	}
 
-	public ArtFragment() {
-		super();
-		this.resource = R.drawable.noartwork;
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		setHasOptionsMenu(true);
@@ -61,7 +55,7 @@ public class ArtFragment extends SherlockFragment {
 		artImageView = (ImageView) view.findViewById(R.id.art);
 		progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
-		MyImageLoader imageLoader = new MyImageLoader(getSherlockActivity(), R.drawable.noartwork);
+		MyImageLoader imageLoader = new MyImageLoader(getSherlockActivity(), resource);
 
 		imageLoader.displayImage(url, artImageView, new ImageLoadingListener() {
 			@Override
