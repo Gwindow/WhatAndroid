@@ -70,6 +70,7 @@ public class TorrentGroupActivity extends MyActivity2 {
 		try {
 			torrentGroupId = bundle.getInt(BundleKeys.TORRENT_GROUP_ID);
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		new Load().execute();
@@ -218,6 +219,8 @@ public class TorrentGroupActivity extends MyActivity2 {
 		public Fragment getItem(int position) {
 			Fragment fragment = null;
 			String tag = TABS[position % TABS.length];
+			//TODO: Does this really imply that we're creating new fragments each time
+			//we swipe to a new one?
 			if (tag.equals(ART_TAB)) {
 				fragment = ArtFragment.newInstance(torrentGroup.getResponse().getGroup().getWikiImage());
 			}
