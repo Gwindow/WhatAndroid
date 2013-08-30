@@ -27,10 +27,12 @@ public class MyImageLoader {
 	private DisplayImageOptions options;
 	private int defaultImageResource;
 
-	public MyImageLoader(Context context) {
-		this(context, R.drawable.noartwork);
-	}
-
+	/**
+	 * Create an image loader, it uses the singleton of the ImageLoader, but allows for
+	 * setting some options, such as the context and default image resource
+	 * @param context the context to use
+	 * @param defaultImageResource the image resource to show when loading an image
+	 */
 	public MyImageLoader(Context context, int defaultImageResource) {
 		this.context = context;
 		this.defaultImageResource = defaultImageResource;
@@ -38,6 +40,9 @@ public class MyImageLoader {
 		initImageLoader();
 	}
 
+	/**
+	 * Initialize the image loader with our desired configuration
+	 */
 	private void initImageLoader() {
 		cacheDir = StorageUtils.getOwnCacheDirectory(context, "UniversalImageLoader/Cache");
 
@@ -68,12 +73,25 @@ public class MyImageLoader {
 		imageLoader.init(config);
 	}
 
+	/**
+	 * Display an image in the passed ImageView
+	 * @param imageUrl url of the image to load and display
+	 * @param imageView where to display the loaded image
+	 */
 	public void displayImage(String imageUrl, ImageView imageView) {
 		imageLoader.displayImage(imageUrl, imageView, options);
 	}
 
+	/**
+	 * Load an image to an image view and specify a resource to be
+	 * used as the stub and empty default image along with a loading listener
+	 * @param imageUrl url of image to load
+	 * @param imageView where to display the loaded image
+	 * @param resource default image to display while loading & in case of empty url
+	 * @param imageLoadingListener loading listener to send loading progress events too
+	 */
 	public void displayImage(String imageUrl, ImageView imageView, int resource, ImageLoadingListener imageLoadingListener) {
-		options =
+		DisplayImageOptions opt =
 				new DisplayImageOptions.Builder()
 					.showStubImage(resource)
 					.showImageForEmptyUri(resource)
@@ -81,11 +99,18 @@ public class MyImageLoader {
 					.cacheOnDisc(true)
 					.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
 					.build();
-		imageLoader.displayImage(imageUrl, imageView, options, imageLoadingListener);
+		imageLoader.displayImage(imageUrl, imageView, opt, imageLoadingListener);
 	}
 
+	/**
+	 * Load an image into an image view and specify a default image to display
+	 * while loading & in case of empty url
+	 * @param imageUrl url of image to load
+	 * @param imageView where to display the image
+	 * @param resource default image to display while loading & in case of empty url
+	 */
 	public void displayImage(String imageUrl, ImageView imageView, int resource) {
-		options =
+		DisplayImageOptions opt =
 				new DisplayImageOptions.Builder()
 					.showStubImage(resource)
 					.showImageForEmptyUri(resource)
@@ -93,9 +118,15 @@ public class MyImageLoader {
 					.cacheOnDisc(true)
 					.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
 					.build();
-		imageLoader.displayImage(imageUrl, imageView, options);
+		imageLoader.displayImage(imageUrl, imageView, opt);
 	}
 
+	/**
+	 * Load an image to an imageview and notify the listener on our progress
+	 * @param imageUrl url of image to load
+	 * @param imageView where to load the image
+	 * @param imageLoadingListener loading listener to send loading progress events too
+	 */
 	public void displayImage(String imageUrl, ImageView imageView, ImageLoadingListener imageLoadingListener) {
 		imageLoader.displayImage(imageUrl, imageView, options, imageLoadingListener);
 	}

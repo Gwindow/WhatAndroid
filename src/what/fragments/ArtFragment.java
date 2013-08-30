@@ -61,7 +61,7 @@ public class ArtFragment extends SherlockFragment {
 		artImageView = (ImageView) view.findViewById(R.id.art);
 		progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
-		MyImageLoader imageLoader = new MyImageLoader(getSherlockActivity());
+		MyImageLoader imageLoader = new MyImageLoader(getSherlockActivity(), R.drawable.noartwork);
 
 		imageLoader.displayImage(url, artImageView, new ImageLoadingListener() {
 			@Override
