@@ -124,6 +124,8 @@ public class RequestActivity extends MyActivity2 {
 		public Fragment getItem(int position) {
 			Fragment fragment = null;
 			String tag = TABS[position % TABS.length];
+			//TODO: Does this really imply that we're creating new fragments each time
+			//we swipe to a new one?
 			if (tag.equals(ART_TAB)) {
 				fragment = ArtFragment.newInstance(request.getResponse().getImage());
 			}
