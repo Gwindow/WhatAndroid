@@ -76,26 +76,32 @@ public class UpdateChecker {
 		private GitRelease latestRelease;
 
 		@Override
-		protected Boolean doInBackground(Void... params) {
-			GitRelease[] releases = (GitRelease[])MySon.toObjectOther(GH_RELEASES, GitRelease[].class);
-			if (releases != null){
-				VersionNumber currentVer = getInstalledVersion();
+		protected Boolean doInBackground(Void... params){
+			//Catch any errors that may occur and interpret them as no updates available
+			try {
+				GitRelease[] releases = (GitRelease[])MySon.toObjectOther(GH_RELEASES, GitRelease[].class);
+				if (releases != null){
+					VersionNumber currentVer = getInstalledVersion();
 
-				for (GitRelease gr : releases){
-					//Ignore draft builds, also pre-releases if we don't want dev builds
-					if (gr.isDraft() || (gr.isPrerelease() && !Settings.useDevBuilds()))
-						continue;
-					//If there's a new release
-					if (currentVer == null || gr.getVersionNumber().isHigher(currentVer)){
-						latestRelease = gr;
-						return true;
+					for (GitRelease gr : releases){
+						//Ignore draft builds, also pre-releases if we don't want dev builds
+						if (gr.isDraft() || (gr.isPrerelease() && !Settings.useDevBuilds()))
+							continue;
+						//If there's a new release
+						if (currentVer == null || gr.getVersionNumber().isHigher(currentVer)){
+							latestRelease = gr;
+							return true;
+						}
+						//If the current version is the same as that on Github then we're on the latest and there's no
+						//point against any more releases, since the releases are in chronological order it's
+						//ok to break at the first release encountered with a <= version number.
+						else
+							return false;
 					}
-					//If the current version is the same as that on Github then we're on the latest and there's no
-					//point against any more releases, since the releases are in chronological order it's
-					//ok to break at the first release encountered with a <= version number.
-					else
-						return false;
 				}
+			}
+			catch (Exception e){
+				e.printStackTrace();
 			}
 			return false;
 		}
