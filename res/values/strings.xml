@@ -43,6 +43,7 @@
     <string name="remove">Remove</string>
     <string name="search_torrents">Search Torrents</string>
     <string name="search_requests">Search Requests</string>
+    <string name="download">Download</string>
 
 	<style name="ButtonText">
 		<item name="android:layout_width">fill_parent</item>
