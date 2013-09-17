@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="what.gui"
     android:installLocation="auto"
-    android:versionCode="5"
+    android:versionCode="6"
     android:versionName="1.3.2" >
     <!-- Version code should increment each release, version name follows semantic versioning,
         with an optional trailing .b to signify a beta release -->
