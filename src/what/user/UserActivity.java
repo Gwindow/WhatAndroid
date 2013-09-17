@@ -65,15 +65,15 @@ public class UserActivity extends MyActivity2 {
 	 */
 	@Override
 	public void init() {
-
 		Bundle bundle = getIntent().getExtras();
 		try {
 			userId = bundle.getInt(BundleKeys.USER_ID);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		new Load().execute();
-
 	}
 
 	// TODO make this less sloppy. Create a custom fragment activity.
@@ -157,7 +157,7 @@ public class UserActivity extends MyActivity2 {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			user = User.userFromId(userId);
-			return user.getStatus();
+			return (user != null && user.getStatus());
 		}
 
 		@Override
