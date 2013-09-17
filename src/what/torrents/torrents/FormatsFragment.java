@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import api.cli.Utils;
 import api.torrents.torrents.Response;
 import api.torrents.torrents.Torrents;
@@ -26,16 +28,9 @@ import java.util.List;
  * @since Jun 1, 2012 10:58:17 PM
  */
 public class FormatsFragment extends SherlockFragment implements OnClickListener, OnLongClickListener {
-	private static final int DOWNLOAD_TAG = 0;
-
 	private LinearLayout scrollLayout;
 	private Response response;
-
 	private MyScrollView scrollView;
-
-	public FormatsFragment() {
-		super();
-	}
 
 	public FormatsFragment(Response response) {
 		this.response = response;
@@ -50,19 +45,23 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
 		scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 		if (response.getGroup().getCategoryName().equals(TorrentGroupActivity.MUSIC_CATEGORY)) {
 			populateMusic(view, inflater);
-		} else {
+		}
+		else {
 			populateOther(view, inflater);
 		}
 
 		return view;
 	}
 
+	/*
+	Crash occurs when viewing non-music torrents
+	 */
 	private void populateOther(View view, LayoutInflater inflater) {
 		List<Torrents> torrents = response.getTorrents();
         for (Torrents t : torrents){
-            LinearLayout formats_torrent_layout = (LinearLayout) inflater.inflate(R.layout.formats_torrent, null);
+            LinearLayout formats_torrent_layout = (LinearLayout) inflater.inflate(R.layout.other_torrent, null);
 
-            TextView format = (TextView) formats_torrent_layout.findViewById(R.id.format);
+            TextView format = (TextView)formats_torrent_layout.findViewById(R.id.format);
             String format_string = "";
             if (t.isFreeTorrent())
                 format_string += "FreeLeech! ";
@@ -81,10 +80,18 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
             TextView leechers = (TextView) formats_torrent_layout.findViewById(R.id.leechers);
             leechers.setText("Leechers: " + t.getLeechers());
 
-            TextView download = (TextView) formats_torrent_layout.findViewById(R.id.download);
+            Button download = (Button) formats_torrent_layout.findViewById(R.id.download);
             download.setOnClickListener(this);
-            download.setId(DOWNLOAD_TAG);
-            download.setTag(new Tuple<Integer, String>(t.getId().intValue(), t.getDownloadLink()));
+			//Information needed to create the download dialog
+			Object[] dlInfo = new Object[7];
+			dlInfo[0] = t.getId();
+			dlInfo[1] = t.getDownloadLink();
+			dlInfo[2] = t.getSize();
+			dlInfo[3] = t.getSnatched();
+			dlInfo[4] = t.getSeeders();
+			dlInfo[5] = t.getLeechers();
+			dlInfo[6] = response.getGroup().getName();
+            download.setTag(dlInfo);
             scrollLayout.addView(formats_torrent_layout);
         }
 	}
@@ -111,15 +118,15 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
             format.setText(format_string);
             format.setOnLongClickListener(this);
 
-            Object[] array = new Object[7];
-            array[0] = t.getId();
-            array[1] = t.getDownloadLink();
-            array[2] = t.getSize();
-            array[3] = t.getSnatched();
-            array[4] = t.getSeeders();
-            array[5] = t.getLeechers();
-            array[6] = response.getGroup().getName();
-            format.setTag(array);
+            Object[] dlInfo = new Object[7];
+            dlInfo[0] = t.getId();
+            dlInfo[1] = t.getDownloadLink();
+            dlInfo[2] = t.getSize();
+            dlInfo[3] = t.getSnatched();
+            dlInfo[4] = t.getSeeders();
+            dlInfo[5] = t.getLeechers();
+            dlInfo[6] = response.getGroup().getName();
+            format.setTag(dlInfo);
 
             scrollLayout.addView(formats_torrent_layout);
         }
@@ -135,22 +142,19 @@ public class FormatsFragment extends SherlockFragment implements OnClickListener
 
 	@Override
 	public boolean onLongClick(View v) {
-		Object[] array = (Object[]) v.getTag();
-		new DownloadDialog(getSherlockActivity(), (Number) array[0], (String) array[1], (Number) array[2], (Number) array[3],
-				(Number) array[4], (Number) array[5], (String)array[6]);
+		Object[] dlInfo = (Object[]) v.getTag();
+		new DownloadDialog(getSherlockActivity(), (Number) dlInfo[0], (String) dlInfo[1], (Number) dlInfo[2], (Number) dlInfo[3],
+				(Number) dlInfo[4], (Number) dlInfo[5], (String)dlInfo[6]);
 		return false;
 	}
 
 	@Override
 	public void onClick(View v) {
-
+		Object[] dlInfo = (Object[]) v.getTag();
+		new DownloadDialog(getSherlockActivity(), (Number) dlInfo[0], (String) dlInfo[1], (Number) dlInfo[2], (Number) dlInfo[3],
+			(Number) dlInfo[4], (Number) dlInfo[5], (String)dlInfo[6]);
 	}
 
-	/**
-     * TODO: What uses this?
-	 * @param
-	 * @return
-	 */
 	public static SherlockFragment newInstance(Response response) {
 		return new FormatsFragment(response);
 	}
