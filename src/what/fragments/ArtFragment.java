@@ -36,6 +36,10 @@ public class ArtFragment extends SherlockFragment {
 	private String url;
 	private int resource;
 
+	public ArtFragment(){
+		super();
+	}
+
 	/**
 	 * Instantiates a new art fragment.
 	 * TODO: Should we really provide a default drawable?
