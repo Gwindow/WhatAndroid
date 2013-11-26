@@ -1,11 +1,6 @@
-bin/classes.dex
-bin/classes/
-bin/res/
-bin/resources.ap_
-bin/what/
-gen/
-out/
-R.java
-#ignore IntelliJ Project files
-.idea/*
-*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+.DS_Store
+.idea
+
