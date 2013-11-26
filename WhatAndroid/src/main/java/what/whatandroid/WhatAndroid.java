@@ -13,43 +13,46 @@ import what.whatandroid.home.HomeFragment;
 import what.whatandroid.login.LoginFragment;
 
 public class WhatAndroid extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, FragmentHost {
+		implements NavigationDrawerFragment.NavigationDrawerCallbacks, FragmentHost {
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment navDrawer;
+	/**
+	 * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
+	 */
+	private NavigationDrawerFragment navDrawer;
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
-    private CharSequence mTitle;
+	/**
+	 * Used to store the last screen title. For use in {@link #restoreActionBar()}.
+	 */
+	private CharSequence mTitle;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+	/*
+	Developers: I recommend running your own install of Gazelle locally to test the app against
+	instead of working with the real site. You can get Gazelle here: http://whatcd.github.io/Gazelle/
+	Put your local Gazelle IP here to connect to the site
+	*/
+	private static final String site = "";
 
-        navDrawer = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
 
-        // Set up the drawer.
-        navDrawer.setUp(
+		navDrawer = (NavigationDrawerFragment)
+				getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+		mTitle = getTitle();
+
+		// Set up the drawer.
+		navDrawer.setUp(
 			R.id.navigation_drawer,
 			(DrawerLayout) findViewById(R.id.drawer_layout));
 
-		/*
-		Developers: I recommend running your own install of Gazelle locally to test the app against
-		instead of working with the real site. You can get Gazelle here: http://whatcd.github.io/Gazelle/
-		 */
-		MySoup.setSite("192.168.124.137", false);
-    }
+		MySoup.setSite(site, false);
+	}
 
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
+	@Override
+	public void onNavigationDrawerItemSelected(int position) {
+		// update the main content by replacing fragments
+		FragmentManager fragmentManager = getSupportFragmentManager();
 
 		//TODO: This should be designed better
 		if (navDrawer == null){
@@ -70,7 +73,7 @@ public class WhatAndroid extends ActionBarActivity
 				.commit();
 			mTitle = HomeFragment.NAME;
 		}
-    }
+	}
 
 	@Override
 	public void replaceFragment(Fragment fragment, String title, Boolean removeNav) {
@@ -87,36 +90,36 @@ public class WhatAndroid extends ActionBarActivity
 		}
 	}
 
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
-    }
+	public void restoreActionBar() {
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle(mTitle);
+	}
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (!navDrawer.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.what_android, menu);
-            restoreActionBar();
-            return true;
-        }
-        return super.onCreateOptionsMenu(menu);
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		if (!navDrawer.isDrawerOpen()) {
+			// Only show items in the action bar relevant to this screen
+			// if the drawer is not showing. Otherwise, let the drawer
+			// decide what to show in the action bar.
+			getMenuInflater().inflate(R.menu.what_android, menu);
+			restoreActionBar();
+			return true;
+		}
+		return super.onCreateOptionsMenu(menu);
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		switch (item.getItemId()) {
+			case R.id.action_settings:
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }
