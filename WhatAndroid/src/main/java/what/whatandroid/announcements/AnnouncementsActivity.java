@@ -23,6 +23,8 @@ import what.whatandroid.R;
  * The announcements fragment shows announcements and blog posts and is the "main" activity, being
  * the first one shown after logging in. The navbar routes user to other activities in the app
  * TODO: Need a way of handling the html in the blog and announcement bodies
+ * TODO: Side note, blog posts API doesn't seem to work on my gazelle install, maybe just b/c it's older?
+ * they do seem to work well against the full site.
  */
 public class AnnouncementsActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, AnnouncementManager {
@@ -56,6 +58,8 @@ public class AnnouncementsActivity extends ActionBarActivity
         navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
+		//TODO: Instead show an indeterminate progress bar somewhere
+		Toast.makeText(this, "Loading announcements...", Toast.LENGTH_LONG).show();
 		new LoadAnnouncements().execute();
     }
 
@@ -66,6 +70,19 @@ public class AnnouncementsActivity extends ActionBarActivity
 	 */
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+		if (navDrawer == null){
+			return;
+		}
+
+		String selection = navDrawer.getItem(position);
+		if (selection.equalsIgnoreCase(getString(R.string.announcements))){
+			pagerAdapter = new AnnouncementsPagerAdapter(getSupportFragmentManager());
+			viewPager.setAdapter(pagerAdapter);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
+			pagerAdapter = new BlogPostsPagerAdapter(getSupportFragmentManager());
+			viewPager.setAdapter(pagerAdapter);
+		}
     }
 
 	/**
@@ -76,7 +93,7 @@ public class AnnouncementsActivity extends ActionBarActivity
 	@Override
 	public void showAnnouncement(Announcement announcement) {
 		if (pagerAdapter instanceof AnnouncementsPagerAdapter){
-			((AnnouncementsPagerAdapter) pagerAdapter).setDetail(announcement);
+			((AnnouncementsPagerAdapter) pagerAdapter).showAnnouncement(announcement);
 			viewPager.setCurrentItem(1);
 		}
 	}
@@ -84,11 +101,14 @@ public class AnnouncementsActivity extends ActionBarActivity
 	/**
 	 * Set the blog post to be shown and show it
 	 * Ignored if not currently in the blog posts view
-	 * @param blogPost the blog post to show in the fragment
+	 * @param post the blog post to show in the fragment
 	 */
 	@Override
-	public void showBlogPost(BlogPost blogPost) {
-
+	public void showBlogPost(BlogPost post) {
+		if (pagerAdapter instanceof BlogPostsPagerAdapter){
+			((BlogPostsPagerAdapter) pagerAdapter).showPost(post);
+			viewPager.setCurrentItem(1);
+		}
 	}
 
 	public void restoreActionBar() {
@@ -137,7 +157,7 @@ public class AnnouncementsActivity extends ActionBarActivity
 
 	/**
 	 * A slide pager adapter for showing the list of announcements and
-	 * a detail fragment on the selected announcement
+	 * a detail fragment of the selected announcement
 	 */
 	private class AnnouncementsPagerAdapter extends FragmentStatePagerAdapter {
 		/**
@@ -157,7 +177,7 @@ public class AnnouncementsActivity extends ActionBarActivity
 		 * Set the announcement to view in detail
 		 * @param announcement the announcement to view in detail
 		 */
-		public void setDetail(Announcement announcement){
+		public void showAnnouncement(Announcement announcement){
 			if (detail != null && !detail.getAnnouncement().getTitle().equalsIgnoreCase(announcement.getTitle())){
 				fragmentManager.beginTransaction().remove(detail).commit();
 			}
@@ -169,7 +189,7 @@ public class AnnouncementsActivity extends ActionBarActivity
 		@Override
 		public Fragment getItem(int i) {
 			if (i == 0){
-				return AnnouncementsFragment.newInstance(announcements);
+				return AnnouncementsFragment.newInstance(announcements.getResponse().getAnnouncements());
 			}
 			return detail;
 		}
@@ -192,6 +212,62 @@ public class AnnouncementsActivity extends ActionBarActivity
 		}
 	}
 
+	/**
+	 * A slide pager adapter for showing the list of blog posts and a detail
+	 * fragment of the selected post
+	 */
+	private class BlogPostsPagerAdapter extends FragmentStatePagerAdapter {
+		/**
+		 * The announcement fragment for the announcement being shown in detail
+		 */
+		private BlogPostFragment detail;
+		private int numPages;
+		private final FragmentManager fragmentManager;
+
+		public BlogPostsPagerAdapter(FragmentManager fm){
+			super(fm);
+			fragmentManager = fm;
+			numPages = 1;
+		}
+
+		/**
+		 * Set the blog post to view in detail
+		 * @param post the announcement to view in detail
+		 */
+		public void showPost(BlogPost post){
+			if (detail != null && !detail.getPost().getTitle().equalsIgnoreCase(post.getTitle())){
+				fragmentManager.beginTransaction().remove(detail).commit();
+			}
+			detail = BlogPostFragment.newInstance(post);
+			numPages = 2;
+			notifyDataSetChanged();
+		}
+
+		@Override
+		public Fragment getItem(int i) {
+			if (i == 0){
+				return BlogPostsFragment.newInstance(announcements.getResponse().getBlogPosts());
+			}
+			return detail;
+		}
+
+		@Override
+		public int getItemPosition(Object object){
+			//If the detail fragment we want to show has a different title than the one being shown tell it to hide
+			//the old detail fragment
+			if (object instanceof BlogPostFragment && !((BlogPostFragment) object).getPost().getTitle()
+				.equalsIgnoreCase(detail.getPost().getTitle()))
+			{
+				return POSITION_NONE;
+			}
+			return POSITION_UNCHANGED;
+		}
+
+		@Override
+		public int getCount() {
+			return numPages;
+		}
+	}
 	
 
 	/**
@@ -212,7 +288,6 @@ public class AnnouncementsActivity extends ActionBarActivity
 		@Override
 		protected void onPostExecute(Announcements announce) {
 			if (announce != null){
-				Toast.makeText(AnnouncementsActivity.this, "Loaded announcements", Toast.LENGTH_SHORT).show();
 				announcements = announce;
 				pagerAdapter = new AnnouncementsPagerAdapter(getSupportFragmentManager());
 				viewPager.setAdapter(pagerAdapter);

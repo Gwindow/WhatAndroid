@@ -197,6 +197,15 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
+	/**
+	 * Get some string stored in the adapter
+	 * @param position the item to get
+	 * @return the string at the position
+	 */
+	public String getItem(int position){
+		return adapter.getItem(position);
+	}
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
