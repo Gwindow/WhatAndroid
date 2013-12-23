@@ -2,8 +2,10 @@ package what.whatandroid.announcements;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import api.announcements.Announcements;
+import api.announcements.Announcement;
 import what.whatandroid.R;
+
+import java.util.List;
 
 /**
  * The Announcements fragment displays a list of the site
@@ -11,7 +13,7 @@ import what.whatandroid.R;
  * it in a new fragment to the right.
  */
 public class AnnouncementsFragment extends ListFragment {
-	private Announcements announcements;
+	private List<Announcement> announcements;
 	private AnnouncementsAdapter adapter;
 
 	/**
@@ -19,7 +21,7 @@ public class AnnouncementsFragment extends ListFragment {
 	 * @param announcements the announcements to display
 	 * @return an AnnouncementsFragment displaying the announcements
 	 */
-	public static AnnouncementsFragment newInstance(Announcements announcements){
+	public static AnnouncementsFragment newInstance(List<Announcement> announcements){
 		AnnouncementsFragment fragment = new AnnouncementsFragment();
 		fragment.announcements = announcements;
 		return fragment;
@@ -32,8 +34,7 @@ public class AnnouncementsFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		adapter = new AnnouncementsAdapter(getActivity(), R.layout.list_announcement,
-			announcements.getResponse().getAnnouncements());
+		adapter = new AnnouncementsAdapter(getActivity(), R.layout.list_announcement, announcements);
 		setListAdapter(adapter);
 	}
 }

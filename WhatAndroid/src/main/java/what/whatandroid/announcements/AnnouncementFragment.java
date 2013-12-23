@@ -16,8 +16,7 @@ public class AnnouncementFragment extends Fragment {
 	private Announcement announcement;
 
     /**
-     * Use this factory method to create a new instance of the fragment to display
-	 * the passed announcement
+     * Use this factory method to create a new instance of the fragment to display the announcement
      * @param announcement the announcement to display
      * @return An AnnouncementFragment displaying the desired announcement
      */
@@ -55,6 +54,4 @@ public class AnnouncementFragment extends Fragment {
 		body.setText(announcement.getBody());
 		return view;
     }
-
-
 }
