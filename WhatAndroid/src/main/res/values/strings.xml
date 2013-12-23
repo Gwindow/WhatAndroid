@@ -2,10 +2,17 @@
 <resources>
 
     <string name="app_name">WhatAndroid</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
     <string name="login">Login</string>
+    <string name="announcements">Announcements</string>
+    <string name="blog">Blog</string>
+    <string name="profile">Profile</string>
+    <string name="inbox">Inbox</string>
+    <string name="notifications">Notifications</string>
+    <string name="subscriptions">Subscriptions</string>
+    <string name="forums">Forums</string>
+    <string name="torrents">Torrents</string>
+    <string name="requests">Requests</string>
+    <string name="barcode_scanner">Barcode Scanner</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

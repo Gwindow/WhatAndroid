@@ -1,22 +1,17 @@
 package what.whatandroid;
 
-import android.support.v7.app.ActionBarActivity;;
 import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -97,7 +92,12 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-		ArrayList<String> navElems = new ArrayList<String>(Arrays.asList(new String[]{ getString(R.string.login) }));
+		String navs[] = { getString(R.string.announcements), getString(R.string.blog), getString(R.string.profile),
+			getString(R.string.inbox), getString(R.string.notifications), getString(R.string.subscriptions),
+			getString(R.string.forums), getString(R.string.torrents), getString(R.string.requests),
+			getString(R.string.barcode_scanner)
+		};
+		ArrayList<String> navElems = new ArrayList<String>(Arrays.asList(navs));
 		adapter = new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_list_item_1,
 			android.R.id.text1, navElems );
 
@@ -105,31 +105,6 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
-
-	/**
-	 * Add a navigation element to the navbar
-	 * @param elem element name to add
-	 */
-	public void addNavElement(String elem){
-		adapter.add(elem);
-	}
-
-	/**
-	 * Remove a navigation element from the navbar
-	 * @param elem element to remove
-	 */
-	public void removeNavElement(String elem){
-		adapter.remove(elem);
-	}
-
-	/**
-	 * Get the name of some navigation element
-	 * @param i navigation element idx to get
-	 * @return navigation element name
-	 */
-	public String getNavElement(int i){
-		return adapter.getItem(i);
-	}
 
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
