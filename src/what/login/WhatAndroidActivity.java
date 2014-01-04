@@ -34,7 +34,7 @@ public class WhatAndroidActivity extends MyActivity2 implements OnClickListener 
 	private static final Class<?> REDIRECT_CLASS = HomeActivity.class;
 
 	/** The Constant SITE. */
-	private static final String SITE = "ssl.what.cd";
+	private static final String SITE = "what.cd";
 
 	/** The Constant USE_SSL. */
 	private static final boolean USE_SSL = true;

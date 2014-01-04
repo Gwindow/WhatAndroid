@@ -21,7 +21,7 @@ import android.widget.TextView;
  * @since Aug 3, 2012 6:25:57 PM
  */
 public class MyTextView extends TextView {
-	private static final String BASE = "http://ssl.what.cd/";
+	private static final String BASE = "https://what.cd/";
 	private static final String SMILEY = "static/common/smileys/";
 
 	/*
