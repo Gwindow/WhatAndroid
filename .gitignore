@@ -6,6 +6,7 @@ bin/what/
 gen/
 out/
 R.java
+*.swp
 #ignore IntelliJ Project files
 .idea/*
-*.iml
+

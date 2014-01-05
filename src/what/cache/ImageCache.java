@@ -24,10 +24,9 @@ public class ImageCache extends Activity {
 
 	@SuppressWarnings("unchecked")
 	// readObject() is safe here, honest.
-			public static
-			void init(Context mCtx) {
+	public static void init(Context mCtx) {
 		imageMap = new HashMap<Integer, SoftReference<Bitmap>>();
-		extStorageDirectory = mCtx.getExternalCacheDir().toString();
+		extStorageDirectory = mCtx.getExternalCacheDir() == null ? mCtx.getCacheDir().toString() : mCtx.getExternalCacheDir().toString();
 		try {
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(extStorageDirectory, "urlmap")));
 			urlMap = (HashMap<Integer, String>) ois.readObject();

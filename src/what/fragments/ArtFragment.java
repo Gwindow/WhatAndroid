@@ -63,23 +63,25 @@ public class ArtFragment extends SherlockFragment {
 		MyImageLoader imageLoader = new MyImageLoader(getSherlockActivity(), resource);
 
 		imageLoader.displayImage(url, artImageView, new ImageLoadingListener() {
-			@Override
-			public void onLoadingStarted(String imageUri, View view) {
-			}
 
 			@Override
-			public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+			public void onLoadingStarted() {
 
 			}
 
 			@Override
-			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+			public void onLoadingFailed(FailReason failReason) {
+
+			}
+
+			@Override
+			public void onLoadingComplete(Bitmap bitmap) {
 				progressBar.setVisibility(View.GONE);
 				artImageView.setVisibility(View.VISIBLE);
 			}
 
 			@Override
-			public void onLoadingCancelled(String imageUri, View view) {
+			public void onLoadingCancelled() {
 
 			}
 		});

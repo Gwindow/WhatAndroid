@@ -51,8 +51,8 @@ public class MyImageLoader {
 			new DisplayImageOptions.Builder()
 				.showStubImage(defaultImageResource)
 				.showImageForEmptyUri(defaultImageResource)
-				.cacheInMemory(true)
-				.cacheOnDisc(true)
+				.cacheInMemory()
+				.cacheOnDisc()
 				.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
 				.build();
 
@@ -63,11 +63,10 @@ public class MyImageLoader {
 				.memoryCacheExtraOptions(480, 800)
 				.memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024))
 				.denyCacheImageMultipleSizesInMemory()
-				.discCacheExtraOptions(480, 800, CompressFormat.JPEG, 75, null)
+				.discCacheExtraOptions(480, 800, CompressFormat.JPEG, 75)
 				.discCache(new UnlimitedDiscCache(cacheDir))
 				.discCacheFileNameGenerator(new HashCodeFileNameGenerator())
 				.defaultDisplayImageOptions(DisplayImageOptions.createSimple())
-				.writeDebugLogs()
 				.defaultDisplayImageOptions(options)
 				.build();
 		imageLoader.init(config);
@@ -95,8 +94,8 @@ public class MyImageLoader {
 				new DisplayImageOptions.Builder()
 					.showStubImage(resource)
 					.showImageForEmptyUri(resource)
-					.cacheInMemory(true)
-					.cacheOnDisc(true)
+					.cacheInMemory()
+					.cacheOnDisc()
 					.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
 					.build();
 		imageLoader.displayImage(imageUrl, imageView, opt, imageLoadingListener);
@@ -114,8 +113,8 @@ public class MyImageLoader {
 				new DisplayImageOptions.Builder()
 					.showStubImage(resource)
 					.showImageForEmptyUri(resource)
-					.cacheInMemory(true)
-					.cacheOnDisc(true)
+					.cacheInMemory()
+					.cacheOnDisc()
 					.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
 					.build();
 		imageLoader.displayImage(imageUrl, imageView, opt);
