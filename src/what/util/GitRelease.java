@@ -5,25 +5,25 @@ package what.util;
  * information into so that we can work with it easily.
  */
 public class GitRelease {
-	//The various urls associated with the release
+	/** The various urls associated with the release */
 	private String url;
 	private String assets_url;
 	private String html_url;
-	//Release id
+	/** Release id */
 	private int id;
-	//The release tag_name, these correspond to the release's versionName
+	/** The release tag_name, these correspond to the release's versionName */
 	private String tag_name;
-	//The version number of the release, determined from the tag_name
+	/** The version number of the release, determined from the tag_name */
 	private VersionNumber versionNumber;
 	private String target_commitish;
-	//Release's name
+	/** Release's name */
 	private String name;
-	//The release notes for the release
+	/** The release notes for the release */
 	private String body;
-	//If the release is a draft or pre-release
+	/** If the release is a draft or pre-release */
 	private boolean draft;
 	private boolean prerelease;
-	//Creation and publish dates for the release
+	/** Creation and publish dates for the release */
 	//TODO Should parse these into actual dates? or do we even care?
 	private String created_at;
 	private String published_at;
@@ -112,5 +112,10 @@ public class GitRelease {
 	 */
 	public boolean isPrerelease(){
 		return prerelease;
+	}
+
+	@Override
+	public String toString(){
+		return "GitRelease: " + name + " version: " + getVersionNumber().toString();
 	}
 }

@@ -61,7 +61,8 @@ public class WhatAndroidActivity extends MyActivity2 implements OnClickListener 
 		MySon.setDebugEnabled(Settings.getDebugPreference());
 		MenuItems.init();
 		ImageCache.init(this);
-		new UpdateChecker(this).checkForUpdates();
+		Intent checkUpdate = new Intent(this, UpdateService.class);
+		startService(checkUpdate);
 	}
 
 	@Override
