@@ -1,5 +1,6 @@
 package what.whatandroid.announcements;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,8 +17,10 @@ import android.widget.Toast;
 import api.announcements.Announcement;
 import api.announcements.Announcements;
 import api.announcements.BlogPost;
+import api.soup.MySoup;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
+import what.whatandroid.profile.ProfileActivity;
 
 /**
  * The announcements fragment shows announcements and blog posts and is the "main" activity, being
@@ -35,7 +38,7 @@ public class AnnouncementsActivity extends ActionBarActivity
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
-    private CharSequence mTitle;
+    private CharSequence title;
 	/**
 	 * Our pager adapter, view pager and the number of fragments we're showing
 	 */
@@ -52,14 +55,14 @@ public class AnnouncementsActivity extends ActionBarActivity
         setContentView(R.layout.activity_announcements);
 
         navDrawer = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
+        title = getString(R.string.announcements);
+		getSupportActionBar().setTitle(title);
 
-        // Set up the drawer.
-        navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
-
+		//Set up the drawer.
+        navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.drawer_layout));
 		viewPager = (ViewPager)findViewById(R.id.view_pager);
-		//TODO: Instead show an indeterminate progress bar somewhere
-		Toast.makeText(this, "Loading announcements...", Toast.LENGTH_LONG).show();
+
+		//TODO: Show an indeterminate progress bar somewhere
 		new LoadAnnouncements().execute();
     }
 
@@ -78,10 +81,20 @@ public class AnnouncementsActivity extends ActionBarActivity
 		if (selection.equalsIgnoreCase(getString(R.string.announcements))){
 			pagerAdapter = new AnnouncementsPagerAdapter(getSupportFragmentManager());
 			viewPager.setAdapter(pagerAdapter);
+			title = getString(R.string.announcements);
+			getSupportActionBar().setTitle(title);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
 			pagerAdapter = new BlogPostsPagerAdapter(getSupportFragmentManager());
 			viewPager.setAdapter(pagerAdapter);
+			title = getString(R.string.blog);
+			getSupportActionBar().setTitle(title);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.profile))){
+			//Launch profile view activity
+			Intent intent = new Intent(this, ProfileActivity.class);
+			intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
+			startActivity(intent);
 		}
     }
 
@@ -115,7 +128,7 @@ public class AnnouncementsActivity extends ActionBarActivity
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        actionBar.setTitle(title);
     }
 
 
