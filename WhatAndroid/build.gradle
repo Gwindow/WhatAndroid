@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:18.0.0'
     compile 'com.android.support:support-v4:18.0.0'
     compile files('libs/WhatAPI.jar')
+    compile files('libs/universal-image-loader-1.9.1.jar')
 }
