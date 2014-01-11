@@ -6,26 +6,30 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import api.cli.Utils;
 import api.user.User;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 
 /**
  */
 public class ProfileFragment extends Fragment {
 	/**
-	 * The user
+	 * The user we're viewing
 	 */
-	User user;
+	private User user;
 	/**
 	 * The user id we want to view, passed earlier as a param since we defer loading until onCreate
 	 */
-	int userID;
+	private int userID;
 	/**
-	 * The viewholder containing the views in the fragment
+	 * Various content views displaying the user's information
 	 */
-	ViewHolder holder;
+	private ImageView avatar;
+	private TextView username, userClass, upload, download, ratio, requiredRatio;
 
 	/**
 	 * Use this factory method to create a new instance of the fragment displaying the
@@ -55,9 +59,13 @@ public class ProfileFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_profile, container, false);
-		holder = new ViewHolder();
-		holder.username = (TextView) view.findViewById(R.id.username);
-		holder.username.setText("Username loading....");
+		avatar = (ImageView)view.findViewById(R.id.avatar);
+		username = (TextView)view.findViewById(R.id.username);
+		userClass = (TextView)view.findViewById(R.id.user_class);
+		upload = (TextView)view.findViewById(R.id.upload);
+		download = (TextView)view.findViewById(R.id.download);
+		ratio = (TextView)view.findViewById(R.id.ratio);
+		requiredRatio = (TextView)view.findViewById(R.id.required_ratio);
 
 		return view;
 	}
@@ -66,7 +74,36 @@ public class ProfileFragment extends Fragment {
 	 * Update the profile fields with the information we loaded
 	 */
 	void updateProfile() {
-		holder.username.setText(user.getProfile().getUsername());
+		//TODO: We need to check the user paranoia and update what we can see based on that
+		ImageLoader.getInstance().displayImage(user.getProfile().getAvatar(), avatar);
+		username.setText(user.getProfile().getUsername());
+		userClass.setText("Class: " + user.getProfile().getPersonal().getUserClass());
+		upload.setText("Up: " + Utils.toHumanReadableSize(user.getProfile().getStats().getUploaded().longValue()));
+		download.setText("Down: " + Utils.toHumanReadableSize(user.getProfile().getStats().getDownloaded().longValue()));
+		ratio.setText("Ratio: " + user.getProfile().getStats().getRatio().toString());
+		requiredRatio.setText("Required: " + user.getProfile().getStats().getRequiredRatio().toString());
+		colorizeRatio();
+	}
+
+	/**
+	 * Colorize the ratio text view based on its distance from the required ratio
+	 * TODO: should we keep this?
+	 */
+	void colorizeRatio() {
+		float diff = user.getProfile().getStats().getRatio().floatValue()
+			- user.getProfile().getStats().getRequiredRatio().floatValue();
+		if (diff < 0.1) {
+			ratio.setTextColor(getResources().getColor(R.color.Red));
+		}
+		else if (diff < 0.5) {
+			ratio.setTextColor(getResources().getColor(R.color.Yellow));
+		}
+		else if (diff < 1.0) {
+			ratio.setTextColor(getResources().getColor(R.color.Orange));
+		}
+		else {
+			ratio.setTextColor(getResources().getColor(R.color.Green));
+		}
 	}
 
 	/**
@@ -102,12 +139,5 @@ public class ProfileFragment extends Fragment {
 				Toast.makeText(getActivity(), "Failed to load user", Toast.LENGTH_LONG).show();
 			}
 		}
-	}
-
-	/**
-	 * Holds the various views we want to keep updated
-	 */
-	private static class ViewHolder {
-		TextView username;
 	}
 }
