@@ -14,50 +14,58 @@ import what.whatandroid.R;
 /**
  */
 public class ProfileFragment extends Fragment {
-	/** The user */
+	/**
+	 * The user
+	 */
 	User user;
-	/** The user id we want to view, passed earlier as a param since we defer loading until onCreate */
+	/**
+	 * The user id we want to view, passed earlier as a param since we defer loading until onCreate
+	 */
 	int userID;
-	/** The viewholder containing the views in the fragment */
+	/**
+	 * The viewholder containing the views in the fragment
+	 */
 	ViewHolder holder;
 
-    /**
-     * Use this factory method to create a new instance of the fragment displaying the
+	/**
+	 * Use this factory method to create a new instance of the fragment displaying the
 	 * desired user's profile
+	 *
 	 * @param id The user id to display the profile of
-     */
-    public static ProfileFragment newInstance(int id) {
+	 */
+	public static ProfileFragment newInstance(int id) {
 		ProfileFragment fragment = new ProfileFragment();
 		fragment.userID = id;
-        return fragment;
-    }
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
+		return fragment;
+	}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-		if (user == null){
+	public ProfileFragment() {
+		// Required empty public constructor
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (user == null) {
 			new LoadProfile().execute(userID);
 		}
-    }
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_profile, container, false);
 		holder = new ViewHolder();
-		holder.username = (TextView)view.findViewById(R.id.username);
+		holder.username = (TextView) view.findViewById(R.id.username);
 		holder.username.setText("Username loading....");
 
 		return view;
-    }
+	}
 
 	/**
 	 * Update the profile fields with the information we loaded
 	 */
-	void updateProfile(){
+	void updateProfile() {
 		holder.username.setText(user.getProfile().getUsername());
 	}
 
@@ -67,6 +75,7 @@ public class ProfileFragment extends Fragment {
 	private class LoadProfile extends AsyncTask<Integer, Void, User> {
 		/**
 		 * Load some user from their id
+		 *
 		 * @param params params[0] should be the user id to load
 		 * @return the user loaded, or null if something went wrong
 		 */
@@ -74,11 +83,10 @@ public class ProfileFragment extends Fragment {
 		protected User doInBackground(Integer... params) {
 			try {
 				User user = User.userFromId(params[0]);
-				if (user != null && user.getStatus()){
+				if (user != null && user.getStatus()) {
 					return user;
 				}
-			}
-			catch (Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return null;
@@ -86,7 +94,7 @@ public class ProfileFragment extends Fragment {
 
 		@Override
 		protected void onPostExecute(User u) {
-			if (u != null){
+			if (u != null) {
 				user = u;
 				updateProfile();
 			}

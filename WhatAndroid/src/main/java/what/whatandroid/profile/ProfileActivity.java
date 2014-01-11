@@ -29,13 +29,13 @@ public class ProfileActivity extends ActionBarActivity
 	 */
 	private CharSequence title;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_profile);
 
-		navDrawer = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-		navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.drawer_layout));
+		navDrawer = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+		navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 		title = getTitle();
 
 		//Will default to viewing our own profile
@@ -46,19 +46,19 @@ public class ProfileActivity extends ActionBarActivity
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
-		if (navDrawer == null){
+		if (navDrawer == null) {
 			return;
 		}
 
 		//Pass an argument to the activity telling it which to show?
 		String selection = navDrawer.getItem(position);
-		if (selection.equalsIgnoreCase(getString(R.string.announcements))){
+		if (selection.equalsIgnoreCase(getString(R.string.announcements))) {
 			//Launch AnnouncementsActivity viewing announcements
 			//For now both just return to the announcements view
 			Intent intent = new Intent(this, AnnouncementsActivity.class);
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
+		else if (selection.equalsIgnoreCase(getString(R.string.blog))) {
 			//Launch AnnouncementsActivity viewing blog posts
 			Intent intent = new Intent(this, AnnouncementsActivity.class);
 			startActivity(intent);
