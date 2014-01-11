@@ -9,9 +9,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.soup.MySoup;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
-
 
 /**
  * The login fragment, provides the user fields for their user name
@@ -30,6 +31,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		login.setOnClickListener(this);
 		//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 		MySoup.setSite("192.168.124.137", false);
+
+		//Setup Universal Image loader global config
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+			.discCacheSize(20 * 512 * 512)
+			.build();
+		ImageLoader.getInstance().init(config);
 	}
 
 

@@ -73,6 +73,7 @@
     <orderEntry type="library" exported="" name="support-v4-18.0.0" level="project" />
     <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71800.aar" level="project" />
     <orderEntry type="library" exported="" name="WhatAPI" level="project" />
+    <orderEntry type="library" exported="" name="universal-image-loader-1.9.1" level="project" />
   </component>
 </module>
 
