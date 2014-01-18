@@ -30,7 +30,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		Button login = (Button)findViewById(R.id.login_button);
 		login.setOnClickListener(this);
 		//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
-		MySoup.setSite("192.168.124.137", false);
+		//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
+		MySoup.setSite("192.168.1.3:8080", false);
 
 		//Setup Universal Image loader global config
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
