@@ -3,6 +3,7 @@ package what.whatandroid.profile;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import api.cli.Utils;
 import api.user.User;
+import api.user.recent.UserRecents;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 
@@ -22,14 +24,15 @@ public class ProfileFragment extends Fragment {
 	 */
 	private User user;
 	/**
-	 * The user id we want to view, passed earlier as a param since we defer loading until onCreate
+	 * The user's recently uploaded/snatched torrents
 	 */
+	private UserRecents recentTorrents;
+	/** The user id we want to view, passed earlier as a param since we defer loading until onCreate */
 	private int userID;
-	/**
-	 * Various content views displaying the user's information
-	 */
+	/** Various content views displaying the user's information */
 	private ImageView avatar;
 	private TextView username, userClass, upload, download, ratio, requiredRatio;
+	private ViewPager recentUploads;
 
 	/**
 	 * Use this factory method to create a new instance of the fragment displaying the
@@ -65,6 +68,7 @@ public class ProfileFragment extends Fragment {
 		download = (TextView)view.findViewById(R.id.download);
 		ratio = (TextView)view.findViewById(R.id.ratio);
 		requiredRatio = (TextView)view.findViewById(R.id.required_ratio);
+		recentUploads = (ViewPager)view.findViewById(R.id.recent_uploads);
 		return view;
 	}
 
@@ -75,11 +79,13 @@ public class ProfileFragment extends Fragment {
 		//TODO: We need to check the user paranoia and update what we can see based on that
 		ImageLoader.getInstance().displayImage(user.getProfile().getAvatar(), avatar);
 		username.setText(user.getProfile().getUsername());
-		userClass.setText("Class: " + user.getProfile().getPersonal().getUserClass());
+		userClass.setText(user.getProfile().getPersonal().getUserClass());
 		upload.setText("Up: " + Utils.toHumanReadableSize(user.getProfile().getStats().getUploaded().longValue()));
 		download.setText("Down: " + Utils.toHumanReadableSize(user.getProfile().getStats().getDownloaded().longValue()));
 		ratio.setText("Ratio: " + user.getProfile().getStats().getRatio().toString());
 		requiredRatio.setText("Required: " + user.getProfile().getStats().getRequiredRatio().toString());
+		recentUploads.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getUploads(),
+			getActivity().getSupportFragmentManager()));
 		colorizeRatio();
 	}
 
@@ -107,7 +113,7 @@ public class ProfileFragment extends Fragment {
 	/**
 	 * Async task to load the user's profile
 	 */
-	private class LoadProfile extends AsyncTask<Integer, Void, User> {
+	private class LoadProfile extends AsyncTask<Integer, Void, Boolean> {
 		/**
 		 * Load some user from their id
 		 *
@@ -115,22 +121,22 @@ public class ProfileFragment extends Fragment {
 		 * @return the user loaded, or null if something went wrong
 		 */
 		@Override
-		protected User doInBackground(Integer... params){
+		protected Boolean doInBackground(Integer... params){
 			try {
-				User user = User.userFromId(params[0]);
-				if (user != null && user.getStatus()){
-					return user;
+				user = User.userFromId(params[0]);
+				recentTorrents = UserRecents.recentsForUser(params[0]);
+				if (user != null && user.getStatus() && recentTorrents != null && recentTorrents.getStatus()){
+					return true;
 				}
 			} catch (Exception e){
 				e.printStackTrace();
 			}
-			return null;
+			return false;
 		}
 
 		@Override
-		protected void onPostExecute(User u){
-			if (u != null){
-				user = u;
+		protected void onPostExecute(Boolean status){
+			if (status){
 				updateProfile();
 			}
 			else {
