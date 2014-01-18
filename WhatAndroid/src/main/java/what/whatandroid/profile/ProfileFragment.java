@@ -37,27 +37,26 @@ public class ProfileFragment extends Fragment {
 	 *
 	 * @param id The user id to display the profile of
 	 */
-	public static ProfileFragment newInstance(int id) {
+	public static ProfileFragment newInstance(int id){
 		ProfileFragment fragment = new ProfileFragment();
 		fragment.userID = id;
 		return fragment;
 	}
 
-	public ProfileFragment() {
+	public ProfileFragment(){
 		// Required empty public constructor
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		if (user == null) {
+		if (user == null){
 			new LoadProfile().execute(userID);
 		}
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_profile, container, false);
 		avatar = (ImageView)view.findViewById(R.id.avatar);
 		username = (TextView)view.findViewById(R.id.username);
@@ -66,14 +65,13 @@ public class ProfileFragment extends Fragment {
 		download = (TextView)view.findViewById(R.id.download);
 		ratio = (TextView)view.findViewById(R.id.ratio);
 		requiredRatio = (TextView)view.findViewById(R.id.required_ratio);
-
 		return view;
 	}
 
 	/**
 	 * Update the profile fields with the information we loaded
 	 */
-	void updateProfile() {
+	void updateProfile(){
 		//TODO: We need to check the user paranoia and update what we can see based on that
 		ImageLoader.getInstance().displayImage(user.getProfile().getAvatar(), avatar);
 		username.setText(user.getProfile().getUsername());
@@ -89,16 +87,16 @@ public class ProfileFragment extends Fragment {
 	 * Colorize the ratio text view based on its distance from the required ratio
 	 * TODO: should we keep this?
 	 */
-	void colorizeRatio() {
+	void colorizeRatio(){
 		float diff = user.getProfile().getStats().getRatio().floatValue()
 			- user.getProfile().getStats().getRequiredRatio().floatValue();
-		if (diff < 0.1) {
+		if (diff < 0.1){
 			ratio.setTextColor(getResources().getColor(R.color.Red));
 		}
-		else if (diff < 0.5) {
+		else if (diff < 0.5){
 			ratio.setTextColor(getResources().getColor(R.color.Yellow));
 		}
-		else if (diff < 1.0) {
+		else if (diff < 1.0){
 			ratio.setTextColor(getResources().getColor(R.color.Orange));
 		}
 		else {
@@ -117,21 +115,21 @@ public class ProfileFragment extends Fragment {
 		 * @return the user loaded, or null if something went wrong
 		 */
 		@Override
-		protected User doInBackground(Integer... params) {
+		protected User doInBackground(Integer... params){
 			try {
 				User user = User.userFromId(params[0]);
-				if (user != null && user.getStatus()) {
+				if (user != null && user.getStatus()){
 					return user;
 				}
-			} catch (Exception e) {
+			} catch (Exception e){
 				e.printStackTrace();
 			}
 			return null;
 		}
 
 		@Override
-		protected void onPostExecute(User u) {
-			if (u != null) {
+		protected void onPostExecute(User u){
+			if (u != null){
 				user = u;
 				updateProfile();
 			}
