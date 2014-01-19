@@ -79,13 +79,13 @@ public class AnnouncementsActivity extends ActionBarActivity
 		}
 
 		String selection = navDrawer.getItem(position);
-		if (selection.equalsIgnoreCase(getString(R.string.announcements))) {
+		if (selection.equalsIgnoreCase(getString(R.string.announcements)) && announcements != null){
 			pagerAdapter = new AnnouncementsPagerAdapter(getSupportFragmentManager());
 			viewPager.setAdapter(pagerAdapter);
 			title = getString(R.string.announcements);
 			getSupportActionBar().setTitle(title);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.blog))) {
+		else if (selection.equalsIgnoreCase(getString(R.string.blog)) && announcements != null){
 			pagerAdapter = new BlogPostsPagerAdapter(getSupportFragmentManager());
 			viewPager.setAdapter(pagerAdapter);
 			title = getString(R.string.blog);
