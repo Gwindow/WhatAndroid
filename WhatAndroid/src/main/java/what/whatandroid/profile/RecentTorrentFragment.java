@@ -46,6 +46,9 @@ public class RecentTorrentFragment extends Fragment {
 		TextView albumName = (TextView)view.findViewById(R.id.album_name);
 		albumName.setText(torrent.getName());
 
+		TextView artistName = (TextView)view.findViewById(R.id.artist_name);
+		artistName.setText(torrent.getArtist().getName());
+
 		return view;
 	}
 }

@@ -2,19 +2,35 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:padding="8dp">
 
     <ImageView
             android:id="@+id/art"
             android:layout_width="128dp"
             android:layout_height="128dp"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/album_art"/>
 
     <TextView
             android:id="@+id/album_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/art"/>
+            android:gravity="center_horizontal"
+            android:layout_below="@id/art"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+
+    <TextView
+            android:id="@+id/artist_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_below="@id/album_name"
+            android:textSize="12sp"
+            android:textColor="@color/DarkGrey"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
 </RelativeLayout>
