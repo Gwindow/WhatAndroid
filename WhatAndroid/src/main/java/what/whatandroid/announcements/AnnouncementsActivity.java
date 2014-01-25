@@ -52,7 +52,7 @@ public class AnnouncementsActivity extends ActionBarActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_announcements);
+		setContentView(R.layout.activity_view_pager);
 
 		navDrawer = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 		title = getString(R.string.announcements);
