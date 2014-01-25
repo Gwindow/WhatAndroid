@@ -29,9 +29,13 @@ public class ProfileFragment extends Fragment {
 	 * The user's recently uploaded/snatched torrents
 	 */
 	private UserRecents recentTorrents;
-	/** The user id we want to view, passed earlier as a param since we defer loading until onCreate */
+	/**
+	 * The user id we want to view, passed earlier as a param since we defer loading until onCreate
+	 */
 	private int userID;
-	/** Various content views displaying the user's information */
+	/**
+	 * Various content views displaying the user's information
+	 */
 	private ImageView avatar;
 	private TextView username, userClass, upload, download, ratio, requiredRatio, paranoiaText;
 	private ViewPager recentSnatches, recentUploads;
@@ -183,8 +187,6 @@ public class ProfileFragment extends Fragment {
 		protected void onPostExecute(User user){
 			if (user != null){
 				profile = user.getProfile();
-				System.out.println(profile.getPersonal().getParanoia()
-					+ ", " + profile.getPersonal().getParanoiaText());
 				updateProfile();
 			}
 			else {
