@@ -56,11 +56,13 @@ public class ProfileActivity extends ActionBarActivity
 			//Launch AnnouncementsActivity viewing announcements
 			//For now both just return to the announcements view
 			Intent intent = new Intent(this, AnnouncementsActivity.class);
+			intent.putExtra(AnnouncementsActivity.SHOW, AnnouncementsActivity.ANNOUNCEMENTS);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog))) {
 			//Launch AnnouncementsActivity viewing blog posts
 			Intent intent = new Intent(this, AnnouncementsActivity.class);
+			intent.putExtra(AnnouncementsActivity.SHOW, AnnouncementsActivity.BLOGS);
 			startActivity(intent);
 		}
 	}

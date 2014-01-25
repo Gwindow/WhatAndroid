@@ -32,6 +32,11 @@ import what.whatandroid.profile.ProfileActivity;
 public class AnnouncementsActivity extends ActionBarActivity
 	implements NavigationDrawerFragment.NavigationDrawerCallbacks, AnnouncementManager {
 	/**
+	 * Intent parameters for showing Announcements or Blogs
+	 */
+	public final static String SHOW = "what.whatandroid.SHOW";
+	public final static int ANNOUNCEMENTS = 0, BLOGS = 1;
+	/**
 	 * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
 	 */
 	private NavigationDrawerFragment navDrawer;
@@ -55,7 +60,13 @@ public class AnnouncementsActivity extends ActionBarActivity
 		setContentView(R.layout.activity_view_pager);
 
 		navDrawer = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-		title = getString(R.string.announcements);
+		int show = getIntent().getIntExtra(SHOW, ANNOUNCEMENTS);
+		if (show == ANNOUNCEMENTS){
+			title = getString(R.string.announcements);
+		}
+		else {
+			title = getString(R.string.blog);
+		}
 		getSupportActionBar().setTitle(title);
 
 		//Set up the drawer.
@@ -63,7 +74,7 @@ public class AnnouncementsActivity extends ActionBarActivity
 		viewPager = (ViewPager) findViewById(R.id.view_pager);
 
 		//TODO: Show an indeterminate progress bar somewhere
-		new LoadAnnouncements().execute();
+		new LoadAnnouncements().execute(show);
 	}
 
 	/**
@@ -288,9 +299,19 @@ public class AnnouncementsActivity extends ActionBarActivity
 	/**
 	 * Async task to load the announcements
 	 */
-	private class LoadAnnouncements extends AsyncTask<Void, Void, Announcements> {
+	private class LoadAnnouncements extends AsyncTask<Integer, Void, Announcements> {
+		private int show;
+
+		/**
+		 * params[0] should be which announcements we want to show after loading is done,
+		 * announcements or blogs
+		 *
+		 * @param params What to show after we're done loading
+		 * @return the loaded announcements
+		 */
 		@Override
-		protected Announcements doInBackground(Void... params) {
+		protected Announcements doInBackground(Integer... params){
+			show = params[0];
 			try {
 				return Announcements.init();
 			} catch (Exception e) {
@@ -300,10 +321,15 @@ public class AnnouncementsActivity extends ActionBarActivity
 		}
 
 		@Override
-		protected void onPostExecute(Announcements announce) {
-			if (announce != null) {
+		protected void onPostExecute(Announcements announce){
+			if (announce != null){
 				announcements = announce;
-				pagerAdapter = new AnnouncementsPagerAdapter(getSupportFragmentManager());
+				if (show == ANNOUNCEMENTS){
+					pagerAdapter = new AnnouncementsPagerAdapter(getSupportFragmentManager());
+				}
+				else {
+					pagerAdapter = new BlogPostsPagerAdapter(getSupportFragmentManager());
+				}
 				viewPager.setAdapter(pagerAdapter);
 			}
 			else {
