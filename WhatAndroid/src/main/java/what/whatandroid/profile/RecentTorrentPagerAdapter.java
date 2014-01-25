@@ -12,12 +12,10 @@ import java.util.List;
  */
 public class RecentTorrentPagerAdapter extends FragmentStatePagerAdapter {
 	private final List<RecentTorrent> torrents;
-	private final FragmentManager fragmentManager;
 
 	public RecentTorrentPagerAdapter(List<RecentTorrent> tor, FragmentManager fm){
 		super(fm);
 		torrents = tor;
-		fragmentManager = fm;
 	}
 
 	@Override
@@ -36,6 +34,6 @@ public class RecentTorrentPagerAdapter extends FragmentStatePagerAdapter {
 	 */
 	@Override
 	public float getPageWidth(int position){
-		return 0.25f;
+		return 0.3f;
 	}
 }

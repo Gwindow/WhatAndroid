@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_below="@id/art"
-            android:textSize="12sp"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end"/>
 
@@ -28,7 +29,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_below="@id/album_name"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textColor="@color/DarkGrey"
             android:maxLines="1"
             android:ellipsize="end"/>

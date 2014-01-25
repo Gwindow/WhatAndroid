@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.cli.Utils;
+import api.soup.MySoup;
+import api.user.Profile;
 import api.user.User;
 import api.user.recent.UserRecents;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -20,9 +22,9 @@ import what.whatandroid.R;
  */
 public class ProfileFragment extends Fragment {
 	/**
-	 * The user we're viewing
+	 * The user's profile information
 	 */
-	private User user;
+	private Profile profile;
 	/**
 	 * The user's recently uploaded/snatched torrents
 	 */
@@ -31,8 +33,8 @@ public class ProfileFragment extends Fragment {
 	private int userID;
 	/** Various content views displaying the user's information */
 	private ImageView avatar;
-	private TextView username, userClass, upload, download, ratio, requiredRatio;
-	private ViewPager recentUploads;
+	private TextView username, userClass, upload, download, ratio, requiredRatio, paranoiaText;
+	private ViewPager recentSnatches, recentUploads;
 
 	/**
 	 * Use this factory method to create a new instance of the fragment displaying the
@@ -53,7 +55,7 @@ public class ProfileFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		if (user == null){
+		if (profile == null){
 			new LoadProfile().execute(userID);
 		}
 	}
@@ -68,34 +70,70 @@ public class ProfileFragment extends Fragment {
 		download = (TextView)view.findViewById(R.id.download);
 		ratio = (TextView)view.findViewById(R.id.ratio);
 		requiredRatio = (TextView)view.findViewById(R.id.required_ratio);
+		paranoiaText = (TextView)view.findViewById(R.id.paranoia_text);
+		recentSnatches = (ViewPager)view.findViewById(R.id.recent_snatches);
 		recentUploads = (ViewPager)view.findViewById(R.id.recent_uploads);
 		return view;
 	}
 
 	/**
-	 * Update the profile fields with the information we loaded
+	 * Update the profile fields with the information we loaded. We need to do a lot null checking here to
+	 * properly handle user's various paranoia configurations, which could cause us to get a null for any of the
+	 * fields that can be hidden. We also hide the recent snatches/uploads if the user's paranoia is high (6+).
+	 * When viewing our own profile we'll get all the data back but will still see our paranoia value so we need to
+	 * ignore the paranoia if it's our own profile
 	 */
 	void updateProfile(){
-		//TODO: We need to check the user paranoia and update what we can see based on that
-		ImageLoader.getInstance().displayImage(user.getProfile().getAvatar(), avatar);
-		username.setText(user.getProfile().getUsername());
-		userClass.setText(user.getProfile().getPersonal().getUserClass());
-		upload.setText("Up: " + Utils.toHumanReadableSize(user.getProfile().getStats().getUploaded().longValue()));
-		download.setText("Down: " + Utils.toHumanReadableSize(user.getProfile().getStats().getDownloaded().longValue()));
-		ratio.setText("Ratio: " + user.getProfile().getStats().getRatio().toString());
-		requiredRatio.setText("Required: " + user.getProfile().getStats().getRequiredRatio().toString());
-		recentUploads.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getUploads(),
-			getActivity().getSupportFragmentManager()));
-		colorizeRatio();
+		ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar);
+		username.setText(profile.getUsername());
+		userClass.setText(profile.getPersonal().getUserClass());
+		if (profile.getPersonal().getParanoia().intValue() > 0 && userID != MySoup.getUserId()){
+			paranoiaText.setText("Paranoia: " + profile.getPersonal().getParanoiaText());
+		}
+		else {
+			paranoiaText.setVisibility(View.GONE);
+		}
+		if (profile.getStats().getUploaded() != null){
+			upload.setText("Up: " + Utils.toHumanReadableSize(profile.getStats().getUploaded().longValue()));
+		}
+		else {
+			upload.setVisibility(View.GONE);
+		}
+		if (profile.getStats().getDownloaded() != null){
+			download.setText("Down: " + Utils.toHumanReadableSize(profile.getStats().getDownloaded().longValue()));
+		}
+		else {
+			download.setVisibility(View.GONE);
+		}
+		//TODO: These fields will be merged soon
+		if (profile.getStats().getRatio() != null && profile.getStats().getRequiredRatio() != null){
+			ratio.setText("Ratio: " + profile.getStats().getRatio().toString());
+			requiredRatio.setText("Required: " + profile.getStats().getRequiredRatio().toString());
+			colorizeRatio();
+		}
+		else {
+			ratio.setVisibility(View.GONE);
+			requiredRatio.setVisibility(View.GONE);
+		}
+		//TODO: Keep an eye on this API endpoint and watch for when it starts respecting paranoia and we get null back
+		if (profile.getPersonal().getParanoia().intValue() < 6 || userID == MySoup.getUserId()){
+			recentSnatches.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getSnatches(),
+				getActivity().getSupportFragmentManager()));
+			recentUploads.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getUploads(),
+				getActivity().getSupportFragmentManager()));
+		}
+		else {
+			recentSnatches.setVisibility(View.GONE);
+			recentUploads.setVisibility(View.GONE);
+		}
 	}
 
 	/**
 	 * Colorize the ratio text view based on its distance from the required ratio
-	 * TODO: should we keep this?
 	 */
 	void colorizeRatio(){
-		float diff = user.getProfile().getStats().getRatio().floatValue()
-			- user.getProfile().getStats().getRequiredRatio().floatValue();
+		float diff = profile.getStats().getRatio().floatValue()
+			- profile.getStats().getRequiredRatio().floatValue();
 		if (diff < 0.1){
 			ratio.setTextColor(getResources().getColor(R.color.Red));
 		}
@@ -113,7 +151,7 @@ public class ProfileFragment extends Fragment {
 	/**
 	 * Async task to load the user's profile
 	 */
-	private class LoadProfile extends AsyncTask<Integer, Void, Boolean> {
+	private class LoadProfile extends AsyncTask<Integer, Void, User> {
 		/**
 		 * Load some user from their id
 		 *
@@ -121,22 +159,26 @@ public class ProfileFragment extends Fragment {
 		 * @return the user loaded, or null if something went wrong
 		 */
 		@Override
-		protected Boolean doInBackground(Integer... params){
+		protected User doInBackground(Integer... params){
 			try {
-				user = User.userFromId(params[0]);
+				User user = User.userFromId(params[0]);
 				recentTorrents = UserRecents.recentsForUser(params[0]);
-				if (user != null && user.getStatus() && recentTorrents != null && recentTorrents.getStatus()){
-					return true;
+				if (recentTorrents != null && recentTorrents.getStatus()){
+					return user;
 				}
-			} catch (Exception e){
+			}
+			catch (Exception e){
 				e.printStackTrace();
 			}
-			return false;
+			return null;
 		}
 
 		@Override
-		protected void onPostExecute(Boolean status){
-			if (status){
+		protected void onPostExecute(User user){
+			if (user != null && user.getStatus()){
+				profile = user.getProfile();
+				System.out.println(profile.getPersonal().getParanoia()
+					+ ", " + profile.getPersonal().getParanoiaText());
 				updateProfile();
 			}
 			else {
