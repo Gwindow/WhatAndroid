@@ -84,7 +84,13 @@ public class ProfileFragment extends Fragment {
 	 * ignore the paranoia if it's our own profile
 	 */
 	void updateProfile(){
-		ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar);
+		//No empty in API 8? Android Studio warns that API 9 is required
+		if (!profile.getAvatar().equalsIgnoreCase("")){
+			ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar);
+		}
+		else {
+			avatar.setVisibility(View.GONE);
+		}
 		username.setText(profile.getUsername());
 		userClass.setText(profile.getPersonal().getUserClass());
 		if (profile.getPersonal().getParanoia().intValue() > 0 && userID != MySoup.getUserId()){
@@ -107,7 +113,7 @@ public class ProfileFragment extends Fragment {
 		}
 		//TODO: These fields will be merged soon
 		if (profile.getStats().getRatio() != null && profile.getStats().getRequiredRatio() != null){
-			ratio.setText("Ratio: " + profile.getStats().getRatio().toString());
+			ratio.setText("Ratio: " + String.format("%.2f", profile.getStats().getRatio().floatValue()));
 			requiredRatio.setText("Required: " + profile.getStats().getRequiredRatio().toString());
 			colorizeRatio();
 		}
