@@ -169,7 +169,7 @@ public class ProfileFragment extends Fragment {
 			try {
 				User user = User.userFromId(params[0]);
 				recentTorrents = UserRecents.recentsForUser(params[0]);
-				if (recentTorrents != null && recentTorrents.getStatus()){
+				if (user.getStatus() && recentTorrents != null && recentTorrents.getStatus()){
 					return user;
 				}
 			}
@@ -181,7 +181,7 @@ public class ProfileFragment extends Fragment {
 
 		@Override
 		protected void onPostExecute(User user){
-			if (user != null && user.getStatus()){
+			if (user != null){
 				profile = user.getProfile();
 				System.out.println(profile.getPersonal().getParanoia()
 					+ ", " + profile.getPersonal().getParanoiaText());
