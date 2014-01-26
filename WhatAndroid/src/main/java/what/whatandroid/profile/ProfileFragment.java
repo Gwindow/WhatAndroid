@@ -87,7 +87,7 @@ public class ProfileFragment extends Fragment {
 	 * When viewing our own profile we'll get all the data back but will still see our paranoia value so we need to
 	 * ignore the paranoia if it's our own profile
 	 */
-	void updateProfile(){
+	private void updateProfile(){
 		//No empty in API 8? Android Studio warns that API 9 is required
 		if (!profile.getAvatar().equalsIgnoreCase("")){
 			ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar);
@@ -141,7 +141,7 @@ public class ProfileFragment extends Fragment {
 	/**
 	 * Colorize the ratio text view based on its distance from the required ratio
 	 */
-	void colorizeRatio(){
+	private void colorizeRatio(){
 		float diff = profile.getStats().getRatio().floatValue()
 			- profile.getStats().getRequiredRatio().floatValue();
 		if (diff < 0.1){

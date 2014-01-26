@@ -7,17 +7,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-<FrameLayout
+    <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
     <fragment
-          android:id="@+id/navigation_drawer"
-          android:layout_width="@dimen/navigation_drawer_width"
-          android:layout_height="match_parent"
-          android:layout_gravity="start"
-          android:name="what.whatandroid.NavigationDrawerFragment"
-          tools:layout="@layout/fragment_navigation_drawer"/>
+            android:id="@+id/navigation_drawer"
+            android:layout_width="@dimen/navigation_drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:name="what.whatandroid.NavigationDrawerFragment"
+            tools:layout="@layout/fragment_navigation_drawer"/>
 
 </android.support.v4.widget.DrawerLayout>

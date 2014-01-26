@@ -32,7 +32,7 @@ public class AnnouncementsAdapter extends ArrayAdapter<Announcement> implements 
 	 */
 	public AnnouncementsAdapter(Context context, int resource, List<Announcement> objects) {
 		super(context, resource, objects);
-		this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.resource = resource;
 		announcements = objects;
 		try {
