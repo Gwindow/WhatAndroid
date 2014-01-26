@@ -10,6 +10,7 @@
     <string name="notifications">Notifications</string>
     <string name="subscriptions">Subscriptions</string>
     <string name="forums">Forums</string>
+    <string name="artist">Artist</string>
     <string name="torrents">Torrents</string>
     <string name="requests">Requests</string>
     <string name="barcode_scanner">Barcode Scanner</string>
@@ -21,5 +22,6 @@
     <string name="action_settings">Settings</string>
     <string name="avatar">Avatar</string>
     <string name="album_art">Album Art</string>
+    <string name="artist_image">Artist Image</string>
 
 </resources>

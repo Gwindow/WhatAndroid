@@ -20,6 +20,7 @@ import api.announcements.BlogPost;
 import api.soup.MySoup;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
+import what.whatandroid.artist.ArtistActivity;
 import what.whatandroid.profile.ProfileActivity;
 
 /**
@@ -55,11 +56,11 @@ public class AnnouncementsActivity extends ActionBarActivity
 	private Announcements announcements;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_pager);
 
-		navDrawer = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+		navDrawer = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 		int show = getIntent().getIntExtra(SHOW, ANNOUNCEMENTS);
 		if (show == ANNOUNCEMENTS){
 			title = getString(R.string.announcements);
@@ -70,8 +71,8 @@ public class AnnouncementsActivity extends ActionBarActivity
 		getSupportActionBar().setTitle(title);
 
 		//Set up the drawer.
-		navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
-		viewPager = (ViewPager) findViewById(R.id.view_pager);
+		navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.drawer_layout));
+		viewPager = (ViewPager)findViewById(R.id.view_pager);
 
 		//TODO: Show an indeterminate progress bar somewhere
 		new LoadAnnouncements().execute(show);
@@ -84,8 +85,8 @@ public class AnnouncementsActivity extends ActionBarActivity
 	 * @param position position in the nav drawer of the item selected
 	 */
 	@Override
-	public void onNavigationDrawerItemSelected(int position) {
-		if (navDrawer == null) {
+	public void onNavigationDrawerItemSelected(int position){
+		if (navDrawer == null){
 			return;
 		}
 
@@ -102,10 +103,16 @@ public class AnnouncementsActivity extends ActionBarActivity
 			title = getString(R.string.blog);
 			getSupportActionBar().setTitle(title);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.profile))) {
+		else if (selection.equalsIgnoreCase(getString(R.string.profile))){
 			//Launch profile view activity
 			Intent intent = new Intent(this, ProfileActivity.class);
 			intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
+			startActivity(intent);
+		}
+		//TODO: For testing artist view only
+		else if (selection.equalsIgnoreCase(getString(R.string.inbox))){
+			Intent intent = new Intent(this, ArtistActivity.class);
+			intent.putExtra(ArtistActivity.ARTIST_ID, 7);
 			startActivity(intent);
 		}
 	}
@@ -117,9 +124,9 @@ public class AnnouncementsActivity extends ActionBarActivity
 	 * @param announcement the announcement to show in the fragment
 	 */
 	@Override
-	public void showAnnouncement(Announcement announcement) {
-		if (pagerAdapter instanceof AnnouncementsPagerAdapter) {
-			((AnnouncementsPagerAdapter) pagerAdapter).showAnnouncement(announcement);
+	public void showAnnouncement(Announcement announcement){
+		if (pagerAdapter instanceof AnnouncementsPagerAdapter){
+			((AnnouncementsPagerAdapter)pagerAdapter).showAnnouncement(announcement);
 			viewPager.setCurrentItem(1);
 		}
 	}
@@ -131,14 +138,14 @@ public class AnnouncementsActivity extends ActionBarActivity
 	 * @param post the blog post to show in the fragment
 	 */
 	@Override
-	public void showBlogPost(BlogPost post) {
-		if (pagerAdapter instanceof BlogPostsPagerAdapter) {
-			((BlogPostsPagerAdapter) pagerAdapter).showPost(post);
+	public void showBlogPost(BlogPost post){
+		if (pagerAdapter instanceof BlogPostsPagerAdapter){
+			((BlogPostsPagerAdapter)pagerAdapter).showPost(post);
 			viewPager.setCurrentItem(1);
 		}
 	}
 
-	public void restoreActionBar() {
+	public void restoreActionBar(){
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(true);
@@ -147,8 +154,8 @@ public class AnnouncementsActivity extends ActionBarActivity
 
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		if (!navDrawer.isDrawerOpen()) {
+	public boolean onCreateOptionsMenu(Menu menu){
+		if (!navDrawer.isDrawerOpen()){
 			// Only show items in the action bar relevant to this screen
 			// if the drawer is not showing. Otherwise, let the drawer
 			// decide what to show in the action bar.
@@ -160,11 +167,11 @@ public class AnnouncementsActivity extends ActionBarActivity
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item){
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		switch (item.getItemId()) {
+		switch (item.getItemId()){
 			case R.id.action_settings:
 				return true;
 		}
@@ -172,9 +179,9 @@ public class AnnouncementsActivity extends ActionBarActivity
 	}
 
 	@Override
-	public void onBackPressed() {
+	public void onBackPressed(){
 		//If we're at the last view go back in the activity stack
-		if (viewPager.getCurrentItem() == 0) {
+		if (viewPager.getCurrentItem() == 0){
 			super.onBackPressed();
 		}
 		else {
@@ -194,7 +201,7 @@ public class AnnouncementsActivity extends ActionBarActivity
 		private int numPages;
 		private final FragmentManager fragmentManager;
 
-		public AnnouncementsPagerAdapter(FragmentManager fm) {
+		public AnnouncementsPagerAdapter(FragmentManager fm){
 			super(fm);
 			fragmentManager = fm;
 			numPages = 1;
@@ -205,8 +212,8 @@ public class AnnouncementsActivity extends ActionBarActivity
 		 *
 		 * @param announcement the announcement to view in detail
 		 */
-		public void showAnnouncement(Announcement announcement) {
-			if (detail != null && !detail.getAnnouncement().getTitle().equalsIgnoreCase(announcement.getTitle())) {
+		public void showAnnouncement(Announcement announcement){
+			if (detail != null && !detail.getAnnouncement().getTitle().equalsIgnoreCase(announcement.getTitle())){
 				fragmentManager.beginTransaction().remove(detail).commit();
 			}
 			detail = AnnouncementFragment.newInstance(announcement);
@@ -215,26 +222,26 @@ public class AnnouncementsActivity extends ActionBarActivity
 		}
 
 		@Override
-		public Fragment getItem(int i) {
-			if (i == 0) {
+		public Fragment getItem(int i){
+			if (i == 0){
 				return AnnouncementsFragment.newInstance(announcements.getResponse().getAnnouncements());
 			}
 			return detail;
 		}
 
 		@Override
-		public int getItemPosition(Object object) {
+		public int getItemPosition(Object object){
 			//If the detail fragment we want to show has a different title than the one being shown tell it to hide
 			//the old detail fragment
-			if (object instanceof AnnouncementFragment && !((AnnouncementFragment) object).getAnnouncement().getTitle()
-				.equalsIgnoreCase(detail.getAnnouncement().getTitle())) {
+			if (object instanceof AnnouncementFragment && !((AnnouncementFragment)object).getAnnouncement().getTitle()
+				.equalsIgnoreCase(detail.getAnnouncement().getTitle())){
 				return POSITION_NONE;
 			}
 			return POSITION_UNCHANGED;
 		}
 
 		@Override
-		public int getCount() {
+		public int getCount(){
 			return numPages;
 		}
 	}
@@ -251,7 +258,7 @@ public class AnnouncementsActivity extends ActionBarActivity
 		private int numPages;
 		private final FragmentManager fragmentManager;
 
-		public BlogPostsPagerAdapter(FragmentManager fm) {
+		public BlogPostsPagerAdapter(FragmentManager fm){
 			super(fm);
 			fragmentManager = fm;
 			numPages = 1;
@@ -262,8 +269,8 @@ public class AnnouncementsActivity extends ActionBarActivity
 		 *
 		 * @param post the announcement to view in detail
 		 */
-		public void showPost(BlogPost post) {
-			if (detail != null && !detail.getPost().getTitle().equalsIgnoreCase(post.getTitle())) {
+		public void showPost(BlogPost post){
+			if (detail != null && !detail.getPost().getTitle().equalsIgnoreCase(post.getTitle())){
 				fragmentManager.beginTransaction().remove(detail).commit();
 			}
 			detail = BlogPostFragment.newInstance(post);
@@ -272,26 +279,26 @@ public class AnnouncementsActivity extends ActionBarActivity
 		}
 
 		@Override
-		public Fragment getItem(int i) {
-			if (i == 0) {
+		public Fragment getItem(int i){
+			if (i == 0){
 				return BlogPostsFragment.newInstance(announcements.getResponse().getBlogPosts());
 			}
 			return detail;
 		}
 
 		@Override
-		public int getItemPosition(Object object) {
+		public int getItemPosition(Object object){
 			//If the detail fragment we want to show has a different title than the one being shown tell it to hide
 			//the old detail fragment
-			if (object instanceof BlogPostFragment && !((BlogPostFragment) object).getPost().getTitle()
-				.equalsIgnoreCase(detail.getPost().getTitle())) {
+			if (object instanceof BlogPostFragment && !((BlogPostFragment)object).getPost().getTitle()
+				.equalsIgnoreCase(detail.getPost().getTitle())){
 				return POSITION_NONE;
 			}
 			return POSITION_UNCHANGED;
 		}
 
 		@Override
-		public int getCount() {
+		public int getCount(){
 			return numPages;
 		}
 	}
@@ -314,7 +321,8 @@ public class AnnouncementsActivity extends ActionBarActivity
 			show = params[0];
 			try {
 				return Announcements.init();
-			} catch (Exception e) {
+			}
+			catch (Exception e){
 				e.printStackTrace();
 				return null;
 			}
