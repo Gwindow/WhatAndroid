@@ -86,17 +86,17 @@ public class ArtistFragment extends Fragment {
 	 */
 	private void updateArtist(){
 		callbacks.setTitle(artist.getResponse().getName());
-		torrentList.setAdapter(new ArtistTorrentAdapter(getActivity(), R.layout.fragment_artist_torrent,
-			artist.getResponse().getTorrentgroup()));
-
 		if (!artist.getResponse().getImage().equalsIgnoreCase("")){
 			ImageLoader.getInstance().displayImage(artist.getResponse().getImage(), image);
 			torrentList.addHeaderView(header);
 		}
 		else {
 			image.setVisibility(View.GONE);
+			image = null;
 			header = null;
 		}
+		torrentList.setAdapter(new ArtistTorrentAdapter(getActivity(), R.layout.fragment_artist_torrent,
+			artist.getResponse().getTorrentgroup()));
 	}
 
 	/**
@@ -129,6 +129,7 @@ public class ArtistFragment extends Fragment {
 				artist = a;
 				updateArtist();
 			}
+			//Else show an error?
 		}
 	}
 }

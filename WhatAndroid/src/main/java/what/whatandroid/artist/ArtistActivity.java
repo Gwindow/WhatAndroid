@@ -23,7 +23,6 @@ public class ArtistActivity extends ActionBarActivity
 	 * Param to pass the user id to display to the activity
 	 */
 	public final static String ARTIST_ID = "what.whatandroid.ARTIST_ID";
-
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
 	 */
