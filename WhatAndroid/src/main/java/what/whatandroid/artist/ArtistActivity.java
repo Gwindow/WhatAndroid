@@ -13,6 +13,7 @@ import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.profile.ProfileActivity;
+import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 /**
  * View information about the artist and a list of their torrent groups
@@ -80,6 +81,13 @@ public class ArtistActivity extends ActionBarActivity
 		title = t;
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setTitle(title);
+	}
+
+	@Override
+	public void viewTorrentGroup(int id){
+		Intent intent = new Intent(this, TorrentGroupActivity.class);
+		intent.putExtra(TorrentGroupActivity.GROUP_ID, id);
+		startActivity(intent);
 	}
 
 	public void restoreActionBar(){

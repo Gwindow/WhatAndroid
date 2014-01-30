@@ -7,5 +7,11 @@ import what.whatandroid.utility.SetTitleCallback;
  * the title or launch an intent to view a torrent group
  */
 public interface ArtistCallbacks extends SetTitleCallback {
-	//TODO: Add view torrent group callback so we can go look at an artist's torrent
+	/**
+	 * Have the Artist Activity launch a TorrentGroup activity so that we can view the
+	 * details of one of the artists torrents
+	 *
+	 * @param id the id of the torrent group to view
+	 */
+	public void viewTorrentGroup(int id);
 }

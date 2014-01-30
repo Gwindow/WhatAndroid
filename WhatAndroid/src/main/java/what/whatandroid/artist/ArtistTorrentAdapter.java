@@ -78,7 +78,8 @@ public class ArtistTorrentAdapter extends ArrayAdapter<TorrentGroup> implements 
 
 	@Override
 	public void onClick(View v){
-
+		ViewHolder holder = (ViewHolder)v.getTag();
+		callbacks.viewTorrentGroup(holder.torrentGroup.getGroupId().intValue());
 	}
 
 	/**
