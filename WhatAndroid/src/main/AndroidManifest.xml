@@ -17,7 +17,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
         <activity
-                android:name="what.whatandroid.login.LoginActivity"
+                android:name=".login.LoginActivity"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -25,16 +25,20 @@
             </intent-filter>
         </activity>
         <activity
-                android:name="what.whatandroid.announcements.AnnouncementsActivity"
+                android:name=".announcements.AnnouncementsActivity"
                 android:label="@string/app_name">
         </activity>
         <activity
-                android:name="what.whatandroid.profile.ProfileActivity"
+                android:name=".profile.ProfileActivity"
                 android:label="@string/profile">
         </activity>
         <activity
-                android:name="what.whatandroid.artist.ArtistActivity"
+                android:name=".artist.ArtistActivity"
                 android:label="@string/artist">
+        </activity>
+        <activity
+                android:name=".torrentgroup.TorrentGroupActivity"
+                android:label="@string/torrent_group">
         </activity>
     </application>
 
