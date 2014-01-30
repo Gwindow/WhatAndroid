@@ -29,18 +29,17 @@ public class ArtistTorrentAdapter extends ArrayAdapter<TorrentGroup> implements 
 	 */
 	private ArtistCallbacks callbacks;
 
-
 	/**
 	 * Construct the adapter and assign the list of torrents to view
 	 *
 	 * @param context  application context (must implement ArtistCallbacks)
-	 * @param resource the view to inflate
+	 * @param res the view to inflate
 	 * @param objects  the objects to display
 	 */
-	public ArtistTorrentAdapter(Context context, int resource, List<TorrentGroup> objects){
-		super(context, resource, objects);
+	public ArtistTorrentAdapter(Context context, int res, List<TorrentGroup> objects){
+		super(context, res, objects);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.resource = resource;
+		resource = res;
 		torrentGroups = objects;
 		try {
 			callbacks = (ArtistCallbacks)context;

@@ -74,10 +74,10 @@ public class ArtistFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		View view = inflater.inflate(R.layout.fragment_artist, container, false);
-		header = inflater.inflate(R.layout.artist_header, null);
-		image = (ImageView)header.findViewById(R.id.artist_image);
-		torrentList = (ListView)view.findViewById(R.id.artist_torrents);
+		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
+		header = inflater.inflate(R.layout.header_image, null);
+		image = (ImageView)header.findViewById(R.id.image);
+		torrentList = (ListView)view.findViewById(R.id.list);
 		return view;
 	}
 
