@@ -1,4 +1,4 @@
-package what.whatandroid.utility;
+package what.whatandroid.callbacks;
 
 /**
  * An interface to allow fragments to set the title of the activity containing them

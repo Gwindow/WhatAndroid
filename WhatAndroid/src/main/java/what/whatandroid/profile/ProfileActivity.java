@@ -12,9 +12,11 @@ import api.soup.MySoup;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
+import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 public class ProfileActivity extends ActionBarActivity
-	implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+	implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewTorrentCallbacks {
 	/**
 	 * Param to pass the user id to display to the activity
 	 */
@@ -42,6 +44,20 @@ public class ProfileActivity extends ActionBarActivity
 		ProfileFragment fragment = ProfileFragment.newInstance(getIntent().getIntExtra(USER_ID, MySoup.getUserId()));
 		FragmentManager manager = getSupportFragmentManager();
 		manager.beginTransaction().add(R.id.container, fragment).commit();
+	}
+
+	@Override
+	public void viewTorrentGroup(int id){
+		Intent intent = new Intent(this, TorrentGroupActivity.class);
+		intent.putExtra(TorrentGroupActivity.GROUP_ID, id);
+		startActivity(intent);
+	}
+
+	@Override
+	public void setTitle(String t){
+		title = t;
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setTitle(title);
 	}
 
 	@Override

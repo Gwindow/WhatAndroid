@@ -12,6 +12,7 @@ import api.soup.MySoup;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
+import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
@@ -19,7 +20,7 @@ import what.whatandroid.torrentgroup.TorrentGroupActivity;
  * View information about the artist and a list of their torrent groups
  */
 public class ArtistActivity extends ActionBarActivity
-	implements NavigationDrawerFragment.NavigationDrawerCallbacks, ArtistCallbacks {
+	implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewTorrentCallbacks {
 	/**
 	 * Param to pass the user id to display to the activity
 	 */

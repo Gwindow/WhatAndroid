@@ -22,7 +22,6 @@ import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.artist.ArtistActivity;
 import what.whatandroid.profile.ProfileActivity;
-import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 /**
  * The announcements fragment shows announcements and blog posts and is the "main" activity, being
@@ -114,12 +113,6 @@ public class AnnouncementsActivity extends ActionBarActivity
 		else if (selection.equalsIgnoreCase(getString(R.string.inbox))){
 			Intent intent = new Intent(this, ArtistActivity.class);
 			intent.putExtra(ArtistActivity.ARTIST_ID, 7);
-			startActivity(intent);
-		}
-		//TODO: For testing torrent group only
-		else if (selection.equalsIgnoreCase(getString(R.string.notifications))){
-			Intent intent = new Intent(this, TorrentGroupActivity.class);
-			intent.putExtra(TorrentGroupActivity.GROUP_ID, 6);
 			startActivity(intent);
 		}
 	}

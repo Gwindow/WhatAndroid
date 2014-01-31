@@ -12,6 +12,7 @@ import android.widget.ListView;
 import api.torrents.artist.Artist;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.ViewTorrentCallbacks;
 
 /**
  * Fragment for viewing an artist's information and torrent groups
@@ -28,7 +29,7 @@ public class ArtistFragment extends Fragment {
 	/**
 	 * Callbacks to the activity so we can set the title
 	 */
-	ArtistCallbacks callbacks;
+	ViewTorrentCallbacks callbacks;
 	/**
 	 * Various content views displaying the artist information
 	 */
@@ -57,10 +58,10 @@ public class ArtistFragment extends Fragment {
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			callbacks = (ArtistCallbacks)activity;
+			callbacks = (ViewTorrentCallbacks)activity;
 		}
 		catch (ClassCastException e){
-			throw new ClassCastException(activity.toString() + " must implement ArtistCallbacks!");
+			throw new ClassCastException(activity.toString() + " must implement ViewTorrentCallbacks!");
 		}
 	}
 

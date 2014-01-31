@@ -10,6 +10,7 @@ import android.widget.TextView;
 import api.torrents.artist.TorrentGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.ViewTorrentCallbacks;
 
 import java.util.List;
 
@@ -27,14 +28,14 @@ public class ArtistTorrentAdapter extends ArrayAdapter<TorrentGroup> implements 
 	 * Callbacks to the Artist Activity so we can launch a new intent to view
 	 * a selected torrent group
 	 */
-	private ArtistCallbacks callbacks;
+	private ViewTorrentCallbacks callbacks;
 
 	/**
 	 * Construct the adapter and assign the list of torrents to view
 	 *
-	 * @param context  application context (must implement ArtistCallbacks)
-	 * @param res the view to inflate
-	 * @param objects  the objects to display
+	 * @param context application context (must implement ViewTorrentCallbacks)
+	 * @param res     the view to inflate
+	 * @param objects the objects to display
 	 */
 	public ArtistTorrentAdapter(Context context, int res, List<TorrentGroup> objects){
 		super(context, res, objects);
@@ -42,10 +43,10 @@ public class ArtistTorrentAdapter extends ArrayAdapter<TorrentGroup> implements 
 		resource = res;
 		torrentGroups = objects;
 		try {
-			callbacks = (ArtistCallbacks)context;
+			callbacks = (ViewTorrentCallbacks)context;
 		}
 		catch (ClassCastException e){
-			throw new ClassCastException(context.toString() + " must implement ArtistCallbacks");
+			throw new ClassCastException(context.toString() + " must implement ViewTorrentCallbacks");
 		}
 	}
 

@@ -1,5 +1,6 @@
 package what.whatandroid.profile;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import api.user.User;
 import api.user.recent.UserRecents;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.ViewTorrentCallbacks;
 
 /**
  */
@@ -33,6 +35,10 @@ public class ProfileFragment extends Fragment {
 	 * The user id we want to view, passed earlier as a param since we defer loading until onCreate
 	 */
 	private int userID;
+	/**
+	 * Callbacks to the activity so we can go set the title
+	 */
+	private ViewTorrentCallbacks callbacks;
 	/**
 	 * Various content views displaying the user's information
 	 */
@@ -65,6 +71,17 @@ public class ProfileFragment extends Fragment {
 	}
 
 	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		try {
+			callbacks = (ViewTorrentCallbacks)activity;
+		}
+		catch (ClassCastException e){
+			throw new ClassCastException(activity.toString() + " must implement ViewTorrentCallbacks");
+		}
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_profile, container, false);
 		avatar = (ImageView)view.findViewById(R.id.avatar);
@@ -88,6 +105,7 @@ public class ProfileFragment extends Fragment {
 	 * ignore the paranoia if it's our own profile
 	 */
 	private void updateProfile(){
+		callbacks.setTitle(profile.getUsername());
 		//No empty in API 8? Android Studio warns that API 9 is required
 		if (!profile.getAvatar().equalsIgnoreCase("")){
 			ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar);

@@ -1,5 +1,6 @@
 package what.whatandroid.profile;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,16 +11,21 @@ import android.widget.TextView;
 import api.user.recent.RecentTorrent;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.ViewTorrentCallbacks;
 
 /**
  * Fragment for displaying information about a recently uploaded
  * or snatched torrent
  */
-public class RecentTorrentFragment extends Fragment {
+public class RecentTorrentFragment extends Fragment implements View.OnClickListener {
 	/**
 	 * The torrent we're displaying
 	 */
 	private RecentTorrent torrent;
+	/**
+	 * Callbacks to let us go view a recent torrent
+	 */
+	ViewTorrentCallbacks callbacks;
 
 	/**
 	 * Create a new RecentTorrentFragment to display information about the torrent
@@ -49,6 +55,23 @@ public class RecentTorrentFragment extends Fragment {
 		TextView artistName = (TextView)view.findViewById(R.id.artist_name);
 		artistName.setText(torrent.getArtist().getName());
 
+		view.setOnClickListener(this);
 		return view;
+	}
+
+	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		try {
+			callbacks = (ViewTorrentCallbacks)activity;
+		}
+		catch (ClassCastException e){
+			throw new ClassCastException(activity.toString() + " must implement ViewTorrentCallbacks");
+		}
+	}
+
+	@Override
+	public void onClick(View v){
+		callbacks.viewTorrentGroup(torrent.getID());
 	}
 }

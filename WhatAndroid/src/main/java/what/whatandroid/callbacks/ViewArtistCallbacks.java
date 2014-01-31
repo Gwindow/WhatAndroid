@@ -1,12 +1,10 @@
-package what.whatandroid.torrentgroup;
-
-import what.whatandroid.utility.SetTitleCallback;
+package what.whatandroid.callbacks;
 
 /**
  * Callbacks for the torrent group fragment to change the title or transition to the
  * an artist activity viewing an artist who worked on the album
  */
-public interface TorrentGroupCallbacks extends SetTitleCallback {
+public interface ViewArtistCallbacks extends SetTitleCallback {
 	/**
 	 * Launch an artists activity viewing the artist
 	 *

@@ -13,13 +13,14 @@ import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.artist.ArtistActivity;
+import what.whatandroid.callbacks.ViewArtistCallbacks;
 import what.whatandroid.profile.ProfileActivity;
 
 /**
  * View information about a torrent group and the torrents in it
  */
 public class TorrentGroupActivity extends ActionBarActivity
-	implements NavigationDrawerFragment.NavigationDrawerCallbacks, TorrentGroupCallbacks {
+	implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewArtistCallbacks {
 	/**
 	 * Param to pass the torrent group id to be shown
 	 */
