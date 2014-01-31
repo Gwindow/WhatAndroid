@@ -21,10 +21,6 @@ public class ArtistTorrentAdapter extends ArrayAdapter<TorrentGroup> implements 
 	private final LayoutInflater inflater;
 	private final int resource;
 	/**
-	 * The torrents being displayed for the artist
-	 */
-	private List<TorrentGroup> torrentGroups;
-	/**
 	 * Callbacks to the Artist Activity so we can launch a new intent to view
 	 * a selected torrent group
 	 */
@@ -41,7 +37,6 @@ public class ArtistTorrentAdapter extends ArrayAdapter<TorrentGroup> implements 
 		super(context, res, objects);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		resource = res;
-		torrentGroups = objects;
 		try {
 			callbacks = (ViewTorrentCallbacks)context;
 		}
@@ -68,7 +63,7 @@ public class ArtistTorrentAdapter extends ArrayAdapter<TorrentGroup> implements 
 			holder.tags = (TextView)convertView.findViewById(R.id.album_tags);
 			convertView.setTag(holder);
 		}
-		holder.torrentGroup = torrentGroups.get(position);
+		holder.torrentGroup = getItem(position);
 		ImageLoader.getInstance().displayImage(holder.torrentGroup.getWikiImage(), holder.art);
 		holder.albumName.setText(holder.torrentGroup.getGroupName());
 		holder.year.setText(holder.torrentGroup.getGroupYear().toString());

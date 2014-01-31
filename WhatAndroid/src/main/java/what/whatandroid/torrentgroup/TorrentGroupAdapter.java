@@ -18,16 +18,11 @@ import java.util.List;
 public class TorrentGroupAdapter extends ArrayAdapter<Torrents> implements View.OnClickListener {
 	private final LayoutInflater inflater;
 	private final int resource;
-	/**
-	 * The list of torrents being displayed
-	 */
-	private List<Torrents> torrents;
 
 	public TorrentGroupAdapter(Context context, int res, List<Torrents> objects){
 		super(context, res, objects);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		resource = res;
-		torrents = objects;
 	}
 
 	@Override
@@ -48,7 +43,7 @@ public class TorrentGroupAdapter extends ArrayAdapter<Torrents> implements View.
 			holder.leechers = (TextView)convertView.findViewById(R.id.leechers);
 			convertView.setTag(holder);
 		}
-		holder.torrent = torrents.get(position);
+		holder.torrent = getItem(position);
 		holder.format.setText(holder.torrent.getFormat() + " / " + holder.torrent.getEncoding());
 		holder.size.setText(Utils.toHumanReadableSize(holder.torrent.getSize().longValue()));
 		holder.snatches.setText(holder.torrent.getSnatched().toString());

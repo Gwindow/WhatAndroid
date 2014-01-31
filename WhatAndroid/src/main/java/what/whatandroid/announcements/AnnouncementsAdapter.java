@@ -17,7 +17,6 @@ import java.util.List;
 public class AnnouncementsAdapter extends ArrayAdapter<Announcement> implements View.OnClickListener {
 	private final LayoutInflater inflater;
 	private final int resource;
-	private List<Announcement> announcements;
 	/**
 	 * The announcement activity interface so we can select an announcement to show
 	 * a detail view of
@@ -27,14 +26,13 @@ public class AnnouncementsAdapter extends ArrayAdapter<Announcement> implements 
 	/**
 	 * Construct the adapter and assign the list of announcements to view
 	 * @param context application context for the adapter
-	 * @param resource the view to inflate
+	 * @param res the view to inflate
 	 * @param objects the objects to display
 	 */
-	public AnnouncementsAdapter(Context context, int resource, List<Announcement> objects) {
-		super(context, resource, objects);
+	public AnnouncementsAdapter(Context context, int res, List<Announcement> objects){
+		super(context, res, objects);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.resource = resource;
-		announcements = objects;
+		resource = res;
 		try {
 			manager = (AnnouncementManager)context;
 		}
@@ -60,7 +58,7 @@ public class AnnouncementsAdapter extends ArrayAdapter<Announcement> implements 
 			holder.snippet = (TextView)convertView.findViewById(R.id.announcement_snippet);
 			convertView.setTag(holder);
 		}
-		holder.announcement = announcements.get(position);
+		holder.announcement = getItem(position);
 		holder.title.setText(holder.announcement.getTitle());
 		//TODO: Prettier formatting for newstime maybe? Fuzzy time?
 		holder.date.setText(holder.announcement.getNewsTime());

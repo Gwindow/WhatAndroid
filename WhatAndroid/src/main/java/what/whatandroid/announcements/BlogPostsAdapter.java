@@ -17,7 +17,6 @@ import java.util.List;
 public class BlogPostsAdapter extends ArrayAdapter<BlogPost> implements View.OnClickListener {
 	private final LayoutInflater inflater;
 	private final int resource;
-	private List<BlogPost> posts;
 	/**
 	 * The announcement activity interface so we can select a blog post to show
 	 * a detail view of
@@ -27,14 +26,13 @@ public class BlogPostsAdapter extends ArrayAdapter<BlogPost> implements View.OnC
 	/**
 	 * Construct the adapter and assign the list of blog posts to view
 	 * @param context application context for the adapter
-	 * @param resource the view to inflate
+	 * @param res the view to inflate
 	 * @param objects the objects to display
 	 */
-	public BlogPostsAdapter(Context context, int resource, List<BlogPost> objects) {
-		super(context, resource, objects);
-		this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.resource = resource;
-		posts = objects;
+	public BlogPostsAdapter(Context context, int res, List<BlogPost> objects){
+		super(context, res, objects);
+		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		resource = res;
 		try {
 			manager = (AnnouncementManager)context;
 		}
@@ -60,7 +58,7 @@ public class BlogPostsAdapter extends ArrayAdapter<BlogPost> implements View.OnC
 			holder.snippet = (TextView)convertView.findViewById(R.id.announcement_snippet);
 			convertView.setTag(holder);
 		}
-		holder.post = posts.get(position);
+		holder.post = getItem(position);
 		holder.title.setText(holder.post.getTitle());
 		holder.date.setText("By: " + holder.post.getAuthor() + " on: " + holder.post.getBlogTime());
 		holder.snippet.setText(holder.post.getBody());
