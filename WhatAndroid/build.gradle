@@ -20,11 +20,16 @@ android {
         minSdkVersion 8
         targetSdkVersion 19
     }
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+        }
+    }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:18.0.0'
-    compile 'com.android.support:support-v4:18.0.0'
+    compile 'com.android.support:appcompat-v7:19.0.0'
+    compile 'com.android.support:support-v4:19.0.0'
     compile files('libs/WhatAPI.jar')
     compile files('libs/universal-image-loader-1.9.1.jar')
 }
