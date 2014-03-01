@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import api.torrents.torrents.Artists;
 import api.torrents.torrents.TorrentGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
@@ -36,7 +38,9 @@ public class TorrentGroupFragment extends Fragment {
 	 * Various content views displaying the group information
 	 */
 	private ImageView image;
-	private View header;
+	private View header, artistHeader;
+	//Later artist should be a list of artists
+	private TextView albumTitle, artist;
 	private ListView torrentList;
 
 	/**
@@ -78,9 +82,14 @@ public class TorrentGroupFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, null);
+		torrentList = (ListView)view.findViewById(R.id.list);
+
+		artistHeader = inflater.inflate(R.layout.header_album_artists, null);
+		albumTitle = (TextView)artistHeader.findViewById(R.id.title);
+		artist = (TextView)artistHeader.findViewById(R.id.artist);
+
 		header = inflater.inflate(R.layout.header_image, null);
 		image = (ImageView)header.findViewById(R.id.image);
-		torrentList = (ListView)view.findViewById(R.id.list);
 		return view;
 	}
 
@@ -89,6 +98,7 @@ public class TorrentGroupFragment extends Fragment {
 	 */
 	private void updateTorrentGroup(){
 		callbacks.setTitle(group.getResponse().getGroup().getName());
+
 		if (!group.getResponse().getGroup().getWikiImage().equalsIgnoreCase("")){
 			ImageLoader.getInstance().displayImage(group.getResponse().getGroup().getWikiImage(), image);
 			torrentList.addHeaderView(header);
@@ -98,6 +108,16 @@ public class TorrentGroupFragment extends Fragment {
 			image = null;
 			header = null;
 		}
+
+		albumTitle.setText(group.getResponse().getGroup().getName());
+		//This isn't really a good way to handle multiple artists/artist types. Should I do an expandable
+		//list view?
+		//TODO: Decide a better way to show multiple artists
+		artist.setText(group.getResponse().getGroup().getMusicInfo().getArtists().get(0).getName());
+		artist.setOnClickListener(
+			new ArtistClickListener(group.getResponse().getGroup().getMusicInfo().getArtists().get(0)));
+		torrentList.addHeaderView(artistHeader);
+
 		torrentList.setAdapter(new TorrentGroupAdapter(getActivity(), R.layout.fragment_group_torrent,
 			group.getResponse().getTorrents()));
 	}
@@ -133,6 +153,29 @@ public class TorrentGroupFragment extends Fragment {
 				updateTorrentGroup();
 			}
 			//Else show an error?
+		}
+	}
+
+	/**
+	 * Click listener for the artists in the header so that they can be viewed
+	 */
+	private class ArtistClickListener implements View.OnClickListener {
+		/**
+		 * The artist to go view
+		 */
+		private Artists artist;
+
+		/**
+		 * Create the listener and set the artist to open when it's clicked
+		 * @param a artist to view when clicked
+		 */
+		public ArtistClickListener(Artists a){
+			artist = a;
+		}
+
+		@Override
+		public void onClick(View v){
+			callbacks.viewArtist(artist.getId().intValue());
 		}
 	}
 }
