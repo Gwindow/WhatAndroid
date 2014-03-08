@@ -20,7 +20,7 @@ import java.util.SortedMap;
 /**
  * Displays the list of the Artist's torrent groups for selection
  */
-public class ArtistTorrentAdapter extends BaseExpandableListAdapter {
+public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements View.OnClickListener {
 	private final LayoutInflater inflater;
 	/**
 	 * Callbacks to the Artist Activity so we can launch a new intent to view
@@ -79,12 +79,13 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter {
 			holder.year = (TextView)convertView.findViewById(R.id.album_year);
 			holder.tags = (TextView)convertView.findViewById(R.id.album_tags);
 			convertView.setTag(holder);
+			convertView.setOnClickListener(this);
 		}
 		holder.torrentGroup = (TorrentGroup)getChild(groupPosition, childPosition);
 		ImageLoader.getInstance().displayImage(holder.torrentGroup.getWikiImage(), holder.art);
 		holder.albumName.setText(holder.torrentGroup.getGroupName());
 		holder.year.setText(holder.torrentGroup.getGroupYear().toString());
-		//TODO: Later clip this to only show the first 4 or so tags
+		//TODO: Don't just serialize the array, display a comma separated list
 		holder.tags.setText(holder.torrentGroup.getTags().toString());
 		return convertView;
 	}
@@ -139,19 +140,14 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter {
 	public boolean hasStableIds(){
 		return false;
 	}
-/*
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent){
-
-	}
 
 	@Override
 	public void onClick(View v){
-		ViewHolder holder = (ViewHolder)v.getTag();
-		callbacks.viewTorrentGroup(holder.torrentGroup.getGroupId().intValue());
+		ChildViewHolder holder = (ChildViewHolder)v.getTag();
+		if (holder != null){
+			callbacks.viewTorrentGroup(holder.torrentGroup.getGroupId().intValue());
+		}
 	}
-	*/
-
 
 	/**
 	 * View holder for the release group information
