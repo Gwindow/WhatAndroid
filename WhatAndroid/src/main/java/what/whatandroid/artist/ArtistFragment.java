@@ -7,9 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import api.torrents.artist.Artist;
+import api.torrents.artist.Releases;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
@@ -35,7 +36,7 @@ public class ArtistFragment extends Fragment {
 	 */
 	private ImageView image;
 	private View header;
-	private ListView torrentList;
+	private ExpandableListView torrentList;
 
 	/**
 	 * Use this factory method to create a new artist fragment displaying information about
@@ -75,19 +76,20 @@ public class ArtistFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
+		View view = inflater.inflate(R.layout.expandable_list_view, container, false);
+		torrentList = (ExpandableListView)view.findViewById(R.id.exp_list);
 		header = inflater.inflate(R.layout.header_image, null);
 		image = (ImageView)header.findViewById(R.id.image);
-		torrentList = (ListView)view.findViewById(R.id.list);
 		return view;
 	}
 
 	/**
 	 * Update all the artist information with the loaded api request
 	 */
-	private void updateArtist(){
+	private void updateArtist(Releases releases){
 		callbacks.setTitle(artist.getResponse().getName());
 		if (!artist.getResponse().getImage().equalsIgnoreCase("")){
+			//How to handle image can't be decoded?
 			ImageLoader.getInstance().displayImage(artist.getResponse().getImage(), image);
 			torrentList.addHeaderView(header);
 		}
@@ -96,14 +98,14 @@ public class ArtistFragment extends Fragment {
 			image = null;
 			header = null;
 		}
-		torrentList.setAdapter(new ArtistTorrentAdapter(getActivity(), R.layout.fragment_artist_torrent,
-			artist.getResponse().getTorrentgroup()));
+		torrentList.setAdapter(new ArtistTorrentAdapter(getActivity(), releases.flatten()));
 	}
 
 	/**
 	 * Async task to load the artist info
 	 */
 	private class LoadArtist extends AsyncTask<Integer, Void, Artist> {
+		Releases releases;
 		/**
 		 * Load some torrent artist from their id
 		 *
@@ -115,6 +117,7 @@ public class ArtistFragment extends Fragment {
 			try {
 				Artist a = Artist.fromId(params[0]);
 				if (a != null && a.getStatus()){
+					releases = new Releases(a);
 					return a;
 				}
 			}
@@ -128,7 +131,7 @@ public class ArtistFragment extends Fragment {
 		protected void onPostExecute(Artist a){
 			if (a != null){
 				artist = a;
-				updateArtist();
+				updateArtist(releases);
 			}
 			//Else show an error?
 		}
