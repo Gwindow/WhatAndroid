@@ -7,14 +7,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import api.torrents.torrents.Artists;
+import api.torrents.torrents.Edition;
 import api.torrents.torrents.TorrentGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewArtistCallbacks;
+
+import java.util.List;
 
 /**
  * Fragment for viewing a torrent group's information
@@ -41,7 +44,7 @@ public class TorrentGroupFragment extends Fragment {
 	private View header, artistHeader;
 	//Later artist should be a list of artists
 	private TextView albumTitle, artist;
-	private ListView torrentList;
+	private ExpandableListView torrentList;
 
 	/**
 	 * Use this factory method to create a new torrent group fragment displaying the
@@ -81,8 +84,8 @@ public class TorrentGroupFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		View view = inflater.inflate(R.layout.fragment_list_view, null);
-		torrentList = (ListView)view.findViewById(R.id.list);
+		View view = inflater.inflate(R.layout.expandable_list_view, null);
+		torrentList = (ExpandableListView)view.findViewById(R.id.exp_list);
 
 		artistHeader = inflater.inflate(R.layout.header_album_artists, null);
 		albumTitle = (TextView)artistHeader.findViewById(R.id.title);
@@ -96,7 +99,7 @@ public class TorrentGroupFragment extends Fragment {
 	/**
 	 * Update all the torrent group information being shown after loading
 	 */
-	private void updateTorrentGroup(){
+	private void updateTorrentGroup(List<Edition> editions){
 		callbacks.setTitle(group.getResponse().getGroup().getName());
 
 		if (!group.getResponse().getGroup().getWikiImage().equalsIgnoreCase("")){
@@ -110,22 +113,20 @@ public class TorrentGroupFragment extends Fragment {
 		}
 
 		albumTitle.setText(group.getResponse().getGroup().getName());
-		//This isn't really a good way to handle multiple artists/artist types. Should I do an expandable
-		//list view?
-		//TODO: Decide a better way to show multiple artists
+		//TODO: move artists into the first entry in the expandable list view
 		artist.setText(group.getResponse().getGroup().getMusicInfo().getArtists().get(0).getName());
 		artist.setOnClickListener(
 			new ArtistClickListener(group.getResponse().getGroup().getMusicInfo().getArtists().get(0)));
 		torrentList.addHeaderView(artistHeader);
 
-		torrentList.setAdapter(new TorrentGroupAdapter(getActivity(), R.layout.fragment_group_torrent,
-			group.getResponse().getTorrents()));
+		torrentList.setAdapter(new TorrentGroupAdapter(getActivity(), editions));
 	}
 
 	/**
 	 * Async task to load the torrent group info
 	 */
 	private class LoadGroup extends AsyncTask<Integer, Void, TorrentGroup> {
+		List<Edition> editions;
 		/**
 		 * Load some torrent group from its id
 		 *
@@ -137,6 +138,7 @@ public class TorrentGroupFragment extends Fragment {
 			try {
 				TorrentGroup tg = TorrentGroup.torrentGroupFromId(params[0]);
 				if (tg != null && tg.getStatus()){
+					editions = tg.getEditions();
 					return tg;
 				}
 			}
@@ -150,7 +152,7 @@ public class TorrentGroupFragment extends Fragment {
 		protected void onPostExecute(TorrentGroup torrentGroup){
 			if (torrentGroup != null){
 				group = torrentGroup;
-				updateTorrentGroup();
+				updateTorrentGroup(editions);
 			}
 			//Else show an error?
 		}
