@@ -122,9 +122,9 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements V
 			holder = (GroupViewHolder)convertView.getTag();
 		}
 		else {
-			convertView = inflater.inflate(R.layout.list_torrent_release_group, parent, false);
+			convertView = inflater.inflate(R.layout.list_group, parent, false);
 			holder = new GroupViewHolder();
-			holder.groupName = (TextView)convertView.findViewById(R.id.release_category);
+			holder.groupName = (TextView)convertView.findViewById(R.id.group_category);
 			convertView.setTag(holder);
 		}
 		holder.groupName.setText(groups.get(groupPosition).toString());
