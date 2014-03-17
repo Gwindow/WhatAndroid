@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import api.torrents.ReleaseType;
@@ -20,7 +21,7 @@ import java.util.SortedMap;
 /**
  * Displays the list of the Artist's torrent groups for selection
  */
-public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements View.OnClickListener {
+public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements ExpandableListView.OnChildClickListener {
 	private final LayoutInflater inflater;
 	/**
 	 * Callbacks to the Artist Activity so we can launch a new intent to view
@@ -79,7 +80,6 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements V
 			holder.year = (TextView)convertView.findViewById(R.id.album_year);
 			holder.tags = (TextView)convertView.findViewById(R.id.album_tags);
 			convertView.setTag(holder);
-			convertView.setOnClickListener(this);
 		}
 		holder.torrentGroup = (TorrentGroup)getChild(groupPosition, childPosition);
 		ImageLoader.getInstance().displayImage(holder.torrentGroup.getWikiImage(), holder.art);
@@ -142,11 +142,10 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements V
 	}
 
 	@Override
-	public void onClick(View v){
+	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id){
 		ChildViewHolder holder = (ChildViewHolder)v.getTag();
-		if (holder != null){
-			callbacks.viewTorrentGroup(holder.torrentGroup.getGroupId().intValue());
-		}
+		callbacks.viewTorrentGroup(holder.torrentGroup.getGroupId().intValue());
+		return true;
 	}
 
 	/**

@@ -98,7 +98,9 @@ public class ArtistFragment extends Fragment {
 			image = null;
 			header = null;
 		}
-		torrentList.setAdapter(new ArtistTorrentAdapter(getActivity(), releases.flatten()));
+		ArtistTorrentAdapter adapter = new ArtistTorrentAdapter(getActivity(), releases.flatten());
+		torrentList.setAdapter(adapter);
+		torrentList.setOnChildClickListener(adapter);
 	}
 
 	/**
@@ -106,6 +108,7 @@ public class ArtistFragment extends Fragment {
 	 */
 	private class LoadArtist extends AsyncTask<Integer, Void, Artist> {
 		Releases releases;
+
 		/**
 		 * Load some torrent artist from their id
 		 *
