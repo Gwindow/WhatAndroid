@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 import api.cli.Utils;
+import api.torrents.torrents.Artist;
 import api.torrents.torrents.Edition;
 import api.torrents.torrents.Torrents;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.ViewArtistCallbacks;
 
 import java.util.List;
 
@@ -18,25 +20,45 @@ import java.util.List;
  */
 public class TorrentGroupAdapter extends BaseExpandableListAdapter implements View.OnClickListener {
 	private final LayoutInflater inflater;
+	private final Context context;
+	/**
+	 * The artists who appeared on this release
+	 */
+	List<Artist> artists;
+	/**
+	 * Callbacks to the parent activity for viewing an artist from the group
+	 */
+	private ViewArtistCallbacks callbacks;
 	/**
 	 * The list of editions being displayed
 	 */
 	private List<Edition> editions;
 
-	public TorrentGroupAdapter(Context context, List<Edition> objects){
+	public TorrentGroupAdapter(Context context, List<Artist> artists, List<Edition> objects){
 		super();
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.context = context;
+		this.artists = artists;
 		editions = objects;
+
+		try {
+			callbacks = (ViewArtistCallbacks)context;
+		}
+		catch (ClassCastException e){
+			throw new ClassCastException(context.toString() + " must implement ViewArtistCallbacks");
+		}
 	}
 
 	@Override
 	public int getChildrenCount(int groupPosition){
-		return editions.get(groupPosition).getTorrents().size();
+		return groupPosition == 0 ? artists.size()
+			: editions.get(groupPosition - 1).getTorrents().size();
 	}
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition){
-		return editions.get(groupPosition).getTorrents().get(childPosition);
+		return groupPosition == 0 ? artists.get(childPosition)
+			: editions.get(groupPosition - 1).getTorrents().get(childPosition);
 	}
 
 	@Override
@@ -46,14 +68,56 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Vi
 
 	@Override
 	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent){
-		ChildViewHolder holder;
-		if (convertView != null){
-			holder = (ChildViewHolder)convertView.getTag();
+		if (groupPosition == 0){
+			return getArtistView(childPosition, isLastChild, convertView, parent);
 		}
-		else {
+		return getTorrentView(groupPosition, childPosition, isLastChild, convertView, parent);
+	}
+
+	/**
+	 * Build the artist name view to return a view showing the name of one of the contributing artists
+	 */
+	private View getArtistView(int childpos, boolean isLastChild, View convertView, ViewGroup parent){
+		ArtistViewHolder holder = null;
+		if (convertView != null){
+			try {
+				holder = (ArtistViewHolder)convertView.getTag();
+			}
+			catch (ClassCastException e){
+				convertView = null;
+			}
+		}
+		if (convertView == null){
+			convertView = inflater.inflate(R.layout.fragment_torrent_artist, parent, false);
+			convertView.setOnClickListener(this);
+			holder = new ArtistViewHolder();
+			holder.name = (TextView)convertView.findViewById(R.id.artist_name);
+			holder.type = (TextView)convertView.findViewById(R.id.artist_type);
+			convertView.setTag(holder);
+		}
+		holder.artist = artists.get(childpos);
+		holder.name.setText(holder.artist.getName());
+		holder.type.setText(holder.artist.getType().toString());
+		return convertView;
+	}
+
+	/**
+	 * Build the torrent view to return a view showing information about one of the torrents available to download
+	 */
+	private View getTorrentView(int grouppos, int childpos, boolean isLastChild, View convertView, ViewGroup parent){
+		TorrentViewHolder holder = null;
+		if (convertView != null){
+			try {
+				holder = (TorrentViewHolder)convertView.getTag();
+			}
+			catch (ClassCastException e){
+				convertView = null;
+			}
+		}
+		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.fragment_group_torrent, parent, false);
 			convertView.setOnClickListener(this);
-			holder = new ChildViewHolder();
+			holder = new TorrentViewHolder();
 			holder.format = (TextView)convertView.findViewById(R.id.format);
 			holder.size = (TextView)convertView.findViewById(R.id.size);
 			holder.snatches = (TextView)convertView.findViewById(R.id.snatches);
@@ -61,7 +125,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Vi
 			holder.leechers = (TextView)convertView.findViewById(R.id.leechers);
 			convertView.setTag(holder);
 		}
-		holder.torrent = (Torrents)getChild(groupPosition, childPosition);
+		holder.torrent = (Torrents)getChild(grouppos, childpos);
 		holder.format.setText(holder.torrent.getMediaFormatEncoding());
 		holder.size.setText(Utils.toHumanReadableSize(holder.torrent.getSize().longValue()));
 		holder.snatches.setText(holder.torrent.getSnatched().toString());
@@ -77,12 +141,12 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Vi
 
 	@Override
 	public int getGroupCount(){
-		return editions.size();
+		return 1 + editions.size();
 	}
 
 	@Override
 	public Object getGroup(int groupPosition){
-		return editions.get(groupPosition);
+		return groupPosition == 0 ? artists : editions.get(groupPosition - 1);
 	}
 
 	@Override
@@ -102,7 +166,12 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Vi
 			holder.groupName = (TextView)convertView.findViewById(R.id.group_category);
 			convertView.setTag(holder);
 		}
-		holder.groupName.setText(editions.get(groupPosition).getEdition());
+		if (groupPosition == 0){
+			holder.groupName.setText("Artists");
+		}
+		else {
+			holder.groupName.setText(editions.get(groupPosition - 1).getEdition());
+		}
 		return convertView;
 	}
 
@@ -113,7 +182,15 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Vi
 
 	@Override
 	public void onClick(View v){
-
+		try {
+			ArtistViewHolder holder = (ArtistViewHolder)v.getTag();
+			callbacks.viewArtist(holder.artist.getId().intValue());
+			return;
+		}
+		catch (ClassCastException e){
+		}
+		//If it's not the ArtistViewHolder it must be the torrent view holder
+		TorrentViewHolder holder = (TorrentViewHolder)v.getTag();
 	}
 
 	/**
@@ -126,8 +203,16 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Vi
 	/**
 	 * View holder for the Torrent information
 	 */
-	private static class ChildViewHolder {
-		TextView format, size, snatches, seeders, leechers;
-		Torrents torrent;
+	private static class TorrentViewHolder {
+		public TextView format, size, snatches, seeders, leechers;
+		public Torrents torrent;
+	}
+
+	/**
+	 * View holder for the Artist information
+	 */
+	private static class ArtistViewHolder {
+		public TextView name, type;
+		public Artist artist;
 	}
 }

@@ -10,12 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import api.torrents.torrents.Artists;
 import api.torrents.torrents.Edition;
 import api.torrents.torrents.TorrentGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
-import what.whatandroid.callbacks.ViewArtistCallbacks;
+import what.whatandroid.callbacks.SetTitleCallback;
 
 import java.util.List;
 
@@ -33,17 +32,15 @@ public class TorrentGroupFragment extends Fragment {
 	 */
 	private int groupID;
 	/**
-	 * Callbacks to the parent activity for setting the title or viewing the artist of the group
-	 * TODO: How to display/handle multiple artists?
+	 * Callbacks to the parent activity for setting the title
 	 */
-	private ViewArtistCallbacks callbacks;
+	private SetTitleCallback callbacks;
 	/**
 	 * Various content views displaying the group information
 	 */
 	private ImageView image;
 	private View header, artistHeader;
-	//Later artist should be a list of artists
-	private TextView albumTitle, artist;
+	private TextView albumTitle;
 	private ExpandableListView torrentList;
 
 	/**
@@ -67,10 +64,10 @@ public class TorrentGroupFragment extends Fragment {
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			callbacks = (ViewArtistCallbacks)activity;
+			callbacks = (SetTitleCallback)activity;
 		}
 		catch (ClassCastException e){
-			throw new ClassCastException(activity.toString() + " must implement ViewArtistCallbacks");
+			throw new ClassCastException(activity.toString() + " must implement SetTitleCallbacks");
 		}
 	}
 
@@ -89,7 +86,6 @@ public class TorrentGroupFragment extends Fragment {
 
 		artistHeader = inflater.inflate(R.layout.header_album_artists, null);
 		albumTitle = (TextView)artistHeader.findViewById(R.id.title);
-		artist = (TextView)artistHeader.findViewById(R.id.artist);
 
 		header = inflater.inflate(R.layout.header_image, null);
 		image = (ImageView)header.findViewById(R.id.image);
@@ -111,15 +107,10 @@ public class TorrentGroupFragment extends Fragment {
 			image = null;
 			header = null;
 		}
-
 		albumTitle.setText(group.getResponse().getGroup().getName());
-		//TODO: move artists into the first entry in the expandable list view
-		artist.setText(group.getResponse().getGroup().getMusicInfo().getArtists().get(0).getName());
-		artist.setOnClickListener(
-			new ArtistClickListener(group.getResponse().getGroup().getMusicInfo().getArtists().get(0)));
 		torrentList.addHeaderView(artistHeader);
-
-		torrentList.setAdapter(new TorrentGroupAdapter(getActivity(), editions));
+		torrentList.setAdapter(new TorrentGroupAdapter(getActivity(),
+			group.getResponse().getGroup().getMusicInfo().getAllArtists(), editions));
 	}
 
 	/**
@@ -155,29 +146,6 @@ public class TorrentGroupFragment extends Fragment {
 				updateTorrentGroup(editions);
 			}
 			//Else show an error?
-		}
-	}
-
-	/**
-	 * Click listener for the artists in the header so that they can be viewed
-	 */
-	private class ArtistClickListener implements View.OnClickListener {
-		/**
-		 * The artist to go view
-		 */
-		private Artists artist;
-
-		/**
-		 * Create the listener and set the artist to open when it's clicked
-		 * @param a artist to view when clicked
-		 */
-		public ArtistClickListener(Artists a){
-			artist = a;
-		}
-
-		@Override
-		public void onClick(View v){
-			callbacks.viewArtist(artist.getId().intValue());
 		}
 	}
 }
