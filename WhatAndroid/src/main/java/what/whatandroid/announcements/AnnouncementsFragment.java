@@ -2,6 +2,7 @@ package what.whatandroid.announcements;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.View;
 import api.announcements.Announcement;
 import what.whatandroid.R;
 
@@ -18,6 +19,7 @@ public class AnnouncementsFragment extends ListFragment {
 
 	/**
 	 * Use this factory method to create an AnnouncementsFragment displaying the list of announcements
+	 *
 	 * @param announcements the announcements to display
 	 * @return an AnnouncementsFragment displaying the announcements
 	 */
@@ -27,7 +29,7 @@ public class AnnouncementsFragment extends ListFragment {
 		return fragment;
 	}
 
-	public AnnouncementsFragment() {
+	public AnnouncementsFragment(){
 		//Required blank ctor
 	}
 
@@ -36,5 +38,11 @@ public class AnnouncementsFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 		adapter = new AnnouncementsAdapter(getActivity(), R.layout.list_announcement, announcements);
 		setListAdapter(adapter);
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState){
+		super.onViewCreated(view, savedInstanceState);
+		getListView().setOnItemClickListener(adapter);
 	}
 }

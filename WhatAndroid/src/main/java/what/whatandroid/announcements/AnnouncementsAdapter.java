@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import api.announcements.Announcement;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * List adapter for the Announcments fragment
  */
-public class AnnouncementsAdapter extends ArrayAdapter<Announcement> implements View.OnClickListener {
+public class AnnouncementsAdapter extends ArrayAdapter<Announcement> implements AdapterView.OnItemClickListener {
 	private final LayoutInflater inflater;
 	private final int resource;
 	/**
@@ -25,8 +26,9 @@ public class AnnouncementsAdapter extends ArrayAdapter<Announcement> implements 
 
 	/**
 	 * Construct the adapter and assign the list of announcements to view
+	 *
 	 * @param context application context for the adapter
-	 * @param res the view to inflate
+	 * @param res     the view to inflate
 	 * @param objects the objects to display
 	 */
 	public AnnouncementsAdapter(Context context, int res, List<Announcement> objects){
@@ -42,7 +44,7 @@ public class AnnouncementsAdapter extends ArrayAdapter<Announcement> implements 
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent){
 		//Recycle views if we can
 		ViewHolder holder;
 		if (convertView != null){
@@ -51,7 +53,6 @@ public class AnnouncementsAdapter extends ArrayAdapter<Announcement> implements 
 		//We need to setup a new view
 		else {
 			convertView = inflater.inflate(resource, parent, false);
-			convertView.setOnClickListener(this);
 			holder = new ViewHolder();
 			holder.title = (TextView)convertView.findViewById(R.id.announcement_title);
 			holder.date = (TextView)convertView.findViewById(R.id.announcement_date);
@@ -71,8 +72,8 @@ public class AnnouncementsAdapter extends ArrayAdapter<Announcement> implements 
 	 * the full announcement text
 	 */
 	@Override
-	public void onClick(View v) {
-		ViewHolder holder = (ViewHolder)v.getTag();
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+		ViewHolder holder = (ViewHolder)view.getTag();
 		manager.showAnnouncement(holder.announcement);
 	}
 

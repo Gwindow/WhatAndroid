@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import api.announcements.BlogPost;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * List adapter for the BlogPosts fragment
  */
-public class BlogPostsAdapter extends ArrayAdapter<BlogPost> implements View.OnClickListener {
+public class BlogPostsAdapter extends ArrayAdapter<BlogPost> implements AdapterView.OnItemClickListener {
 	private final LayoutInflater inflater;
 	private final int resource;
 	/**
@@ -51,7 +52,6 @@ public class BlogPostsAdapter extends ArrayAdapter<BlogPost> implements View.OnC
 		//We need to setup a new view
 		else {
 			convertView = inflater.inflate(resource, parent, false);
-			convertView.setOnClickListener(this);
 			holder = new ViewHolder();
 			holder.title = (TextView)convertView.findViewById(R.id.announcement_title);
 			holder.date = (TextView)convertView.findViewById(R.id.announcement_date);
@@ -69,8 +69,8 @@ public class BlogPostsAdapter extends ArrayAdapter<BlogPost> implements View.OnC
 	 * When a blog post is clicked we want to show a detail view of it with the full post text
 	 */
 	@Override
-	public void onClick(View v) {
-		ViewHolder holder = (ViewHolder)v.getTag();
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+		ViewHolder holder = (ViewHolder)view.getTag();
 		manager.showBlogPost(holder.post);
 	}
 
