@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import api.cli.Utils;
 import api.torrents.torrents.Artist;
@@ -18,9 +19,8 @@ import java.util.List;
 /**
  * Displays a list of the torrents in the group for selection
  */
-public class TorrentGroupAdapter extends BaseExpandableListAdapter implements View.OnClickListener {
+public class TorrentGroupAdapter extends BaseExpandableListAdapter implements ExpandableListView.OnChildClickListener {
 	private final LayoutInflater inflater;
-	private final Context context;
 	/**
 	 * The artists who appeared on this release
 	 */
@@ -37,7 +37,6 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Vi
 	public TorrentGroupAdapter(Context context, List<Artist> artists, List<Edition> objects){
 		super();
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.context = context;
 		this.artists = artists;
 		editions = objects;
 
@@ -89,7 +88,6 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Vi
 		}
 		if (convertView == null){
 			convertView = inflater.inflate(R.layout.fragment_torrent_artist, parent, false);
-			convertView.setOnClickListener(this);
 			holder = new ArtistViewHolder();
 			holder.name = (TextView)convertView.findViewById(R.id.artist_name);
 			holder.type = (TextView)convertView.findViewById(R.id.artist_type);
@@ -116,7 +114,6 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Vi
 		}
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.fragment_group_torrent, parent, false);
-			convertView.setOnClickListener(this);
 			holder = new TorrentViewHolder();
 			holder.format = (TextView)convertView.findViewById(R.id.format);
 			holder.size = (TextView)convertView.findViewById(R.id.size);
@@ -181,16 +178,15 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Vi
 	}
 
 	@Override
-	public void onClick(View v){
-		try {
+	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id){
+		if (groupPosition == 0){
 			ArtistViewHolder holder = (ArtistViewHolder)v.getTag();
 			callbacks.viewArtist(holder.artist.getId().intValue());
-			return;
 		}
-		catch (ClassCastException e){
+		else {
+			TorrentViewHolder holder = (TorrentViewHolder)v.getTag();
 		}
-		//If it's not the ArtistViewHolder it must be the torrent view holder
-		TorrentViewHolder holder = (TorrentViewHolder)v.getTag();
+		return true;
 	}
 
 	/**

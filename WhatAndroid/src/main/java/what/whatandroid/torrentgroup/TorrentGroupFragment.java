@@ -109,8 +109,11 @@ public class TorrentGroupFragment extends Fragment {
 		}
 		albumTitle.setText(group.getResponse().getGroup().getName());
 		torrentList.addHeaderView(artistHeader);
-		torrentList.setAdapter(new TorrentGroupAdapter(getActivity(),
-			group.getResponse().getGroup().getMusicInfo().getAllArtists(), editions));
+
+		TorrentGroupAdapter adapter = new TorrentGroupAdapter(getActivity(),
+			group.getResponse().getGroup().getMusicInfo().getAllArtists(), editions);
+		torrentList.setAdapter(adapter);
+		torrentList.setOnChildClickListener(adapter);
 	}
 
 	/**
@@ -118,6 +121,7 @@ public class TorrentGroupFragment extends Fragment {
 	 */
 	private class LoadGroup extends AsyncTask<Integer, Void, TorrentGroup> {
 		List<Edition> editions;
+
 		/**
 		 * Load some torrent group from its id
 		 *
@@ -127,7 +131,7 @@ public class TorrentGroupFragment extends Fragment {
 		@Override
 		protected TorrentGroup doInBackground(Integer... params){
 			try {
-				TorrentGroup tg = TorrentGroup.torrentGroupFromId(params[0]);
+				TorrentGroup tg = TorrentGroup.fromId(params[0]);
 				if (tg != null && tg.getStatus()){
 					editions = tg.getEditions();
 					return tg;

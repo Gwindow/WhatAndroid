@@ -189,7 +189,7 @@ public class ProfileFragment extends Fragment {
 		@Override
 		protected User doInBackground(Integer... params){
 			try {
-				User user = User.userFromId(params[0]);
+				User user = User.fromId(params[0]);
 				recentTorrents = UserRecents.recentsForUser(params[0]);
 				if (user.getStatus() && recentTorrents != null && recentTorrents.getStatus()){
 					return user;
