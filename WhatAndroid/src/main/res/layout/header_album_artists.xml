@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- For displaying a header with clickable links to the album's artists, also shows the album title
-    one artist entry is provided but others should be added pragmatically as needed -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"

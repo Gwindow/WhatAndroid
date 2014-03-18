@@ -53,8 +53,6 @@ public class ArtistActivity extends ActionBarActivity
 		if (navDrawer == null){
 			return;
 		}
-
-		//Pass an argument to the activity telling it which to show?
 		String selection = navDrawer.getItem(position);
 		if (selection.equalsIgnoreCase(getString(R.string.announcements))){
 			//Launch AnnouncementsActivity viewing announcements

@@ -7,8 +7,8 @@
 
     <ImageView
             android:id="@+id/album_art"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:contentDescription="@string/album_art"/>
@@ -26,15 +26,14 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:textStyle="bold"/>
 
         <TextView
                 android:id="@+id/album_year"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textSize="16sp"/>
 
         <TextView
                 android:id="@+id/album_tags"

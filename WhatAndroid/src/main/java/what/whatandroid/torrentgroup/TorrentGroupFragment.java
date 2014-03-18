@@ -39,7 +39,7 @@ public class TorrentGroupFragment extends Fragment {
 	 * Various content views displaying the group information
 	 */
 	private ImageView image;
-	private View header, artistHeader;
+	private View imageHeader, titleHeader;
 	private TextView albumTitle;
 	private ExpandableListView torrentList;
 
@@ -84,11 +84,11 @@ public class TorrentGroupFragment extends Fragment {
 		View view = inflater.inflate(R.layout.expandable_list_view, null);
 		torrentList = (ExpandableListView)view.findViewById(R.id.exp_list);
 
-		artistHeader = inflater.inflate(R.layout.header_album_artists, null);
-		albumTitle = (TextView)artistHeader.findViewById(R.id.title);
+		titleHeader = inflater.inflate(R.layout.header_album_artists, null);
+		albumTitle = (TextView)titleHeader.findViewById(R.id.title);
 
-		header = inflater.inflate(R.layout.header_image, null);
-		image = (ImageView)header.findViewById(R.id.image);
+		imageHeader = inflater.inflate(R.layout.header_image, null);
+		image = (ImageView)imageHeader.findViewById(R.id.image);
 		return view;
 	}
 
@@ -100,15 +100,15 @@ public class TorrentGroupFragment extends Fragment {
 
 		if (!group.getResponse().getGroup().getWikiImage().equalsIgnoreCase("")){
 			ImageLoader.getInstance().displayImage(group.getResponse().getGroup().getWikiImage(), image);
-			torrentList.addHeaderView(header);
+			torrentList.addHeaderView(imageHeader);
 		}
 		else {
-			image.setVisibility(View.GONE);
+			imageHeader.setVisibility(View.GONE);
 			image = null;
-			header = null;
+			imageHeader = null;
 		}
 		albumTitle.setText(group.getResponse().getGroup().getName());
-		torrentList.addHeaderView(artistHeader);
+		torrentList.addHeaderView(titleHeader);
 
 		TorrentGroupAdapter adapter = new TorrentGroupAdapter(getActivity(),
 			group.getResponse().getGroup().getMusicInfo().getAllArtists(), editions);

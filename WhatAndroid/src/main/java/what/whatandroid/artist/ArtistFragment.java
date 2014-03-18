@@ -13,7 +13,7 @@ import api.torrents.artist.Artist;
 import api.torrents.artist.Releases;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
-import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.callbacks.SetTitleCallback;
 
 /**
  * Fragment for viewing an artist's information and torrent groups
@@ -30,7 +30,7 @@ public class ArtistFragment extends Fragment {
 	/**
 	 * Callbacks to the activity so we can set the title
 	 */
-	ViewTorrentCallbacks callbacks;
+	SetTitleCallback callbacks;
 	/**
 	 * Various content views displaying the artist information
 	 */
@@ -41,7 +41,6 @@ public class ArtistFragment extends Fragment {
 	/**
 	 * Use this factory method to create a new artist fragment displaying information about
 	 * the artist with the id
-	 *
 	 * @param id artist id to show
 	 * @return Artist Fragment displaying the artist's info
 	 */
@@ -59,7 +58,7 @@ public class ArtistFragment extends Fragment {
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			callbacks = (ViewTorrentCallbacks)activity;
+			callbacks = (SetTitleCallback)activity;
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(activity.toString() + " must implement ViewTorrentCallbacks!");
@@ -94,7 +93,7 @@ public class ArtistFragment extends Fragment {
 			torrentList.addHeaderView(header);
 		}
 		else {
-			image.setVisibility(View.GONE);
+			header.setVisibility(View.GONE);
 			image = null;
 			header = null;
 		}
