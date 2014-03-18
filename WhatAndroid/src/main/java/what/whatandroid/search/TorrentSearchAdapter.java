@@ -5,10 +5,7 @@ import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import api.search.torrents.TorrentGroup;
 import api.search.torrents.TorrentSearch;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -18,7 +15,9 @@ import what.whatandroid.callbacks.ViewTorrentCallbacks;
 /**
  * Adapter for viewing list of torrent search results
  */
-public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements AdapterView.OnItemClickListener {
+public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
+	implements AdapterView.OnItemClickListener, AbsListView.OnScrollListener {
+
 	private final LayoutInflater inflater;
 	/**
 	 * The search being viewed
@@ -28,16 +27,26 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 	 * Callbacks to view the selected torrent group
 	 */
 	ViewTorrentCallbacks callbacks;
+	/**
+	 * Loading indicator footer to hide once loading is done
+	 */
+	View footer;
+	/**
+	 * Track if we're loading the next page of results
+	 */
+	boolean loadingNext;
 
 	/**
 	 * Construct the empty adapter. A new search can be set to be viewed in the adapter by
 	 * calling viewSearch
-	 *
 	 * @param context application context for the adapter
+	 * @param footer the footer loading indicator to hide once loading is complete
 	 */
-	public TorrentSearchAdapter(Context context){
+	public TorrentSearchAdapter(Context context, View footer){
 		super(context, R.layout.list_artist_torrent);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.footer = footer;
+		loadingNext = false;
 		try {
 			callbacks = (ViewTorrentCallbacks)context;
 		}
@@ -49,8 +58,9 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 	public void viewSearch(String terms, String tags){
 		clear();
 		notifyDataSetChanged();
-		//TODO: Should show a loading spinner
+		footer.setVisibility(View.VISIBLE);
 		System.out.println("Searching for terms=" + terms + ", tags=" + tags);
+		loadingNext = true;
 		new LoadTorrentSearch().execute(terms, tags);
 	}
 
@@ -69,18 +79,44 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 			holder.tags = (TextView)convertView.findViewById(R.id.album_tags);
 			convertView.setTag(holder);
 		}
-		holder.torrentGroup = (TorrentGroup)getItem(position);
+		holder.torrentGroup = getItem(position);
 		ImageLoader.getInstance().displayImage(holder.torrentGroup.getCover(), holder.art);
-		holder.title.setText(holder.torrentGroup.getArtist() + " - " + holder.torrentGroup.getGroupName());
-		holder.year.setText(holder.torrentGroup.getReleaseType() + " [" + holder.torrentGroup.getGroupYear() + "]");
-		//TODO: Better tag serialization?
+		if (holder.torrentGroup.getArtist() != null){
+			holder.title.setText(holder.torrentGroup.getArtist() + " - " + holder.torrentGroup.getGroupName());
+		}
+		else {
+			holder.title.setText(holder.torrentGroup.getGroupName());
+		}
+		if (holder.torrentGroup.getReleaseType() != null && holder.torrentGroup.getGroupYear() != null){
+			holder.year.setText(holder.torrentGroup.getReleaseType() + " [" + holder.torrentGroup.getGroupYear() + "]");
+		}
+		else {
+			holder.year.setVisibility(View.GONE);
+		}
 		holder.tags.setText(holder.torrentGroup.getTags().toString());
 		return convertView;
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-		callbacks.viewTorrentGroup(getItem(position).getGroupId().intValue());
+		//Clicking the footer gives us an out of bounds click event
+		if (position < getCount()){
+			callbacks.viewTorrentGroup(getItem(position).getGroupId().intValue());
+		}
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
+		//Load more if we're within 15 items of the end and there's a next page to load
+		if (search != null && search.hasNextPage() && !loadingNext && firstVisibleItem + visibleItemCount + 15 >= totalItemCount){
+			loadingNext = true;
+			new LoadTorrentSearch().execute();
+		}
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState){
+
 	}
 
 	/**
@@ -93,14 +129,21 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 	}
 
 	/**
-	 * Load the first page of torrent search results in the background, params should be { terms, tags }
+	 * Load the first page of torrent search results in the background, params should be { terms, tags }, or
+	 * empty if a search has already been loaded and we want to load the next page
 	 */
 	private class LoadTorrentSearch extends AsyncTask<String, Void, TorrentSearch> {
-
 		@Override
 		protected TorrentSearch doInBackground(String... params){
 			try {
-				TorrentSearch s = TorrentSearch.search(params[0], params[1]);
+				TorrentSearch s;
+				//If we want to load the next page of the existing search
+				if (params.length == 0 && search != null){
+					s = search.nextPage();
+				}
+				else {
+					s = TorrentSearch.search(params[0], params[1]);
+				}
 				if (s != null && s.getStatus()){
 					return s;
 				}
@@ -113,12 +156,16 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 
 		@Override
 		protected void onPostExecute(TorrentSearch torrentSearch){
+			loadingNext = false;
 			if (torrentSearch != null){
 				search = torrentSearch;
 				addAll(search.getResponse().getResults());
 				notifyDataSetChanged();
 			}
-			//Else show an error
+			//Else show a toast error
+			if (torrentSearch == null || !search.hasNextPage()){
+				footer.setVisibility(View.GONE);
+			}
 		}
 	}
 }

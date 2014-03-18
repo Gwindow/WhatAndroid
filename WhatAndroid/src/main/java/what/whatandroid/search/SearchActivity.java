@@ -24,9 +24,10 @@ import what.whatandroid.torrentgroup.TorrentGroupActivity;
 public class SearchActivity extends ActionBarActivity
 	implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewTorrentCallbacks {
 	/**
-	 * Param to pass the search type desired
+	 * Param to pass the search type desired and terms and tags if desired
 	 */
-	public final static String SEARCH = "what.whatandroid.SEARCH";
+	public final static String SEARCH = "what.whatandroid.SEARCH", TERMS = "what.whatandroid.SEARCH.TERMS",
+		TAGS = "what.whatandroid.SEARCH.TAGS";
 	/**
 	 * The parameters to specify what we want to search for
 	 */
@@ -50,6 +51,8 @@ public class SearchActivity extends ActionBarActivity
 		title = getTitle();
 
 		String type = getIntent().getStringExtra(SEARCH);
+		String terms = getIntent().getStringExtra(TERMS);
+		String tags = getIntent().getStringExtra(TAGS);
 		Fragment fragment;
 		/*
 		if (type.equalsIgnoreCase(REQUEST)){
@@ -63,7 +66,7 @@ public class SearchActivity extends ActionBarActivity
 		else {
 		*/
 		setTitle("Torrent Search");
-		fragment = new TorrentSearchFragment();
+		fragment = TorrentSearchFragment.newInstance(terms, tags);
 		//}
 		FragmentManager manager = getSupportFragmentManager();
 		manager.beginTransaction().add(R.id.container, fragment).commit();
