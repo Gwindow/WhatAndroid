@@ -2,11 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="what.whatandroid"
           android:versionCode="1"
-          android:versionName="1.0">
-
-    <uses-sdk
-            android:minSdkVersion="8"
-            android:targetSdkVersion="19"/>
+          android:versionName="2.0.0">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -40,6 +36,10 @@
         <activity
                 android:name=".torrentgroup.TorrentGroupActivity"
                 android:label="@string/torrent_group">
+        </activity>
+        <activity
+                android:name=".search.SearchActivity"
+                android:label="@string/search">
         </activity>
     </application>
 

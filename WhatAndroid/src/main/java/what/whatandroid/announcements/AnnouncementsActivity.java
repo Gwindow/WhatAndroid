@@ -20,8 +20,8 @@ import api.announcements.BlogPost;
 import api.soup.MySoup;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
-import what.whatandroid.artist.ArtistActivity;
 import what.whatandroid.profile.ProfileActivity;
+import what.whatandroid.search.SearchActivity;
 
 /**
  * The announcements fragment shows announcements and blog posts and is the "main" activity, being
@@ -89,7 +89,6 @@ public class AnnouncementsActivity extends ActionBarActivity
 		if (navDrawer == null){
 			return;
 		}
-
 		String selection = navDrawer.getItem(position);
 		if (selection.equalsIgnoreCase(getString(R.string.announcements)) && announcements != null){
 			pagerAdapter = new AnnouncementsPagerAdapter(getSupportFragmentManager());
@@ -104,15 +103,13 @@ public class AnnouncementsActivity extends ActionBarActivity
 			getSupportActionBar().setTitle(title);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.profile))){
-			//Launch profile view activity
 			Intent intent = new Intent(this, ProfileActivity.class);
 			intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
 			startActivity(intent);
 		}
-		//TODO: For testing artist view only
-		else if (selection.equalsIgnoreCase(getString(R.string.inbox))){
-			Intent intent = new Intent(this, ArtistActivity.class);
-			intent.putExtra(ArtistActivity.ARTIST_ID, 7);
+		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){
+			Intent intent = new Intent(this, SearchActivity.class);
+			intent.putExtra(SearchActivity.SEARCH, SearchActivity.TORRENT);
 			startActivity(intent);
 		}
 	}
