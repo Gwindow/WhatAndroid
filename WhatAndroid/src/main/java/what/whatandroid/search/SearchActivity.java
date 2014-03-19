@@ -31,7 +31,7 @@ public class SearchActivity extends ActionBarActivity
 	/**
 	 * The parameters to specify what we want to search for
 	 */
-	public final static String TORRENT = "TORRENT", USER = "USER", REQUEST = "REQUEST";
+	public final static String TORRENT = "TORRENT", ARTIST = "ARTIST", USER = "USER", REQUEST = "REQUEST";
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
 	 */
@@ -53,7 +53,12 @@ public class SearchActivity extends ActionBarActivity
 		String type = getIntent().getStringExtra(SEARCH);
 		String terms = getIntent().getStringExtra(TERMS);
 		String tags = getIntent().getStringExtra(TAGS);
-		Fragment fragment;
+
+		Fragment fragment = null;
+		if (type.equalsIgnoreCase(ARTIST)){
+			setTitle("Artist Search");
+			fragment = ArtistSearchFragment.newInstance(terms);
+		}
 		/*
 		if (type.equalsIgnoreCase(REQUEST)){
 			setTitle("Request Search");
@@ -63,11 +68,11 @@ public class SearchActivity extends ActionBarActivity
 			setTitle("User Search");
 			//set new user search fragment
 		}
-		else {
 		*/
-		setTitle("Torrent Search");
-		fragment = TorrentSearchFragment.newInstance(terms, tags);
-		//}
+		else {
+			setTitle("Torrent Search");
+			fragment = TorrentSearchFragment.newInstance(terms, tags);
+		}
 		FragmentManager manager = getSupportFragmentManager();
 		manager.beginTransaction().add(R.id.container, fragment).commit();
 	}

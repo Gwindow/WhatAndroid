@@ -60,6 +60,7 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		//If we were sent a search to load from the intent, start loading it
 		if (searchTerms != null){
 			if (searchTags == null){
 				searchTags = "";

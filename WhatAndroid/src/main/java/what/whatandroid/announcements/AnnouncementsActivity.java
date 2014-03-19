@@ -112,6 +112,11 @@ public class AnnouncementsActivity extends ActionBarActivity
 			intent.putExtra(SearchActivity.SEARCH, SearchActivity.TORRENT);
 			startActivity(intent);
 		}
+		else if (selection.equalsIgnoreCase(getString(R.string.artists))){
+			Intent intent = new Intent(this, SearchActivity.class);
+			intent.putExtra(SearchActivity.SEARCH, SearchActivity.ARTIST);
+			startActivity(intent);
+		}
 	}
 
 	/**

@@ -13,6 +13,8 @@
     <string name="artist">Artist</string>
     <string name="torrent_group">Torrent Group</string>
     <string name="torrents">Torrents</string>
+    <string name="users">Users</string>
+    <string name="artists">Artists</string>
     <string name="requests">Requests</string>
     <string name="barcode_scanner">Barcode Scanner</string>
     <string name="username">Username</string>
