@@ -55,13 +55,12 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 		}
 	}
 
-	public void viewSearch(String terms, String tags){
+	public void viewSearch(TorrentSearch search){
 		clear();
+		//TODO: api level 11?
+		addAll(search.getResponse().getResults());
 		notifyDataSetChanged();
-		footer.setVisibility(View.VISIBLE);
-		System.out.println("Searching for terms=" + terms + ", tags=" + tags);
-		loadingNext = true;
-		new LoadTorrentSearch().execute(terms, tags);
+		this.search = search;
 	}
 
 	@Override
@@ -99,18 +98,19 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-		//Clicking the footer gives us an out of bounds click event
-		if (position < getCount()){
-			callbacks.viewTorrentGroup(getItem(position).getGroupId().intValue());
+		//Clicking the footer gives us an out of bounds click event, we also must subtract 1 from the
+		//position to account for the added footer
+		if (position - 1 < getCount()){
+			callbacks.viewTorrentGroup(getItem(position - 1).getGroupId().intValue());
 		}
 	}
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
 		//Load more if we're within 15 items of the end and there's a next page to load
-		if (search != null && search.hasNextPage() && !loadingNext && firstVisibleItem + visibleItemCount + 15 >= totalItemCount){
+		if (search != null && search.hasNextPage() && !loadingNext && firstVisibleItem + visibleItemCount + 10 >= totalItemCount){
 			loadingNext = true;
-			new LoadTorrentSearch().execute();
+			new LoadNextPage().execute();
 		}
 	}
 
@@ -129,21 +129,18 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 	}
 
 	/**
-	 * Load the first page of torrent search results in the background, params should be { terms, tags }, or
-	 * empty if a search has already been loaded and we want to load the next page
+	 * Load the next page of the current torrent search
 	 */
-	private class LoadTorrentSearch extends AsyncTask<String, Void, TorrentSearch> {
+	private class LoadNextPage extends AsyncTask<String, Void, TorrentSearch> {
+		@Override
+		protected void onPreExecute(){
+			footer.setVisibility(View.VISIBLE);
+		}
+
 		@Override
 		protected TorrentSearch doInBackground(String... params){
 			try {
-				TorrentSearch s;
-				//If we want to load the next page of the existing search
-				if (params.length == 0 && search != null){
-					s = search.nextPage();
-				}
-				else {
-					s = TorrentSearch.search(params[0], params[1]);
-				}
+				TorrentSearch s = search.nextPage();
 				if (s != null && s.getStatus()){
 					return s;
 				}
