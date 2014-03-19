@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.Toast;
 import api.torrents.artist.Artist;
 import api.torrents.artist.Releases;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -88,7 +89,6 @@ public class ArtistFragment extends Fragment {
 	private void updateArtist(Releases releases){
 		callbacks.setTitle(artist.getResponse().getName());
 		if (!artist.getResponse().getImage().equalsIgnoreCase("")){
-			//How to handle image can't be decoded?
 			ImageLoader.getInstance().displayImage(artist.getResponse().getImage(), image);
 			torrentList.addHeaderView(header);
 		}
@@ -135,7 +135,9 @@ public class ArtistFragment extends Fragment {
 				artist = a;
 				updateArtist(releases);
 			}
-			//Else show an error?
+			else {
+				Toast.makeText(getActivity(), "Failed to load artist", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 }

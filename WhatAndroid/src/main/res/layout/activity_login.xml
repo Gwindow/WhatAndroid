@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:padding="16dp"
-              tools:context="what.whatandroid.login.LoginFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                tools:context="what.whatandroid.login.LoginFragment">
 
     <EditText
             android:id="@+id/username_input"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:inputType="textPersonName"
-            android:hint="@string/username" >
-            <requestFocus />
-            </EditText>
+            android:hint="@string/username"
+            android:layout_centerHorizontal="true">
+
+        <requestFocus/>
+    </EditText>
 
     <EditText
             android:id="@+id/password_input"
@@ -23,13 +25,16 @@
             android:layout_width="fill_parent"
             android:inputType="textPassword"
             android:hint="@string/password"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/username_input"/>
 
     <Button
             android:id="@+id/login_button"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="@string/login"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/password_input"
+            android:layout_alignParentRight="true"/>
 
-</LinearLayout>
+</RelativeLayout>
