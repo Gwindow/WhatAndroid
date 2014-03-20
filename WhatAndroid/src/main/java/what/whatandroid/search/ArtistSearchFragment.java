@@ -25,6 +25,11 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 	 */
 	private String intentTerms;
 	/**
+	 * The loaded artist if we found one, this is used so that the Artist Activity can pick up
+	 * the loaded artist without having to re-download it
+	 */
+	private static Artist artist;
+	/**
 	 * The search input box and loading indicator
 	 */
 	private EditText searchTerms;
@@ -33,9 +38,8 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 	/**
 	 * Create an artist search fragment and have it start loading the search desired when the view
 	 * is resumed. If the terms are empty then no search will be launched at load
-	 *
-	 * @param terms
-	 * @return
+	 * @param terms terms to run search with. If empty no search will be launched
+	 * @return Artist Search fragment viewing the search results, or ready to take input
 	 */
 	public static ArtistSearchFragment newInstance(String terms){
 		ArtistSearchFragment f = new ArtistSearchFragment();
@@ -85,6 +89,14 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 	}
 
 	/**
+	 * Get the loaded artist from the search
+	 * @return the loaded artist from the search
+	 */
+	public static Artist getArtist(){
+		return artist;
+	}
+
+	/**
 	 * Load the artist auto completions for some artist name as a "search". If only one completion
 	 * is returned we launch an intent to view that artist, if multiple completions are returned we
 	 * launch a torrent search with the same terms, as the site does.
@@ -100,6 +112,7 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 			if (loadingIndicator != null){
 				loadingIndicator.setVisibility(View.VISIBLE);
 			}
+			artist = null;
 		}
 
 		@Override
@@ -118,13 +131,15 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 		}
 
 		@Override
-		protected void onPostExecute(Artist artist){
+		protected void onPostExecute(Artist a){
 			if (loadingIndicator != null){
 				loadingIndicator.setVisibility(View.GONE);
 			}
-			if (artist != null){
+			if (a != null){
+				artist = a;
 				Intent intent = new Intent(getActivity(), ArtistActivity.class);
 				intent.putExtra(ArtistActivity.ARTIST_ID, artist.getId());
+				intent.putExtra(ArtistActivity.USE_SEARCH, true);
 				startActivity(intent);
 			}
 			else {

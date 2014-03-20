@@ -14,6 +14,7 @@ import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.profile.ProfileActivity;
+import what.whatandroid.search.ArtistSearchFragment;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 /**
@@ -23,8 +24,11 @@ public class ArtistActivity extends ActionBarActivity
 	implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewTorrentCallbacks {
 	/**
 	 * Param to pass the user id to display to the activity
+	 * the USE_SEARCH parameter should be set to true and will indicate that the artist
+	 * to be viewed is coming from the ArtistSearchFragment
 	 */
-	public final static String ARTIST_ID = "what.whatandroid.ARTIST_ID";
+	public final static String ARTIST_ID = "what.whatandroid.ARTIST_ID",
+		USE_SEARCH = "what.whatandroid.USE_SEARCH";
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
 	 */
@@ -43,7 +47,19 @@ public class ArtistActivity extends ActionBarActivity
 		navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.drawer_layout));
 		title = getTitle();
 
-		ArtistFragment fragment = ArtistFragment.newInstance(getIntent().getIntExtra(ARTIST_ID, 1));
+		int id = getIntent().getIntExtra(ARTIST_ID, 1);
+		boolean useSearch = getIntent().getBooleanExtra(USE_SEARCH, false);
+		ArtistFragment fragment = null;
+		//If we're coming from the ArtistSearchFragment then the artist was already loaded over there, so re-use it
+		if (useSearch){
+			if (ArtistSearchFragment.getArtist() != null){
+				fragment = ArtistFragment.newInstance(ArtistSearchFragment.getArtist());
+			}
+		}
+		//If no artist from search then download the data
+		if (fragment == null){
+			fragment = ArtistFragment.newInstance(id);
+		}
 		FragmentManager manager = getSupportFragmentManager();
 		manager.beginTransaction().add(R.id.container, fragment).commit();
 	}

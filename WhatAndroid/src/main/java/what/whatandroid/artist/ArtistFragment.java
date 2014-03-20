@@ -25,13 +25,17 @@ public class ArtistFragment extends Fragment {
 	 */
 	private Artist artist;
 	/**
+	 * The artists releases
+	 */
+	private Releases releases;
+	/**
 	 * The artist id, passed to us on fragment creation so we can load the artist later
 	 */
 	private int artistID;
 	/**
 	 * Callbacks to the activity so we can set the title
 	 */
-	SetTitleCallback callbacks;
+	private SetTitleCallback callbacks;
 	/**
 	 * Various content views displaying the artist information
 	 */
@@ -46,9 +50,23 @@ public class ArtistFragment extends Fragment {
 	 * @return Artist Fragment displaying the artist's info
 	 */
 	public static ArtistFragment newInstance(int id){
-		ArtistFragment fragment = new ArtistFragment();
-		fragment.artistID = id;
-		return fragment;
+		ArtistFragment f = new ArtistFragment();
+		f.artistID = id;
+		return f;
+	}
+
+	/**
+	 * Use this factory method to create a new artist fragment displaying information about
+	 * an already loaded artist
+	 *
+	 * @param a the artist to view
+	 * @return Artist Fragment displaying the artist's info
+	 */
+	public static ArtistFragment newInstance(Artist a){
+		ArtistFragment f = new ArtistFragment();
+		f.artist = a;
+		f.artistID = a.getId();
+		return f;
 	}
 
 	public ArtistFragment(){
@@ -72,6 +90,9 @@ public class ArtistFragment extends Fragment {
 		if (artist == null){
 			new LoadArtist().execute(artistID);
 		}
+		else {
+			releases = new Releases(artist);
+		}
 	}
 
 	@Override
@@ -80,13 +101,16 @@ public class ArtistFragment extends Fragment {
 		torrentList = (ExpandableListView)view.findViewById(R.id.exp_list);
 		header = inflater.inflate(R.layout.header_image, null);
 		image = (ImageView)header.findViewById(R.id.image);
+		if (artist != null){
+			updateArtist();
+		}
 		return view;
 	}
 
 	/**
 	 * Update all the artist information with the loaded api request
 	 */
-	private void updateArtist(Releases releases){
+	private void updateArtist(){
 		callbacks.setTitle(artist.getResponse().getName());
 		if (!artist.getResponse().getImage().equalsIgnoreCase("")){
 			ImageLoader.getInstance().displayImage(artist.getResponse().getImage(), image);
@@ -106,8 +130,6 @@ public class ArtistFragment extends Fragment {
 	 * Async task to load the artist info
 	 */
 	private class LoadArtist extends AsyncTask<Integer, Void, Artist> {
-		Releases releases;
-
 		/**
 		 * Load some torrent artist from their id
 		 *
@@ -133,7 +155,7 @@ public class ArtistFragment extends Fragment {
 		protected void onPostExecute(Artist a){
 			if (a != null){
 				artist = a;
-				updateArtist(releases);
+				updateArtist();
 			}
 			else {
 				Toast.makeText(getActivity(), "Failed to load artist", Toast.LENGTH_SHORT).show();
