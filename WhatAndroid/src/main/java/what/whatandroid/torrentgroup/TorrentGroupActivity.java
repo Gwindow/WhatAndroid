@@ -15,6 +15,7 @@ import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.artist.ArtistActivity;
 import what.whatandroid.callbacks.ViewArtistCallbacks;
 import what.whatandroid.profile.ProfileActivity;
+import what.whatandroid.search.SearchActivity;
 
 /**
  * View information about a torrent group and the torrents in it
@@ -73,6 +74,21 @@ public class TorrentGroupActivity extends ActionBarActivity
 			//Launch profile view activity
 			Intent intent = new Intent(this, ProfileActivity.class);
 			intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){
+			Intent intent = new Intent(this, SearchActivity.class);
+			intent.putExtra(SearchActivity.SEARCH, SearchActivity.TORRENT);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.artists))){
+			Intent intent = new Intent(this, SearchActivity.class);
+			intent.putExtra(SearchActivity.SEARCH, SearchActivity.ARTIST);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.users))){
+			Intent intent = new Intent(this, SearchActivity.class);
+			intent.putExtra(SearchActivity.SEARCH, SearchActivity.USER);
 			startActivity(intent);
 		}
 	}

@@ -103,6 +103,21 @@ public class SearchActivity extends ActionBarActivity
 			intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
 			startActivity(intent);
 		}
+		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){
+			setTitle("Torrent Search");
+			FragmentManager fm = getSupportFragmentManager();
+			fm.beginTransaction().replace(R.id.container, new TorrentSearchFragment()).commit();
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.artists))){
+			setTitle("Artist Search");
+			FragmentManager fm = getSupportFragmentManager();
+			fm.beginTransaction().replace(R.id.container, new ArtistSearchFragment()).commit();
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.users))){
+			setTitle("User Search");
+			FragmentManager fm = getSupportFragmentManager();
+			fm.beginTransaction().replace(R.id.container, new UserSearchFragment()).commit();
+		}
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.ArtistSearchFragment;
+import what.whatandroid.search.SearchActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 /**
@@ -87,6 +88,21 @@ public class ArtistActivity extends ActionBarActivity
 			//Launch profile view activity
 			Intent intent = new Intent(this, ProfileActivity.class);
 			intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){
+			Intent intent = new Intent(this, SearchActivity.class);
+			intent.putExtra(SearchActivity.SEARCH, SearchActivity.TORRENT);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.artists))){
+			Intent intent = new Intent(this, SearchActivity.class);
+			intent.putExtra(SearchActivity.SEARCH, SearchActivity.ARTIST);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.users))){
+			Intent intent = new Intent(this, SearchActivity.class);
+			intent.putExtra(SearchActivity.SEARCH, SearchActivity.USER);
 			startActivity(intent);
 		}
 	}
