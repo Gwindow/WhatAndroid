@@ -14,6 +14,7 @@ import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
@@ -22,7 +23,7 @@ import what.whatandroid.torrentgroup.TorrentGroupActivity;
  * by the specific fragments
  */
 public class SearchActivity extends ActionBarActivity
-	implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewTorrentCallbacks {
+	implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewTorrentCallbacks, ViewUserCallbacks {
 	/**
 	 * Param to pass the search type desired and terms and tags if desired
 	 */
@@ -59,14 +60,14 @@ public class SearchActivity extends ActionBarActivity
 			setTitle("Artist Search");
 			fragment = ArtistSearchFragment.newInstance(terms);
 		}
+		else if (type.equalsIgnoreCase(USER)){
+			setTitle("User Search");
+			fragment = UserSearchFragment.newInstance(terms);
+		}
 		/*
 		if (type.equalsIgnoreCase(REQUEST)){
 			setTitle("Request Search");
 			//set new request search fragment
-		}
-		else if (type.equalsIgnoreCase(USER)){
-			setTitle("User Search");
-			//set new user search fragment
 		}
 		*/
 		else {
@@ -115,6 +116,13 @@ public class SearchActivity extends ActionBarActivity
 	public void viewTorrentGroup(int id){
 		Intent intent = new Intent(this, TorrentGroupActivity.class);
 		intent.putExtra(TorrentGroupActivity.GROUP_ID, id);
+		startActivity(intent);
+	}
+
+	@Override
+	public void viewUser(int id){
+		Intent intent = new Intent(this, ProfileActivity.class);
+		intent.putExtra(ProfileActivity.USER_ID, id);
 		startActivity(intent);
 	}
 
