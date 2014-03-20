@@ -1,5 +1,6 @@
 package what.whatandroid.search;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -23,7 +25,7 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 	/**
 	 * Search terms sent to us by the intent
 	 */
-	private String intentTerms;
+	private String searchTerms;
 	/**
 	 * The loaded artist if we found one, this is used so that the Artist Activity can pick up
 	 * the loaded artist without having to re-download it
@@ -32,7 +34,7 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 	/**
 	 * The search input box and loading indicator
 	 */
-	private EditText searchTerms;
+	private EditText editTerms;
 	private ProgressBar loadingIndicator;
 
 	/**
@@ -43,7 +45,7 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 	 */
 	public static ArtistSearchFragment newInstance(String terms){
 		ArtistSearchFragment f = new ArtistSearchFragment();
-		f.intentTerms = terms;
+		f.searchTerms = terms;
 		return f;
 	}
 
@@ -55,8 +57,8 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		//If we were sent a search to run from the intent start loading it
-		if (intentTerms != null){
-			new LoadArtistSearch().execute(intentTerms);
+		if (searchTerms != null){
+			new LoadArtistSearch().execute(searchTerms);
 		}
 	}
 
@@ -65,26 +67,29 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 		View view = inflater.inflate(R.layout.fragment_artist_search, container, false);
 		Button searchButton = (Button)view.findViewById(R.id.search_button);
 		searchButton.setOnClickListener(this);
-		searchTerms = (EditText)view.findViewById(R.id.search_terms);
+		editTerms = (EditText)view.findViewById(R.id.search_terms);
 		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
 		//If we're not loading some search from an intent
-		if (intentTerms == null){
+		if (searchTerms == null){
 			loadingIndicator.setVisibility(View.GONE);
 		}
 		else {
-			searchTerms.setText(intentTerms);
+			editTerms.setText(searchTerms);
 		}
 		return view;
 	}
 
 	@Override
 	public void onClick(View v){
-		String terms = searchTerms.getText().toString();
+		String terms = editTerms.getText().toString();
 		if (terms.length() > 0){
+			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), 0);
 			new LoadArtistSearch().execute(terms);
 		}
 		else {
 			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
+			editTerms.requestFocus();
 		}
 	}
 
