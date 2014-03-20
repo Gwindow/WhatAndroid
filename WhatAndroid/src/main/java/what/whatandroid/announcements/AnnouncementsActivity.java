@@ -120,7 +120,6 @@ public class AnnouncementsActivity extends ActionBarActivity
 		else if (selection.equalsIgnoreCase(getString(R.string.users))){
 			Intent intent = new Intent(this, SearchActivity.class);
 			intent.putExtra(SearchActivity.SEARCH, SearchActivity.USER);
-			intent.putExtra(SearchActivity.TERMS, "Twinklebear");
 			startActivity(intent);
 		}
 	}
