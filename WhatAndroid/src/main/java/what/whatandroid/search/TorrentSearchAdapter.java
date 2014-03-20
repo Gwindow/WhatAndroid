@@ -22,19 +22,19 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 	/**
 	 * The search being viewed
 	 */
-	TorrentSearch search;
+	private TorrentSearch search;
 	/**
 	 * Callbacks to view the selected torrent group
 	 */
-	ViewTorrentCallbacks callbacks;
+	private ViewTorrentCallbacks callbacks;
 	/**
 	 * Loading indicator footer to hide once loading is done
 	 */
-	View footer;
+	private View footer;
 	/**
 	 * Track if we're loading the next page of results
 	 */
-	boolean loadingNext;
+	private boolean loadingNext;
 
 	/**
 	 * Construct the empty adapter. A new search can be set to be viewed in the adapter by
@@ -55,12 +55,26 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 		}
 	}
 
+	/**
+	 * Set the search currently being viewed
+	 *
+	 * @param search search to view
+	 */
 	public void viewSearch(TorrentSearch search){
 		clear();
 		//TODO: api level 11?
 		addAll(search.getResponse().getResults());
 		notifyDataSetChanged();
 		this.search = search;
+	}
+
+	/**
+	 * Clear the currently viewed search
+	 */
+	public void clearSearch(){
+		clear();
+		notifyDataSetChanged();
+		search = null;
 	}
 
 	@Override
@@ -78,31 +92,35 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 			holder.tags = (TextView)convertView.findViewById(R.id.album_tags);
 			convertView.setTag(holder);
 		}
-		holder.torrentGroup = getItem(position);
-		ImageLoader.getInstance().displayImage(holder.torrentGroup.getCover(), holder.art);
-		if (holder.torrentGroup.getArtist() != null){
-			holder.title.setText(holder.torrentGroup.getArtist() + " - " + holder.torrentGroup.getGroupName());
+		TorrentGroup group = getItem(position);
+		ImageLoader.getInstance().displayImage(group.getCover(), holder.art);
+		if (group.getArtist() != null){
+			holder.title.setText(group.getArtist() + " - " + group.getGroupName());
 		}
 		else {
-			holder.title.setText(holder.torrentGroup.getGroupName());
+			holder.title.setText(group.getGroupName());
 		}
-		if (holder.torrentGroup.getReleaseType() != null && holder.torrentGroup.getGroupYear() != null){
-			holder.year.setText(holder.torrentGroup.getReleaseType() + " [" + holder.torrentGroup.getGroupYear() + "]");
+		if (group.getReleaseType() != null && group.getGroupYear() != null){
+			holder.year.setText(group.getReleaseType() + " [" + group.getGroupYear() + "]");
 		}
 		else {
 			holder.year.setVisibility(View.GONE);
 		}
-		holder.tags.setText(holder.torrentGroup.getTags().toString());
+		holder.tags.setText(group.getTags().toString());
 		return convertView;
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-		//Clicking the footer gives us an out of bounds click event, we also must subtract 1 from the
-		//position to account for the added footer
+		//Clicking the footer gives us an out of bounds click event so subtract 1 to account for this
 		if (position - 1 < getCount()){
 			callbacks.viewTorrentGroup(getItem(position - 1).getGroupId().intValue());
 		}
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState){
+
 	}
 
 	@Override
@@ -114,16 +132,10 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 		}
 	}
 
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState){
-
-	}
-
 	/**
 	 * View holder for the torrent group information
 	 */
 	private static class ViewHolder {
-		public TorrentGroup torrentGroup;
 		public ImageView art;
 		public TextView title, year, tags;
 	}
@@ -131,14 +143,14 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 	/**
 	 * Load the next page of the current torrent search
 	 */
-	private class LoadNextPage extends AsyncTask<String, Void, TorrentSearch> {
+	private class LoadNextPage extends AsyncTask<Void, Void, TorrentSearch> {
 		@Override
 		protected void onPreExecute(){
 			footer.setVisibility(View.VISIBLE);
 		}
 
 		@Override
-		protected TorrentSearch doInBackground(String... params){
+		protected TorrentSearch doInBackground(Void... params){
 			try {
 				TorrentSearch s = search.nextPage();
 				if (s != null && s.getStatus()){

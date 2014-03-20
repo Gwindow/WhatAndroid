@@ -41,7 +41,7 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 
 	/**
 	 * Create a torrent search fragment and have it start loading the search desired when the view
-	 * is resumed. If the terms are empty then no search will be launched at load
+	 * is created. If the terms are empty then no search will be launched
 	 * @param terms terms to search for
 	 * @param tags tags to search for
 	 * @return a torrent search fragment that will load the desired search
@@ -93,7 +93,9 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 		if (searchTerms != null){
 			editTerms.setText(searchTerms);
 			editTags.setText(searchTags);
-			footer.setVisibility(View.VISIBLE);
+			if (torrentSearch == null){
+				footer.setVisibility(View.VISIBLE);
+			}
 		}
 		else {
 			editTerms.requestFocus();
@@ -128,8 +130,9 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 				footer.setVisibility(View.VISIBLE);
 			}
 			if (resultsAdapter != null){
-				resultsAdapter.clear();
+				resultsAdapter.clearSearch();
 			}
+			torrentSearch = null;
 		}
 
 		@Override
