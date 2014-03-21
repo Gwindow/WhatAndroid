@@ -145,10 +145,20 @@ public class ProfileFragment extends Fragment {
 		}
 		//TODO: Keep an eye on this API endpoint and watch for when it starts respecting paranoia and we get null back
 		if (profile.getPersonal().getParanoia().intValue() < 6 || userID == MySoup.getUserId()){
-			recentSnatches.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getSnatches(),
-				getActivity().getSupportFragmentManager()));
-			recentUploads.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getUploads(),
-				getActivity().getSupportFragmentManager()));
+			if (recentTorrents.getSnatches().size() > 0){
+				recentSnatches.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getSnatches(),
+					getActivity().getSupportFragmentManager()));
+			}
+			else {
+				recentSnatches.setVisibility(View.GONE);
+			}
+			if (recentTorrents.getUploads().size() > 0){
+				recentUploads.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getUploads(),
+					getActivity().getSupportFragmentManager()));
+			}
+			else {
+				recentUploads.setVisibility(View.GONE);
+			}
 		}
 		else {
 			recentSnatches.setVisibility(View.GONE);
