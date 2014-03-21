@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 import api.announcements.Announcement;
 import api.announcements.Announcements;
@@ -58,6 +59,7 @@ public class AnnouncementsActivity extends ActionBarActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_view_pager);
 
 		navDrawer = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -336,7 +338,15 @@ public class AnnouncementsActivity extends ActionBarActivity
 		}
 
 		@Override
+		protected void onPreExecute(){
+			setProgressBarIndeterminateVisibility(true);
+			setProgressBarIndeterminate(true);
+		}
+
+		@Override
 		protected void onPostExecute(Announcements announce){
+			setProgressBarIndeterminateVisibility(false);
+			setProgressBarIndeterminate(false);
 			if (announce != null){
 				announcements = announce;
 				if (show == ANNOUNCEMENTS){
