@@ -3,17 +3,22 @@ package what.whatandroid.login;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import api.son.MySon;
 import api.soup.MySoup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
+import what.whatandroid.settings.SettingsActivity;
 
 /**
  * The login fragment, provides the user fields for their user name
@@ -40,8 +45,23 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 			.discCacheSize(20 * 512 * 512)
 			.build();
 		ImageLoader.getInstance().init(config);
+
+		//Setup saved user name and password if we've got them
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		String savedUserName = preferences.getString(SettingsActivity.USER_NAME, "");
+		String savedUserPass = preferences.getString(SettingsActivity.USER_PASSWORD, "");
+		username.setText(savedUserName);
+		password.setText(savedUserPass);
 	}
 
+	@Override
+	protected void onResume(){
+		super.onResume();
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		if (preferences.getString(SettingsActivity.USER_COOKIE, null) != null){
+			new Login().execute(username.getText().toString(), password.getText().toString());
+		}
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -64,10 +84,29 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
 		@Override
 		protected Boolean doInBackground(String... params) {
-			String name = params[0];
-			String pwd = params[1];
 			try {
-				MySoup.login("login.php", name, pwd, false);
+				//If there's a saved cookie then use that and load the index
+				//TODO: Handle cookie expiration
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+				String cookieJson = preferences.getString(SettingsActivity.USER_COOKIE, null);
+				if (cookieJson != null){
+					BasicClientCookie c = (BasicClientCookie)MySon.toObjectFromString(cookieJson, BasicClientCookie.class);
+					if (c != null){
+						//Should check if cookie is expired here
+						System.out.println("Using saved cookie");
+						MySoup.loadCookie(c);
+						MySoup.loadIndex();
+						return true;
+					}
+				}
+				MySoup.login("login.php", params[0], params[1], true);
+				//Save the cookie, user name and password
+				cookieJson = MySon.toJson(MySoup.getCookies().get(0), BasicClientCookie.class);
+				preferences.edit()
+					.putString(SettingsActivity.USER_COOKIE, cookieJson)
+					.putString(SettingsActivity.USER_NAME, params[0])
+					.putString(SettingsActivity.USER_PASSWORD, params[1])
+					.commit();
 				return true;
 			}
 			catch (Exception e){

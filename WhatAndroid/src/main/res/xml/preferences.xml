@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+            android:title="@string/pref_pywhat"
+            android:key="pref_pywhat">
+        <EditTextPreference
+                android:title="@string/pref_pywhat_host"
+                android:key="pref_pywhat_host"
+                android:summary="Begins with http:// or https://"
+                android:defaultValue=""
+                android:inputType="textUri"/>
+        <EditTextPreference
+                android:title="@string/pref_pywhat_port"
+                android:key="pref_pywhat_port"
+                android:defaultValue=""
+                android:inputType="number"/>
+        <EditTextPreference
+                android:title="@string/pref_pywhat_password"
+                android:key="pref_pywhat_password"
+                android:defaultValue=""
+                android:inputType="textPassword"/>
+    </PreferenceCategory>
+</PreferenceScreen>

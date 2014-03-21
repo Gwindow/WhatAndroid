@@ -1,8 +1,10 @@
 package what.whatandroid.announcements;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -23,6 +25,7 @@ import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
+import what.whatandroid.settings.SettingsActivity;
 
 /**
  * The announcements fragment shows announcements and blog posts and is the "main" activity, being
@@ -180,9 +183,25 @@ public class AnnouncementsActivity extends ActionBarActivity
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
+		Intent intent;
 		switch (item.getItemId()){
 			case R.id.action_settings:
+				intent = new Intent(this, SettingsActivity.class);
+				startActivity(intent);
 				return true;
+			case R.id.action_logout:
+				//TODO: MySoup needs to log us out properly. Also need to add detect & handle of logged out
+				//to all activities and handling of the saved cookie, ie. if not loaded then load it.
+				//perhaps candidate for some parent class
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+				preferences.edit().remove(SettingsActivity.USER_COOKIE).commit();
+				intent = new Intent(Intent.ACTION_MAIN);
+				intent.addCategory(Intent.CATEGORY_HOME);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
+				return true;
+			default:
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
