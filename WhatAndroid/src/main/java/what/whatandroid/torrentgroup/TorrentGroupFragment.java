@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import api.torrents.torrents.Edition;
 import api.torrents.torrents.TorrentGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -144,12 +145,22 @@ public class TorrentGroupFragment extends Fragment {
 		}
 
 		@Override
+		protected void onPreExecute(){
+			getActivity().setProgressBarIndeterminateVisibility(true);
+			getActivity().setProgressBarIndeterminate(true);
+		}
+
+		@Override
 		protected void onPostExecute(TorrentGroup torrentGroup){
+			getActivity().setProgressBarIndeterminateVisibility(false);
+			getActivity().setProgressBarIndeterminate(false);
 			if (torrentGroup != null){
 				group = torrentGroup;
 				updateTorrentGroup(editions);
 			}
-			//Else show an error?
+			else {
+				Toast.makeText(getActivity(), "Failed to load torrent group", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 }

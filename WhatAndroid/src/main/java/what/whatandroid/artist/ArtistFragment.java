@@ -117,7 +117,6 @@ public class ArtistFragment extends Fragment {
 			torrentList.addHeaderView(header);
 		}
 		else {
-			header.setVisibility(View.GONE);
 			image = null;
 			header = null;
 		}
@@ -152,7 +151,15 @@ public class ArtistFragment extends Fragment {
 		}
 
 		@Override
+		protected void onPreExecute(){
+			getActivity().setProgressBarIndeterminateVisibility(true);
+			getActivity().setProgressBarIndeterminate(true);
+		}
+
+		@Override
 		protected void onPostExecute(Artist a){
+			getActivity().setProgressBarIndeterminateVisibility(false);
+			getActivity().setProgressBarIndeterminate(false);
 			if (a != null){
 				artist = a;
 				updateArtist();

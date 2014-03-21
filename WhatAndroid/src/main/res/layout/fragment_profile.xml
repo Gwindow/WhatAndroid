@@ -80,9 +80,7 @@
 
         </LinearLayout>
 
-        <!-- ViewPager Layouts down here for swipeable displays of the recent uploads/snatches if
-        user paranoia isn't too high? -->
-        <!-- Later: set to a specific height to fit things nicely? -->
+        <!-- Is there a way to set height better for different display sizes? -->
         <android.support.v4.view.ViewPager
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/recent_snatches"
@@ -97,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="224dp"
                 android:layout_below="@id/recent_snatches"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="8dp"/>
 
     </RelativeLayout>
 </ScrollView>

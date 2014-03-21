@@ -11,6 +11,9 @@ import java.util.List;
  * Pager adapter for swiping through the recent torrents on the user profile page
  */
 public class RecentTorrentPagerAdapter extends FragmentStatePagerAdapter {
+	/**
+	 * The list of torrents being displayed
+	 */
 	private final List<RecentTorrent> torrents;
 
 	public RecentTorrentPagerAdapter(List<RecentTorrent> tor, FragmentManager fm){

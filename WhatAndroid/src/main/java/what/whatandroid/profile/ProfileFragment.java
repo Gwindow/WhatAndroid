@@ -202,7 +202,15 @@ public class ProfileFragment extends Fragment {
 		}
 
 		@Override
+		protected void onPreExecute(){
+			getActivity().setProgressBarIndeterminateVisibility(true);
+			getActivity().setProgressBarIndeterminate(true);
+		}
+
+		@Override
 		protected void onPostExecute(User user){
+			getActivity().setProgressBarIndeterminateVisibility(false);
+			getActivity().setProgressBarIndeterminate(false);
 			if (user != null){
 				profile = user.getProfile();
 				updateProfile();
