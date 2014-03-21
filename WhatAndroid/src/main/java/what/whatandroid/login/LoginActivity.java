@@ -11,11 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import api.son.MySon;
 import api.soup.MySoup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import org.apache.http.impl.cookie.BasicClientCookie;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.settings.SettingsActivity;
@@ -37,8 +35,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		login.setOnClickListener(this);
 		//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 		//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-		MySoup.setSite("192.168.1.125:8080", false);
-		//MySoup.setSite("what.cd", true);
+		//MySoup.setSite("192.168.1.125:8080", false);
+		MySoup.setSite("what.cd", true);
+		MySoup.setUserAgent("WhatAndroid Android");
+		MySoup.setAndroid(true);
 
 		//Setup Universal Image loader global config
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
@@ -57,16 +57,19 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 	@Override
 	protected void onResume(){
 		super.onResume();
+		/*
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		if (preferences.getString(SettingsActivity.USER_COOKIE, null) != null){
 			new Login().execute(username.getText().toString(), password.getText().toString());
 		}
+		*/
 	}
 
 	@Override
 	public void onClick(View v) {
 		//The only thing being listened to for clicks in the view is the login button, so skip checking who was clicked
 		if (username.length() > 0 && password.length() > 0){
+			Toast.makeText(this, "Logging you in: " + username.getText().toString(), Toast.LENGTH_SHORT).show();
 			new Login().execute(username.getText().toString(), password.getText().toString());
 		}
 		else {
@@ -87,26 +90,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 			try {
 				//If there's a saved cookie then use that and load the index
 				//TODO: Handle cookie expiration
-				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-				String cookieJson = preferences.getString(SettingsActivity.USER_COOKIE, null);
-				if (cookieJson != null){
-					BasicClientCookie c = (BasicClientCookie)MySon.toObjectFromString(cookieJson, BasicClientCookie.class);
-					if (c != null){
-						//Should check if cookie is expired here
-						System.out.println("Using saved cookie");
-						MySoup.loadCookie(c);
-						MySoup.loadIndex();
-						return true;
-					}
-				}
 				MySoup.login("login.php", params[0], params[1], true);
-				//Save the cookie, user name and password
-				cookieJson = MySon.toJson(MySoup.getCookies().get(0), BasicClientCookie.class);
-				preferences.edit()
-					.putString(SettingsActivity.USER_COOKIE, cookieJson)
-					.putString(SettingsActivity.USER_NAME, params[0])
-					.putString(SettingsActivity.USER_PASSWORD, params[1])
-					.commit();
+				//TODO: Save the cookie, user name and password
 				return true;
 			}
 			catch (Exception e){

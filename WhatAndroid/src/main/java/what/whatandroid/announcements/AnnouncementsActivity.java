@@ -191,6 +191,7 @@ public class AnnouncementsActivity extends ActionBarActivity
 				return true;
 			case R.id.action_logout:
 				//TODO: MySoup needs to log us out properly. Also need to add detect & handle of logged out
+				//Launch an async task & show dialog
 				//to all activities and handling of the saved cookie, ie. if not loaded then load it.
 				//perhaps candidate for some parent class
 				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
