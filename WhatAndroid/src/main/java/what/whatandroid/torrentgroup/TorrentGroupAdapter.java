@@ -10,6 +10,7 @@ import android.widget.TextView;
 import api.cli.Utils;
 import api.torrents.torrents.Artist;
 import api.torrents.torrents.Edition;
+import api.torrents.torrents.MusicInfo;
 import api.torrents.torrents.Torrents;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewArtistCallbacks;
@@ -34,10 +35,19 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 	 */
 	private List<Edition> editions;
 
-	public TorrentGroupAdapter(Context context, List<Artist> artists, List<Edition> objects){
+	/**
+	 * Setup the adapter to display a list of the torrents for some torrent group and the artists if there
+	 * are artists on the torrent
+	 *
+	 * @param musicInfo artists, or null if the torrent has none (eg. a non-music torrent)
+	 * @param objects   the list of editions for the torrent group
+	 */
+	public TorrentGroupAdapter(Context context, MusicInfo musicInfo, List<Edition> objects){
 		super();
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.artists = artists;
+		if (musicInfo != null){
+			artists = musicInfo.getAllArtists();
+		}
 		editions = objects;
 
 		try {
@@ -50,14 +60,20 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 
 	@Override
 	public int getChildrenCount(int groupPosition){
-		return groupPosition == 0 ? artists.size()
-			: editions.get(groupPosition - 1).getTorrents().size();
+		if (artists != null){
+			return groupPosition == 0 ? artists.size()
+				: editions.get(groupPosition - 1).getTorrents().size();
+		}
+		return editions.get(groupPosition).getTorrents().size();
 	}
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition){
-		return groupPosition == 0 ? artists.get(childPosition)
-			: editions.get(groupPosition - 1).getTorrents().get(childPosition);
+		if (artists != null){
+			return groupPosition == 0 ? artists.get(childPosition)
+				: editions.get(groupPosition - 1).getTorrents().get(childPosition);
+		}
+		return editions.get(groupPosition).getTorrents().get(childPosition);
 	}
 
 	@Override
@@ -67,7 +83,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 
 	@Override
 	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent){
-		if (groupPosition == 0){
+		if (artists != null && groupPosition == 0){
 			return getArtistView(childPosition, isLastChild, convertView, parent);
 		}
 		return getTorrentView(groupPosition, childPosition, isLastChild, convertView, parent);
@@ -138,12 +154,15 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 
 	@Override
 	public int getGroupCount(){
-		return 1 + editions.size();
+		return artists != null ? 1 + editions.size() : editions.size();
 	}
 
 	@Override
 	public Object getGroup(int groupPosition){
-		return groupPosition == 0 ? artists : editions.get(groupPosition - 1);
+		if (artists != null){
+			return groupPosition == 0 ? artists : editions.get(groupPosition - 1);
+		}
+		return editions.get(groupPosition);
 	}
 
 	@Override
@@ -163,11 +182,16 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 			holder.groupName = (TextView)convertView.findViewById(R.id.group_category);
 			convertView.setTag(holder);
 		}
-		if (groupPosition == 0){
-			holder.groupName.setText("Artists");
+		if (artists != null){
+			if (groupPosition == 0){
+				holder.groupName.setText("Artists");
+			}
+			else {
+				holder.groupName.setText(editions.get(groupPosition - 1).getEdition());
+			}
 		}
 		else {
-			holder.groupName.setText(editions.get(groupPosition - 1).getEdition());
+			holder.groupName.setText(editions.get(groupPosition).getEdition());
 		}
 		return convertView;
 	}
@@ -179,11 +203,12 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id){
-		if (groupPosition == 0){
+		if (artists != null && groupPosition == 0){
 			ArtistViewHolder holder = (ArtistViewHolder)v.getTag();
 			callbacks.viewArtist(holder.artist.getId().intValue());
 		}
 		else {
+			//TODO: Open a download dialog for the torrent
 			TorrentViewHolder holder = (TorrentViewHolder)v.getTag();
 		}
 		return true;

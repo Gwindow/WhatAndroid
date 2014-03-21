@@ -112,7 +112,7 @@ public class TorrentGroupFragment extends Fragment {
 		torrentList.addHeaderView(titleHeader);
 
 		TorrentGroupAdapter adapter = new TorrentGroupAdapter(getActivity(),
-			group.getResponse().getGroup().getMusicInfo().getAllArtists(), editions);
+			group.getResponse().getGroup().getMusicInfo(), editions);
 		torrentList.setAdapter(adapter);
 		torrentList.setOnChildClickListener(adapter);
 	}

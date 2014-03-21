@@ -28,6 +28,6 @@
     <string name="artist_image">Artist Image</string>
     <string name="search">Search</string>
     <string name="search_terms">Search Terms</string>
-    <string name="search_tags">Search Tags (eg: hip.hop indie)</string>
+    <string name="search_tags">Tags (eg: hip.hop indie)</string>
 
 </resources>

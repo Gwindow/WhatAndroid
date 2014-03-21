@@ -84,21 +84,31 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 			holder = (ViewHolder)convertView.getTag();
 		}
 		else {
-			convertView = inflater.inflate(R.layout.list_artist_torrent, parent, false);
+			convertView = inflater.inflate(R.layout.list_torrent_search, parent, false);
 			holder = new ViewHolder();
 			holder.art = (ImageView)convertView.findViewById(R.id.album_art);
+			holder.artist = (TextView)convertView.findViewById(R.id.artist_name);
 			holder.title = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.album_year);
 			holder.tags = (TextView)convertView.findViewById(R.id.album_tags);
 			convertView.setTag(holder);
 		}
 		TorrentGroup group = getItem(position);
-		ImageLoader.getInstance().displayImage(group.getCover(), holder.art);
-		if (group.getArtist() != null){
-			holder.title.setText(group.getArtist() + " - " + group.getGroupName());
+		if (group.getCover() != null){
+			ImageLoader.getInstance().displayImage(group.getCover(), holder.art);
+			holder.art.setVisibility(View.VISIBLE);
 		}
 		else {
+			holder.art.setVisibility(View.GONE);
+		}
+		if (group.getArtist() != null){
+			holder.artist.setText(group.getArtist());
+			holder.title.setVisibility(View.VISIBLE);
 			holder.title.setText(group.getGroupName());
+		}
+		else {
+			holder.artist.setText(group.getGroupName());
+			holder.title.setVisibility(View.GONE);
 		}
 		if (group.getReleaseType() != null && group.getGroupYear() != null){
 			holder.year.setText(group.getReleaseType() + " [" + group.getGroupYear() + "]");
@@ -137,7 +147,7 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 	 */
 	private static class ViewHolder {
 		public ImageView art;
-		public TextView title, year, tags;
+		public TextView artist, title, year, tags;
 	}
 
 	/**
