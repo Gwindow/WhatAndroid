@@ -1,5 +1,6 @@
 package what.whatandroid.search;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import api.torrents.artist.Artist;
 import what.whatandroid.R;
 import what.whatandroid.artist.ArtistActivity;
+import what.whatandroid.callbacks.SetTitleCallback;
 
 /**
  * Fragment for searching for artists. If only one artist name is returned from the search
@@ -51,6 +53,18 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 
 	public ArtistSearchFragment(){
 		//Required empty ctor
+	}
+
+	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		try {
+			SetTitleCallback callback = (SetTitleCallback)activity;
+			callback.setTitle("Artist Search");
+		}
+		catch (ClassCastException e){
+			throw new ClassCastException(activity.toString() + " must implement SetTitleCallback");
+		}
 	}
 
 	@Override

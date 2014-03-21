@@ -1,5 +1,6 @@
 package what.whatandroid.search;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import api.search.user.UserSearch;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.profile.ProfileActivity;
 
 /**
@@ -61,6 +63,18 @@ public class UserSearchFragment extends Fragment implements View.OnClickListener
 		//Required empty ctor
 	}
 
+
+	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		try {
+			SetTitleCallback callback = (SetTitleCallback)activity;
+			callback.setTitle("User Search");
+		}
+		catch (ClassCastException e){
+			throw new ClassCastException(activity.toString() + " must implement SetTitleCallback");
+		}
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);

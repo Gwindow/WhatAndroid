@@ -1,5 +1,6 @@
 package what.whatandroid.search;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import api.search.torrents.TorrentSearch;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.SetTitleCallback;
 
 /**
  * Fragment for searching for torrents
@@ -57,6 +59,18 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 
 	public TorrentSearchFragment(){
 		//required empty ctor
+	}
+
+	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		try {
+			SetTitleCallback callback = (SetTitleCallback)activity;
+			callback.setTitle("Torrent Search");
+		}
+		catch (ClassCastException e){
+			throw new ClassCastException(activity.toString() + " must implement SetTitleCallback");
+		}
 	}
 
 	@Override

@@ -57,11 +57,9 @@ public class SearchActivity extends ActionBarActivity
 
 		Fragment fragment = null;
 		if (type.equalsIgnoreCase(ARTIST)){
-			setTitle("Artist Search");
 			fragment = ArtistSearchFragment.newInstance(terms);
 		}
 		else if (type.equalsIgnoreCase(USER)){
-			setTitle("User Search");
 			fragment = UserSearchFragment.newInstance(terms);
 		}
 		/*
@@ -71,7 +69,6 @@ public class SearchActivity extends ActionBarActivity
 		}
 		*/
 		else {
-			setTitle("Torrent Search");
 			fragment = TorrentSearchFragment.newInstance(terms, tags);
 		}
 		FragmentManager manager = getSupportFragmentManager();
@@ -104,17 +101,14 @@ public class SearchActivity extends ActionBarActivity
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){
-			setTitle("Torrent Search");
 			FragmentManager fm = getSupportFragmentManager();
 			fm.beginTransaction().replace(R.id.container, new TorrentSearchFragment()).commit();
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.artists))){
-			setTitle("Artist Search");
 			FragmentManager fm = getSupportFragmentManager();
 			fm.beginTransaction().replace(R.id.container, new ArtistSearchFragment()).commit();
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.users))){
-			setTitle("User Search");
 			FragmentManager fm = getSupportFragmentManager();
 			fm.beginTransaction().replace(R.id.container, new UserSearchFragment()).commit();
 		}
