@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import api.search.user.UserSearch;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.profile.ProfileActivity;
 
@@ -23,7 +24,7 @@ import what.whatandroid.profile.ProfileActivity;
  * Fragment for searching for users. If only one user is returned as a result we go to their profile,
  * otherwise a list of found users is displayed
  */
-public class UserSearchFragment extends Fragment implements View.OnClickListener {
+public class UserSearchFragment extends Fragment implements View.OnClickListener, OnLoggedInCallback {
 	/**
 	 * Search terms sent to us through the intent
 	 */
@@ -75,9 +76,9 @@ public class UserSearchFragment extends Fragment implements View.OnClickListener
 			throw new ClassCastException(activity.toString() + " must implement SetTitleCallback");
 		}
 	}
+
 	@Override
-	public void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
+	public void onLoggedIn(){
 		//If we were sent a search to load from the intent, start loading it
 		if (searchTerms != null){
 			new LoadUserSearch().execute(searchTerms);

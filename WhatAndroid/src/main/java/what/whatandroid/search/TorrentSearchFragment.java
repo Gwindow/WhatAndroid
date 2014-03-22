@@ -15,12 +15,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 import api.search.torrents.TorrentSearch;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 
 /**
  * Fragment for searching for torrents
  */
-public class TorrentSearchFragment extends Fragment implements View.OnClickListener {
+public class TorrentSearchFragment extends Fragment implements View.OnClickListener, OnLoggedInCallback {
 	/**
 	 * Search terms and tags sent to use by the intent
 	 */
@@ -74,8 +75,7 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
+	public void onLoggedIn(){
 		//If we were sent a search to load from the intent, start loading it
 		if (searchTerms != null){
 			if (searchTags == null){

@@ -17,13 +17,14 @@ import android.widget.Toast;
 import api.torrents.artist.Artist;
 import what.whatandroid.R;
 import what.whatandroid.artist.ArtistActivity;
+import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 
 /**
  * Fragment for searching for artists. If only one artist name is returned from the search
  * we view that artist, if multiple ones are returned we go to a torrent search with the search term
  */
-public class ArtistSearchFragment extends Fragment implements View.OnClickListener {
+public class ArtistSearchFragment extends Fragment implements View.OnClickListener, OnLoggedInCallback {
 	/**
 	 * Search terms sent to us by the intent
 	 */
@@ -68,9 +69,7 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
-		//If we were sent a search to run from the intent start loading it
+	public void onLoggedIn(){
 		if (searchTerms != null){
 			new LoadArtistSearch().execute(searchTerms);
 		}
