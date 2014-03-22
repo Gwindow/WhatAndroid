@@ -116,6 +116,7 @@ public abstract class LoggedInActivity extends ActionBarActivity
 			case R.id.action_settings:
 				Intent intent = new Intent(this, SettingsActivity.class);
 				startActivity(intent);
+				return true;
 			case R.id.action_logout:
 				new LogoutTask().execute();
 				return true;

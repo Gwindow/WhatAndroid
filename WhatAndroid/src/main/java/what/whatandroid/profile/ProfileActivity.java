@@ -3,8 +3,6 @@ package what.whatandroid.profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.Window;
 import api.soup.MySoup;
 import what.whatandroid.NavigationDrawerFragment;
@@ -24,7 +22,7 @@ public class ProfileActivity extends LoggedInActivity
 	private ProfileFragment profileFragment;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_frame);
@@ -55,21 +53,21 @@ public class ProfileActivity extends LoggedInActivity
 	}
 
 	@Override
-	public void onNavigationDrawerItemSelected(int position) {
+	public void onNavigationDrawerItemSelected(int position){
 		if (navDrawer == null){
 			return;
 		}
 
 		//Pass an argument to the activity telling it which to show?
 		String selection = navDrawer.getItem(position);
-		if (selection.equalsIgnoreCase(getString(R.string.announcements))) {
+		if (selection.equalsIgnoreCase(getString(R.string.announcements))){
 			//Launch AnnouncementsActivity viewing announcements
 			//For now both just return to the announcements view
 			Intent intent = new Intent(this, AnnouncementsActivity.class);
 			intent.putExtra(AnnouncementsActivity.SHOW, AnnouncementsActivity.ANNOUNCEMENTS);
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.blog))) {
+		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
 			//Launch AnnouncementsActivity viewing blog posts
 			Intent intent = new Intent(this, AnnouncementsActivity.class);
 			intent.putExtra(AnnouncementsActivity.SHOW, AnnouncementsActivity.BLOGS);
@@ -90,30 +88,5 @@ public class ProfileActivity extends LoggedInActivity
 			intent.putExtra(SearchActivity.SEARCH, SearchActivity.USER);
 			startActivity(intent);
 		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		if (!navDrawer.isDrawerOpen()) {
-			// Only show items in the action bar relevant to this screen
-			// if the drawer is not showing. Otherwise, let the drawer
-			// decide what to show in the action bar.
-			getMenuInflater().inflate(R.menu.what_android, menu);
-			restoreActionBar();
-			return true;
-		}
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		switch (item.getItemId()) {
-			case R.id.action_settings:
-				return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 }
