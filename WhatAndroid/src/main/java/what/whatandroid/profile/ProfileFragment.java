@@ -66,7 +66,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	@Override
 	public void onLoggedIn(){
 		System.out.println("ProfileFragment On logged in callback");
-		if (profile == null && MySoup.isLoggedIn()){
+		if (profile == null){
 			new LoadProfile().execute(userID);
 		}
 	}
