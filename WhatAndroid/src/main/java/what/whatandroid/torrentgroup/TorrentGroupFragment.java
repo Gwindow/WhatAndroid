@@ -15,6 +15,7 @@ import api.torrents.torrents.Edition;
 import api.torrents.torrents.TorrentGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 /**
  * Fragment for viewing a torrent group's information
  */
-public class TorrentGroupFragment extends Fragment {
+public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback {
 	/**
 	 * The torrent group being viewed
 	 */
@@ -73,8 +74,7 @@ public class TorrentGroupFragment extends Fragment {
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
+	public void onLoggedIn(){
 		if (group == null){
 			new LoadGroup().execute(groupID);
 		}
