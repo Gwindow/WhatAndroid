@@ -1,54 +1,34 @@
 package what.whatandroid.announcements;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Toast;
 import api.announcements.Announcement;
 import api.announcements.Announcements;
 import api.announcements.BlogPost;
 import api.soup.MySoup;
-import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
+import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
-import what.whatandroid.settings.SettingsActivity;
 
 /**
  * The announcements fragment shows announcements and blog posts and is the "main" activity, being
- * the first one shown after logging in. The navbar routes user to other activities in the app
- * TODO: Need a way of handling the html in the blog and announcement bodies
- * TODO: Side note, blog posts API doesn't seem to work on my gazelle install, maybe just b/c it's older?
- * they do seem to work well against the full site.
+ * the first one shown after logging in
  */
-public class AnnouncementsActivity extends ActionBarActivity
-	implements NavigationDrawerFragment.NavigationDrawerCallbacks, AnnouncementManager {
+public class AnnouncementsActivity extends LoggedInActivity implements AnnouncementManager {
 	/**
 	 * Intent parameters for showing Announcements or Blogs
 	 */
 	public final static String SHOW = "what.whatandroid.SHOW";
 	public final static int ANNOUNCEMENTS = 0, BLOGS = 1;
-	/**
-	 * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-	 */
-	private NavigationDrawerFragment navDrawer;
-	/**
-	 * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-	 */
-	private CharSequence title;
 	/**
 	 * Our pager adapter, view pager and the number of fragments we're showing
 	 */
@@ -58,29 +38,32 @@ public class AnnouncementsActivity extends ActionBarActivity
 	 * The announcements being shown in the view (announcements and blog posts)
 	 */
 	private Announcements announcements;
+	//Which page we're viewing. TODO This will likely be irrelevant soon
+	private int pageViewed;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_view_pager);
+		setupNavDrawer();
 
-		navDrawer = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-		int show = getIntent().getIntExtra(SHOW, ANNOUNCEMENTS);
-		if (show == ANNOUNCEMENTS){
-			title = getString(R.string.announcements);
+		viewPager = (ViewPager)findViewById(R.id.view_pager);
+		pageViewed = getIntent().getIntExtra(SHOW, ANNOUNCEMENTS);
+		if (pageViewed == ANNOUNCEMENTS){
+			setTitle(getString(R.string.announcements));
 		}
 		else {
-			title = getString(R.string.blog);
+			setTitle(getString(R.string.blog));
 		}
-		getSupportActionBar().setTitle(title);
+	}
 
-		//Set up the drawer.
-		navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.drawer_layout));
-		viewPager = (ViewPager)findViewById(R.id.view_pager);
-
-		//TODO: Show an indeterminate progress bar somewhere
-		new LoadAnnouncements().execute(show);
+	@Override
+	public void onLoggedIn(){
+		System.out.println("Announcements activity onLoggedIn");
+		if (announcements == null){
+			new LoadAnnouncements().execute(pageViewed);
+		}
 	}
 
 	/**
@@ -98,14 +81,12 @@ public class AnnouncementsActivity extends ActionBarActivity
 		if (selection.equalsIgnoreCase(getString(R.string.announcements)) && announcements != null){
 			pagerAdapter = new AnnouncementsPagerAdapter(getSupportFragmentManager());
 			viewPager.setAdapter(pagerAdapter);
-			title = getString(R.string.announcements);
-			getSupportActionBar().setTitle(title);
+			setTitle(getString(R.string.announcements));
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog)) && announcements != null){
 			pagerAdapter = new BlogPostsPagerAdapter(getSupportFragmentManager());
 			viewPager.setAdapter(pagerAdapter);
-			title = getString(R.string.blog);
-			getSupportActionBar().setTitle(title);
+			setTitle(getString(R.string.blog));
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.profile))){
 			Intent intent = new Intent(this, ProfileActivity.class);
@@ -155,56 +136,6 @@ public class AnnouncementsActivity extends ActionBarActivity
 			((BlogPostsPagerAdapter)pagerAdapter).showPost(post);
 			viewPager.setCurrentItem(1);
 		}
-	}
-
-	public void restoreActionBar(){
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle(title);
-	}
-
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu){
-		if (!navDrawer.isDrawerOpen()){
-			// Only show items in the action bar relevant to this screen
-			// if the drawer is not showing. Otherwise, let the drawer
-			// decide what to show in the action bar.
-			getMenuInflater().inflate(R.menu.what_android, menu);
-			restoreActionBar();
-			return true;
-		}
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item){
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		Intent intent;
-		switch (item.getItemId()){
-			case R.id.action_settings:
-				intent = new Intent(this, SettingsActivity.class);
-				startActivity(intent);
-				return true;
-			case R.id.action_logout:
-				//TODO: MySoup needs to log us out properly. Also need to add detect & handle of logged out
-				//Launch an async task & show dialog
-				//to all activities and handling of the saved cookie, ie. if not loaded then load it.
-				//perhaps candidate for some parent class
-				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-				preferences.edit().remove(SettingsActivity.USER_COOKIE).commit();
-				intent = new Intent(Intent.ACTION_MAIN);
-				intent.addCategory(Intent.CATEGORY_HOME);
-				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(intent);
-				return true;
-			default:
-				break;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
