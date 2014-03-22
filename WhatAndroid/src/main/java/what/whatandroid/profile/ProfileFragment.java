@@ -18,11 +18,12 @@ import api.user.User;
 import api.user.recent.UserRecents;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 
 /**
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	/**
 	 * The user's profile information
 	 */
@@ -63,11 +64,30 @@ public class ProfileFragment extends Fragment {
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
-		if (profile == null){
+	public void onLoggedIn(){
+		System.out.println("ProfileFragment On logged in callback");
+		if (profile == null && MySoup.isLoggedIn()){
 			new LoadProfile().execute(userID);
 		}
+	}
+
+	/**
+	 * Set the user id, should use this if we weren't originally logged in when creating the fragment
+	 * since in that case the user id is invalid
+	 *
+	 * @param id user id to view
+	 */
+	public void setUserID(int id){
+		userID = id;
+	}
+
+	/**
+	 * Get the user id the fragment is currently viewing
+	 *
+	 * @return viewed user's id
+	 */
+	public int getUserID(){
+		return userID;
 	}
 
 	@Override

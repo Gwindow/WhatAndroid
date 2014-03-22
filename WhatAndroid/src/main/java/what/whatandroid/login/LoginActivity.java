@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import api.son.MySon;
 import api.soup.MySoup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -18,11 +20,25 @@ import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.settings.SettingsActivity;
 
+import java.net.HttpCookie;
+
 /**
  * The login fragment, provides the user fields for their user name
  * and password and allows them to log in to the site
  */
 public class LoginActivity extends Activity implements View.OnClickListener {
+	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
+	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
+	public static final String SITE = "192.168.1.125:8080/";
+	/**
+	 * Set this parameter to true in the intent if we just want the login activity to
+	 * log the user in then return back to the launching activity
+	 */
+	public static final String LOGIN_REQUEST = "what.whatandroid.LOGIN_REQUEST";
+	/**
+	 * If we're logging in at the request of some other activity
+	 */
+	private boolean loginRequest;
 	private TextView username, password;
 
 	@Override
@@ -33,16 +49,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		password = (TextView)findViewById(R.id.password_input);
 		Button login = (Button)findViewById(R.id.login_button);
 		login.setOnClickListener(this);
-		//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
-		//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-		//MySoup.setSite("192.168.1.125:8080", false);
-		MySoup.setSite("what.cd", true);
+		MySoup.setSite(SITE, false);
 		MySoup.setUserAgent("WhatAndroid Android");
 		MySoup.setAndroid(true);
 
 		//Setup Universal Image loader global config
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
-			.discCacheSize(20 * 512 * 512)
+			.discCacheExtraOptions(512, 512, Bitmap.CompressFormat.JPEG, 75, null)
+			.discCacheSize(50 * 512 * 512)
 			.build();
 		ImageLoader.getInstance().init(config);
 
@@ -52,24 +66,24 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		String savedUserPass = preferences.getString(SettingsActivity.USER_PASSWORD, "");
 		username.setText(savedUserName);
 		password.setText(savedUserPass);
+
+		loginRequest = getIntent().getBooleanExtra(LOGIN_REQUEST, false);
+		System.out.println("Login request: " + (loginRequest ? "true" : "false"));
 	}
 
 	@Override
 	protected void onResume(){
 		super.onResume();
-		/*
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		if (preferences.getString(SettingsActivity.USER_COOKIE, null) != null){
 			new Login().execute(username.getText().toString(), password.getText().toString());
 		}
-		*/
 	}
 
 	@Override
 	public void onClick(View v) {
 		//The only thing being listened to for clicks in the view is the login button, so skip checking who was clicked
 		if (username.length() > 0 && password.length() > 0){
-			Toast.makeText(this, "Logging you in: " + username.getText().toString(), Toast.LENGTH_SHORT).show();
 			new Login().execute(username.getText().toString(), password.getText().toString());
 		}
 		else {
@@ -86,12 +100,26 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		private ProgressDialog dialog;
 
 		@Override
-		protected Boolean doInBackground(String... params) {
+		protected Boolean doInBackground(String... params){
 			try {
-				//If there's a saved cookie then use that and load the index
-				//TODO: Handle cookie expiration
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+				String cookieJson = preferences.getString(SettingsActivity.USER_COOKIE, null);
+				if (cookieJson != null){
+					HttpCookie cookie = (HttpCookie)MySon.toObjectFromString(cookieJson, HttpCookie.class);
+					if (cookie != null && !cookie.hasExpired()){
+						MySoup.addCookie(cookie);
+						MySoup.loadIndex();
+						System.out.println("Using saved cookie");
+						return true;
+					}
+				}
 				MySoup.login("login.php", params[0], params[1], true);
-				//TODO: Save the cookie, user name and password
+				cookieJson = MySon.toJson(MySoup.getSessionCookie(), HttpCookie.class);
+				preferences.edit()
+					.putString(SettingsActivity.USER_COOKIE, cookieJson)
+					.putString(SettingsActivity.USER_NAME, params[0])
+					.putString(SettingsActivity.USER_PASSWORD, params[1])
+					.commit();
 				return true;
 			}
 			catch (Exception e){
@@ -111,8 +139,16 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		protected void onPostExecute(Boolean status) {
 			dialog.dismiss();
 			if (status){
-				Intent intent = new Intent(LoginActivity.this, AnnouncementsActivity.class);
-				startActivity(intent);
+				if (loginRequest){
+					System.out.println("Returning to requesting activity");
+					Intent result = new Intent();
+					setResult(Activity.RESULT_OK, result);
+					LoginActivity.this.finish();
+				}
+				else {
+					Intent intent = new Intent(LoginActivity.this, AnnouncementsActivity.class);
+					startActivity(intent);
+				}
 			}
 			else {
 				Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_LONG).show();

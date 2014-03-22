@@ -3,9 +3,6 @@ package what.whatandroid.profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -14,39 +11,40 @@ import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
-public class ProfileActivity extends ActionBarActivity
+public class ProfileActivity extends LoggedInActivity
 	implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewTorrentCallbacks {
 	/**
 	 * Param to pass the user id to display to the activity
 	 */
 	public final static String USER_ID = "what.whatandroid.USER_ID";
-
-	/**
-	 * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-	 */
-	private NavigationDrawerFragment navDrawer;
-	/**
-	 * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-	 */
-	private CharSequence title;
+	private ProfileFragment profileFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_frame);
-
-		navDrawer = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-		navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.drawer_layout));
-		title = getTitle();
+		setupNavDrawer();
 
 		//Will default to viewing our own profile
-		ProfileFragment fragment = ProfileFragment.newInstance(getIntent().getIntExtra(USER_ID, MySoup.getUserId()));
+		profileFragment = ProfileFragment.newInstance(getIntent().getIntExtra(USER_ID, MySoup.getUserId()));
 		FragmentManager manager = getSupportFragmentManager();
-		manager.beginTransaction().add(R.id.container, fragment).commit();
+		manager.beginTransaction().add(R.id.container, profileFragment).commit();
+	}
+
+	@Override
+	public void onLoggedIn(){
+		System.out.println("ProfileActivity on logged in");
+		//If we were trying to view our own profile the user id could be invalid if we weren't logged in
+		//and tried to get it from MySoup
+		if (profileFragment.getUserID() == -1){
+			profileFragment.setUserID(MySoup.getUserId());
+		}
+		profileFragment.onLoggedIn();
 	}
 
 	@Override
@@ -57,15 +55,8 @@ public class ProfileActivity extends ActionBarActivity
 	}
 
 	@Override
-	public void setTitle(String t){
-		title = t;
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setTitle(title);
-	}
-
-	@Override
 	public void onNavigationDrawerItemSelected(int position) {
-		if (navDrawer == null) {
+		if (navDrawer == null){
 			return;
 		}
 
@@ -99,13 +90,6 @@ public class ProfileActivity extends ActionBarActivity
 			intent.putExtra(SearchActivity.SEARCH, SearchActivity.USER);
 			startActivity(intent);
 		}
-	}
-
-	public void restoreActionBar() {
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle(title);
 	}
 
 	@Override
