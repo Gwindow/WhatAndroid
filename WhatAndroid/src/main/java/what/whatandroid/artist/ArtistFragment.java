@@ -14,12 +14,13 @@ import api.torrents.artist.Artist;
 import api.torrents.artist.Releases;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 
 /**
  * Fragment for viewing an artist's information and torrent groups
  */
-public class ArtistFragment extends Fragment {
+public class ArtistFragment extends Fragment implements OnLoggedInCallback {
 	/**
 	 * The artist being viewed
 	 */
@@ -74,6 +75,16 @@ public class ArtistFragment extends Fragment {
 	}
 
 	@Override
+	public void onLoggedIn(){
+		if (artist == null){
+			new LoadArtist().execute(artistID);
+		}
+		else {
+			releases = new Releases(artist);
+		}
+	}
+
+	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
@@ -81,17 +92,6 @@ public class ArtistFragment extends Fragment {
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(activity.toString() + " must implement ViewTorrentCallbacks!");
-		}
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
-		if (artist == null){
-			new LoadArtist().execute(artistID);
-		}
-		else {
-			releases = new Releases(artist);
 		}
 	}
 
