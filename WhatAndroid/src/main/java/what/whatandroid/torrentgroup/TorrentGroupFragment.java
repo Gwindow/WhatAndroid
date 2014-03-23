@@ -152,8 +152,10 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 
 		@Override
 		protected void onPostExecute(TorrentGroup torrentGroup){
-			getActivity().setProgressBarIndeterminateVisibility(false);
-			getActivity().setProgressBarIndeterminate(false);
+			if (getActivity() != null){
+				getActivity().setProgressBarIndeterminateVisibility(false);
+				getActivity().setProgressBarIndeterminate(false);
+			}
 			if (torrentGroup != null){
 				group = torrentGroup;
 				updateTorrentGroup(editions);

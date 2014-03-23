@@ -239,8 +239,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 
 		@Override
 		protected void onPostExecute(User user){
-			getActivity().setProgressBarIndeterminateVisibility(false);
-			getActivity().setProgressBarIndeterminate(false);
+			if (getActivity() != null){
+				getActivity().setProgressBarIndeterminateVisibility(false);
+				getActivity().setProgressBarIndeterminate(false);
+			}
 			if (user != null){
 				profile = user.getProfile();
 				updateProfile();

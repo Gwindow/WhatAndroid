@@ -17,7 +17,7 @@ import api.soup.MySoup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import what.whatandroid.R;
-import what.whatandroid.announcements.AnnouncementsActivity;
+import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.settings.SettingsActivity;
 
 import java.net.HttpCookie;
@@ -29,7 +29,8 @@ import java.net.HttpCookie;
 public class LoginActivity extends Activity implements View.OnClickListener {
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-	public static final String SITE = "192.168.1.125:8080/";
+	//public static final String SITE = "192.168.1.125:8080/";
+	public static final String SITE = "what.cd";
 	/**
 	 * Set this parameter to true in the intent if we just want the login activity to
 	 * log the user in then return back to the launching activity
@@ -49,7 +50,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		password = (TextView)findViewById(R.id.password_input);
 		Button login = (Button)findViewById(R.id.login_button);
 		login.setOnClickListener(this);
-		MySoup.setSite(SITE, false);
+		MySoup.setSite(SITE, true);
 		MySoup.setUserAgent("WhatAndroid Android");
 		MySoup.setAndroid(true);
 
@@ -146,7 +147,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 					LoginActivity.this.finish();
 				}
 				else {
-					Intent intent = new Intent(LoginActivity.this, AnnouncementsActivity.class);
+					Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
 					startActivity(intent);
 				}
 			}
