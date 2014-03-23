@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import api.announcements.Announcement;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.ViewAnnouncementCallbacks;
 
 import java.util.List;
 
@@ -17,53 +18,45 @@ import java.util.List;
  */
 public class AnnouncementsAdapter extends ArrayAdapter<Announcement> implements AdapterView.OnItemClickListener {
 	private final LayoutInflater inflater;
-	private final int resource;
 	/**
 	 * The announcement activity interface so we can select an announcement to show
 	 * a detail view of
 	 */
-	private AnnouncementManager manager;
+	ViewAnnouncementCallbacks callbacks;
 
 	/**
 	 * Construct the adapter and assign the list of announcements to view
 	 *
 	 * @param context application context for the adapter
-	 * @param res     the view to inflate
 	 * @param objects the objects to display
 	 */
-	public AnnouncementsAdapter(Context context, int res, List<Announcement> objects){
-		super(context, res, objects);
+	public AnnouncementsAdapter(Context context, List<Announcement> objects, ViewAnnouncementCallbacks callbacks){
+		super(context, R.layout.list_announcement, objects);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		resource = res;
-		try {
-			manager = (AnnouncementManager)context;
-		}
-		catch (ClassCastException e){
-			throw new ClassCastException(context.toString() + " must implement AnnouncementManager");
-		}
+		this.callbacks = callbacks;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent){
-		//Recycle views if we can
 		ViewHolder holder;
 		if (convertView != null){
 			holder = (ViewHolder)convertView.getTag();
 		}
 		//We need to setup a new view
 		else {
-			convertView = inflater.inflate(resource, parent, false);
+			convertView = inflater.inflate(R.layout.list_announcement, parent, false);
 			holder = new ViewHolder();
 			holder.title = (TextView)convertView.findViewById(R.id.announcement_title);
 			holder.date = (TextView)convertView.findViewById(R.id.announcement_date);
 			holder.snippet = (TextView)convertView.findViewById(R.id.announcement_snippet);
 			convertView.setTag(holder);
 		}
-		holder.announcement = getItem(position);
-		holder.title.setText(holder.announcement.getTitle());
+		Announcement a = getItem(position);
+		holder.title.setText(a.getTitle());
 		//TODO: Prettier formatting for newstime maybe? Fuzzy time?
-		holder.date.setText(holder.announcement.getNewsTime());
-		holder.snippet.setText(holder.announcement.getBody());
+		holder.date.setText(a.getNewsTime());
+		//holder.snippet.setText(a.getBody());
+		holder.snippet.setText("Empty");
 		return convertView;
 	}
 
@@ -73,8 +66,7 @@ public class AnnouncementsAdapter extends ArrayAdapter<Announcement> implements 
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-		ViewHolder holder = (ViewHolder)view.getTag();
-		manager.showAnnouncement(holder.announcement);
+		callbacks.viewAnnouncement(getItem(position));
 	}
 
 	/**
@@ -82,6 +74,5 @@ public class AnnouncementsAdapter extends ArrayAdapter<Announcement> implements 
 	 */
 	private static class ViewHolder {
 		public TextView title, date, snippet;
-		public Announcement announcement;
 	}
 }

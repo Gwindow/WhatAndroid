@@ -5,16 +5,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.Window;
 import android.widget.Toast;
-import api.announcements.Announcement;
 import api.announcements.Announcements;
-import api.announcements.BlogPost;
 import api.soup.MySoup;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.AnnouncementsFragmentCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
@@ -23,46 +19,50 @@ import what.whatandroid.search.SearchActivity;
  * The announcements fragment shows announcements and blog posts and is the "main" activity, being
  * the first one shown after logging in
  */
-public class AnnouncementsActivity extends LoggedInActivity implements AnnouncementManager {
+public class AnnouncementsActivity extends LoggedInActivity {
 	/**
 	 * Intent parameters for showing Announcements or Blogs
 	 */
 	public final static String SHOW = "what.whatandroid.SHOW";
 	public final static int ANNOUNCEMENTS = 0, BLOGS = 1;
 	/**
-	 * Our pager adapter, view pager and the number of fragments we're showing
+	 * Callback to update the displayed fragments list of blog posts or announcements
 	 */
-	private PagerAdapter pagerAdapter;
-	private ViewPager viewPager;
+	private AnnouncementsFragmentCallbacks callbacks;
 	/**
-	 * The announcements being shown in the view (announcements and blog posts)
+	 * The announcements being displayed
 	 */
 	private Announcements announcements;
-	//Which page we're viewing. TODO This will likely be irrelevant soon
-	private int pageViewed;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.activity_view_pager);
+		setContentView(R.layout.activity_frame);
 		setupNavDrawer();
 
-		viewPager = (ViewPager)findViewById(R.id.view_pager);
-		pageViewed = getIntent().getIntExtra(SHOW, ANNOUNCEMENTS);
-		if (pageViewed == ANNOUNCEMENTS){
-			setTitle(getString(R.string.announcements));
-		}
-		else {
-			setTitle(getString(R.string.blog));
-		}
+		int show = getIntent().getIntExtra(SHOW, ANNOUNCEMENTS);
+		Fragment fragment;
+
+		fragment = new AnnouncementsFragment();
+		callbacks = (AnnouncementsFragmentCallbacks)fragment;
+		FragmentManager manager = getSupportFragmentManager();
+		manager.beginTransaction().add(R.id.container, fragment).commit();
 	}
 
 	@Override
 	public void onLoggedIn(){
 		System.out.println("Announcements activity onLoggedIn");
 		if (announcements == null){
-			new LoadAnnouncements().execute(pageViewed);
+			new LoadAnnouncements().execute();
+		}
+	}
+
+	@Override
+	public void onBackPressed(){
+		//If the activity should go back, go back
+		if (callbacks.backPressed()){
+			super.onBackPressed();
 		}
 	}
 
@@ -79,14 +79,10 @@ public class AnnouncementsActivity extends LoggedInActivity implements Announcem
 		}
 		String selection = navDrawer.getItem(position);
 		if (selection.equalsIgnoreCase(getString(R.string.announcements)) && announcements != null){
-			pagerAdapter = new AnnouncementsPagerAdapter(getSupportFragmentManager());
-			viewPager.setAdapter(pagerAdapter);
-			setTitle(getString(R.string.announcements));
+			//Instead swap fragment like Search activity
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog)) && announcements != null){
-			pagerAdapter = new BlogPostsPagerAdapter(getSupportFragmentManager());
-			viewPager.setAdapter(pagerAdapter);
-			setTitle(getString(R.string.blog));
+			//Instead swap fragment like search activity
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.profile))){
 			Intent intent = new Intent(this, ProfileActivity.class);
@@ -111,164 +107,9 @@ public class AnnouncementsActivity extends LoggedInActivity implements Announcem
 	}
 
 	/**
-	 * Set the announcement to be shown and show it
-	 * Ignored if not currently in the announcements view
-	 *
-	 * @param announcement the announcement to show in the fragment
-	 */
-	@Override
-	public void showAnnouncement(Announcement announcement){
-		if (pagerAdapter instanceof AnnouncementsPagerAdapter){
-			((AnnouncementsPagerAdapter)pagerAdapter).showAnnouncement(announcement);
-			viewPager.setCurrentItem(1);
-		}
-	}
-
-	/**
-	 * Set the blog post to be shown and show it
-	 * Ignored if not currently in the blog posts view
-	 *
-	 * @param post the blog post to show in the fragment
-	 */
-	@Override
-	public void showBlogPost(BlogPost post){
-		if (pagerAdapter instanceof BlogPostsPagerAdapter){
-			((BlogPostsPagerAdapter)pagerAdapter).showPost(post);
-			viewPager.setCurrentItem(1);
-		}
-	}
-
-	@Override
-	public void onBackPressed(){
-		//If we're at the last view go back in the activity stack
-		if (viewPager.getCurrentItem() == 0){
-			super.onBackPressed();
-		}
-		else {
-			viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-		}
-	}
-
-	/**
-	 * A slide pager adapter for showing the list of announcements and
-	 * a detail fragment of the selected announcement
-	 */
-	private class AnnouncementsPagerAdapter extends FragmentStatePagerAdapter {
-		/**
-		 * The announcement fragment for the announcement being shown in detail
-		 */
-		private AnnouncementFragment detail;
-		private int numPages;
-		private final FragmentManager fragmentManager;
-
-		public AnnouncementsPagerAdapter(FragmentManager fm){
-			super(fm);
-			fragmentManager = fm;
-			numPages = 1;
-		}
-
-		/**
-		 * Set the announcement to view in detail
-		 *
-		 * @param announcement the announcement to view in detail
-		 */
-		public void showAnnouncement(Announcement announcement){
-			if (detail != null && !detail.getAnnouncement().getTitle().equalsIgnoreCase(announcement.getTitle())){
-				fragmentManager.beginTransaction().remove(detail).commit();
-			}
-			detail = AnnouncementFragment.newInstance(announcement);
-			numPages = 2;
-			notifyDataSetChanged();
-		}
-
-		@Override
-		public Fragment getItem(int i){
-			if (i == 0){
-				return AnnouncementsFragment.newInstance(announcements.getResponse().getAnnouncements());
-			}
-			return detail;
-		}
-
-		@Override
-		public int getItemPosition(Object object){
-			//If the detail fragment we want to show has a different title than the one being shown tell it to hide
-			//the old detail fragment
-			if (object instanceof AnnouncementFragment && !((AnnouncementFragment)object).getAnnouncement().getTitle()
-				.equalsIgnoreCase(detail.getAnnouncement().getTitle())){
-				return POSITION_NONE;
-			}
-			return POSITION_UNCHANGED;
-		}
-
-		@Override
-		public int getCount(){
-			return numPages;
-		}
-	}
-
-	/**
-	 * A slide pager adapter for showing the list of blog posts and a detail
-	 * fragment of the selected post
-	 */
-	private class BlogPostsPagerAdapter extends FragmentStatePagerAdapter {
-		/**
-		 * The announcement fragment for the announcement being shown in detail
-		 */
-		private BlogPostFragment detail;
-		private int numPages;
-		private final FragmentManager fragmentManager;
-
-		public BlogPostsPagerAdapter(FragmentManager fm){
-			super(fm);
-			fragmentManager = fm;
-			numPages = 1;
-		}
-
-		/**
-		 * Set the blog post to view in detail
-		 *
-		 * @param post the announcement to view in detail
-		 */
-		public void showPost(BlogPost post){
-			if (detail != null && !detail.getPost().getTitle().equalsIgnoreCase(post.getTitle())){
-				fragmentManager.beginTransaction().remove(detail).commit();
-			}
-			detail = BlogPostFragment.newInstance(post);
-			numPages = 2;
-			notifyDataSetChanged();
-		}
-
-		@Override
-		public Fragment getItem(int i){
-			if (i == 0){
-				return BlogPostsFragment.newInstance(announcements.getResponse().getBlogPosts());
-			}
-			return detail;
-		}
-
-		@Override
-		public int getItemPosition(Object object){
-			//If the detail fragment we want to show has a different title than the one being shown tell it to hide
-			//the old detail fragment
-			if (object instanceof BlogPostFragment && !((BlogPostFragment)object).getPost().getTitle()
-				.equalsIgnoreCase(detail.getPost().getTitle())){
-				return POSITION_NONE;
-			}
-			return POSITION_UNCHANGED;
-		}
-
-		@Override
-		public int getCount(){
-			return numPages;
-		}
-	}
-
-	/**
 	 * Async task to load the announcements
 	 */
-	private class LoadAnnouncements extends AsyncTask<Integer, Void, Announcements> {
-		private int show;
-
+	private class LoadAnnouncements extends AsyncTask<Void, Void, Announcements> {
 		/**
 		 * params[0] should be which announcements we want to show after loading is done,
 		 * announcements or blogs
@@ -277,8 +118,7 @@ public class AnnouncementsActivity extends LoggedInActivity implements Announcem
 		 * @return the loaded announcements
 		 */
 		@Override
-		protected Announcements doInBackground(Integer... params){
-			show = params[0];
+		protected Announcements doInBackground(Void... params){
 			try {
 				return Announcements.init();
 			}
@@ -300,16 +140,10 @@ public class AnnouncementsActivity extends LoggedInActivity implements Announcem
 			setProgressBarIndeterminate(false);
 			if (announce != null){
 				announcements = announce;
-				if (show == ANNOUNCEMENTS){
-					pagerAdapter = new AnnouncementsPagerAdapter(getSupportFragmentManager());
-				}
-				else {
-					pagerAdapter = new BlogPostsPagerAdapter(getSupportFragmentManager());
-				}
-				viewPager.setAdapter(pagerAdapter);
+				callbacks.setAnnouncements(announcements);
 			}
 			else {
-				Toast.makeText(AnnouncementsActivity.this, "Loading announcements failed", Toast.LENGTH_LONG).show();
+				Toast.makeText(AnnouncementsActivity.this, "Loading announcements failed", Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
