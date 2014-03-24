@@ -29,8 +29,7 @@ import java.net.HttpCookie;
 public class LoginActivity extends Activity implements View.OnClickListener {
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-	//public static final String SITE = "192.168.1.125:8080/";
-	public static final String SITE = "what.cd";
+	public static final String SITE = "192.168.1.125:8080/";
 	/**
 	 * Set this parameter to true in the intent if we just want the login activity to
 	 * log the user in then return back to the launching activity
@@ -50,7 +49,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		password = (TextView)findViewById(R.id.password_input);
 		Button login = (Button)findViewById(R.id.login_button);
 		login.setOnClickListener(this);
-		MySoup.setSite(SITE, true);
+		MySoup.setSite(SITE, false);
 		MySoup.setUserAgent("WhatAndroid Android");
 		MySoup.setAndroid(true);
 
@@ -83,8 +82,18 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		//The only thing being listened to for clicks in the view is the login button, so skip checking who was clicked
 		if (username.length() > 0 && password.length() > 0){
+			//Check if we're logging in with a different user than we saved previously
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+			String savedUserName = preferences.getString(SettingsActivity.USER_NAME, "");
+			if (!username.getText().toString().equalsIgnoreCase(savedUserName)){
+				preferences.edit()
+					.remove(SettingsActivity.USER_NAME)
+					.remove(SettingsActivity.USER_PASSWORD)
+					.remove(SettingsActivity.USER_COOKIE)
+					.commit();
+			}
+
 			new Login().execute(username.getText().toString(), password.getText().toString());
 		}
 		else {
