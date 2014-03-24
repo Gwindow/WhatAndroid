@@ -35,8 +35,8 @@ public class ErrorReporterService extends IntentService {
 		if (reports.length() != 0){
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 			builder.setSmallIcon(R.drawable.ic_launcher)
-				.setContentTitle("WhatAndroid Crash Reports Found")
-				.setContentText("Whoops! Please click to send the reports to the devs")
+				.setContentTitle("Crash Reports Found")
+				.setContentText("Click to send reports to the devs")
 				.setAutoCancel(true);
 
 			Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "whatcdandroid@gmail.com", null));
