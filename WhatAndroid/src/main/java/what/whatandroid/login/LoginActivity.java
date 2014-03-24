@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.IntentCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -167,6 +168,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 				}
 				else {
 					Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
 					startActivity(intent);
 				}
 			}
