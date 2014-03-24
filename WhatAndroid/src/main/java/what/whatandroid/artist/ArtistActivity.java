@@ -40,7 +40,8 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 		//If we're coming from the ArtistSearchFragment then the artist was already loaded over there, so re-use it
 		if (useSearch){
 			if (ArtistSearchFragment.getArtist() != null){
-				artistFragment = ArtistFragment.newInstance(ArtistSearchFragment.getArtist());
+				artistFragment = ArtistFragment.newInstance(ArtistSearchFragment.getArtist(),
+					ArtistSearchFragment.getReleases());
 			}
 		}
 		//If no artist from search then download the data

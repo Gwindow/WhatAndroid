@@ -59,14 +59,15 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback {
 	/**
 	 * Use this factory method to create a new artist fragment displaying information about
 	 * an already loaded artist
-	 *
 	 * @param a the artist to view
+	 * @param r the releases for the artist
 	 * @return Artist Fragment displaying the artist's info
 	 */
-	public static ArtistFragment newInstance(Artist a){
+	public static ArtistFragment newInstance(Artist a, Releases r){
 		ArtistFragment f = new ArtistFragment();
 		f.artist = a;
 		f.artistID = a.getId();
+		f.releases = r;
 		return f;
 	}
 

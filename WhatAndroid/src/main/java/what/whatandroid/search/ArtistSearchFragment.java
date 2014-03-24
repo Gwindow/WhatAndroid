@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import api.torrents.artist.Artist;
+import api.torrents.artist.Releases;
 import what.whatandroid.R;
 import what.whatandroid.artist.ArtistActivity;
 import what.whatandroid.callbacks.OnLoggedInCallback;
@@ -34,6 +35,7 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 	 * the loaded artist without having to re-download it
 	 */
 	private static Artist artist;
+	private static Releases releases;
 	/**
 	 * The search input box and loading indicator
 	 */
@@ -70,9 +72,8 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 
 	@Override
 	public void onLoggedIn(){
-		if (searchTerms != null){
-			new LoadArtistSearch().execute(searchTerms);
-		}
+		//Artist search fragment really shouldn't auto-search, since it only re-directs to new fragments
+		//based on the result
 	}
 
 	@Override
@@ -115,6 +116,14 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 	}
 
 	/**
+	 * Get the loaded releases from the search
+	 * @return the loaded releases
+	 */
+	public static Releases getReleases(){
+		return releases;
+	}
+
+	/**
 	 * Load the artist auto completions for some artist name as a "search". If only one completion
 	 * is returned we launch an intent to view that artist, if multiple completions are returned we
 	 * launch a torrent search with the same terms, as the site does.
@@ -131,6 +140,7 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 				loadingIndicator.setVisibility(View.VISIBLE);
 			}
 			artist = null;
+			releases = null;
 		}
 
 		@Override
@@ -139,6 +149,7 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 			try {
 				Artist a = Artist.fromName(params[0]);
 				if (a != null){
+					releases = new Releases(a);
 					return a;
 				}
 			}
