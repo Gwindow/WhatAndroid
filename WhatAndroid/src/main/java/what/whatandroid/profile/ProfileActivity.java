@@ -67,6 +67,13 @@ public class ProfileActivity extends LoggedInActivity
 			intent.putExtra(AnnouncementsActivity.SHOW, AnnouncementsActivity.ANNOUNCEMENTS);
 			startActivity(intent);
 		}
+		else if (selection.equalsIgnoreCase(getString(R.string.profile))){
+			if (profileFragment.getUserID() != MySoup.getUserId()){
+				Intent intent = new Intent(this, ProfileActivity.class);
+				intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
+				startActivity(intent);
+			}
+		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
 			//Launch AnnouncementsActivity viewing blog posts
 			Intent intent = new Intent(this, AnnouncementsActivity.class);
