@@ -32,6 +32,8 @@
     <string name="send_to_pywa">Send to PyWA</string>
     <string name="download_to_phone">Download to phone</string>
     <string name="cancel">Cancel</string>
+    <string name="send_feedback">Send Feedback</string>
+
     <string name="pref_pywhat">PyWhat Server</string>
     <string name="pref_pywhat_host">Hostname</string>
     <string name="pref_pywhat_port">Port</string>

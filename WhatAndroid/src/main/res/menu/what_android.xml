@@ -8,13 +8,21 @@
             android:id="@+id/action_example"
             android:title="@string/action_example"
             app:showAsAction="withText|ifRoom"/>
+
+    <item
+            android:id="@+id/action_logout"
+            android:title="@string/logout"
+            app:showAsAction="never"/>
+
+    <item
+            android:id="@+id/action_feedback"
+            android:title="@string/send_feedback"
+            app:showAsAction="never"/>
+
     <item
             android:id="@+id/action_settings"
             android:title="@string/action_settings"
             android:orderInCategory="100"
             app:showAsAction="never"/>
-    <item
-            android:id="@+id/action_logout"
-            android:title="@string/logout"
-            app:showAsAction="never"/>
+
 </menu>

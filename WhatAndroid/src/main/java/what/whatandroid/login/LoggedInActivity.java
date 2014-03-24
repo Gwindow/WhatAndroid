@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
@@ -127,13 +128,19 @@ public abstract class LoggedInActivity extends ActionBarActivity
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
+		Intent intent;
 		switch (item.getItemId()){
 			case R.id.action_settings:
-				Intent intent = new Intent(this, SettingsActivity.class);
+				intent = new Intent(this, SettingsActivity.class);
 				startActivity(intent);
 				return true;
 			case R.id.action_logout:
 				new LogoutTask().execute();
+				return true;
+			case R.id.action_feedback:
+				intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "whatcdandroid@gmail.com", null));
+				intent.putExtra(Intent.EXTRA_SUBJECT, "WhatAndroid Feedback");
+				startActivity(Intent.createChooser(intent, "Send email"));
 				return true;
 			default:
 				break;
