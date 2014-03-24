@@ -77,7 +77,7 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 	@Override
 	public void onLoggedIn(){
 		//If we were sent a search to load from the intent, start loading it
-		if (searchTerms != null){
+		if (searchTerms != null && torrentSearch == null){
 			if (searchTags == null){
 				searchTags = "";
 			}
@@ -105,8 +105,10 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 		if (torrentSearch != null){
 			resultsAdapter.viewSearch(torrentSearch);
 		}
-		//If we're loading a search from an intent fill in the text boxes
-		if (searchTerms != null && !searchTerms.isEmpty()){
+		if (searchTerms == null || searchTerms.isEmpty()){
+			editTerms.requestFocus();
+		}
+		else {
 			editTerms.setText(searchTerms);
 			editTags.setText(searchTags);
 			if (torrentSearch == null){

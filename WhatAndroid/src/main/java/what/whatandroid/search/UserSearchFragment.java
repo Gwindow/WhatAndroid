@@ -79,8 +79,8 @@ public class UserSearchFragment extends Fragment implements View.OnClickListener
 
 	@Override
 	public void onLoggedIn(){
-		//If we were sent a search to load from the intent, start loading it
-		if (searchTerms != null){
+		//If we were sent a search to load from the intent and haven't already loaded it, start loading it
+		if (searchTerms != null && userSearch == null){
 			new LoadUserSearch().execute(searchTerms);
 		}
 	}
@@ -106,6 +106,7 @@ public class UserSearchFragment extends Fragment implements View.OnClickListener
 		}
 		//If we're not loading a search hide the loading indicator
 		if (searchTerms == null || searchTerms.isEmpty()){
+			editTerms.requestFocus();
 			footer.setVisibility(View.GONE);
 		}
 		else {
@@ -124,6 +125,7 @@ public class UserSearchFragment extends Fragment implements View.OnClickListener
 		if (!searchTerms.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+			System.out.println("Clicked launch search");
 			new LoadUserSearch().execute(searchTerms);
 		}
 		else {
