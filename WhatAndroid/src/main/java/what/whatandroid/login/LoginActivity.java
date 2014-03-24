@@ -2,6 +2,7 @@ package what.whatandroid.login;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -30,6 +31,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
 	public static final String SITE = "192.168.1.125:8080/";
+	//public static final String SITE = "what.cd";
 	/**
 	 * Set this parameter to true in the intent if we just want the login activity to
 	 * log the user in then return back to the launching activity
@@ -41,6 +43,23 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 	private boolean loginRequest;
 	private TextView username, password;
 
+	/**
+	 * Perform the setup of the site we'll be making API requests to and get MySoup configured
+	 * properly. Also sets up universal image loader for the application
+	 */
+	public static void setupSite(Context context){
+		MySoup.setSite(SITE, false);
+		MySoup.setUserAgent("WhatAndroid Android");
+		MySoup.setAndroid(true);
+
+		//Setup Universal Image loader global config
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context.getApplicationContext())
+			.discCacheExtraOptions(512, 512, Bitmap.CompressFormat.JPEG, 75, null)
+			.discCacheSize(50 * 512 * 512)
+			.build();
+		ImageLoader.getInstance().init(config);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,16 +68,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		password = (TextView)findViewById(R.id.password_input);
 		Button login = (Button)findViewById(R.id.login_button);
 		login.setOnClickListener(this);
-		MySoup.setSite(SITE, false);
-		MySoup.setUserAgent("WhatAndroid Android");
-		MySoup.setAndroid(true);
-
-		//Setup Universal Image loader global config
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
-			.discCacheExtraOptions(512, 512, Bitmap.CompressFormat.JPEG, 75, null)
-			.discCacheSize(50 * 512 * 512)
-			.build();
-		ImageLoader.getInstance().init(config);
+		setupSite(this);
 
 		//Setup saved user name and password if we've got them
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -106,7 +116,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 	 * Login async task, takes user's username and password and logs them
 	 * into the site via the api library
 	 */
-	private class Login extends AsyncTask<String, Void, Boolean> {
+	public class Login extends AsyncTask<String, Void, Boolean> {
 		private ProgressDialog dialog;
 
 		@Override

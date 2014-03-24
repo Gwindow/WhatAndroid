@@ -11,12 +11,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+import api.son.MySon;
 import api.soup.MySoup;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.settings.SettingsActivity;
+
+import java.net.HttpCookie;
 
 /**
  * Parent activity for ones that require the user to be logged in. If the user
@@ -55,9 +59,20 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	 */
 	private void checkLoggedIn(){
 		if (!MySoup.isLoggedIn()){
-			Intent intent = new Intent(this, LoginActivity.class);
-			intent.putExtra(LoginActivity.LOGIN_REQUEST, true);
-			startActivityForResult(intent, 0);
+			//If don't have the user's information we need to kick them to the login activity
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+			String cookie = preferences.getString(SettingsActivity.USER_COOKIE, null);
+			String username = preferences.getString(SettingsActivity.USER_NAME, null);
+			String password = preferences.getString(SettingsActivity.USER_PASSWORD, null);
+			if (cookie == null || username == null || password == null){
+				Intent intent = new Intent(this, LoginActivity.class);
+				intent.putExtra(LoginActivity.LOGIN_REQUEST, true);
+				startActivityForResult(intent, 0);
+			}
+			else {
+				LoginActivity.setupSite(this);
+				new Login().execute(username, password);
+			}
 		}
 		//If we're already logged in tell the activity it's ok to start loading if we haven't already told them
 		else if (!calledLogin){
@@ -124,6 +139,67 @@ public abstract class LoggedInActivity extends ActionBarActivity
 				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * Login async task, takes user's username and password and logs them
+	 * into the site via the api library
+	 */
+	private class Login extends AsyncTask<String, Void, Boolean> {
+		private ProgressDialog dialog;
+
+		@Override
+		protected Boolean doInBackground(String... params){
+			try {
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoggedInActivity.this);
+				String cookieJson = preferences.getString(SettingsActivity.USER_COOKIE, null);
+				if (cookieJson != null){
+					HttpCookie cookie = (HttpCookie)MySon.toObjectFromString(cookieJson, HttpCookie.class);
+					if (cookie != null && !cookie.hasExpired()){
+						MySoup.addCookie(cookie);
+						MySoup.loadIndex();
+						System.out.println("Using saved cookie");
+						return true;
+					}
+				}
+				MySoup.login("login.php", params[0], params[1], true);
+				cookieJson = MySon.toJson(MySoup.getSessionCookie(), HttpCookie.class);
+				preferences.edit()
+					.putString(SettingsActivity.USER_COOKIE, cookieJson)
+					.putString(SettingsActivity.USER_NAME, params[0])
+					.putString(SettingsActivity.USER_PASSWORD, params[1])
+					.commit();
+				return true;
+			}
+			catch (Exception e){
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPreExecute(){
+			System.out.println("Logged in activity implicitly logging in user");
+			dialog = new ProgressDialog(LoggedInActivity.this);
+			dialog.setIndeterminate(true);
+			dialog.setMessage("Logging in...");
+			dialog.show();
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status){
+			dialog.dismiss();
+			if (status && !calledLogin){
+				calledLogin = true;
+				onLoggedIn();
+			}
+			else {
+				//kick them to login activity?
+				Toast.makeText(getApplicationContext(), "Login failed, check username and password", Toast.LENGTH_LONG).show();
+				Intent intent = new Intent(LoggedInActivity.this, LoginActivity.class);
+				intent.putExtra(LoginActivity.LOGIN_REQUEST, true);
+				startActivityForResult(intent, 0);
+			}
+		}
 	}
 
 	/**
