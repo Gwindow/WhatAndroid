@@ -71,7 +71,7 @@ public abstract class LoggedInActivity extends ActionBarActivity
 				startActivityForResult(intent, 0);
 			}
 			else {
-				LoginActivity.setupSite(this);
+				LoginActivity.initStatics(this);
 				new Login().execute(username, password);
 			}
 		}
@@ -153,8 +153,6 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	 * into the site via the api library
 	 */
 	private class Login extends AsyncTask<String, Void, Boolean> {
-		private ProgressDialog dialog;
-
 		@Override
 		protected Boolean doInBackground(String... params){
 			try {
@@ -184,17 +182,7 @@ public abstract class LoggedInActivity extends ActionBarActivity
 		}
 
 		@Override
-		protected void onPreExecute(){
-			System.out.println("Logged in activity implicitly logging in user");
-			dialog = new ProgressDialog(LoggedInActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Logging in...");
-			dialog.show();
-		}
-
-		@Override
 		protected void onPostExecute(Boolean status){
-			dialog.dismiss();
 			if (status && !calledLogin){
 				calledLogin = true;
 				onLoggedIn();
