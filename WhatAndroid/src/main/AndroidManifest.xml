@@ -44,6 +44,10 @@
                 android:name=".settings.SettingsActivity"
                 android:label="@string/action_settings">
         </activity>
+
+        <service
+                android:name=".errors.ErrorReporterService"
+                android:exported="false"/>
     </application>
 
 </manifest>
