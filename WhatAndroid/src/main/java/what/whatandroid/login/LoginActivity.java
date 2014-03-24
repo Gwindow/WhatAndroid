@@ -16,7 +16,7 @@ import api.son.MySon;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.profile.ProfileActivity;
-import what.whatandroid.settings.SettingsActivity;
+import what.whatandroid.settings.SettingsFragment;
 
 import java.net.HttpCookie;
 
@@ -50,8 +50,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
 		//Setup saved user name and password if we've got them
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		String savedUserName = preferences.getString(SettingsActivity.USER_NAME, "");
-		String savedUserPass = preferences.getString(SettingsActivity.USER_PASSWORD, "");
+		String savedUserName = preferences.getString(SettingsFragment.USER_NAME, "");
+		String savedUserPass = preferences.getString(SettingsFragment.USER_PASSWORD, "");
 		username.setText(savedUserName);
 		password.setText(savedUserPass);
 
@@ -62,7 +62,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 	protected void onResume(){
 		super.onResume();
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		if (preferences.getString(SettingsActivity.USER_COOKIE, null) != null){
+		if (preferences.getString(SettingsFragment.USER_COOKIE, null) != null){
 			new Login().execute(username.getText().toString(), password.getText().toString());
 		}
 	}
@@ -72,12 +72,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		if (username.length() > 0 && password.length() > 0){
 			//Check if we're logging in with a different user than we saved previously
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-			String savedUserName = preferences.getString(SettingsActivity.USER_NAME, "");
+			String savedUserName = preferences.getString(SettingsFragment.USER_NAME, "");
 			if (!username.getText().toString().equalsIgnoreCase(savedUserName)){
 				preferences.edit()
-					.remove(SettingsActivity.USER_NAME)
-					.remove(SettingsActivity.USER_PASSWORD)
-					.remove(SettingsActivity.USER_COOKIE)
+					.remove(SettingsFragment.USER_NAME)
+					.remove(SettingsFragment.USER_PASSWORD)
+					.remove(SettingsFragment.USER_COOKIE)
 					.commit();
 			}
 
@@ -100,7 +100,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		protected Boolean doInBackground(String... params){
 			try {
 				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-				String cookieJson = preferences.getString(SettingsActivity.USER_COOKIE, null);
+				String cookieJson = preferences.getString(SettingsFragment.USER_COOKIE, null);
 				if (cookieJson != null){
 					HttpCookie cookie = (HttpCookie)MySon.toObjectFromString(cookieJson, HttpCookie.class);
 					if (cookie != null && !cookie.hasExpired()){
@@ -112,9 +112,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 				MySoup.login("login.php", params[0], params[1], true);
 				cookieJson = MySon.toJson(MySoup.getSessionCookie(), HttpCookie.class);
 				preferences.edit()
-					.putString(SettingsActivity.USER_COOKIE, cookieJson)
-					.putString(SettingsActivity.USER_NAME, params[0])
-					.putString(SettingsActivity.USER_PASSWORD, params[1])
+					.putString(SettingsFragment.USER_COOKIE, cookieJson)
+					.putString(SettingsFragment.USER_NAME, params[0])
+					.putString(SettingsFragment.USER_PASSWORD, params[1])
 					.commit();
 				return true;
 			}

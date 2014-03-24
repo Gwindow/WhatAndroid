@@ -21,4 +21,13 @@
                 android:defaultValue=""
                 android:inputType="textPassword"/>
     </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="WhatAndroid Version"
+            android:key="pref_version">
+        <Preference
+                android:title="@string/version_name"
+                android:key="@string/key_pref_version_name"
+                android:defaultValue=""/>
+    </PreferenceCategory>
 </PreferenceScreen>

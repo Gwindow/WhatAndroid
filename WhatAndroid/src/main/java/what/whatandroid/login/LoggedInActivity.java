@@ -26,6 +26,7 @@ import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.errors.ErrorLogger;
 import what.whatandroid.errors.ErrorReporterService;
 import what.whatandroid.settings.SettingsActivity;
+import what.whatandroid.settings.SettingsFragment;
 
 import java.net.HttpCookie;
 
@@ -40,7 +41,7 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
 	public static final String SITE = "192.168.1.125:8080/";
-
+	//public static final String SITE = "what.cd";
 	protected NavigationDrawerFragment navDrawer;
 	/**
 	 * Used to store the last screen title, for use in restoreActionBar
@@ -107,9 +108,9 @@ public abstract class LoggedInActivity extends ActionBarActivity
 		if (!MySoup.isLoggedIn()){
 			//If don't have the user's information we need to kick them to the login activity
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-			String cookie = preferences.getString(SettingsActivity.USER_COOKIE, null);
-			String username = preferences.getString(SettingsActivity.USER_NAME, null);
-			String password = preferences.getString(SettingsActivity.USER_PASSWORD, null);
+			String cookie = preferences.getString(SettingsFragment.USER_COOKIE, null);
+			String username = preferences.getString(SettingsFragment.USER_NAME, null);
+			String password = preferences.getString(SettingsFragment.USER_PASSWORD, null);
 			if (cookie == null || username == null || password == null){
 				Intent intent = new Intent(this, LoginActivity.class);
 				intent.putExtra(LoginActivity.LOGIN_REQUEST, true);
@@ -204,7 +205,7 @@ public abstract class LoggedInActivity extends ActionBarActivity
 		protected Boolean doInBackground(String... params){
 			try {
 				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoggedInActivity.this);
-				String cookieJson = preferences.getString(SettingsActivity.USER_COOKIE, null);
+				String cookieJson = preferences.getString(SettingsFragment.USER_COOKIE, null);
 				if (cookieJson != null){
 					HttpCookie cookie = (HttpCookie)MySon.toObjectFromString(cookieJson, HttpCookie.class);
 					if (cookie != null && !cookie.hasExpired()){
@@ -216,9 +217,9 @@ public abstract class LoggedInActivity extends ActionBarActivity
 				MySoup.login("login.php", params[0], params[1], true);
 				cookieJson = MySon.toJson(MySoup.getSessionCookie(), HttpCookie.class);
 				preferences.edit()
-					.putString(SettingsActivity.USER_COOKIE, cookieJson)
-					.putString(SettingsActivity.USER_NAME, params[0])
-					.putString(SettingsActivity.USER_PASSWORD, params[1])
+					.putString(SettingsFragment.USER_COOKIE, cookieJson)
+					.putString(SettingsFragment.USER_NAME, params[0])
+					.putString(SettingsFragment.USER_PASSWORD, params[1])
 					.commit();
 				return true;
 			}
@@ -265,9 +266,9 @@ public abstract class LoggedInActivity extends ActionBarActivity
 			dialog.dismiss();
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoggedInActivity.this);
 			preferences.edit()
-				.remove(SettingsActivity.USER_COOKIE)
-				.remove(SettingsActivity.USER_NAME)
-				.remove(SettingsActivity.USER_PASSWORD)
+				.remove(SettingsFragment.USER_COOKIE)
+				.remove(SettingsFragment.USER_NAME)
+				.remove(SettingsFragment.USER_PASSWORD)
 				.commit();
 
 			Intent intent = new Intent(Intent.ACTION_MAIN);

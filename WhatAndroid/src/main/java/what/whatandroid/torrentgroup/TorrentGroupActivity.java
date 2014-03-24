@@ -18,7 +18,7 @@ import what.whatandroid.callbacks.ViewArtistCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
-import what.whatandroid.settings.SettingsActivity;
+import what.whatandroid.settings.SettingsFragment;
 
 /**
  * View information about a torrent group and the torrents in it
@@ -107,7 +107,7 @@ public class TorrentGroupActivity extends LoggedInActivity implements ViewArtist
 		if (host.isEmpty() || port.isEmpty() || pass.isEmpty()){
 			Toast.makeText(getApplicationContext(), "Please fill out your PyWA server information",
 				Toast.LENGTH_LONG).show();
-			Intent intent = new Intent(this, SettingsActivity.class);
+			Intent intent = new Intent(this, SettingsFragment.class);
 			startActivity(intent);
 		}
 		else {
