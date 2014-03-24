@@ -111,7 +111,7 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 		albumTitle.setText(group.getResponse().getGroup().getName());
 		torrentList.addHeaderView(titleHeader);
 
-		TorrentGroupAdapter adapter = new TorrentGroupAdapter(getActivity(),
+		TorrentGroupAdapter adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(),
 			group.getResponse().getGroup().getMusicInfo(), editions);
 		torrentList.setAdapter(adapter);
 		torrentList.setOnChildClickListener(adapter);

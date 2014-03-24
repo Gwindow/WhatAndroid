@@ -1,6 +1,7 @@
 package what.whatandroid.torrentgroup;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,10 @@ import java.util.List;
 public class TorrentGroupAdapter extends BaseExpandableListAdapter implements ExpandableListView.OnChildClickListener {
 	private final LayoutInflater inflater;
 	/**
+	 * Fragment manager so we can show the download dialogs
+	 */
+	private final FragmentManager fragmentManager;
+	/**
 	 * The artists who appeared on this release
 	 */
 	List<Artist> artists;
@@ -42,9 +47,10 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 	 * @param musicInfo artists, or null if the torrent has none (eg. a non-music torrent)
 	 * @param objects   the list of editions for the torrent group
 	 */
-	public TorrentGroupAdapter(Context context, MusicInfo musicInfo, List<Edition> objects){
+	public TorrentGroupAdapter(Context context, FragmentManager fm, MusicInfo musicInfo, List<Edition> objects){
 		super();
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		fragmentManager = fm;
 		if (musicInfo != null){
 			artists = musicInfo.getAllArtists();
 		}
@@ -208,8 +214,9 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 			callbacks.viewArtist(holder.artist.getId().intValue());
 		}
 		else {
-			//TODO: Open a download dialog for the torrent
 			TorrentViewHolder holder = (TorrentViewHolder)v.getTag();
+			DownloadDialog dialog = new DownloadDialog(holder.torrent);
+			dialog.show(fragmentManager, "DownloadDialog");
 		}
 		return true;
 	}
