@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="what.whatandroid"
-          android:versionCode="1"
+          android:versionCode="8"
           android:versionName="2.0.0.a">
 
 <uses-permission android:name="android.permission.INTERNET"/>
@@ -47,6 +47,9 @@
 
         <service
                 android:name=".errors.ErrorReporterService"
+                android:exported="false"/>
+        <service
+                android:name=".updater.UpdateService"
                 android:exported="false"/>
     </application>
 

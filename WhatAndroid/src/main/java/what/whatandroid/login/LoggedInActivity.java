@@ -27,6 +27,7 @@ import what.whatandroid.errors.ErrorLogger;
 import what.whatandroid.errors.ErrorReporterService;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.settings.SettingsFragment;
+import what.whatandroid.updater.UpdateService;
 
 import java.net.HttpCookie;
 
@@ -84,6 +85,9 @@ public abstract class LoggedInActivity extends ActionBarActivity
 
 		Intent checkReports = new Intent(context, ErrorReporterService.class);
 		context.startService(checkReports);
+
+		Intent checkUpdates = new Intent(context, UpdateService.class);
+		context.startService(checkUpdates);
 	}
 
 	@Override

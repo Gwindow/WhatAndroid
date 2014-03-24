@@ -11,7 +11,8 @@ public class VersionNumber {
 	 * Create the version number, the string should contain the version information
 	 * such as "1.2.1"
 	 * Will also handle cases of incomplete version numbers, ie. 1.2 will be read to 1.2.0
-	 * A version number with a 'b' at the end indicates a preview(beta) build: 1.2.1.b -> 1.2.1 beta release
+	 * A version number with an 'a' at the end indicates an alpha buld: 2.0.0.a -> 2.0.0 alpha release
+	 * A version number with a 'b' at the end indicates a beta build: 1.2.1.b -> 1.2.1 beta release
 	 *
 	 * @param s string containg the version information
 	 */
