@@ -20,8 +20,6 @@
     <string name="password">Password</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
-    <string name="action_settings">Settings</string>
     <string name="avatar">Avatar</string>
     <string name="album_art">Album Art</string>
     <string name="artist_image">Artist Image</string>
@@ -32,8 +30,8 @@
     <string name="send_to_pywa">Send to PyWA</string>
     <string name="download_to_phone">Download to phone</string>
     <string name="cancel">Cancel</string>
-    <string name="send_feedback">Send Feedback</string>
-
+    <string name="action_settings">Settings</string>
+    <string name="action_send_feedback">Send Feedback</string>
     <string name="pref_pywhat">PyWhat Server</string>
     <string name="pref_pywhat_host">Hostname</string>
     <string name="pref_pywhat_port">Port</string>
