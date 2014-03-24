@@ -40,7 +40,6 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
 	public static final String SITE = "192.168.1.125:8080/";
-	//public static final String SITE = "what.cd";
 
 	protected NavigationDrawerFragment navDrawer;
 	/**
@@ -211,7 +210,6 @@ public abstract class LoggedInActivity extends ActionBarActivity
 					if (cookie != null && !cookie.hasExpired()){
 						MySoup.addCookie(cookie);
 						MySoup.loadIndex();
-						System.out.println("Using saved cookie");
 						return true;
 					}
 				}

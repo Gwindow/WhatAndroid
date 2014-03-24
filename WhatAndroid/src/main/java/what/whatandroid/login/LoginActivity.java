@@ -37,7 +37,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 	private TextView username, password;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		username = (TextView)findViewById(R.id.username_input);
@@ -68,7 +68,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 	}
 
 	@Override
-	public void onClick(View v) {
+	public void onClick(View v){
 		if (username.length() > 0 && password.length() > 0){
 			//Check if we're logging in with a different user than we saved previously
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -106,7 +106,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 					if (cookie != null && !cookie.hasExpired()){
 						MySoup.addCookie(cookie);
 						MySoup.loadIndex();
-						System.out.println("Using saved cookie");
 						return true;
 					}
 				}
@@ -133,7 +132,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		}
 
 		@Override
-		protected void onPostExecute(Boolean status) {
+		protected void onPostExecute(Boolean status){
 			dialog.dismiss();
 			if (status){
 				if (loginRequest){
