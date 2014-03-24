@@ -82,8 +82,8 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 		searchButton.setOnClickListener(this);
 		editTerms = (EditText)view.findViewById(R.id.search_terms);
 		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
-		//If we're not loading some search from an intent
-		if (searchTerms == null){
+
+		if (searchTerms == null || searchTerms.isEmpty()){
 			loadingIndicator.setVisibility(View.GONE);
 		}
 		else {
@@ -94,11 +94,11 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 
 	@Override
 	public void onClick(View v){
-		String terms = editTerms.getText().toString();
-		if (terms.length() > 0){
+		searchTerms = editTerms.getText().toString();
+		if (!searchTerms.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), 0);
-			new LoadArtistSearch().execute(terms);
+			imm.hideSoftInputFromInputMethod(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+			new LoadArtistSearch().execute(searchTerms);
 		}
 		else {
 			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();

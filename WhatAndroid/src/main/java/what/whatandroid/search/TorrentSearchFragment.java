@@ -106,17 +106,13 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 			resultsAdapter.viewSearch(torrentSearch);
 		}
 		//If we're loading a search from an intent fill in the text boxes
-		if (searchTerms != null){
+		if (searchTerms != null && !searchTerms.isEmpty()){
 			editTerms.setText(searchTerms);
 			editTags.setText(searchTags);
 			if (torrentSearch == null){
 				footer.setVisibility(View.VISIBLE);
 			}
 		}
-		else {
-			editTerms.requestFocus();
-		}
-
 		resultsList.setAdapter(resultsAdapter);
 		resultsList.setOnItemClickListener(resultsAdapter);
 		resultsList.setOnScrollListener(resultsAdapter);
@@ -127,9 +123,9 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 	public void onClick(View v){
 		searchTerms = editTerms.getText().toString();
 		searchTags = editTags.getText().toString();
-		if (searchTerms.length() > 0){
+		if (!searchTerms.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), 0);
+			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
 			new LoadTorrentSearch().execute(searchTerms, editTags.getText().toString());
 		}
 		else {

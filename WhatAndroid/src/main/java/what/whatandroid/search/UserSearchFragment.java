@@ -99,24 +99,18 @@ public class UserSearchFragment extends Fragment implements View.OnClickListener
 		footer = inflater.inflate(R.layout.footer_loading_indicator, null);
 		resultsList.addHeaderView(header);
 		resultsList.addFooterView(footer);
-		//Only view the footer if we're loading a search
-		footer.setVisibility(View.GONE);
 
 		resultsAdapter = new UserSearchAdapter(getActivity(), footer);
 		if (userSearch != null){
 			resultsAdapter.viewSearch(userSearch);
 		}
-		//If we're loading from an intent fill in the text boxes
-		if (searchTerms != null){
-			editTerms.setText(searchTerms);
-			if (userSearch == null){
-				footer.setVisibility(View.VISIBLE);
-			}
+		//If we're not loading a search hide the loading indicator
+		if (searchTerms == null || searchTerms.isEmpty()){
+			footer.setVisibility(View.GONE);
 		}
 		else {
-			editTerms.requestFocus();
+			editTerms.setText(searchTerms);
 		}
-
 		resultsList.setAdapter(resultsAdapter);
 		resultsList.setOnItemClickListener(resultsAdapter);
 		resultsList.setOnScrollListener(resultsAdapter);
@@ -127,9 +121,9 @@ public class UserSearchFragment extends Fragment implements View.OnClickListener
 	@Override
 	public void onClick(View v){
 		searchTerms = editTerms.getText().toString();
-		if (searchTerms.length() > 0){
+		if (!searchTerms.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), 0);
+			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
 			new LoadUserSearch().execute(searchTerms);
 		}
 		else {
