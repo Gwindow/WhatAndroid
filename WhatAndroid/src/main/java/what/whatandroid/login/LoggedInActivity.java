@@ -2,8 +2,10 @@ package what.whatandroid.login;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -15,10 +17,14 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import api.son.MySon;
 import api.soup.MySoup;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
+import what.whatandroid.errors.ErrorLogger;
+import what.whatandroid.errors.ErrorReporterService;
 import what.whatandroid.settings.SettingsActivity;
 
 import java.net.HttpCookie;
@@ -30,6 +36,12 @@ import java.net.HttpCookie;
  */
 public abstract class LoggedInActivity extends ActionBarActivity
 	implements NavigationDrawerFragment.NavigationDrawerCallbacks, SetTitleCallback, OnLoggedInCallback {
+
+	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
+	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
+	public static final String SITE = "192.168.1.125:8080/";
+	//public static final String SITE = "what.cd";
+
 	protected NavigationDrawerFragment navDrawer;
 	/**
 	 * Used to store the last screen title, for use in restoreActionBar
@@ -39,6 +51,40 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	 * Prevent calling the onLoggedIn method multiple times
 	 */
 	private boolean calledLogin = false;
+
+	/**
+	 * Initialize MySoup so that we can start making API requests
+	 */
+	public static void initSoup(){
+		MySoup.setSite(SITE, false);
+		MySoup.setUserAgent("WhatAndroid Android");
+		MySoup.setAndroid(true);
+	}
+
+	/**
+	 * Initialize universal image loader
+	 *
+	 * @param context context to get the application context from
+	 */
+	public static void initImageLoader(Context context){
+		//Setup Universal Image loader global config
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context.getApplicationContext())
+			.discCacheExtraOptions(512, 512, Bitmap.CompressFormat.JPEG, 75, null)
+			.discCacheSize(50 * 512 * 512)
+			.build();
+		ImageLoader.getInstance().init(config);
+	}
+
+	/**
+	 * Setup the error logger and run the error reporting and update checking services
+	 */
+	public static void launchServices(Context context){
+		ErrorLogger reporter = new ErrorLogger(context.getApplicationContext());
+		Thread.setDefaultUncaughtExceptionHandler(reporter);
+
+		Intent checkReports = new Intent(context, ErrorReporterService.class);
+		context.startService(checkReports);
+	}
 
 	@Override
 	protected void onResume(){
@@ -71,7 +117,9 @@ public abstract class LoggedInActivity extends ActionBarActivity
 				startActivityForResult(intent, 0);
 			}
 			else {
-				LoginActivity.initStatics(this);
+				initSoup();
+				initImageLoader(this);
+				launchServices(this);
 				new Login().execute(username, password);
 			}
 		}

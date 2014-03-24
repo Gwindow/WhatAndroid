@@ -2,10 +2,8 @@ package what.whatandroid.login;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -16,8 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import api.son.MySon;
 import api.soup.MySoup;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import what.whatandroid.R;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.settings.SettingsActivity;
@@ -29,10 +25,6 @@ import java.net.HttpCookie;
  * and password and allows them to log in to the site
  */
 public class LoginActivity extends Activity implements View.OnClickListener {
-	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
-	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-	public static final String SITE = "192.168.1.125:8080/";
-	//public static final String SITE = "what.cd";
 	/**
 	 * Set this parameter to true in the intent if we just want the login activity to
 	 * log the user in then return back to the launching activity
@@ -44,23 +36,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 	private boolean loginRequest;
 	private TextView username, password;
 
-	/**
-	 * Perform the setup of the site we'll be making API requests to and get MySoup configured
-	 * properly. Also sets up universal image loader for the application
-	 */
-	public static void setupSite(Context context){
-		MySoup.setSite(SITE, false);
-		MySoup.setUserAgent("WhatAndroid Android");
-		MySoup.setAndroid(true);
-
-		//Setup Universal Image loader global config
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context.getApplicationContext())
-			.discCacheExtraOptions(512, 512, Bitmap.CompressFormat.JPEG, 75, null)
-			.discCacheSize(50 * 512 * 512)
-			.build();
-		ImageLoader.getInstance().init(config);
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,7 +44,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		password = (TextView)findViewById(R.id.password_input);
 		Button login = (Button)findViewById(R.id.login_button);
 		login.setOnClickListener(this);
-		setupSite(this);
+		LoggedInActivity.initSoup();
+		LoggedInActivity.initImageLoader(this);
+		LoggedInActivity.launchServices(this);
 
 		//Setup saved user name and password if we've got them
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -79,7 +56,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		password.setText(savedUserPass);
 
 		loginRequest = getIntent().getBooleanExtra(LOGIN_REQUEST, false);
-		System.out.println("Login request: " + (loginRequest ? "true" : "false"));
 	}
 
 	@Override
