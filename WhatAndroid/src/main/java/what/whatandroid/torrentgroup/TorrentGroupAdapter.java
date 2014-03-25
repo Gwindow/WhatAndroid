@@ -134,7 +134,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 				convertView = null;
 			}
 		}
-		if (convertView == null) {
+		if (convertView == null){
 			convertView = inflater.inflate(R.layout.fragment_group_torrent, parent, false);
 			holder = new TorrentViewHolder();
 			holder.format = (TextView)convertView.findViewById(R.id.format);
@@ -215,7 +215,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 		}
 		else {
 			TorrentViewHolder holder = (TorrentViewHolder)v.getTag();
-			DownloadDialog dialog = new DownloadDialog(holder.torrent);
+			DownloadDialog dialog = DownloadDialog.newInstance(holder.torrent);
 			dialog.show(fragmentManager, "DownloadDialog");
 		}
 		return true;

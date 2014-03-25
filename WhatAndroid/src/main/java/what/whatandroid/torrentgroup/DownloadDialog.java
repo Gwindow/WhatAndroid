@@ -19,13 +19,19 @@ public class DownloadDialog extends DialogFragment {
 	private DownloadDialogListener listener;
 
 	/**
-	 * Create a download dialog to prompt some user how they want to download
+	 * Use this factory method to create a download dialog to prompt some user how they want to download
 	 * the desired torrent
 	 *
 	 * @param t torrent to download
 	 */
-	public DownloadDialog(Torrents t){
-		torrent = t;
+	public static DownloadDialog newInstance(Torrents t){
+		DownloadDialog f = new DownloadDialog();
+		f.torrent = t;
+		return f;
+	}
+
+	public DownloadDialog(){
+		//Required empty ctor
 	}
 
 	@Override
