@@ -54,10 +54,11 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	 */
 	private TextView uploadText, downloadText, ratioText, paranoiaText;
 	/**
-	 * View pagers displaying the lists of recent snatches and uploads & headers for the views
+	 * View pagers & adapters for displaying the lists of recent snatches and uploads & headers for the views
 	 * headers are needed so we can hide the views if hidden by paranoia
 	 */
 	private ViewPager recentSnatches, recentUploads;
+	private RecentTorrentPagerAdapter snatchesAdapter, uploadsAdapter;
 	private View snatchesHeader, uploadsHeader;
 
 	/**
@@ -78,9 +79,11 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 
 	@Override
 	public void onLoggedIn(){
-		System.out.println("ProfileFragment On logged in callback");
 		if (profile == null){
 			new LoadProfile().execute(userID);
+		}
+		else {
+			updateProfile();
 		}
 	}
 
@@ -187,16 +190,20 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		//TODO: Keep an eye on this API endpoint and watch for when it starts respecting paranoia and we get null back
 		if (profile.getPersonal().getParanoia().intValue() < 6 || userID == MySoup.getUserId()){
 			if (recentTorrents.getSnatches().size() > 0){
-				recentSnatches.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getSnatches(),
-					getActivity().getSupportFragmentManager()));
+				if (snatchesAdapter == null){
+					snatchesAdapter = new RecentTorrentPagerAdapter(recentTorrents.getSnatches(), getChildFragmentManager());
+				}
+				recentSnatches.setAdapter(snatchesAdapter);
 			}
 			else {
 				snatchesHeader.setVisibility(View.GONE);
 				recentSnatches.setVisibility(View.GONE);
 			}
 			if (recentTorrents.getUploads().size() > 0){
-				recentUploads.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getUploads(),
-					getActivity().getSupportFragmentManager()));
+				if (uploadsAdapter == null){
+					uploadsAdapter = new RecentTorrentPagerAdapter(recentTorrents.getUploads(), getChildFragmentManager());
+				}
+				recentUploads.setAdapter(uploadsAdapter);
 			}
 			else {
 				uploadsHeader.setVisibility(View.GONE);

@@ -25,7 +25,7 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 	/**
 	 * Callbacks to let us go view a recent torrent
 	 */
-	ViewTorrentCallbacks callbacks;
+	private ViewTorrentCallbacks callbacks;
 
 	/**
 	 * Create a new RecentTorrentFragment to display information about the torrent
@@ -47,14 +47,13 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_recent_torrent, container, false);
 		ImageView art = (ImageView)view.findViewById(R.id.art);
-		ImageLoader.getInstance().displayImage(torrent.getWikiImage(), art);
-
-		TextView albumName = (TextView)view.findViewById(R.id.album_name);
-		albumName.setText(torrent.getName());
-
-		TextView artistName = (TextView)view.findViewById(R.id.artist_name);
-		artistName.setText(torrent.getArtist().getName());
-
+		if (torrent != null){
+			ImageLoader.getInstance().displayImage(torrent.getWikiImage(), art);
+			TextView albumName = (TextView)view.findViewById(R.id.album_name);
+			albumName.setText(torrent.getName());
+			TextView artistName = (TextView)view.findViewById(R.id.artist_name);
+			artistName.setText(torrent.getArtist().getName());
+		}
 		view.setOnClickListener(this);
 		return view;
 	}
