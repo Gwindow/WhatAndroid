@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
 import api.search.user.UserSearch;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
@@ -24,7 +22,8 @@ import what.whatandroid.profile.ProfileActivity;
  * Fragment for searching for users. If only one user is returned as a result we go to their profile,
  * otherwise a list of found users is displayed
  */
-public class UserSearchFragment extends Fragment implements View.OnClickListener, OnLoggedInCallback {
+public class UserSearchFragment extends Fragment
+	implements View.OnClickListener, TextView.OnEditorActionListener, OnLoggedInCallback {
 	/**
 	 * Search terms sent to us through the intent
 	 */
@@ -92,6 +91,7 @@ public class UserSearchFragment extends Fragment implements View.OnClickListener
 
 		View header = inflater.inflate(R.layout.header_search, null);
 		editTerms = (EditText)header.findViewById(R.id.search_terms);
+		editTerms.setOnEditorActionListener(this);
 		//Hide the unneeded tags box
 		header.findViewById(R.id.search_tags).setVisibility(View.GONE);
 		Button search = (Button)header.findViewById(R.id.search_button);
@@ -132,6 +132,22 @@ public class UserSearchFragment extends Fragment implements View.OnClickListener
 			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
 			editTerms.requestFocus();
 		}
+	}
+
+	@Override
+	public boolean onEditorAction(TextView v, int actionId, KeyEvent event){
+		searchTerms = editTerms.getText().toString();
+		if (!searchTerms.isEmpty()){
+			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+			System.out.println("Clicked launch search");
+			new LoadUserSearch().execute(searchTerms);
+		}
+		else {
+			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
+			editTerms.requestFocus();
+		}
+		return true;
 	}
 
 	private class LoadUserSearch extends AsyncTask<String, Void, UserSearch> {

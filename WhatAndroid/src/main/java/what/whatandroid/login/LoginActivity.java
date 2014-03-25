@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.IntentCompat;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +29,7 @@ import java.net.HttpCookie;
  * The login fragment, provides the user fields for their user name
  * and password and allows them to log in to the site
  */
-public class LoginActivity extends Activity implements View.OnClickListener {
+public class LoginActivity extends Activity implements View.OnClickListener, TextView.OnEditorActionListener {
 	/**
 	 * Set this parameter to true in the intent if we just want the login activity to
 	 * log the user in then return back to the launching activity
@@ -58,6 +59,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 		String savedUserPass = preferences.getString(SettingsFragment.USER_PASSWORD, "");
 		username.setText(savedUserName);
 		password.setText(savedUserPass);
+		password.setOnEditorActionListener(this);
 
 		loginRequest = getIntent().getBooleanExtra(LOGIN_REQUEST, false);
 	}
@@ -84,13 +86,34 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 					.remove(SettingsFragment.USER_COOKIE)
 					.commit();
 			}
-
 			new Login().execute(username.getText().toString(), password.getText().toString());
 		}
 		else {
 			Toast.makeText(this, "Please enter your username and password", Toast.LENGTH_SHORT).show();
 			username.requestFocus();
 		}
+	}
+
+	@Override
+	public boolean onEditorAction(TextView v, int actionId, KeyEvent event){
+		if (username.length() > 0 && password.length() > 0){
+			//Check if we're logging in with a different user than we saved previously
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+			String savedUserName = preferences.getString(SettingsFragment.USER_NAME, "");
+			if (!username.getText().toString().equalsIgnoreCase(savedUserName)){
+				preferences.edit()
+					.remove(SettingsFragment.USER_NAME)
+					.remove(SettingsFragment.USER_PASSWORD)
+					.remove(SettingsFragment.USER_COOKIE)
+					.commit();
+			}
+			new Login().execute(username.getText().toString(), password.getText().toString());
+		}
+		else {
+			Toast.makeText(this, "Please enter your username and password", Toast.LENGTH_SHORT).show();
+			username.requestFocus();
+		}
+		return true;
 	}
 
 	@Override

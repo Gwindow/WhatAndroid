@@ -36,7 +36,6 @@ public class ProfileActivity extends LoggedInActivity
 
 	@Override
 	public void onLoggedIn(){
-		System.out.println("ProfileActivity on logged in");
 		//If we were trying to view our own profile the user id could be invalid if we weren't logged in
 		//and tried to get it from MySoup
 		if (profileFragment.getUserID() == -1){

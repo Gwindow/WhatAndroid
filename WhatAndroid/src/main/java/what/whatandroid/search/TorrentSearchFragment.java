@@ -5,14 +5,12 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
 import api.search.torrents.TorrentSearch;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
@@ -21,7 +19,8 @@ import what.whatandroid.callbacks.SetTitleCallback;
 /**
  * Fragment for searching for torrents
  */
-public class TorrentSearchFragment extends Fragment implements View.OnClickListener, OnLoggedInCallback {
+public class TorrentSearchFragment extends Fragment
+	implements View.OnClickListener, TextView.OnEditorActionListener, OnLoggedInCallback {
 	/**
 	 * Search terms and tags sent to use by the intent
 	 */
@@ -93,6 +92,7 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 		View header = inflater.inflate(R.layout.header_search, null);
 		editTerms = (EditText)header.findViewById(R.id.search_terms);
 		editTags = (EditText)header.findViewById(R.id.search_tags);
+		editTags.setOnEditorActionListener(this);
 		Button search = (Button)header.findViewById(R.id.search_button);
 		search.setOnClickListener(this);
 		footer = inflater.inflate(R.layout.footer_loading_indicator, null);
@@ -134,6 +134,22 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
 			editTerms.requestFocus();
 		}
+	}
+
+	@Override
+	public boolean onEditorAction(TextView v, int actionId, KeyEvent event){
+		searchTerms = editTerms.getText().toString();
+		searchTags = editTags.getText().toString();
+		if (!searchTerms.isEmpty()){
+			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+			new LoadTorrentSearch().execute(searchTerms, editTags.getText().toString());
+		}
+		else {
+			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
+			editTerms.requestFocus();
+		}
+		return true;
 	}
 
 	/**

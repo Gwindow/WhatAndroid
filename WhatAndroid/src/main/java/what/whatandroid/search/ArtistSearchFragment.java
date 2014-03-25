@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.*;
 import api.torrents.artist.Artist;
 import api.torrents.artist.Releases;
 import what.whatandroid.R;
@@ -25,7 +23,8 @@ import what.whatandroid.callbacks.SetTitleCallback;
  * Fragment for searching for artists. If only one artist name is returned from the search
  * we view that artist, if multiple ones are returned we go to a torrent search with the search term
  */
-public class ArtistSearchFragment extends Fragment implements View.OnClickListener, OnLoggedInCallback {
+public class ArtistSearchFragment extends Fragment
+	implements View.OnClickListener, TextView.OnEditorActionListener, OnLoggedInCallback {
 	/**
 	 * Search terms sent to us by the intent
 	 */
@@ -82,6 +81,7 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 		Button searchButton = (Button)view.findViewById(R.id.search_button);
 		searchButton.setOnClickListener(this);
 		editTerms = (EditText)view.findViewById(R.id.search_terms);
+		editTerms.setOnEditorActionListener(this);
 		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
 
 		if (searchTerms == null || searchTerms.isEmpty()){
@@ -105,6 +105,21 @@ public class ArtistSearchFragment extends Fragment implements View.OnClickListen
 			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
 			editTerms.requestFocus();
 		}
+	}
+
+	@Override
+	public boolean onEditorAction(TextView v, int actionId, KeyEvent event){
+		searchTerms = editTerms.getText().toString();
+		if (!searchTerms.isEmpty()){
+			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromInputMethod(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+			new LoadArtistSearch().execute(searchTerms);
+		}
+		else {
+			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
+			editTerms.requestFocus();
+		}
+		return true;
 	}
 
 	/**
