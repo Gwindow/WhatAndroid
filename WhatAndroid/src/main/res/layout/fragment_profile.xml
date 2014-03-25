@@ -4,98 +4,209 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    android:layout_width="match_parent"
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/activity_vertical_margin"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:background="#eee"
+                        tools:context="what.whatandroid.profile.ProfileActivity$PlaceholderFragment">
+
+            <ImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_centerHorizontal="true"
+                    android:contentDescription="@string/avatar"/>
+
+            <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin"
-                    android:paddingBottom="@dimen/activity_vertical_margin"
-                    tools:context="what.whatandroid.profile.ProfileActivity$PlaceholderFragment">
+                    android:layout_marginTop="8dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/avatar"
+                    android:textStyle="bold"
+                    android:textSize="22sp"/>
 
-        <ImageView
-                android:id="@+id/avatar"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-                android:layout_centerHorizontal="true"
-                android:contentDescription="@string/avatar"/>
+            <TextView
+                    android:id="@+id/user_class"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/username"
+                    android:textSize="14sp"
+                    android:textAllCaps="true"/>
+        </RelativeLayout>
 
-        <TextView
-                android:id="@+id/username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/avatar"
-                android:textStyle="bold"
-                android:textSize="22sp"/>
-
-        <TextView
-                android:id="@+id/user_class"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/username"
-                android:textSize="14sp"/>
-
-        <!-- User name, class and stats -->
         <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:background="#444">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stats"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/secondary_text_dark"/>
+        </LinearLayout>
+
+        <RelativeLayout
                 android:id="@+id/user_stats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/user_class"
-                android:orientation="vertical"
-                android:layout_marginTop="16dp">
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:background="#222">
 
             <TextView
-                    android:id="@+id/upload"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            <TextView
-                    android:id="@+id/download"
+                    android:id="@+id/ratio_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"/>
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/ratio_required"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
 
             <TextView
                     android:id="@+id/ratio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"/>
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBaseline="@id/ratio_text"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:textSize="18sp"/>
 
             <TextView
-                    android:id="@+id/required_ratio"
+                    android:id="@+id/uploaded_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"/>
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/ratio_text"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/uploaded"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+            <TextView
+                    android:id="@+id/upload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBaseline="@id/uploaded_text"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:textSize="18sp"/>
+
+            <TextView
+                    android:id="@+id/downloaded_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/uploaded_text"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/downloaded"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+            <TextView
+                    android:id="@+id/download"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBaseline="@id/downloaded_text"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:textSize="18sp"/>
 
             <TextView
                     android:id="@+id/paranoia_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"/>
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/downloaded_text"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/paranoia"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
 
+            <TextView
+                    android:id="@+id/paranoia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBaseline="@id/paranoia_text"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:textSize="18sp"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:background="#444">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/snatches"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/secondary_text_dark"/>
         </LinearLayout>
 
-        <!-- Is there a way to set height better for different display sizes? -->
         <android.support.v4.view.ViewPager
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/recent_snatches"
                 android:layout_width="match_parent"
-                android:layout_height="224dp"
-                android:layout_below="@id/user_stats"
-                android:layout_marginTop="16dp"/>
+                android:layout_height="196dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:background="#222"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:background="#444">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/uploads"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/secondary_text_dark"/>
+        </LinearLayout>
 
         <android.support.v4.view.ViewPager
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/recent_uploads"
                 android:layout_width="match_parent"
-                android:layout_height="224dp"
-                android:layout_below="@id/recent_snatches"
-                android:layout_marginTop="8dp"/>
-
-    </RelativeLayout>
+                android:layout_height="196dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:background="#222"/>
+    </LinearLayout>
 </ScrollView>

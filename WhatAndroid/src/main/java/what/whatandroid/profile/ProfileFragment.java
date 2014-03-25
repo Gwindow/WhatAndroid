@@ -44,7 +44,15 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	 * Various content views displaying the user's information
 	 */
 	private ImageView avatar;
-	private TextView username, userClass, upload, download, ratio, requiredRatio, paranoiaText;
+	/**
+	 * The user's stats being shown
+	 */
+	private TextView username, userClass, upload, download, ratio, paranoia;
+	/**
+	 * Text views saying what the various numbers in the profile mean, so we can hide those that are hidden
+	 * by the user's paranoia
+	 */
+	private TextView uploadText, downloadText, ratioText, paranoiaText;
 	private ViewPager recentSnatches, recentUploads;
 
 	/**
@@ -108,10 +116,15 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		username = (TextView)view.findViewById(R.id.username);
 		userClass = (TextView)view.findViewById(R.id.user_class);
 		upload = (TextView)view.findViewById(R.id.upload);
+		uploadText = (TextView)view.findViewById(R.id.uploaded_text);
 		download = (TextView)view.findViewById(R.id.download);
+		downloadText = (TextView)view.findViewById(R.id.downloaded_text);
 		ratio = (TextView)view.findViewById(R.id.ratio);
-		requiredRatio = (TextView)view.findViewById(R.id.required_ratio);
+		ratioText = (TextView)view.findViewById(R.id.ratio_text);
+		paranoia = (TextView)view.findViewById(R.id.paranoia);
 		paranoiaText = (TextView)view.findViewById(R.id.paranoia_text);
+		//Hide the paranoia text until we figure out what the user's paranoia settings are
+		paranoiaText.setVisibility(View.GONE);
 		recentSnatches = (ViewPager)view.findViewById(R.id.recent_snatches);
 		recentUploads = (ViewPager)view.findViewById(R.id.recent_uploads);
 		return view;
@@ -126,52 +139,53 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	 */
 	private void updateProfile(){
 		callbacks.setTitle(profile.getUsername());
-		//No empty in API 8? Android Studio warns that API 9 is required
-		if (!profile.getAvatar().equalsIgnoreCase("")){
+		username.setText(profile.getUsername());
+		userClass.setText(profile.getPersonal().getUserClass());
+
+		//We need to check all the paranoia cases that may cause a field to be missing and hide the views for it
+		if (!profile.getAvatar().isEmpty()){
 			ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar);
 		}
 		else {
 			avatar.setVisibility(View.GONE);
 		}
-		username.setText(profile.getUsername());
-		userClass.setText(profile.getPersonal().getUserClass());
 		if (profile.getPersonal().getParanoia().intValue() > 0 && userID != MySoup.getUserId()){
-			paranoiaText.setText("Paranoia: " + profile.getPersonal().getParanoiaText());
+			paranoiaText.setVisibility(View.VISIBLE);
+			paranoia.setText(profile.getPersonal().getParanoiaText());
 		}
 		else {
-			paranoiaText.setVisibility(View.GONE);
+			paranoia.setVisibility(View.GONE);
 		}
 		if (profile.getStats().getUploaded() != null){
-			upload.setText("Up: " + Utils.toHumanReadableSize(profile.getStats().getUploaded().longValue()));
+			upload.setText(Utils.toHumanReadableSize(profile.getStats().getUploaded().longValue()));
 		}
 		else {
+			uploadText.setVisibility(View.GONE);
 			upload.setVisibility(View.GONE);
 		}
 		if (profile.getStats().getDownloaded() != null){
-			download.setText("Down: " + Utils.toHumanReadableSize(profile.getStats().getDownloaded().longValue()));
+			download.setText(Utils.toHumanReadableSize(profile.getStats().getDownloaded().longValue()));
 		}
 		else {
+			downloadText.setVisibility(View.GONE);
 			download.setVisibility(View.GONE);
 		}
-		//TODO: These fields will be merged soon
 		if (profile.getStats().getRatio() != null && profile.getStats().getRequiredRatio() != null){
-			ratio.setText("Ratio: " + String.format("%.2f", profile.getStats().getRatio().floatValue()));
-			requiredRatio.setText("Required: " + profile.getStats().getRequiredRatio().toString());
-			colorizeRatio();
+			ratio.setText(profile.getStats().getRatio() + " / " + profile.getStats().getRequiredRatio());
 		}
 		else {
+			ratioText.setVisibility(View.GONE);
 			ratio.setVisibility(View.GONE);
-			requiredRatio.setVisibility(View.GONE);
 		}
 		//TODO: Keep an eye on this API endpoint and watch for when it starts respecting paranoia and we get null back
 		if (profile.getPersonal().getParanoia().intValue() < 6 || userID == MySoup.getUserId()){
-			if (recentTorrents.getSnatches().size() > 0){
-				recentSnatches.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getSnatches(),
+			//if (recentTorrents.getSnatches().size() > 0){
+			recentSnatches.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getUploads(),
 					getActivity().getSupportFragmentManager()));
-			}
-			else {
-				recentSnatches.setVisibility(View.GONE);
-			}
+			//}
+			//else {
+			//	recentSnatches.setVisibility(View.GONE);
+			//}
 			if (recentTorrents.getUploads().size() > 0){
 				recentUploads.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getUploads(),
 					getActivity().getSupportFragmentManager()));
@@ -183,26 +197,6 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		else {
 			recentSnatches.setVisibility(View.GONE);
 			recentUploads.setVisibility(View.GONE);
-		}
-	}
-
-	/**
-	 * Colorize the ratio text view based on its distance from the required ratio
-	 */
-	private void colorizeRatio(){
-		float diff = profile.getStats().getRatio().floatValue()
-			- profile.getStats().getRequiredRatio().floatValue();
-		if (diff < 0.1){
-			ratio.setTextColor(getResources().getColor(R.color.Red));
-		}
-		else if (diff < 0.5){
-			ratio.setTextColor(getResources().getColor(R.color.Yellow));
-		}
-		else if (diff < 1.0){
-			ratio.setTextColor(getResources().getColor(R.color.Orange));
-		}
-		else {
-			ratio.setTextColor(getResources().getColor(R.color.Green));
 		}
 	}
 

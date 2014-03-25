@@ -21,7 +21,8 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:maxLines="1"
-            android:ellipsize="end"/>
+            android:ellipsize="end"
+            android:textColor="@android:color/primary_text_dark"/>
 
     <TextView
             android:id="@+id/artist_name"
@@ -30,8 +31,8 @@
             android:gravity="center_horizontal"
             android:layout_below="@id/album_name"
             android:textSize="14sp"
-            android:textColor="@color/DarkGrey"
             android:maxLines="1"
-            android:ellipsize="end"/>
+            android:ellipsize="end"
+            android:textColor="@android:color/secondary_text_dark"/>
 
 </RelativeLayout>
