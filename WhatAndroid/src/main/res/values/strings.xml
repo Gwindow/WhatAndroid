@@ -31,6 +31,7 @@
     <string name="send_to_pywa">Send to PyWA</string>
     <string name="download_to_phone">Download to phone</string>
     <string name="cancel">Cancel</string>
+    <string name="whatandroid_logo">WhatAndroid Logo</string>
     <string name="action_settings">Settings</string>
     <string name="action_send_feedback">Send Feedback</string>
     <string name="pref_pywhat">PyWhat Server</string>
@@ -40,6 +41,5 @@
     <string name="key_pref_pywhat_host">pref_pywhat_host</string>
     <string name="key_pref_pywhat_port">pref_pywhat_port</string>
     <string name="key_pref_pywhat_password">pref_pywhat_password</string>
-    <string name="version_name">Version Name</string>
     <string name="key_pref_version_name">pref_verion_name</string>
 </resources>
