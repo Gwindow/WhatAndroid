@@ -47,7 +47,8 @@ public class VersionNumber {
 			return false;
 		}
 		//If the version numbers are equal but we aren't a preview and the other build is, we're higher
-		return !(major == other.major && minor == other.minor && patch == other.patch) || (beta && other.alpha);
+		return !(major == other.major && minor == other.minor && patch == other.patch) || (beta && other.alpha)
+			|| (!beta && !alpha && (other.alpha || other.beta));
 	}
 
 	public int getMajor(){
@@ -72,6 +73,6 @@ public class VersionNumber {
 
 	@Override
 	public String toString(){
-		return major + "." + minor + "." + patch + (alpha ? ".a" : beta ? ".b" : "");
+		return major + "." + minor + "." + patch + (alpha ? " Alpa" : beta ? " Beta" : "");
 	}
 }

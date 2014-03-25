@@ -44,8 +44,8 @@ public class UpdateService extends IntentService {
 	private void notifyNewRelease(AlphaRelease release){
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 		builder.setSmallIcon(R.drawable.ic_launcher)
-			.setContentTitle("New WhatAndroid alpha build")
-			.setContentText("Alpha version: " + release.getVersionNumber() + " is available")
+			.setContentTitle("WhatAndroid Update Available")
+			.setContentText("Version: " + release.getVersionNumber() + " is available")
 			.setAutoCancel(true);
 
 		Intent download = new Intent(Intent.ACTION_VIEW, Uri.parse(release.getUrl()));
