@@ -6,6 +6,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:0.9.+'
     }
 }
+
 apply plugin: 'android'
 
 repositories {
@@ -14,17 +15,32 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+    buildToolsVersion "19.0.3"
 
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 19
     }
+
+    signingConfigs {
+        release {
+            storeFile file("${System.properties['user.home']}/.android/Contact Twinklebear")
+            storePassword "Contact Twinklebear for key"
+            keyAlias "Contanct Twinklebear"
+            keyPassword "Contact Twinklebear for key"
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:19.0.0'
-    compile 'com.android.support:support-v4:19.0.0'
+    compile 'com.android.support:appcompat-v7:19.0.1'
+    compile 'com.android.support:support-v4:19.0.1'
     compile files('libs/WhatAPI.jar')
     compile files('libs/universal-image-loader-1.9.1.jar')
 }
