@@ -53,7 +53,12 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	 * by the user's paranoia
 	 */
 	private TextView uploadText, downloadText, ratioText, paranoiaText;
+	/**
+	 * View pagers displaying the lists of recent snatches and uploads & headers for the views
+	 * headers are needed so we can hide the views if hidden by paranoia
+	 */
 	private ViewPager recentSnatches, recentUploads;
+	private View snatchesHeader, uploadsHeader;
 
 	/**
 	 * Use this factory method to create a new instance of the fragment displaying the
@@ -126,7 +131,9 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		//Hide the paranoia text until we figure out what the user's paranoia settings are
 		paranoiaText.setVisibility(View.GONE);
 		recentSnatches = (ViewPager)view.findViewById(R.id.recent_snatches);
+		snatchesHeader = view.findViewById(R.id.snatches_header);
 		recentUploads = (ViewPager)view.findViewById(R.id.recent_uploads);
+		uploadsHeader = view.findViewById(R.id.uploads_header);
 		return view;
 	}
 
@@ -179,23 +186,28 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		}
 		//TODO: Keep an eye on this API endpoint and watch for when it starts respecting paranoia and we get null back
 		if (profile.getPersonal().getParanoia().intValue() < 6 || userID == MySoup.getUserId()){
-			//if (recentTorrents.getSnatches().size() > 0){
-			recentSnatches.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getUploads(),
+			if (recentTorrents.getSnatches().size() > 0){
+				recentSnatches.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getSnatches(),
 					getActivity().getSupportFragmentManager()));
-			//}
-			//else {
-			//	recentSnatches.setVisibility(View.GONE);
-			//}
+			}
+			else {
+				snatchesHeader.setVisibility(View.GONE);
+				recentSnatches.setVisibility(View.GONE);
+			}
 			if (recentTorrents.getUploads().size() > 0){
 				recentUploads.setAdapter(new RecentTorrentPagerAdapter(recentTorrents.getUploads(),
 					getActivity().getSupportFragmentManager()));
 			}
 			else {
+				uploadsHeader.setVisibility(View.GONE);
 				recentUploads.setVisibility(View.GONE);
 			}
 		}
 		else {
+			snatchesHeader.setVisibility(View.GONE);
 			recentSnatches.setVisibility(View.GONE);
+			recentSnatches.setVisibility(View.GONE);
+			uploadsHeader.setVisibility(View.GONE);
 			recentUploads.setVisibility(View.GONE);
 		}
 	}
