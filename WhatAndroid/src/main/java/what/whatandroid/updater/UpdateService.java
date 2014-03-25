@@ -30,7 +30,6 @@ public class UpdateService extends IntentService {
 		try {
 			AlphaRelease release = (AlphaRelease)MySon.toObjectOther(RELEASES_PAGE, AlphaRelease.class);
 			if (release != null){
-				System.out.println("Found release: " + release);
 				VersionNumber current = getVersionNumber();
 				if (current == null || release.getVersionNumber().isHigher(current)){
 					notifyNewRelease(release);
