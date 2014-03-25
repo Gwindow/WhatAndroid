@@ -155,7 +155,9 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	public void setTitle(String t){
 		title = t;
 		ActionBar actionBar = getSupportActionBar();
-		actionBar.setTitle(title);
+		if (actionBar != null){
+			actionBar.setTitle(title);
+		}
 	}
 
 	public void restoreActionBar(){
