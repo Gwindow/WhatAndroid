@@ -181,7 +181,8 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 			download.setVisibility(View.GONE);
 		}
 		if (profile.getStats().getRatio() != null && profile.getStats().getRequiredRatio() != null){
-			ratio.setText(profile.getStats().getRatio() + " / " + profile.getStats().getRequiredRatio());
+			ratio.setText(String.format("%.2f", profile.getStats().getRatio().floatValue())
+				+ " / " + String.format("%.2f", profile.getStats().getRequiredRatio().floatValue()));
 		}
 		else {
 			ratioText.setVisibility(View.GONE);
