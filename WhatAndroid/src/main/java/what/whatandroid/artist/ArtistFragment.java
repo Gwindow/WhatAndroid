@@ -153,14 +153,18 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback {
 
 		@Override
 		protected void onPreExecute(){
-			getActivity().setProgressBarIndeterminateVisibility(true);
-			getActivity().setProgressBarIndeterminate(true);
+			if (getActivity() != null){
+				getActivity().setProgressBarIndeterminateVisibility(true);
+				getActivity().setProgressBarIndeterminate(true);
+			}
 		}
 
 		@Override
 		protected void onPostExecute(Artist a){
-			getActivity().setProgressBarIndeterminateVisibility(false);
-			getActivity().setProgressBarIndeterminate(false);
+			if (getActivity() != null){
+				getActivity().setProgressBarIndeterminateVisibility(false);
+				getActivity().setProgressBarIndeterminate(false);
+			}
 			if (a != null){
 				artist = a;
 				updateArtist();

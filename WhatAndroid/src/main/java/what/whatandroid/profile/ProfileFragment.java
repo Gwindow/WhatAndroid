@@ -233,8 +233,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 
 		@Override
 		protected void onPreExecute(){
-			getActivity().setProgressBarIndeterminateVisibility(true);
-			getActivity().setProgressBarIndeterminate(true);
+			if (getActivity() != null){
+				getActivity().setProgressBarIndeterminateVisibility(true);
+				getActivity().setProgressBarIndeterminate(true);
+			}
 		}
 
 		@Override
