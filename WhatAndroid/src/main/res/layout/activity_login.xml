@@ -8,10 +8,21 @@
                 android:padding="16dp"
                 tools:context="what.whatandroid.login.LoginFragment">
 
+    <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/whatandroid_logo"
+            android:src="@drawable/whatandroid_logo_alpha"/>
+
     <EditText
             android:id="@+id/username_input"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
+            android:layout_below="@id/logo"
+            android:layout_marginTop="8dp"
             android:inputType="textPersonName"
             android:hint="@string/username"
             android:layout_centerHorizontal="true">
