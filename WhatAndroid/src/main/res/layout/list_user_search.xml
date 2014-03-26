@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="16dp">
 
     <TextView
-            android:id="@+id/user_name"
+            android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -17,9 +18,42 @@
             android:id="@+id/user_class"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/user_name"
+            android:layout_below="@id/username"
             android:layout_alignParentLeft="true"/>
 
-    <!-- TODO: Add FontAwesome and setup user status icons for warned, banned and donor -->
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/username"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+        <what.whatandroid.views.TypeFacedTextView
+                android:id="@+id/donor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:text="@string/fa_heart"
+                android:textColor="@android:color/holo_red_dark"
+                app:font="@string/fontawesome_font"/>
+
+        <what.whatandroid.views.TypeFacedTextView
+                android:id="@+id/warned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:text="@string/fa_exclamation_triangle"
+                android:textColor="@android:color/holo_red_dark"
+                app:font="@string/fontawesome_font"/>
+
+        <what.whatandroid.views.TypeFacedTextView
+                android:id="@+id/banned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fa_ban"
+                android:textColor="@android:color/holo_red_dark"
+                app:font="@string/fontawesome_font"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

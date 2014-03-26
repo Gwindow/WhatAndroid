@@ -88,13 +88,34 @@ public class UserSearchAdapter extends ArrayAdapter<User>
 		else {
 			convertView = inflater.inflate(R.layout.list_user_search, parent, false);
 			holder = new ViewHolder();
-			holder.userName = (TextView)convertView.findViewById(R.id.user_name);
+			holder.userName = (TextView)convertView.findViewById(R.id.username);
 			holder.userClass = (TextView)convertView.findViewById(R.id.user_class);
+			holder.donor = convertView.findViewById(R.id.donor);
+			holder.warned = convertView.findViewById(R.id.warned);
+			holder.banned = convertView.findViewById(R.id.banned);
 			convertView.setTag(holder);
 		}
 		User user = getItem(position);
 		holder.userName.setText(user.getUsername());
 		holder.userClass.setText(user.getUserClass());
+		if (user.isDonor()){
+			holder.donor.setVisibility(View.VISIBLE);
+		}
+		else {
+			holder.donor.setVisibility(View.GONE);
+		}
+		if (user.isWarned()){
+			holder.warned.setVisibility(View.VISIBLE);
+		}
+		else {
+			holder.warned.setVisibility(View.GONE);
+		}
+		if (!user.isEnabled()){
+			holder.banned.setVisibility(View.VISIBLE);
+		}
+		else {
+			holder.banned.setVisibility(View.GONE);
+		}
 		return convertView;
 	}
 
@@ -125,6 +146,7 @@ public class UserSearchAdapter extends ArrayAdapter<User>
 	 */
 	private static class ViewHolder {
 		public TextView userName, userClass;
+		public View donor, warned, banned;
 	}
 
 	private class LoadNextPage extends AsyncTask<Void, Void, UserSearch> {
