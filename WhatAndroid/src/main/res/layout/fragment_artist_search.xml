@@ -4,35 +4,44 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:background="#222">
 
-    <EditText
-            android:id="@+id/search_terms"
+    <RelativeLayout
+            android:id="@+id/search_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:inputType="text"
-            android:hint="@string/search_terms">
+            android:padding="16dp"
+            android:background="#eee">
 
-        <requestFocus/>
-    </EditText>
+        <EditText
+                android:id="@+id/search_terms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:inputType="text"
+                android:hint="@string/search_terms">
 
-    <Button
-            android:id="@+id/search_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/search_terms"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="8dp"
-            android:text="@string/search"/>
+            <requestFocus/>
+        </EditText>
+
+        <Button
+                android:id="@+id/search_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/search_terms"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="8dp"
+                android:text="@string/search"/>
+
+    </RelativeLayout>
 
     <ProgressBar
             android:id="@+id/loading_indicator"
             style="@android:style/Widget.Holo.ProgressBar.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/search_button"
+            android:layout_below="@id/search_box"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="16dp"/>
 
 </RelativeLayout>
