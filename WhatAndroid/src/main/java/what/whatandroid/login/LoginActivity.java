@@ -1,11 +1,9 @@
 package what.whatandroid.login;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.IntentCompat;
@@ -16,14 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import api.son.MySon;
-import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.settings.SettingsFragment;
-
-import java.net.HttpCookie;
 
 /**
  * The login fragment, provides the user fields for their user name
@@ -145,47 +139,15 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 	 * Login async task, takes user's username and password and logs them
 	 * into the site via the api library
 	 */
-	public class Login extends AsyncTask<String, Void, Boolean> {
-		private ProgressDialog dialog;
+	private class Login extends LoginTask {
 
-		@Override
-		protected Boolean doInBackground(String... params){
-			try {
-				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-				String cookieJson = preferences.getString(SettingsFragment.USER_COOKIE, null);
-				if (cookieJson != null){
-					HttpCookie cookie = (HttpCookie)MySon.toObjectFromString(cookieJson, HttpCookie.class);
-					if (cookie != null && !cookie.hasExpired()){
-						MySoup.addCookie(cookie);
-						MySoup.loadIndex();
-						return true;
-					}
-				}
-				MySoup.login("login.php", params[0], params[1], true);
-				cookieJson = MySon.toJson(MySoup.getSessionCookie(), HttpCookie.class);
-				preferences.edit()
-					.putString(SettingsFragment.USER_COOKIE, cookieJson)
-					.putString(SettingsFragment.USER_NAME, params[0])
-					.putString(SettingsFragment.USER_PASSWORD, params[1])
-					.commit();
-				return true;
-			}
-			catch (Exception e){
-				return false;
-			}
-		}
-
-		@Override
-		protected void onPreExecute(){
-			dialog = new ProgressDialog(LoginActivity.this);
-			dialog.setIndeterminate(true);
-			dialog.setMessage("Logging in...");
-			dialog.show();
+		public Login(){
+			super(LoginActivity.this);
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status){
-			dialog.dismiss();
+			super.onPostExecute(status);
 			if (status){
 				if (loginRequest){
 					System.out.println("Returning to requesting activity");

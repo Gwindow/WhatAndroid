@@ -15,7 +15,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import api.son.MySon;
 import api.soup.MySoup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -29,8 +28,6 @@ import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.settings.SettingsFragment;
 import what.whatandroid.updater.UpdateService;
 
-import java.net.HttpCookie;
-
 /**
  * Parent activity for ones that require the user to be logged in. If the user
  * enters a LoggedInActivity it will try to load their saved cookie, or if no
@@ -41,8 +38,8 @@ public abstract class LoggedInActivity extends ActionBarActivity
 
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-	public static final String SITE = "192.168.1.125:8080/";
-	//public static final String SITE = "what.cd";
+	//public static final String SITE = "192.168.1.125:8080/";
+	public static final String SITE = "what.cd";
 	protected NavigationDrawerFragment navDrawer;
 	/**
 	 * Used to store the last screen title, for use in restoreActionBar
@@ -57,7 +54,7 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	 * Initialize MySoup so that we can start making API requests
 	 */
 	public static void initSoup(){
-		MySoup.setSite(SITE, false);
+		MySoup.setSite(SITE, true);
 		MySoup.setUserAgent("WhatAndroid Android");
 		MySoup.setAndroid(true);
 	}
@@ -206,36 +203,15 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	 * Login async task, takes user's username and password and logs them
 	 * into the site via the api library
 	 */
-	private class Login extends AsyncTask<String, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(String... params){
-			try {
-				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoggedInActivity.this);
-				String cookieJson = preferences.getString(SettingsFragment.USER_COOKIE, null);
-				if (cookieJson != null){
-					HttpCookie cookie = (HttpCookie)MySon.toObjectFromString(cookieJson, HttpCookie.class);
-					if (cookie != null && !cookie.hasExpired()){
-						MySoup.addCookie(cookie);
-						MySoup.loadIndex();
-						return true;
-					}
-				}
-				MySoup.login("login.php", params[0], params[1], true);
-				cookieJson = MySon.toJson(MySoup.getSessionCookie(), HttpCookie.class);
-				preferences.edit()
-					.putString(SettingsFragment.USER_COOKIE, cookieJson)
-					.putString(SettingsFragment.USER_NAME, params[0])
-					.putString(SettingsFragment.USER_PASSWORD, params[1])
-					.commit();
-				return true;
-			}
-			catch (Exception e){
-				return false;
-			}
+	private class Login extends LoginTask {
+
+		public Login(){
+			super(LoggedInActivity.this);
 		}
 
 		@Override
 		protected void onPostExecute(Boolean status){
+			super.onPostExecute(status);
 			if (status && !calledLogin){
 				calledLogin = true;
 				onLoggedIn();
