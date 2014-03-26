@@ -10,7 +10,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import api.cli.Utils;
 import api.torrents.torrents.Artist;
-import api.torrents.torrents.Edition;
+import api.torrents.torrents.EditionTorrents;
 import api.torrents.torrents.MusicInfo;
 import api.torrents.torrents.Torrents;
 import what.whatandroid.R;
@@ -38,7 +38,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 	/**
 	 * The list of editions being displayed
 	 */
-	private List<Edition> editions;
+	private List<EditionTorrents> editions;
 
 	/**
 	 * Setup the adapter to display a list of the torrents for some torrent group and the artists if there
@@ -47,7 +47,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 	 * @param musicInfo artists, or null if the torrent has none (eg. a non-music torrent)
 	 * @param objects   the list of editions for the torrent group
 	 */
-	public TorrentGroupAdapter(Context context, FragmentManager fm, MusicInfo musicInfo, List<Edition> objects){
+	public TorrentGroupAdapter(Context context, FragmentManager fm, MusicInfo musicInfo, List<EditionTorrents> objects){
 		super();
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		fragmentManager = fm;
@@ -209,11 +209,11 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 				holder.groupName.setText("Artists");
 			}
 			else {
-				holder.groupName.setText(editions.get(groupPosition - 1).getEdition());
+				holder.groupName.setText(editions.get(groupPosition - 1).getEdition().toString());
 			}
 		}
 		else {
-			holder.groupName.setText(editions.get(groupPosition).getEdition());
+			holder.groupName.setText(editions.get(groupPosition).getEdition().toString());
 		}
 		return convertView;
 	}

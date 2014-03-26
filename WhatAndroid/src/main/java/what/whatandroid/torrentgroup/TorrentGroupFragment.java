@@ -11,7 +11,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import api.torrents.torrents.Edition;
+import api.torrents.torrents.EditionTorrents;
 import api.torrents.torrents.TorrentGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
@@ -96,7 +96,7 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 	/**
 	 * Update all the torrent group information being shown after loading
 	 */
-	private void updateTorrentGroup(List<Edition> editions){
+	private void updateTorrentGroup(List<EditionTorrents> editions){
 		callbacks.setTitle(group.getResponse().getGroup().getName());
 
 		if (!group.getResponse().getGroup().getWikiImage().equalsIgnoreCase("")){
@@ -121,7 +121,7 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 	 * Async task to load the torrent group info
 	 */
 	private class LoadGroup extends AsyncTask<Integer, Void, TorrentGroup> {
-		List<Edition> editions;
+		List<EditionTorrents> editions;
 
 		/**
 		 * Load some torrent group from its id
