@@ -53,7 +53,7 @@ public class UpdateService extends IntentService {
 		builder.setContentIntent(pendingIntent);
 
 		NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-		manager.notify(0, builder.build());
+		manager.notify(1, builder.build());
 	}
 
 	private VersionNumber getVersionNumber(){
