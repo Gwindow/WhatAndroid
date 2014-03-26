@@ -131,8 +131,10 @@ public class TorrentGroupActivity extends LoggedInActivity implements ViewArtist
 			String url = params[0] + ":" + params[1] + "/dl.pywa?pass=" + params[2]
 				+ "&site=whatcd&id=" + params[3];
 			try {
-				MySoup.scrapeOther(url);
-				return true;
+				String result = MySoup.scrapeOther(url);
+				if (result.contains("success")){
+					return true;
+				}
 			}
 			catch (Exception e){
 				e.printStackTrace();
@@ -142,8 +144,12 @@ public class TorrentGroupActivity extends LoggedInActivity implements ViewArtist
 
 		@Override
 		protected void onPostExecute(Boolean status){
-			if (!status){
-				Toast.makeText(TorrentGroupActivity.this, "Failed to send torrent", Toast.LENGTH_SHORT).show();
+			if (status){
+				Toast.makeText(TorrentGroupActivity.this, "Torrent sent", Toast.LENGTH_SHORT).show();
+			}
+			else {
+				Toast.makeText(TorrentGroupActivity.this, "Failed to send torrent, check PyWA settings",
+					Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
