@@ -111,7 +111,7 @@ public class TorrentGroupActivity extends LoggedInActivity implements ViewArtist
 			startActivity(intent);
 		}
 		else {
-			new SendToPyWA().execute(host, port, pass, Integer.toString(t.getId().intValue()));
+			new SendToPyWA().execute(host, port, pass, t.getId().toString());
 		}
 	}
 

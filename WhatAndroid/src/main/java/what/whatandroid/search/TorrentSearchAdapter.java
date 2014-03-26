@@ -116,7 +116,10 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 		else {
 			holder.year.setVisibility(View.GONE);
 		}
-		holder.tags.setText(group.getTags().toString());
+		String tagString = group.getTags().toString();
+		//Remove the brackets from the tag string
+		tagString = tagString.substring(tagString.indexOf('[') + 1, tagString.lastIndexOf(']'));
+		holder.tags.setText(tagString);
 		return convertView;
 	}
 

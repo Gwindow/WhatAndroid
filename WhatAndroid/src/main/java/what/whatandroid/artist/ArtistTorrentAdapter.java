@@ -85,8 +85,10 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 		ImageLoader.getInstance().displayImage(holder.torrentGroup.getWikiImage(), holder.art);
 		holder.albumName.setText(holder.torrentGroup.getGroupName());
 		holder.year.setText(holder.torrentGroup.getGroupYear().toString());
-		//TODO: Don't just serialize the array, display a comma separated list
-		holder.tags.setText(holder.torrentGroup.getTags().toString());
+		String tagString = holder.torrentGroup.getTags().toString();
+		//Take the brackets off the tag string
+		tagString = tagString.substring(tagString.indexOf('[') + 1, tagString.lastIndexOf(']'));
+		holder.tags.setText(tagString);
 		return convertView;
 	}
 
