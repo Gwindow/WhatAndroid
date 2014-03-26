@@ -22,12 +22,13 @@ public class SearchActivity extends LoggedInActivity implements ViewTorrentCallb
 	/**
 	 * Param to pass the search type desired and terms and tags if desired
 	 */
-	public final static String SEARCH = "what.whatandroid.SEARCH", TERMS = "what.whatandroid.SEARCH.TERMS",
+	public static final String SEARCH = "what.whatandroid.SEARCH", TERMS = "what.whatandroid.SEARCH.TERMS",
 		TAGS = "what.whatandroid.SEARCH.TAGS";
 	/**
 	 * The parameters to specify what we want to search for
 	 */
-	public final static String TORRENT = "TORRENT", ARTIST = "ARTIST", USER = "USER", REQUEST = "REQUEST";
+	public static final int TORRENT = 0, ARTIST = 1, USER = 2, REQUEST = 3;
+	private int type;
 	/**
 	 * The OnLoggedInCallback for the search fragment, so we can tell it that it's ok to start loading
 	 * an existing search if it has one
@@ -41,28 +42,27 @@ public class SearchActivity extends LoggedInActivity implements ViewTorrentCallb
 		setupNavDrawer();
 		setTitle(getTitle());
 
-		String type = getIntent().getStringExtra(SEARCH);
+		if (savedInstanceState != null){
+			type = savedInstanceState.getInt(SEARCH);
+		}
+		else {
+			type = getIntent().getIntExtra(SEARCH, TORRENT);
+		}
 		String terms = getIntent().getStringExtra(TERMS);
 		String tags = getIntent().getStringExtra(TAGS);
 
 		Fragment fragment;
-		if (type == null){
-			fragment = TorrentSearchFragment.newInstance(terms, tags);
-		}
-		else if (type.equalsIgnoreCase(ARTIST)){
-			fragment = ArtistSearchFragment.newInstance(terms);
-		}
-		else if (type.equalsIgnoreCase(USER)){
-			fragment = UserSearchFragment.newInstance(terms);
-		}
-		/*
-		if (type.equalsIgnoreCase(REQUEST)){
-			setTitle("Request Search");
-			//set new request search fragment
-		}
-		*/
-		else {
-			fragment = TorrentSearchFragment.newInstance(terms, tags);
+		switch (type){
+			case ARTIST:
+				fragment = ArtistSearchFragment.newInstance(terms);
+				break;
+			case USER:
+				fragment = UserSearchFragment.newInstance(terms);
+				break;
+			case REQUEST:
+			default:
+				fragment = TorrentSearchFragment.newInstance(terms, tags);
+				break;
 		}
 		searchFragment = (OnLoggedInCallback)fragment;
 		FragmentManager manager = getSupportFragmentManager();
@@ -70,8 +70,15 @@ public class SearchActivity extends LoggedInActivity implements ViewTorrentCallb
 	}
 
 	@Override
+	protected void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		//Eventually also save the terms, tags & maybe search results?
+		//maybe only first page of results to speed things up
+		outState.putInt(SEARCH, type);
+	}
+
+	@Override
 	public void onLoggedIn(){
-		System.out.println("SearchActivity onLoggedIn");
 		searchFragment.onLoggedIn();
 	}
 
@@ -116,15 +123,24 @@ public class SearchActivity extends LoggedInActivity implements ViewTorrentCallb
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){
 			FragmentManager fm = getSupportFragmentManager();
-			fm.beginTransaction().replace(R.id.container, new TorrentSearchFragment()).commit();
+			TorrentSearchFragment f = new TorrentSearchFragment();
+			searchFragment = f;
+			fm.beginTransaction().replace(R.id.container, f).commit();
+			type = TORRENT;
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.artists))){
 			FragmentManager fm = getSupportFragmentManager();
-			fm.beginTransaction().replace(R.id.container, new ArtistSearchFragment()).commit();
+			ArtistSearchFragment f = new ArtistSearchFragment();
+			searchFragment = f;
+			fm.beginTransaction().replace(R.id.container, f).commit();
+			type = ARTIST;
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.users))){
 			FragmentManager fm = getSupportFragmentManager();
-			fm.beginTransaction().replace(R.id.container, new UserSearchFragment()).commit();
+			UserSearchFragment f = new UserSearchFragment();
+			searchFragment = f;
+			fm.beginTransaction().replace(R.id.container, f).commit();
+			type = USER;
 		}
 	}
 }
