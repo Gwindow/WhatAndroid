@@ -109,7 +109,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 			}
 		}
 		if (convertView == null){
-			convertView = inflater.inflate(R.layout.fragment_torrent_artist, parent, false);
+			convertView = inflater.inflate(R.layout.list_torrent_artist, parent, false);
 			holder = new ArtistViewHolder();
 			holder.name = (TextView)convertView.findViewById(R.id.artist_name);
 			holder.type = (TextView)convertView.findViewById(R.id.artist_type);

@@ -4,9 +4,10 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:background="#222">
 
-    <ProgressBar
+<ProgressBar
             android:id="@+id/loading_indicator"
             style="@android:style/Widget.Holo.ProgressBar.Large"
             android:layout_width="wrap_content"

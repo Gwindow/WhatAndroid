@@ -85,7 +85,7 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 		View view = inflater.inflate(R.layout.expandable_list_view, null);
 		torrentList = (ExpandableListView)view.findViewById(R.id.exp_list);
 
-		titleHeader = inflater.inflate(R.layout.header_album_artists, null);
+		titleHeader = inflater.inflate(R.layout.header_album_title, null);
 		albumTitle = (TextView)titleHeader.findViewById(R.id.title);
 
 		imageHeader = inflater.inflate(R.layout.header_image, null);

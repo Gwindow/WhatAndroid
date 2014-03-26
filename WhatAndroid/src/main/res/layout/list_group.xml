@@ -5,13 +5,14 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:padding="8dp"
-              android:background="@color/LightGrey">
+              android:background="#444">
 
     <TextView
             android:id="@+id/group_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-            android:textSize="18sp"/>
+            android:textSize="14sp"
+            android:textColor="@android:color/secondary_text_dark"/>
 
 </LinearLayout>
