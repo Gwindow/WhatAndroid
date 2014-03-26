@@ -73,6 +73,22 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		return fragment;
 	}
 
+	/**
+	 * Use this factory method to create a new profile fragment for some previously loaded user
+	 *
+	 * @param id      user id
+	 * @param profile user profile
+	 * @param recents user's recent torrents
+	 * @return Profile Fragment viewing the user's information
+	 */
+	public static ProfileFragment newInstance(int id, Profile profile, UserRecents recents){
+		ProfileFragment fragment = new ProfileFragment();
+		fragment.userID = id;
+		fragment.profile = profile;
+		fragment.recentTorrents = recents;
+		return fragment;
+	}
+
 	public ProfileFragment(){
 		// Required empty public constructor
 	}
@@ -104,6 +120,14 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	 */
 	public int getUserID(){
 		return userID;
+	}
+
+	public Profile getProfile(){
+		return profile;
+	}
+
+	public UserRecents getRecentTorrents(){
+		return recentTorrents;
 	}
 
 	@Override
@@ -144,7 +168,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	}
 
 	/**
-	 * Update the profile fields with the information we loaded. We need to do a lot null checking here to
+	 * Update the profile fields with the information we loaded. We need to do a ton of checks here to
 	 * properly handle user's various paranoia configurations, which could cause us to get a null for any of the
 	 * fields that can be hidden. We also hide the recent snatches/uploads if the user's paranoia is high (6+).
 	 * When viewing our own profile we'll get all the data back but will still see our paranoia value so we need to

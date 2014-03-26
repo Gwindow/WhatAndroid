@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
+import api.son.MySon;
 import api.soup.MySoup;
+import api.user.Profile;
+import api.user.recent.UserRecents;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
@@ -18,7 +21,11 @@ public class ProfileActivity extends LoggedInActivity
 	/**
 	 * Param to pass the user id to display to the activity
 	 */
-	public final static String USER_ID = "what.whatandroid.USER_ID";
+	public static final String USER_ID = "what.whatandroid.USER_ID";
+	/**
+	 * Keys for reading saved profile information from the bundle
+	 */
+	private static final String PROFILE = "what.whatandroid.PROFILE", RECENTS = "what.whatandroid.RECENTS";
 	private ProfileFragment profileFragment;
 
 	@Override
@@ -28,8 +35,16 @@ public class ProfileActivity extends LoggedInActivity
 		setContentView(R.layout.activity_frame);
 		setupNavDrawer();
 
-		//Will default to viewing our own profile
-		profileFragment = ProfileFragment.newInstance(getIntent().getIntExtra(USER_ID, MySoup.getUserId()));
+		//Check if our saved state matches the user id we want to view (ie. the phone orientation changed)
+		int id = getIntent().getIntExtra(USER_ID, MySoup.getUserId());
+		if (savedInstanceState != null && savedInstanceState.getInt(USER_ID) == id){
+			Profile p = (Profile)MySon.toObjectFromString(savedInstanceState.getString(PROFILE), Profile.class);
+			UserRecents r = (UserRecents)MySon.toObjectFromString(savedInstanceState.getString(RECENTS), UserRecents.class);
+			profileFragment = ProfileFragment.newInstance(id, p, r);
+		}
+		else {
+			profileFragment = ProfileFragment.newInstance(id);
+		}
 		FragmentManager manager = getSupportFragmentManager();
 		manager.beginTransaction().add(R.id.container, profileFragment).commit();
 	}
@@ -49,6 +64,14 @@ public class ProfileActivity extends LoggedInActivity
 		Intent intent = new Intent(this, TorrentGroupActivity.class);
 		intent.putExtra(TorrentGroupActivity.GROUP_ID, id);
 		startActivity(intent);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		outState.putInt(USER_ID, profileFragment.getUserID());
+		outState.putString(PROFILE, MySon.toJson(profileFragment.getProfile(), Profile.class));
+		outState.putString(RECENTS, MySon.toJson(profileFragment.getRecentTorrents(), UserRecents.class));
 	}
 
 	@Override
