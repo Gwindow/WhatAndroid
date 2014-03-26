@@ -125,7 +125,6 @@ public class UserSearchFragment extends Fragment
 		if (!searchTerms.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-			System.out.println("Clicked launch search");
 			new LoadUserSearch().execute(searchTerms);
 		}
 		else {
@@ -140,7 +139,6 @@ public class UserSearchFragment extends Fragment
 		if (!searchTerms.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-			System.out.println("Clicked launch search");
 			new LoadUserSearch().execute(searchTerms);
 		}
 		else {

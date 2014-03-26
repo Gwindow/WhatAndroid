@@ -52,7 +52,6 @@ public class AnnouncementsActivity extends LoggedInActivity {
 
 	@Override
 	public void onLoggedIn(){
-		System.out.println("Announcements activity onLoggedIn");
 		if (announcements == null){
 			new LoadAnnouncements().execute();
 		}

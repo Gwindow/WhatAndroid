@@ -150,7 +150,6 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 			super.onPostExecute(status);
 			if (status){
 				if (loginRequest){
-					System.out.println("Returning to requesting activity");
 					Intent result = new Intent();
 					setResult(Activity.RESULT_OK, result);
 					LoginActivity.this.finish();
