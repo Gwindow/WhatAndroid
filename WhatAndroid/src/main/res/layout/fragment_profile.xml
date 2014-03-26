@@ -38,6 +38,7 @@
                     android:textSize="22sp"
                     app:font="@string/roboto_black"/>
 
+
             <TextView
                     android:id="@+id/user_class"
                     android:layout_width="wrap_content"
@@ -46,6 +47,43 @@
                     android:layout_below="@id/username"
                     android:textSize="14sp"
                     android:textAllCaps="true"/>
+
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/user_class"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+
+                <what.whatandroid.views.TypeFacedTextView
+                        android:id="@+id/donor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="4dp"
+                        android:text="@string/fa_heart"
+                        android:textColor="@android:color/holo_red_dark"
+                        app:font="@string/fontawesome_font"/>
+
+                <what.whatandroid.views.TypeFacedTextView
+                        android:id="@+id/warned"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="4dp"
+                        android:text="@string/fa_exclamation_triangle"
+                        android:textColor="@android:color/holo_red_dark"
+                        app:font="@string/fontawesome_font"/>
+
+                <what.whatandroid.views.TypeFacedTextView
+                        android:id="@+id/banned"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fa_ban"
+                        android:textColor="@android:color/holo_red_dark"
+                        app:font="@string/fontawesome_font"/>
+
+            </LinearLayout>
         </RelativeLayout>
 
         <LinearLayout

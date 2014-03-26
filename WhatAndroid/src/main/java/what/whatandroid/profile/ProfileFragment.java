@@ -59,7 +59,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	 */
 	private ViewPager recentSnatches, recentUploads;
 	private RecentTorrentPagerAdapter snatchesAdapter, uploadsAdapter;
-	private View snatchesHeader, uploadsHeader;
+	private View snatchesHeader, uploadsHeader, donor, warned, banned;
 
 	/**
 	 * Use this factory method to create a new instance of the fragment displaying the
@@ -137,6 +137,9 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		snatchesHeader = view.findViewById(R.id.snatches_header);
 		recentUploads = (ViewPager)view.findViewById(R.id.recent_uploads);
 		uploadsHeader = view.findViewById(R.id.uploads_header);
+		donor = view.findViewById(R.id.donor);
+		warned = view.findViewById(R.id.warned);
+		banned = view.findViewById(R.id.banned);
 		return view;
 	}
 
@@ -217,6 +220,16 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 			recentSnatches.setVisibility(View.GONE);
 			uploadsHeader.setVisibility(View.GONE);
 			recentUploads.setVisibility(View.GONE);
+		}
+
+		if (!profile.getPersonal().isDonor()){
+			donor.setVisibility(View.GONE);
+		}
+		if (!profile.getPersonal().isWarned()){
+			warned.setVisibility(View.GONE);
+		}
+		if (profile.getPersonal().isEnabled()){
+			banned.setVisibility(View.GONE);
 		}
 	}
 
