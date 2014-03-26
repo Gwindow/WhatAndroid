@@ -135,7 +135,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 			}
 		}
 		if (convertView == null){
-			convertView = inflater.inflate(R.layout.fragment_group_torrent, parent, false);
+			convertView = inflater.inflate(R.layout.list_group_torrent, parent, false);
 			holder = new TorrentViewHolder();
 			holder.format = (TextView)convertView.findViewById(R.id.format);
 			holder.size = (TextView)convertView.findViewById(R.id.size);
