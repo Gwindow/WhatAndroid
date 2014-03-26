@@ -12,7 +12,7 @@
             android:orientation="vertical"
             android:background="#222">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:tools="http://schemas.android.com/tools"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/avatar"
                     android:textSize="22sp"
-                    app:font="Roboto-Black.ttf"/>
+                    app:font="@string/roboto_black"/>
 
             <TextView
                     android:id="@+id/user_class"

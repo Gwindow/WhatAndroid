@@ -49,4 +49,6 @@
     <string name="key_pref_pywhat_port">pref_pywhat_port</string>
     <string name="key_pref_pywhat_password">pref_pywhat_password</string>
     <string name="key_pref_version_name">pref_verion_name</string>
+    <string name="fontawesome_font">fontawesome-webfont.ttf</string>
+    <string name="roboto_black">Roboto-Black.ttf</string>
 </resources>

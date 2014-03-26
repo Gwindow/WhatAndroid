@@ -142,6 +142,8 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 			holder.snatches = (TextView)convertView.findViewById(R.id.snatches);
 			holder.seeders = (TextView)convertView.findViewById(R.id.seeders);
 			holder.leechers = (TextView)convertView.findViewById(R.id.leechers);
+			holder.freeleech = convertView.findViewById(R.id.freeleech_icon);
+			holder.reported = convertView.findViewById(R.id.reported_icon);
 			convertView.setTag(holder);
 		}
 		holder.torrent = (Torrents)getChild(grouppos, childpos);
@@ -150,6 +152,20 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 		holder.snatches.setText(holder.torrent.getSnatched().toString());
 		holder.seeders.setText(holder.torrent.getSeeders().toString());
 		holder.leechers.setText(holder.torrent.getLeechers().toString());
+
+		//Hide show the freeleech & reported icons appropriately
+		if (!holder.torrent.isFreeTorrent()){
+			holder.freeleech.setVisibility(View.GONE);
+		}
+		else {
+			holder.freeleech.setVisibility(View.VISIBLE);
+		}
+		if (!holder.torrent.isReported()){
+			holder.reported.setVisibility(View.GONE);
+		}
+		else {
+			holder.reported.setVisibility(View.VISIBLE);
+		}
 		return convertView;
 	}
 
@@ -233,6 +249,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 	 */
 	private static class TorrentViewHolder {
 		public TextView format, size, snatches, seeders, leechers;
+		public View freeleech, reported;
 		public Torrents torrent;
 	}
 
