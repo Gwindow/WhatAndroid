@@ -75,12 +75,20 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback {
 		//Required empty public ctor
 	}
 
+	public Artist getArtist(){
+		return artist;
+	}
+
+	public int getArtistID(){
+		return artistID;
+	}
+
 	@Override
 	public void onLoggedIn(){
 		if (artist == null){
 			new LoadArtist().execute(artistID);
 		}
-		else {
+		else if (releases == null){
 			releases = new Releases(artist);
 		}
 	}

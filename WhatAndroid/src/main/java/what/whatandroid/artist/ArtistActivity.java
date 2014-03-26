@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
+import api.son.MySon;
 import api.soup.MySoup;
+import api.torrents.artist.Artist;
+import api.torrents.artist.Releases;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
@@ -23,8 +26,12 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 	 * the USE_SEARCH parameter should be set to true and will indicate that the artist
 	 * to be viewed is coming from the ArtistSearchFragment
 	 */
-	public final static String ARTIST_ID = "what.whatandroid.ARTIST_ID",
+	public static final String ARTIST_ID = "what.whatandroid.ARTIST_ID",
 		USE_SEARCH = "what.whatandroid.USE_SEARCH";
+	/**
+	 * Keys to save artist information in the bundle with
+	 */
+	private static final String ARTIST = "what.whatandroid.ARTIST";
 	private ArtistFragment artistFragment;
 
 	@Override
@@ -44,7 +51,12 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 					ArtistSearchFragment.getReleases());
 			}
 		}
-		//If no artist from search then download the data
+		else if (savedInstanceState != null && savedInstanceState.getInt(ARTIST_ID) == id){
+			Artist a = (Artist)MySon.toObjectFromString(savedInstanceState.getString(ARTIST), Artist.class);
+			Releases r = new Releases(a);
+			artistFragment = ArtistFragment.newInstance(a, r);
+		}
+		//If no artist from search or previous instance then download the data
 		if (artistFragment == null){
 			artistFragment = ArtistFragment.newInstance(id);
 		}
@@ -54,8 +66,14 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 
 	@Override
 	public void onLoggedIn(){
-		System.out.println("ArtistActivity onLoggedIn");
 		artistFragment.onLoggedIn();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		outState.putInt(ARTIST_ID, artistFragment.getArtistID());
+		outState.putString(ARTIST, MySon.toJson(artistFragment.getArtist(), Artist.class));
 	}
 
 	@Override
