@@ -11,6 +11,8 @@ import api.search.torrents.TorrentSearch;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.imgloader.ImageLoadingListener;
+import what.whatandroid.settings.SettingsActivity;
 
 /**
  * Adapter for viewing list of torrent search results
@@ -18,6 +20,7 @@ import what.whatandroid.callbacks.ViewTorrentCallbacks;
 public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 	implements AdapterView.OnItemClickListener, AbsListView.OnScrollListener {
 
+	private final Context context;
 	private final LayoutInflater inflater;
 	/**
 	 * The search being viewed
@@ -45,6 +48,7 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 	public TorrentSearchAdapter(Context context, View footer){
 		super(context, R.layout.list_artist_torrent);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.context = context;
 		this.footer = footer;
 		loadingNext = false;
 		try {
@@ -62,7 +66,6 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 	 */
 	public void viewSearch(TorrentSearch search){
 		clear();
-		//TODO: api level 11?
 		addAll(search.getResponse().getResults());
 		notifyDataSetChanged();
 		this.search = search;
@@ -86,7 +89,9 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 		else {
 			convertView = inflater.inflate(R.layout.list_torrent_search, parent, false);
 			holder = new ViewHolder();
-			holder.art = (ImageView)convertView.findViewById(R.id.album_art);
+			holder.art = (ImageView)convertView.findViewById(R.id.art);
+			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
+			holder.listener = new ImageLoadingListener(holder.spinner);
 			holder.artist = (TextView)convertView.findViewById(R.id.artist_name);
 			holder.title = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.album_year);
@@ -94,12 +99,13 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 			convertView.setTag(holder);
 		}
 		TorrentGroup group = getItem(position);
-		if (group.getCover() != null){
-			ImageLoader.getInstance().displayImage(group.getCover(), holder.art);
-			holder.art.setVisibility(View.VISIBLE);
+		String coverUrl = group.getCover();
+		if (SettingsActivity.imagesEnabled(context) && coverUrl != null && !coverUrl.isEmpty()){
+			ImageLoader.getInstance().displayImage(group.getCover(), holder.art, holder.listener);
 		}
 		else {
 			holder.art.setVisibility(View.GONE);
+			holder.spinner.setVisibility(View.GONE);
 		}
 		if (group.getArtist() != null){
 			holder.artist.setText(group.getArtist());
@@ -150,6 +156,8 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 	 */
 	private static class ViewHolder {
 		public ImageView art;
+		public ProgressBar spinner;
+		public ImageLoadingListener listener;
 		public TextView artist, title, year, tags;
 	}
 
