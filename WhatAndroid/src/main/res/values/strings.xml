@@ -41,6 +41,10 @@
     <string name="whatandroid_logo">WhatAndroid Logo</string>
     <string name="action_settings">Settings</string>
     <string name="action_send_feedback">Send Feedback</string>
+    <string name="preferences">Preferences</string>
+    <string name="pref_img_on_wifi_only">Load Images on Wifi Only</string>
+    <string name="key_pref_img_wifi">pref_img_wifi_only</string>
+    <string name="img_wifi_description">Check if you only want to download images when on Wifi</string>
     <string name="pref_pywhat">PyWhat Server</string>
     <string name="pref_pywhat_host">Hostname</string>
     <string name="pref_pywhat_port">Port</string>

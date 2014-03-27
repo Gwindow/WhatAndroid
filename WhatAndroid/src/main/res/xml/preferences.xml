@@ -2,6 +2,17 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
+            android:title="@string/preferences"
+            android:key="pref_general">
+
+        <CheckBoxPreference
+                android:title="@string/pref_img_on_wifi_only"
+                android:key="@string/key_pref_img_wifi"
+                android:summary="@string/img_wifi_description"
+                android:defaultValue="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
             android:title="@string/pref_pywhat"
             android:key="pref_pywhat">
         <EditTextPreference
