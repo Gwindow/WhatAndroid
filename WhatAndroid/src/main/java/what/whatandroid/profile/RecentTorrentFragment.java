@@ -7,11 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import api.user.recent.RecentTorrent;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.imgloader.ImageLoadingListener;
+import what.whatandroid.settings.SettingsActivity;
 
 /**
  * Fragment for displaying information about a recently uploaded
@@ -46,9 +49,17 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_recent_torrent, container, false);
-		ImageView art = (ImageView)view.findViewById(R.id.art);
 		if (torrent != null){
-			ImageLoader.getInstance().displayImage(torrent.getWikiImage(), art);
+			ImageView art = (ImageView)view.findViewById(R.id.art);
+			ProgressBar spinner = (ProgressBar)view.findViewById(R.id.loading_indicator);
+			String imgUrl = torrent.getWikiImage();
+			if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
+				ImageLoader.getInstance().displayImage(torrent.getWikiImage(), art, new ImageLoadingListener(spinner));
+			}
+			else {
+				art.setVisibility(View.GONE);
+				spinner.setVisibility(View.GONE);
+			}
 			TextView albumName = (TextView)view.findViewById(R.id.album_name);
 			albumName.setText(torrent.getName());
 			TextView artistName = (TextView)view.findViewById(R.id.artist_name);
@@ -73,4 +84,6 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 	public void onClick(View v){
 		callbacks.viewTorrentGroup(torrent.getID());
 	}
+
 }
+

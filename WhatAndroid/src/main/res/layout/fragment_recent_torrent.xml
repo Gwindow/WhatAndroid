@@ -5,19 +5,34 @@
                 android:layout_height="match_parent"
                 android:padding="8dp">
 
-    <ImageView
+    <RelativeLayout
+            android:id="@+id/art_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+        <ImageView
             android:id="@+id/art"
             android:layout_width="128dp"
             android:layout_height="128dp"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/album_art"/>
 
+        <ProgressBar
+                android:id="@+id/loading_indicator"
+                style="@android:style/Widget.Holo.ProgressBar.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
     <TextView
             android:id="@+id/album_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_below="@id/art"
+            android:layout_below="@id/art_container"
             android:textSize="14sp"
             android:textStyle="bold"
             android:maxLines="1"
