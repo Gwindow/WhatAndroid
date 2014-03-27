@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import api.soup.MySoup;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import what.whatandroid.NavigationDrawerFragment;
@@ -66,9 +68,18 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	 */
 	public static void initImageLoader(Context context){
 		//Setup Universal Image loader global config
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+			.cacheOnDisc(true)
+			.cacheInMemory(true)
+			.build();
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context.getApplicationContext())
+			.defaultDisplayImageOptions(options)
+			.denyCacheImageMultipleSizesInMemory()
+			.memoryCache(new LruMemoryCache(5 * 512 * 512))
+			.memoryCacheSize(5 * 512 * 512)
 			.discCacheExtraOptions(512, 512, Bitmap.CompressFormat.JPEG, 75, null)
 			.discCacheSize(50 * 512 * 512)
+			.discCacheFileCount(100)
 			.build();
 		ImageLoader.getInstance().init(config);
 	}
