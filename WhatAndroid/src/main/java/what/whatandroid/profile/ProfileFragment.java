@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.cli.Utils;
@@ -20,6 +21,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.imgloader.ImageLoadingListener;
+import what.whatandroid.settings.SettingsActivity;
 
 /**
  */
@@ -44,6 +47,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	 * Various content views displaying the user's information
 	 */
 	private ImageView avatar;
+	private ProgressBar spinner;
 	/**
 	 * The user's stats being shown
 	 */
@@ -145,6 +149,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_profile, container, false);
 		avatar = (ImageView)view.findViewById(R.id.avatar);
+		spinner = (ProgressBar)view.findViewById(R.id.loading_indicator);
 		username = (TextView)view.findViewById(R.id.username);
 		userClass = (TextView)view.findViewById(R.id.user_class);
 		upload = (TextView)view.findViewById(R.id.upload);
@@ -180,10 +185,12 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		userClass.setText(profile.getPersonal().getUserClass());
 
 		//We need to check all the paranoia cases that may cause a field to be missing and hide the views for it
-		if (!profile.getAvatar().isEmpty()){
-			ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar);
+		String avatarUrl = profile.getAvatar();
+		if (SettingsActivity.imagesEnabled(getActivity()) && avatarUrl != null && !avatarUrl.isEmpty()){
+			ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar, new ImageLoadingListener(spinner));
 		}
 		else {
+			spinner.setVisibility(View.GONE);
 			avatar.setVisibility(View.GONE);
 		}
 		if (profile.getPersonal().getParanoia().intValue() > 0 && userID != MySoup.getUserId()){
