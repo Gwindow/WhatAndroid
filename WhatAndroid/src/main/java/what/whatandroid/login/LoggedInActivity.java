@@ -90,7 +90,7 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	 * Setup the error logger and run the error reporting and update checking services
 	 */
 	public static void launchServices(Context context){
-		ErrorLogger reporter = new ErrorLogger(context.getApplicationContext());
+		ErrorLogger reporter = new ErrorLogger(context);
 		Thread.setDefaultUncaughtExceptionHandler(reporter);
 
 		Intent checkReports = new Intent(context, ErrorReporterService.class);

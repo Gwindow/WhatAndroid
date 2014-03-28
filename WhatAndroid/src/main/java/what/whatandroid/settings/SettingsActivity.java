@@ -29,6 +29,10 @@ public class SettingsActivity extends Activity {
 	 * @return true if enabled, false if not
 	 */
 	public static Boolean imagesEnabled(Context context){
+		//If there's no context don't load images since we're navigating away
+		if (context == null){
+			return false;
+		}
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		boolean wifiOnly = preferences.getBoolean(context.getString(R.string.key_pref_img_wifi), false);
 		if (wifiOnly){
