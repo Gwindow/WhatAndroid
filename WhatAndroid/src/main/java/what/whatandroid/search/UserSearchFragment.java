@@ -135,15 +135,17 @@ public class UserSearchFragment extends Fragment
 
 	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event){
-		searchTerms = editTerms.getText().toString();
-		if (!searchTerms.isEmpty()){
-			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-			new LoadUserSearch().execute(searchTerms);
-		}
-		else {
-			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
-			editTerms.requestFocus();
+		if (event == null || event.getAction() == KeyEvent.ACTION_DOWN){
+			searchTerms = editTerms.getText().toString();
+			if (!searchTerms.isEmpty()){
+				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+				new LoadUserSearch().execute(searchTerms);
+			}
+			else {
+				Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
+				editTerms.requestFocus();
+			}
 		}
 		return true;
 	}
