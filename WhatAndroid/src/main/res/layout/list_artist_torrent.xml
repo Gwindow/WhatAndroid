@@ -5,18 +5,33 @@
                 android:layout_height="match_parent"
                 android:padding="16dp">
 
-    <ImageView
-            android:id="@+id/album_art"
-            android:layout_width="112dp"
-            android:layout_height="112dp"
-            android:layout_centerVertical="true"
+    <RelativeLayout
+            android:id="@+id/art_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:contentDescription="@string/album_art"/>
+            android:layout_centerVertical="true">
+
+        <ImageView
+                android:id="@+id/art"
+                android:layout_width="112dp"
+                android:layout_height="112dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/album_art"/>
+
+        <ProgressBar
+                android:id="@+id/loading_indicator"
+                style="@android:style/Widget.Holo.ProgressBar.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
 
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_toRightOf="@id/album_art"
+            android:layout_toRightOf="@id/art_container"
             android:orientation="vertical"
             android:paddingLeft="16dp">
 

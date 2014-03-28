@@ -4,15 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import api.torrents.ReleaseType;
 import api.torrents.artist.TorrentGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.imgloader.ImageLoadingListener;
+import what.whatandroid.settings.SettingsActivity;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,6 +21,7 @@ import java.util.SortedMap;
  * Displays the list of the Artist's torrent groups for selection
  */
 public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements ExpandableListView.OnChildClickListener {
+	private final Context context;
 	private final LayoutInflater inflater;
 	/**
 	 * Callbacks to the Artist Activity so we can launch a new intent to view
@@ -46,6 +46,7 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 	public ArtistTorrentAdapter(Context context, SortedMap<ReleaseType, ArrayList<TorrentGroup>> objects){
 		super();
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.context = context;
 		try {
 			callbacks = (ViewTorrentCallbacks)context;
 		}
@@ -75,14 +76,23 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 		else {
 			convertView = inflater.inflate(R.layout.list_artist_torrent, parent, false);
 			holder = new ChildViewHolder();
-			holder.art = (ImageView)convertView.findViewById(R.id.album_art);
+			holder.art = (ImageView)convertView.findViewById(R.id.art);
+			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
+			holder.listener = new ImageLoadingListener(holder.spinner);
 			holder.albumName = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.album_year);
 			holder.tags = (TextView)convertView.findViewById(R.id.album_tags);
 			convertView.setTag(holder);
 		}
 		holder.torrentGroup = (TorrentGroup)getChild(groupPosition, childPosition);
-		ImageLoader.getInstance().displayImage(holder.torrentGroup.getWikiImage(), holder.art);
+		String img = holder.torrentGroup.getWikiImage();
+		if (SettingsActivity.imagesEnabled(context) && img != null && !img.isEmpty()){
+			ImageLoader.getInstance().displayImage(holder.torrentGroup.getWikiImage(), holder.art, holder.listener);
+		}
+		else {
+			holder.art.setVisibility(View.GONE);
+			holder.spinner.setVisibility(View.GONE);
+		}
 		holder.albumName.setText(holder.torrentGroup.getGroupName());
 		holder.year.setText(holder.torrentGroup.getGroupYear().toString());
 		String tagString = holder.torrentGroup.getTags().toString();
@@ -163,6 +173,8 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 	private static class ChildViewHolder {
 		public TorrentGroup torrentGroup;
 		public ImageView art;
+		public ProgressBar spinner;
+		public ImageLoadingListener listener;
 		public TextView albumName, year, tags;
 	}
 }
