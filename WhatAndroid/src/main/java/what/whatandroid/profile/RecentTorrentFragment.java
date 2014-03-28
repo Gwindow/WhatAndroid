@@ -63,7 +63,18 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 			TextView albumName = (TextView)view.findViewById(R.id.album_name);
 			albumName.setText(torrent.getName());
 			TextView artistName = (TextView)view.findViewById(R.id.artist_name);
-			artistName.setText(torrent.getArtist().getName());
+			//For 3+ artists show Various Artists, for 2 show A & B for 1 just show the artist name
+			switch (torrent.getArtists().size()){
+				case 1:
+					artistName.setText(torrent.getArtists().get(0).getName());
+					break;
+				case 2:
+					artistName.setText(torrent.getArtists().get(0).getName()
+						+ " & " + torrent.getArtists().get(1).getName());
+					break;
+				default:
+					artistName.setText("Various Artists");
+			}
 		}
 		view.setOnClickListener(this);
 		return view;
@@ -82,7 +93,7 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 
 	@Override
 	public void onClick(View v){
-		callbacks.viewTorrentGroup(torrent.getID());
+		callbacks.viewTorrentGroup(torrent.getId());
 	}
 
 }
