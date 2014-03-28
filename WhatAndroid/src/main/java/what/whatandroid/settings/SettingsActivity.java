@@ -30,7 +30,7 @@ public class SettingsActivity extends Activity {
 	 */
 	public static Boolean imagesEnabled(Context context){
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		boolean wifiOnly = preferences.getBoolean(context.getString(R.string.key_pref_img_wifi), true);
+		boolean wifiOnly = preferences.getBoolean(context.getString(R.string.key_pref_img_wifi), false);
 		if (wifiOnly){
 			ConnectivityManager manager = (ConnectivityManager)context.getSystemService(CONNECTIVITY_SERVICE);
 			NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);

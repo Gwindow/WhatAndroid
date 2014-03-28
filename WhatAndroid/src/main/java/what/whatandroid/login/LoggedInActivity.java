@@ -40,8 +40,8 @@ public abstract class LoggedInActivity extends ActionBarActivity
 
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-	//public static final String SITE = "192.168.1.125:8080/";
-	public static final String SITE = "what.cd";
+	public static final String SITE = "192.168.1.125:8080/";
+	//public static final String SITE = "what.cd";
 	protected NavigationDrawerFragment navDrawer;
 	/**
 	 * Used to store the last screen title, for use in restoreActionBar
@@ -56,9 +56,8 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	 * Initialize MySoup so that we can start making API requests
 	 */
 	public static void initSoup(){
-		MySoup.setSite(SITE, true);
+		MySoup.setSite(SITE, false);
 		MySoup.setUserAgent("WhatAndroid Android");
-		MySoup.setAndroid(true);
 	}
 
 	/**
@@ -76,10 +75,8 @@ public abstract class LoggedInActivity extends ActionBarActivity
 			.defaultDisplayImageOptions(options)
 			.denyCacheImageMultipleSizesInMemory()
 			.memoryCache(new LruMemoryCache(5 * 512 * 512))
-			.memoryCacheSize(5 * 512 * 512)
 			.discCacheExtraOptions(512, 512, Bitmap.CompressFormat.JPEG, 75, null)
 			.discCacheSize(50 * 512 * 512)
-			.discCacheFileCount(100)
 			.build();
 		ImageLoader.getInstance().init(config);
 	}
@@ -178,9 +175,6 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu){
 		if (!navDrawer.isDrawerOpen()){
-			// Only show items in the action bar relevant to this screen
-			// if the drawer is not showing. Otherwise, let the drawer
-			// decide what to show in the action bar.
 			getMenuInflater().inflate(R.menu.what_android, menu);
 			restoreActionBar();
 			return true;

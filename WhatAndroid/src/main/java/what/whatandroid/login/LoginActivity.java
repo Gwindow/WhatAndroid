@@ -90,22 +90,24 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 
 	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event){
-		if (username.length() > 0 && password.length() > 0){
-			//Check if we're logging in with a different user than we saved previously
-			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-			String savedUserName = preferences.getString(SettingsFragment.USER_NAME, "");
-			if (!username.getText().toString().equalsIgnoreCase(savedUserName)){
-				preferences.edit()
-					.remove(SettingsFragment.USER_NAME)
-					.remove(SettingsFragment.USER_PASSWORD)
-					.remove(SettingsFragment.USER_COOKIE)
-					.commit();
+		if (event.getAction() == KeyEvent.ACTION_DOWN){
+			if (username.length() > 0 && password.length() > 0){
+				//Check if we're logging in with a different user than we saved previously
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+				String savedUserName = preferences.getString(SettingsFragment.USER_NAME, "");
+				if (!username.getText().toString().equalsIgnoreCase(savedUserName)){
+					preferences.edit()
+						.remove(SettingsFragment.USER_NAME)
+						.remove(SettingsFragment.USER_PASSWORD)
+						.remove(SettingsFragment.USER_COOKIE)
+						.commit();
+				}
+				new Login().execute(username.getText().toString(), password.getText().toString());
 			}
-			new Login().execute(username.getText().toString(), password.getText().toString());
-		}
-		else {
-			Toast.makeText(this, "Please enter your username and password", Toast.LENGTH_SHORT).show();
-			username.requestFocus();
+			else {
+				Toast.makeText(this, "Please enter your username and password", Toast.LENGTH_SHORT).show();
+				username.requestFocus();
+			}
 		}
 		return true;
 	}
