@@ -33,6 +33,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 	 * If we're logging in at the request of some other activity
 	 */
 	private boolean loginRequest;
+	private Login loginTask;
 	private TextView username, password;
 
 	@Override
@@ -63,7 +64,18 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 		super.onResume();
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		if (preferences.getString(SettingsFragment.USER_COOKIE, null) != null){
-			new Login().execute(username.getText().toString(), password.getText().toString());
+			loginTask = new Login();
+			loginTask.execute(username.getText().toString(), password.getText().toString());
+		}
+	}
+
+	@Override
+	protected void onPause(){
+		super.onPause();
+		//If the user's phone orientation changes while running the login task we need
+		//to dismiss the dialog
+		if (loginTask != null){
+			loginTask.dismissDialog();
 		}
 	}
 
@@ -80,7 +92,8 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 					.remove(SettingsFragment.USER_COOKIE)
 					.commit();
 			}
-			new Login().execute(username.getText().toString(), password.getText().toString());
+			loginTask = new Login();
+			loginTask.execute(username.getText().toString(), password.getText().toString());
 		}
 		else {
 			Toast.makeText(this, "Please enter your username and password", Toast.LENGTH_SHORT).show();
@@ -90,7 +103,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 
 	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event){
-		if (event.getAction() == KeyEvent.ACTION_DOWN){
+		if (event == null || event.getAction() == KeyEvent.ACTION_DOWN){
 			if (username.length() > 0 && password.length() > 0){
 				//Check if we're logging in with a different user than we saved previously
 				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -102,7 +115,8 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 						.remove(SettingsFragment.USER_COOKIE)
 						.commit();
 				}
-				new Login().execute(username.getText().toString(), password.getText().toString());
+				loginTask = new Login();
+				loginTask.execute(username.getText().toString(), password.getText().toString());
 			}
 			else {
 				Toast.makeText(this, "Please enter your username and password", Toast.LENGTH_SHORT).show();

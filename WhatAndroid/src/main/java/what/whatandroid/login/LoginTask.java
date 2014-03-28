@@ -87,6 +87,17 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 
 	@Override
 	protected void onPostExecute(Boolean status){
-		dialog.dismiss();
+		if (dialog.isShowing()){
+			dialog.dismiss();
+		}
+	}
+
+	/**
+	 * Explicitly dismiss the progress dialog. This should be done if the view is being destroyed
+	 */
+	public void dismissDialog(){
+		if (dialog.isShowing()){
+			dialog.dismiss();
+		}
 	}
 }

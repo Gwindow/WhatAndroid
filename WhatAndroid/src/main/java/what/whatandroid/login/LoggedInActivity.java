@@ -51,6 +51,11 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	 * Prevent calling the onLoggedIn method multiple times
 	 */
 	private boolean calledLogin = false;
+	/**
+	 * Login and logout tasks so we can dismiss the dialogs if activity is paused ie. user changes orientation or such
+	 */
+	private Login loginTask;
+	private LogoutTask logoutTask;
 
 	/**
 	 * Initialize MySoup so that we can start making API requests
@@ -129,7 +134,8 @@ public abstract class LoggedInActivity extends ActionBarActivity
 				initSoup();
 				initImageLoader(this);
 				launchServices(this);
-				new Login().execute(username, password);
+				loginTask = new Login();
+				loginTask.execute(username, password);
 			}
 		}
 		//If we're already logged in tell the activity it's ok to start loading if we haven't already told them
@@ -154,6 +160,12 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	protected void onPause(){
 		super.onPause();
 		calledLogin = false;
+		if (loginTask != null){
+			loginTask.dismissDialog();
+		}
+		if (logoutTask != null){
+			logoutTask.dismissDialog();
+		}
 	}
 
 	@Override
@@ -191,7 +203,8 @@ public abstract class LoggedInActivity extends ActionBarActivity
 				startActivity(intent);
 				return true;
 			case R.id.action_logout:
-				new LogoutTask().execute();
+				logoutTask = new LogoutTask();
+				logoutTask.execute();
 				return true;
 			case R.id.action_feedback:
 				intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "whatcdandroid@gmail.com", null));
@@ -250,7 +263,9 @@ public abstract class LoggedInActivity extends ActionBarActivity
 		 */
 		@Override
 		protected void onPostExecute(Boolean status){
-			dialog.dismiss();
+			if (dialog.isShowing()){
+				dialog.dismiss();
+			}
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoggedInActivity.this);
 			preferences.edit()
 				.remove(SettingsFragment.USER_COOKIE)
@@ -274,6 +289,12 @@ public abstract class LoggedInActivity extends ActionBarActivity
 				e.printStackTrace();
 			}
 			return status;
+		}
+
+		public void dismissDialog(){
+			if (dialog.isShowing()){
+				dialog.dismiss();
+			}
 		}
 	}
 }
