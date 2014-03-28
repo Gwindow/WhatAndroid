@@ -23,7 +23,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="avatar">Avatar</string>
     <string name="album_art">Album Art</string>
-    <string name="artist_image">Artist Image</string>
+    <string name="header_image">Header Image</string>
     <string name="search">Search</string>
     <string name="search_terms">Search Terms</string>
     <string name="search_tags">Tags (eg: hip.hop indie)</string>

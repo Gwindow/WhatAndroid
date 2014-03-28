@@ -7,16 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import api.torrents.torrents.EditionTorrents;
 import api.torrents.torrents.TorrentGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
+import what.whatandroid.imgloader.ImageLoadingListener;
+import what.whatandroid.settings.SettingsActivity;
 
 import java.util.List;
 
@@ -42,6 +41,7 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 	 */
 	private ImageView image;
 	private View imageHeader, titleHeader;
+	private ProgressBar spinner;
 	private TextView albumTitle;
 	private ExpandableListView torrentList;
 
@@ -90,6 +90,7 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 
 		imageHeader = inflater.inflate(R.layout.header_image, null);
 		image = (ImageView)imageHeader.findViewById(R.id.image);
+		spinner = (ProgressBar)imageHeader.findViewById(R.id.loading_indicator);
 		return view;
 	}
 
@@ -99,14 +100,14 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 	private void updateTorrentGroup(List<EditionTorrents> editions){
 		callbacks.setTitle(group.getResponse().getGroup().getName());
 
-		if (!group.getResponse().getGroup().getWikiImage().equalsIgnoreCase("")){
-			ImageLoader.getInstance().displayImage(group.getResponse().getGroup().getWikiImage(), image);
+		String imgUrl = group.getResponse().getGroup().getWikiImage();
+		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
+			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner));
 			torrentList.addHeaderView(imageHeader);
 		}
 		else {
 			imageHeader.setVisibility(View.GONE);
-			image = null;
-			imageHeader = null;
+			spinner.setVisibility(View.GONE);
 		}
 		albumTitle.setText(group.getResponse().getGroup().getName());
 		torrentList.addHeaderView(titleHeader);

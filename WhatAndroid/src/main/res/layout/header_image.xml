@@ -5,11 +5,26 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <ImageView
-            android:id="@+id/image"
+
+    <RelativeLayout
+            android:id="@+id/art_container"
             android:layout_width="match_parent"
-            android:layout_height="256dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/artist_image"/>
+            android:layout_height="wrap_content">
+
+        <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="256dp"
+                android:contentDescription="@string/header_image"
+                android:scaleType="centerCrop"/>
+
+        <ProgressBar
+                android:id="@+id/loading_indicator"
+                style="@android:style/Widget.Holo.ProgressBar.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

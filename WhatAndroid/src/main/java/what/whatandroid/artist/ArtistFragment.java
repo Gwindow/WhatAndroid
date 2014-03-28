@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import api.torrents.artist.Artist;
 import api.torrents.artist.Releases;
@@ -16,6 +17,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
+import what.whatandroid.imgloader.ImageLoadingListener;
+import what.whatandroid.settings.SettingsActivity;
 
 /**
  * Fragment for viewing an artist's information and torrent groups
@@ -41,6 +44,7 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback {
 	 * Various content views displaying the artist information
 	 */
 	private ImageView image;
+	private ProgressBar spinner;
 	private View header;
 	private ExpandableListView torrentList;
 
@@ -110,6 +114,7 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback {
 		torrentList = (ExpandableListView)view.findViewById(R.id.exp_list);
 		header = inflater.inflate(R.layout.header_image, null);
 		image = (ImageView)header.findViewById(R.id.image);
+		spinner = (ProgressBar)header.findViewById(R.id.loading_indicator);
 		if (artist != null){
 			updateArtist();
 		}
@@ -121,8 +126,9 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback {
 	 */
 	private void updateArtist(){
 		callbacks.setTitle(artist.getResponse().getName());
-		if (!artist.getResponse().getImage().equalsIgnoreCase("")){
-			ImageLoader.getInstance().displayImage(artist.getResponse().getImage(), image);
+		String imgUrl = artist.getResponse().getImage();
+		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
+			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner));
 			torrentList.addHeaderView(header);
 		}
 		else {
