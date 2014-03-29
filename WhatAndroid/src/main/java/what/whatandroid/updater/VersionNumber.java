@@ -73,6 +73,6 @@ public class VersionNumber {
 
 	@Override
 	public String toString(){
-		return major + "." + minor + "." + patch + (alpha ? " Alpa" : beta ? " Beta" : "");
+		return major + "." + minor + "." + patch + (alpha ? " Alpha" : beta ? " Beta" : "");
 	}
 }
