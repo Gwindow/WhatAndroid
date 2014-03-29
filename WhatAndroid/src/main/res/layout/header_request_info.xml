@@ -2,7 +2,7 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -63,7 +63,8 @@
                     android:layout_alignParentLeft="true"
                     android:text="@string/created"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textColor="@android:color/primary_text_dark"/>
 
             <TextView
                     android:id="@+id/created"
@@ -71,7 +72,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/created_text"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:textColor="@android:color/primary_text_dark"/>
 
             <TextView
                     android:id="@+id/record_label_text"
@@ -82,7 +84,8 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/record_label"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textColor="@android:color/primary_text_dark"/>
 
             <TextView
                     android:id="@+id/record_label"
@@ -90,7 +93,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/record_label_text"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:textColor="@android:color/primary_text_dark"/>
 
             <TextView
                     android:id="@+id/catalogue_number_text"
@@ -101,7 +105,8 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/catalogue_number"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textColor="@android:color/primary_text_dark"/>
 
             <TextView
                     android:id="@+id/catalogue_number"
@@ -109,7 +114,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/catalogue_number_text"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:textColor="@android:color/primary_text_dark"/>
 
             <TextView
                     android:id="@+id/release_type_text"
@@ -120,7 +126,8 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/release_type"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textColor="@android:color/primary_text_dark"/>
 
             <TextView
                     android:id="@+id/release_type"
@@ -128,7 +135,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/release_type_text"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:textColor="@android:color/primary_text_dark"/>
 
             <TextView
                     android:id="@+id/votes_text"
@@ -139,7 +147,8 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/votes"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textColor="@android:color/primary_text_dark"/>
 
             <TextView
                     android:id="@+id/votes"
@@ -147,7 +156,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/votes_text"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:textColor="@android:color/primary_text_dark"/>
 
             <TextView
                     android:id="@+id/bounty_text"
@@ -158,7 +168,8 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/bounty"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textColor="@android:color/primary_text_dark"/>
 
             <TextView
                     android:id="@+id/bounty"
@@ -166,7 +177,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/bounty_text"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:textColor="@android:color/primary_text_dark"/>
 
         </RelativeLayout>
 
@@ -201,7 +213,8 @@
                     android:id="@+id/accept_bitrates"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="italic"/>
+                    android:textStyle="italic"
+                    android:textColor="@android:color/primary_text_dark"/>
 
         </LinearLayout>
 
@@ -236,7 +249,8 @@
                     android:id="@+id/accept_formats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="italic"/>
+                    android:textStyle="italic"
+                    android:textColor="@android:color/primary_text_dark"/>
 
         </LinearLayout>
 
@@ -271,10 +285,12 @@
                     android:id="@+id/accept_media"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="italic"/>
+                    android:textStyle="italic"
+                    android:textColor="@android:color/primary_text_dark"/>
 
         </LinearLayout>
 
+        <!-- Header & listing for tags -->
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -306,7 +322,8 @@
                     android:id="@+id/tags"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="italic"/>
+                    android:textStyle="italic"
+                    android:textColor="@android:color/primary_text_dark"/>
 
         </LinearLayout>
     </LinearLayout>

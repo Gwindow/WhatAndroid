@@ -7,10 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import api.cli.Utils;
 import api.requests.Request;
 import api.requests.Response;
@@ -41,6 +38,10 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 	private ProgressBar spinner;
 	private TextView title, created, recordLabel, catalogueNumber, releaseType, acceptBitrates, acceptFormats,
 		acceptMedia, votes, bounty, tags;
+	/**
+	 * The list shows the artists & top contributors
+	 */
+	private ExpandableListView list;
 
 	/**
 	 * Use this factory method to create a request fragment displaying the request
@@ -81,20 +82,25 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		View view = inflater.inflate(R.layout.fragment_request, container, false);
-		image = (ImageView)view.findViewById(R.id.image);
-		spinner = (ProgressBar)view.findViewById(R.id.loading_indicator);
-		title = (TextView)view.findViewById(R.id.title);
-		created = (TextView)view.findViewById(R.id.created);
-		recordLabel = (TextView)view.findViewById(R.id.record_label);
-		catalogueNumber = (TextView)view.findViewById(R.id.catalogue_number);
-		releaseType = (TextView)view.findViewById(R.id.release_type);
-		acceptBitrates = (TextView)view.findViewById(R.id.accept_bitrates);
-		acceptFormats = (TextView)view.findViewById(R.id.accept_formats);
-		acceptMedia = (TextView)view.findViewById(R.id.accept_media);
-		votes = (TextView)view.findViewById(R.id.votes);
-		bounty = (TextView)view.findViewById(R.id.bounty);
-		tags = (TextView)view.findViewById(R.id.tags);
+		View view = inflater.inflate(R.layout.expandable_list_view, container, false);
+		list = (ExpandableListView)view.findViewById(R.id.exp_list);
+
+		View header = inflater.inflate(R.layout.header_request_info, null);
+		list.addHeaderView(header);
+
+		image = (ImageView)header.findViewById(R.id.image);
+		spinner = (ProgressBar)header.findViewById(R.id.loading_indicator);
+		title = (TextView)header.findViewById(R.id.title);
+		created = (TextView)header.findViewById(R.id.created);
+		recordLabel = (TextView)header.findViewById(R.id.record_label);
+		catalogueNumber = (TextView)header.findViewById(R.id.catalogue_number);
+		releaseType = (TextView)header.findViewById(R.id.release_type);
+		acceptBitrates = (TextView)header.findViewById(R.id.accept_bitrates);
+		acceptFormats = (TextView)header.findViewById(R.id.accept_formats);
+		acceptMedia = (TextView)header.findViewById(R.id.accept_media);
+		votes = (TextView)header.findViewById(R.id.votes);
+		bounty = (TextView)header.findViewById(R.id.bounty);
+		tags = (TextView)header.findViewById(R.id.tags);
 		return view;
 	}
 
@@ -120,6 +126,10 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 		releaseType.setText(response.getReleaseName());
 		votes.setText(response.getVoteCount().toString());
 		bounty.setText(Utils.toHumanReadableSize(response.getTotalBounty().longValue()));
+
+		RequestAdapter adapter = new RequestAdapter(getActivity(), response.getMusicInfo(), response.getTopContributors());
+		list.setAdapter(adapter);
+		list.setOnChildClickListener(adapter);
 
 		String bitrates = response.getBitrateList().toString();
 		bitrates = bitrates.substring(bitrates.indexOf('[') + 1, bitrates.lastIndexOf(']'));

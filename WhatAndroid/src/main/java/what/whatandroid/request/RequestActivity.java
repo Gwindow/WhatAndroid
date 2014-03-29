@@ -7,6 +7,9 @@ import android.view.Window;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
+import what.whatandroid.artist.ArtistActivity;
+import what.whatandroid.callbacks.ViewArtistCallbacks;
+import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
@@ -14,7 +17,7 @@ import what.whatandroid.search.SearchActivity;
 /**
  * View information about a request
  */
-public class RequestActivity extends LoggedInActivity {
+public class RequestActivity extends LoggedInActivity implements ViewArtistCallbacks, ViewUserCallbacks {
 	/**
 	 * Param to pass the request id to be shown
 	 */
@@ -38,6 +41,20 @@ public class RequestActivity extends LoggedInActivity {
 	@Override
 	public void onLoggedIn(){
 		fragment.onLoggedIn();
+	}
+
+	@Override
+	public void viewArtist(int id){
+		Intent intent = new Intent(this, ArtistActivity.class);
+		intent.putExtra(ArtistActivity.ARTIST_ID, id);
+		startActivity(intent);
+	}
+
+	@Override
+	public void viewUser(int id){
+		Intent intent = new Intent(this, ProfileActivity.class);
+		intent.putExtra(ProfileActivity.USER_ID, id);
+		startActivity(intent);
 	}
 
 	@Override
