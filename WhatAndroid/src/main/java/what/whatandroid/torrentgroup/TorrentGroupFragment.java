@@ -58,8 +58,19 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 		return fragment;
 	}
 
+	public static TorrentGroupFragment newInstance(TorrentGroup group){
+		TorrentGroupFragment fragment = new TorrentGroupFragment();
+		fragment.group = group;
+		fragment.groupID = group.getId();
+		return fragment;
+	}
+
 	public TorrentGroupFragment(){
 		//Required empty ctor
+	}
+
+	public TorrentGroup getGroup(){
+		return group;
 	}
 
 	@Override
@@ -77,6 +88,9 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 	public void onLoggedIn(){
 		if (group == null){
 			new LoadGroup().execute(groupID);
+		}
+		else {
+			updateTorrentGroup(group.getEditions());
 		}
 	}
 

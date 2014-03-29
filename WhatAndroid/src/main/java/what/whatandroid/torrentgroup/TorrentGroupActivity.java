@@ -9,7 +9,9 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
 import android.widget.Toast;
+import api.son.MySon;
 import api.soup.MySoup;
+import api.torrents.torrents.TorrentGroup;
 import api.torrents.torrents.Torrents;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
@@ -27,7 +29,7 @@ public class TorrentGroupActivity extends LoggedInActivity implements ViewArtist
 	/**
 	 * Param to pass the torrent group id to be shown
 	 */
-	public final static String GROUP_ID = "what.whatandroid.GROUP_ID";
+	public final static String GROUP_ID = "what.whatandroid.GROUP_ID", GROUP = "what.whatandroid.GROUP";
 	private TorrentGroupFragment fragment;
 
 	@Override
@@ -38,9 +40,25 @@ public class TorrentGroupActivity extends LoggedInActivity implements ViewArtist
 		setupNavDrawer();
 		setTitle(getTitle());
 
-		fragment = TorrentGroupFragment.newInstance(getIntent().getIntExtra(GROUP_ID, 1));
+		//Check if our saved state matches the group we want to view
+		int intentId = getIntent().getIntExtra(GROUP_ID, 1);
+		if (savedInstanceState != null && intentId == savedInstanceState.getInt(GROUP_ID)){
+			TorrentGroup group = (TorrentGroup)MySon.toObjectFromString(savedInstanceState.getString(GROUP), TorrentGroup.class);
+			fragment = TorrentGroupFragment.newInstance(group);
+		}
+		else {
+			fragment = TorrentGroupFragment.newInstance(getIntent().getIntExtra(GROUP_ID, 1));
+		}
 		FragmentManager manager = getSupportFragmentManager();
 		manager.beginTransaction().add(R.id.container, fragment).commit();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		TorrentGroup group = fragment.getGroup();
+		outState.putInt(GROUP_ID, group.getId());
+		outState.putString(GROUP, MySon.toJson(group, TorrentGroup.class));
 	}
 
 	@Override
