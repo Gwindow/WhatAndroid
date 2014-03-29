@@ -41,6 +41,17 @@
     <string name="whatandroid_logo">WhatAndroid Logo</string>
     <string name="action_settings">Settings</string>
     <string name="action_send_feedback">Send Feedback</string>
+    <string name="created">Created</string>
+    <string name="record_label">Record Label</string>
+    <string name="catalogue_number">Catalogue Number</string>
+    <string name="release_type">Release Type</string>
+    <string name="accept_bitrates">Acceptable Bitrates</string>
+    <string name="accept_formats">Acceptable Formats</string>
+    <string name="accept_media">Acceptable Media</string>
+    <string name="votes">Votes</string>
+    <string name="bounty">Bounty</string>
+    <string name="tags">Tags</string>
+    <string name="request">Request</string>
     <string name="preferences">Preferences</string>
     <string name="pref_img_on_wifi_only">Load Images on Wifi Only</string>
     <string name="key_pref_img_wifi">pref_img_wifi_only</string>

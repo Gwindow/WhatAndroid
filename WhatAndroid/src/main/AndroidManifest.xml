@@ -45,6 +45,10 @@
                 android:name=".settings.SettingsActivity"
                 android:label="@string/action_settings">
         </activity>
+        <activity
+                android:name=".request.RequestActivity"
+                android:label="@string/request">
+        </activity>
 
         <service
                 android:name=".errors.ErrorReporterService"

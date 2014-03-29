@@ -14,6 +14,7 @@ public class ImageLoadingListener extends SimpleImageLoadingListener {
 	private final ProgressBar spinner;
 
 	public ImageLoadingListener(ProgressBar p){
+		super();
 		spinner = p;
 	}
 

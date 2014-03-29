@@ -1,0 +1,189 @@
+package what.whatandroid.request;
+
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import api.cli.Utils;
+import api.requests.Request;
+import api.requests.Response;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import what.whatandroid.R;
+import what.whatandroid.callbacks.OnLoggedInCallback;
+import what.whatandroid.callbacks.SetTitleCallback;
+import what.whatandroid.imgloader.ImageLoadingListener;
+import what.whatandroid.settings.SettingsActivity;
+
+/**
+ * Display the details of a request, bounty, artists etc.
+ */
+public class RequestFragment extends Fragment implements OnLoggedInCallback {
+	/**
+	 * The request being viewed
+	 */
+	private Request request;
+	/**
+	 * Request id passed through when the fragment is created so we can defer loading
+	 */
+	private int requestId;
+	private SetTitleCallback callbacks;
+	/**
+	 * Various views displaying the information about the request
+	 */
+	private ImageView image;
+	private ProgressBar spinner;
+	private TextView title, created, recordLabel, catalogueNumber, releaseType, acceptBitrates, acceptFormats,
+		acceptMedia, votes, bounty, tags;
+
+	/**
+	 * Use this factory method to create a request fragment displaying the request
+	 *
+	 * @param id request to load
+	 * @return fragment displaying the request
+	 */
+	public static RequestFragment newInstance(int id){
+		RequestFragment fragment = new RequestFragment();
+		fragment.requestId = id;
+		return fragment;
+	}
+
+	public RequestFragment(){
+		//Required empty ctor
+	}
+
+	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		try {
+			callbacks = (SetTitleCallback)activity;
+		}
+		catch (ClassCastException e){
+			throw new ClassCastException(activity.toString() + " must implement SetTitleCallbacks");
+		}
+	}
+
+	@Override
+	public void onLoggedIn(){
+		if (request == null){
+			new LoadRequest().execute(requestId);
+		}
+		else {
+			updateRequest();
+		}
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		View view = inflater.inflate(R.layout.fragment_request, container, false);
+		image = (ImageView)view.findViewById(R.id.image);
+		spinner = (ProgressBar)view.findViewById(R.id.loading_indicator);
+		title = (TextView)view.findViewById(R.id.title);
+		created = (TextView)view.findViewById(R.id.created);
+		recordLabel = (TextView)view.findViewById(R.id.record_label);
+		catalogueNumber = (TextView)view.findViewById(R.id.catalogue_number);
+		releaseType = (TextView)view.findViewById(R.id.release_type);
+		acceptBitrates = (TextView)view.findViewById(R.id.accept_bitrates);
+		acceptFormats = (TextView)view.findViewById(R.id.accept_formats);
+		acceptMedia = (TextView)view.findViewById(R.id.accept_media);
+		votes = (TextView)view.findViewById(R.id.votes);
+		bounty = (TextView)view.findViewById(R.id.bounty);
+		tags = (TextView)view.findViewById(R.id.tags);
+		return view;
+	}
+
+	/**
+	 * Update the request information being shown
+	 */
+	private void updateRequest(){
+		Response response = request.getResponse();
+		callbacks.setTitle(response.getTitle());
+
+		String imgUrl = response.getImage();
+		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
+			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner));
+		}
+		else {
+			image.setVisibility(View.GONE);
+			spinner.setVisibility(View.GONE);
+		}
+		title.setText(response.getTitle());
+		created.setText(response.getTimeAdded());
+		recordLabel.setText(response.getRecordLabel());
+		catalogueNumber.setText(response.getCatalogueNumber());
+		releaseType.setText(response.getReleaseName());
+		votes.setText(response.getVoteCount().toString());
+		bounty.setText(Utils.toHumanReadableSize(response.getTotalBounty().longValue()));
+
+		String bitrates = response.getBitrateList().toString();
+		bitrates = bitrates.substring(bitrates.indexOf('[') + 1, bitrates.lastIndexOf(']'));
+		acceptBitrates.setText(bitrates);
+
+		String formats = response.getFormatList().toString();
+		formats = formats.substring(formats.indexOf('[') + 1, formats.lastIndexOf(']'));
+		acceptFormats.setText(formats);
+
+		String media = response.getMediaList().toString();
+		media = media.substring(media.indexOf('[') + 1, media.lastIndexOf(']'));
+		acceptMedia.setText(media);
+
+		String tagString = response.getTags().toString();
+		tagString = tagString.substring(tagString.indexOf('[') + 1, tagString.lastIndexOf(']'));
+		tags.setText(tagString);
+	}
+
+	/**
+	 * Async task to load the request
+	 */
+	private class LoadRequest extends AsyncTask<Integer, Void, Request> {
+
+		/**
+		 * Load some request from its id
+		 *
+		 * @param params params[0] should contain the id to load
+		 * @return the loaded request, or null if something went wrong
+		 */
+		@Override
+		protected Request doInBackground(Integer... params){
+			try {
+				Request r = Request.fromId(params[0]);
+				if (r != null && r.getStatus()){
+					return r;
+				}
+			}
+			catch (Exception e){
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPreExecute(){
+			if (getActivity() != null){
+				getActivity().setProgressBarIndeterminateVisibility(true);
+				getActivity().setProgressBarIndeterminate(true);
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Request r){
+			if (getActivity() != null){
+				getActivity().setProgressBarIndeterminateVisibility(false);
+				getActivity().setProgressBarIndeterminate(false);
+			}
+			if (r != null){
+				request = r;
+				updateRequest();
+			}
+			else if (getActivity() != null){
+				Toast.makeText(getActivity(), "Failed to load torrent group", Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+}
