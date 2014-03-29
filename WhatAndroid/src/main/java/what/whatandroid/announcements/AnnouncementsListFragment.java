@@ -27,6 +27,7 @@ public class AnnouncementsListFragment extends ListFragment {
 	public static AnnouncementsListFragment newInstance(List<Announcement> announcements,
 														ViewAnnouncementCallbacks callbacks){
 		AnnouncementsListFragment fragment = new AnnouncementsListFragment();
+		//When would this be null?
 		fragment.announcements = announcements == null ? new ArrayList<Announcement>() : announcements;
 		fragment.callbacks = callbacks;
 		return fragment;
