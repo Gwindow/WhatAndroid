@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import org.apache.commons.io.IOUtils;
@@ -33,8 +35,10 @@ public class ErrorReporterService extends IntentService {
 	protected void onHandleIntent(Intent intent){
 		StringBuilder reports = findReports();
 		if (reports.length() != 0){
+			Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-			builder.setSmallIcon(R.drawable.ic_launcher)
+			builder.setSmallIcon(R.drawable.ic_notify_crash_reports)
+				.setLargeIcon(largeIcon)
 				.setContentTitle("Crash Reports Found")
 				.setContentText("Click to send reports to the devs")
 				.setAutoCancel(true);
