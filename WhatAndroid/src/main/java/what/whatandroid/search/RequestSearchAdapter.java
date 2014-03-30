@@ -2,6 +2,7 @@ package what.whatandroid.search;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,14 @@ import android.widget.*;
 import api.cli.Utils;
 import api.search.requests.Request;
 import api.search.requests.RequestsSearch;
+import api.soup.MySoup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewRequestCallbacks;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
+
+import java.util.Date;
 
 /**
  * Adapter to display request search results
@@ -93,7 +97,9 @@ public class RequestSearchAdapter extends ArrayAdapter<Request>
 		holder.title.setText(r.getTitle());
 		holder.votes.setText(r.getVoteCount().toString());
 		holder.bounty.setText(Utils.toHumanReadableSize(r.getBounty().longValue()));
-		holder.created.setText(r.getTimeAdded());
+		Date createDate = MySoup.parseDate(r.getTimeAdded());
+		holder.created.setText(DateUtils.getRelativeTimeSpanString(createDate.getTime(),
+			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
 
 		String imgUrl = r.getImage();
 		if (SettingsActivity.imagesEnabled(context) && imgUrl != null && !imgUrl.isEmpty()){
