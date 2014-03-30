@@ -93,9 +93,7 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 		if (getChildType(groupPosition, childPosition) == 0){
 			return getTorrentView(groupPosition, childPosition, convertView, parent);
 		}
-		else {
-			return getRequestView(groupPosition, childPosition, convertView, parent);
-		}
+		return getRequestView(groupPosition, childPosition, convertView, parent);
 	}
 
 	/**

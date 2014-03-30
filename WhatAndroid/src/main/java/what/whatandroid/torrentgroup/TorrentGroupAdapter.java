@@ -64,6 +64,19 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 		}
 	}
 
+	/**
+	 * Type 0 is artist view, 1 is torrent
+	 */
+	@Override
+	public int getChildType(int groupPosition, int childPosition){
+		return groupPosition == 0 && artists != null ? 0 : 1;
+	}
+
+	@Override
+	public int getChildTypeCount(){
+		return 2;
+	}
+
 	@Override
 	public int getChildrenCount(int groupPosition){
 		if (artists != null){
@@ -89,7 +102,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 
 	@Override
 	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent){
-		if (artists != null && groupPosition == 0){
+		if (getChildType(groupPosition, childPosition) == 0){
 			return getArtistView(childPosition, isLastChild, convertView, parent);
 		}
 		return getTorrentView(groupPosition, childPosition, isLastChild, convertView, parent);
