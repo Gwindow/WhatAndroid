@@ -132,7 +132,8 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback {
 			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner));
 		}
 		else {
-			header.setVisibility(View.GONE);
+			image.setVisibility(View.GONE);
+			spinner.setVisibility(View.GONE);
 		}
 		ArtistTorrentAdapter adapter = new ArtistTorrentAdapter(getActivity(), releases.flatten(),
 			artist.getResponse().getRequests());
