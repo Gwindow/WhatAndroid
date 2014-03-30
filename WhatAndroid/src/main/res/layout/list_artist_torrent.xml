@@ -47,7 +47,7 @@
                 android:id="@+id/album_year"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textColor="@android:color/secondary_text_dark"/>
 
         <TextView
