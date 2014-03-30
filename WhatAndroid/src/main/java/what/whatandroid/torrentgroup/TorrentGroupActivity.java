@@ -29,7 +29,8 @@ public class TorrentGroupActivity extends LoggedInActivity implements ViewArtist
 	/**
 	 * Param to pass the torrent group id to be shown
 	 */
-	public final static String GROUP_ID = "what.whatandroid.GROUP_ID", GROUP = "what.whatandroid.GROUP";
+	public final static String GROUP_ID = "what.whatandroid.GROUP_ID";
+	private final static String GROUP = "what.whatandroid.GROUP";
 	private TorrentGroupFragment fragment;
 
 	@Override

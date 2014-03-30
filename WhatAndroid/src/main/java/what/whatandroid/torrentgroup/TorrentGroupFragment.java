@@ -98,11 +98,13 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.expandable_list_view, container, false);
 		torrentList = (ExpandableListView)view.findViewById(R.id.exp_list);
-		titleHeader = inflater.inflate(R.layout.header_album_title, null);
-		albumTitle = (TextView)titleHeader.findViewById(R.id.title);
 		imageHeader = inflater.inflate(R.layout.header_image, null);
+		torrentList.addHeaderView(imageHeader);
 		image = (ImageView)imageHeader.findViewById(R.id.image);
 		spinner = (ProgressBar)imageHeader.findViewById(R.id.loading_indicator);
+		titleHeader = inflater.inflate(R.layout.header_album_title, null);
+		torrentList.addHeaderView(titleHeader);
+		albumTitle = (TextView)titleHeader.findViewById(R.id.title);
 		return view;
 	}
 
@@ -115,14 +117,11 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 		String imgUrl = group.getResponse().getGroup().getWikiImage();
 		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
 			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner));
-			torrentList.addHeaderView(imageHeader);
 		}
 		else {
 			imageHeader.setVisibility(View.GONE);
-			spinner.setVisibility(View.GONE);
 		}
 		albumTitle.setText(group.getResponse().getGroup().getName());
-		torrentList.addHeaderView(titleHeader);
 
 		TorrentGroupAdapter adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(),
 			group.getResponse().getGroup().getMusicInfo(), editions);
@@ -175,7 +174,7 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 				group = torrentGroup;
 				updateTorrentGroup(editions);
 			}
-			else {
+			else if (getActivity() != null){
 				Toast.makeText(getActivity(), "Failed to load torrent group", Toast.LENGTH_SHORT).show();
 			}
 		}

@@ -20,6 +20,7 @@ import api.user.recent.UserRecents;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
+import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
@@ -42,7 +43,8 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	/**
 	 * Callbacks to the activity so we can go set the title
 	 */
-	private ViewTorrentCallbacks callbacks;
+	private SetTitleCallback setTitle;
+	private ViewTorrentCallbacks viewTorrent;
 	/**
 	 * Various content views displaying the user's information
 	 */
@@ -138,10 +140,11 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			callbacks = (ViewTorrentCallbacks)activity;
+			viewTorrent = (ViewTorrentCallbacks)activity;
+			setTitle = (SetTitleCallback)activity;
 		}
 		catch (ClassCastException e){
-			throw new ClassCastException(activity.toString() + " must implement ViewTorrentCallbacks");
+			throw new ClassCastException(activity.toString() + " must implement ViewTorrent & SetTitle Callbacks");
 		}
 	}
 
@@ -180,7 +183,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	 * ignore the paranoia if it's our own profile
 	 */
 	private void updateProfile(){
-		callbacks.setTitle(profile.getUsername());
+		setTitle.setTitle(profile.getUsername());
 		username.setText(profile.getUsername());
 		userClass.setText(profile.getPersonal().getUserClass());
 
