@@ -53,7 +53,7 @@ public class RequestActivity extends LoggedInActivity implements ViewArtistCallb
 		super.onSaveInstanceState(outState);
 		//Don't save too large requests since its too slow
 		Request request = fragment.getRequest();
-		if (request.getResponse().getComments().size() < 25){
+		if (request != null && request.getResponse().getComments().size() < 25){
 			outState.putInt(REQUEST_ID, request.getResponse().getRequestId().intValue());
 			outState.putString(REQUEST, MySon.toJson(request, Request.class));
 		}

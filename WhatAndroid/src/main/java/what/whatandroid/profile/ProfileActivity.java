@@ -70,8 +70,10 @@ public class ProfileActivity extends LoggedInActivity
 	protected void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
 		outState.putInt(USER_ID, profileFragment.getUserID());
-		outState.putString(PROFILE, MySon.toJson(profileFragment.getProfile(), Profile.class));
-		outState.putString(RECENTS, MySon.toJson(profileFragment.getRecentTorrents(), UserRecents.class));
+		if (profileFragment.getProfile() != null){
+			outState.putString(PROFILE, MySon.toJson(profileFragment.getProfile(), Profile.class));
+			outState.putString(RECENTS, MySon.toJson(profileFragment.getRecentTorrents(), UserRecents.class));
+		}
 	}
 
 	@Override

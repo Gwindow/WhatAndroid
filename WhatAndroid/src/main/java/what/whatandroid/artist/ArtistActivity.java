@@ -77,7 +77,7 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 		//For artists with tons of releases the cost of serializing & deserializing is about the same as re-downloading
 		//them and while we do the serialization the app hangs so we look unresponsive. So only save artists
 		//below some size
-		if (artistFragment.getArtist().getResponse().getTorrentgroup().size() < 25){
+		if (artistFragment.getArtist() != null && artistFragment.getArtist().getResponse().getTorrentgroup().size() < 25){
 			outState.putInt(ARTIST_ID, artistFragment.getArtistID());
 			outState.putString(ARTIST, MySon.toJson(artistFragment.getArtist(), Artist.class));
 		}
