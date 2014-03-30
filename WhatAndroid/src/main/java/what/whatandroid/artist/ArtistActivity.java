@@ -10,9 +10,11 @@ import api.torrents.artist.Artist;
 import api.torrents.artist.Releases;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
+import what.whatandroid.callbacks.ViewRequestCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.profile.ProfileActivity;
+import what.whatandroid.request.RequestActivity;
 import what.whatandroid.search.ArtistSearchFragment;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
@@ -20,7 +22,7 @@ import what.whatandroid.torrentgroup.TorrentGroupActivity;
 /**
  * View information about the artist and a list of their torrent groups
  */
-public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallbacks {
+public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallbacks, ViewRequestCallbacks {
 	/**
 	 * Param to pass the user id to display to the activity
 	 * the USE_SEARCH parameter should be set to true and will indicate that the artist
@@ -85,6 +87,13 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 	public void viewTorrentGroup(int id){
 		Intent intent = new Intent(this, TorrentGroupActivity.class);
 		intent.putExtra(TorrentGroupActivity.GROUP_ID, id);
+		startActivity(intent);
+	}
+
+	@Override
+	public void viewRequest(int id){
+		Intent intent = new Intent(this, RequestActivity.class);
+		intent.putExtra(RequestActivity.REQUEST_ID, id);
 		startActivity(intent);
 	}
 

@@ -113,6 +113,7 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback {
 		View view = inflater.inflate(R.layout.expandable_list_view, container, false);
 		torrentList = (ExpandableListView)view.findViewById(R.id.exp_list);
 		header = inflater.inflate(R.layout.header_image, null);
+		torrentList.addHeaderView(header);
 		image = (ImageView)header.findViewById(R.id.image);
 		spinner = (ProgressBar)header.findViewById(R.id.loading_indicator);
 		if (artist != null){
@@ -129,13 +130,12 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback {
 		String imgUrl = artist.getResponse().getImage();
 		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
 			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner));
-			torrentList.addHeaderView(header);
 		}
 		else {
-			image = null;
-			header = null;
+			header.setVisibility(View.GONE);
 		}
-		ArtistTorrentAdapter adapter = new ArtistTorrentAdapter(getActivity(), releases.flatten());
+		ArtistTorrentAdapter adapter = new ArtistTorrentAdapter(getActivity(), releases.flatten(),
+			artist.getResponse().getRequests());
 		torrentList.setAdapter(adapter);
 		torrentList.setOnChildClickListener(adapter);
 	}
