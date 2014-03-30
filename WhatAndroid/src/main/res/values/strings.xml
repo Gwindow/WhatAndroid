@@ -50,6 +50,8 @@
     <string name="accept_media">Acceptable Media</string>
     <string name="votes">Votes</string>
     <string name="bounty">Bounty</string>
+    <string name="filled">Filled</string>
+    <string name="filled_by">Filled By</string>
     <string name="tags">Tags</string>
     <string name="request">Request</string>
     <string name="preferences">Preferences</string>

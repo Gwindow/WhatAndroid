@@ -11,15 +11,18 @@ import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.artist.ArtistActivity;
 import what.whatandroid.callbacks.ViewArtistCallbacks;
+import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
+import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 /**
  * View information about a request
  */
-public class RequestActivity extends LoggedInActivity implements ViewArtistCallbacks, ViewUserCallbacks {
+public class RequestActivity extends LoggedInActivity
+	implements ViewArtistCallbacks, ViewUserCallbacks, ViewTorrentCallbacks {
 	/**
 	 * Param to pass the request id to be shown
 	 */
@@ -75,6 +78,13 @@ public class RequestActivity extends LoggedInActivity implements ViewArtistCallb
 	public void viewUser(int id){
 		Intent intent = new Intent(this, ProfileActivity.class);
 		intent.putExtra(ProfileActivity.USER_ID, id);
+		startActivity(intent);
+	}
+
+	@Override
+	public void viewTorrentGroup(int id){
+		Intent intent = new Intent(this, TorrentGroupActivity.class);
+		intent.putExtra(TorrentGroupActivity.GROUP_ID, id);
 		startActivity(intent);
 	}
 

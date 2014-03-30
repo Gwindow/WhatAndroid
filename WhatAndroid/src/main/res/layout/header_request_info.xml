@@ -180,6 +180,48 @@
                     android:textSize="18sp"
                     android:textColor="@android:color/primary_text_dark"/>
 
+            <TextView
+                    android:id="@+id/filled_torrent_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bounty_text"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/filled"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/primary_text_dark"/>
+
+            <TextView
+                    android:id="@+id/filled_torrent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBaseline="@id/filled_torrent_text"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/holo_blue_dark"/>
+
+            <TextView
+                    android:id="@+id/filled_user_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/filled_torrent_text"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/filled_by"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/primary_text_dark"/>
+
+            <TextView
+                    android:id="@+id/filled_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBaseline="@id/filled_user_text"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/holo_blue_dark"/>
+
         </RelativeLayout>
 
         <!-- Header & listing for acceptable bitrates -->

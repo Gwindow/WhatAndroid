@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,17 @@ import android.widget.*;
 import api.cli.Utils;
 import api.requests.Request;
 import api.requests.Response;
+import api.soup.MySoup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
+import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
+
+import java.util.Date;
 
 /**
  * Display the details of a request, bounty, artists etc.
@@ -30,16 +36,18 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 	 * Request id passed through when the fragment is created so we can defer loading
 	 */
 	private int requestId;
-	private SetTitleCallback callbacks;
+	private SetTitleCallback setTitle;
+	private ViewUserCallbacks viewUser;
+	private ViewTorrentCallbacks viewTorrent;
 	/**
 	 * Various views displaying the information about the request along with associated headers/text
 	 * so that we can hide any unused views
 	 */
 	private ImageView image;
 	private ProgressBar spinner;
-	private TextView title, created, recordLabel, catalogueNumber, releaseType,
+	private TextView title, created, recordLabel, catalogueNumber, releaseType, filled, filledBy,
 		acceptBitrates, acceptFormats, acceptMedia, votes, bounty, tags;
-	private View recordLabelText, catalogueNumberText, releaseTypeText,
+	private View recordLabelText, catalogueNumberText, releaseTypeText, filledText, filledByText,
 		bitratesContainer, formatsContainer, mediaContainer;
 	/**
 	 * The list shows the artists & top contributors
@@ -73,10 +81,13 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			callbacks = (SetTitleCallback)activity;
+			setTitle = (SetTitleCallback)activity;
+			viewTorrent = (ViewTorrentCallbacks)activity;
+			viewUser = (ViewUserCallbacks)activity;
 		}
 		catch (ClassCastException e){
-			throw new ClassCastException(activity.toString() + " must implement SetTitleCallbacks");
+			throw new ClassCastException(activity.toString()
+				+ " must implement SetTitle, ViewUser and ViewTorrent callbacks");
 		}
 	}
 
@@ -112,6 +123,10 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 		catalogueNumber = (TextView)header.findViewById(R.id.catalogue_number);
 		releaseType = (TextView)header.findViewById(R.id.release_type);
 		releaseTypeText = header.findViewById(R.id.release_type_text);
+		filled = (TextView)header.findViewById(R.id.filled_torrent);
+		filledText = header.findViewById(R.id.filled_torrent_text);
+		filledBy = (TextView)header.findViewById(R.id.filled_user);
+		filledByText = header.findViewById(R.id.filled_user_text);
 		acceptBitrates = (TextView)header.findViewById(R.id.accept_bitrates);
 		bitratesContainer = header.findViewById(R.id.accept_bitrates_container);
 		acceptFormats = (TextView)header.findViewById(R.id.accept_formats);
@@ -129,11 +144,13 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 	 */
 	private void updateRequest(){
 		Response response = request.getResponse();
-		callbacks.setTitle(response.getTitle());
+		setTitle.setTitle(response.getTitle());
 		title.setText(response.getTitle());
-		created.setText(response.getTimeAdded());
 		votes.setText(response.getVoteCount().toString());
 		bounty.setText(Utils.toHumanReadableSize(response.getTotalBounty().longValue()));
+		Date createDate = MySoup.parseDate(response.getTimeAdded());
+		created.setText(DateUtils.getRelativeTimeSpanString(createDate.getTime(),
+			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
 
 		RequestAdapter adapter = new RequestAdapter(getActivity(), response.getMusicInfo(), response.getTopContributors());
 		list.setAdapter(adapter);
@@ -147,6 +164,28 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 		else {
 			image.setVisibility(View.GONE);
 			spinner.setVisibility(View.GONE);
+		}
+		if (response.isFilled()){
+			filled.setText("Yes");
+			filled.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v){
+					viewTorrent.viewTorrentGroup(request.getResponse().getTorrentId().intValue());
+				}
+			});
+			filledBy.setText(response.getFillerName());
+			filledBy.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v){
+					viewUser.viewUser(request.getResponse().getFillerId().intValue());
+				}
+			});
+		}
+		else {
+			filledText.setVisibility(View.GONE);
+			filled.setVisibility(View.GONE);
+			filledByText.setVisibility(View.GONE);
+			filledBy.setVisibility(View.GONE);
 		}
 		if (response.getRecordLabel() != null && !response.getRecordLabel().isEmpty()){
 			recordLabel.setText(response.getRecordLabel());
