@@ -55,6 +55,13 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 		return fragment;
 	}
 
+	public static RequestFragment newInstance(Request r){
+		RequestFragment fragment = new RequestFragment();
+		fragment.request = r;
+		fragment.requestId = r.getResponse().getRequestId().intValue();
+		return fragment;
+	}
+
 	public RequestFragment(){
 		//Required empty ctor
 	}
@@ -78,6 +85,10 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 		else {
 			updateRequest();
 		}
+	}
+
+	public Request getRequest(){
+		return request;
 	}
 
 	@Override

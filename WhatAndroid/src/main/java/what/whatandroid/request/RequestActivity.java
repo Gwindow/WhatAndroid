@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
+import api.requests.Request;
+import api.son.MySon;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
@@ -22,6 +24,7 @@ public class RequestActivity extends LoggedInActivity implements ViewArtistCallb
 	 * Param to pass the request id to be shown
 	 */
 	public final static String REQUEST_ID = "what.whatandroid.REQUEST_ID";
+	private final static String REQUEST = "what.whatandroid.REQUEST";
 	private RequestFragment fragment;
 
 	@Override
@@ -33,9 +36,27 @@ public class RequestActivity extends LoggedInActivity implements ViewArtistCallb
 		setTitle(getTitle());
 
 		int intentId = getIntent().getIntExtra(REQUEST_ID, 1);
-		fragment = RequestFragment.newInstance(intentId);
+		if (savedInstanceState != null && savedInstanceState.getInt(REQUEST_ID) == intentId){
+			System.out.println("Re-using saved request");
+			Request r = (Request)MySon.toObjectFromString(savedInstanceState.getString(REQUEST), Request.class);
+			fragment = RequestFragment.newInstance(r);
+		}
+		else {
+			fragment = RequestFragment.newInstance(intentId);
+		}
 		FragmentManager manager = getSupportFragmentManager();
 		manager.beginTransaction().add(R.id.container, fragment).commit();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		//Don't save too large requests since its too slow
+		Request request = fragment.getRequest();
+		if (request.getResponse().getComments().size() < 25){
+			outState.putInt(REQUEST_ID, request.getResponse().getRequestId().intValue());
+			outState.putString(REQUEST, MySon.toJson(request, Request.class));
+		}
 	}
 
 	@Override
