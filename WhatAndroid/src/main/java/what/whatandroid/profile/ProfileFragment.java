@@ -197,7 +197,8 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		setTitle.setTitle(profile.getUsername());
 		username.setText(profile.getUsername());
 		userClass.setText(profile.getPersonal().getUserClass());
-		joined.setText("Joined " + DateUtils.getRelativeTimeSpanString(profile.getStats().getJoinedDate().getTime(),
+		Date joinDate = MySoup.parseDate(profile.getStats().getJoinedDate());
+		joined.setText("Joined " + DateUtils.getRelativeTimeSpanString(joinDate.getTime(),
 			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
 
 		//We need to check all the paranoia cases that may cause a field to be missing and hide the views for it
