@@ -36,8 +36,8 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 	 */
 	private ImageView image;
 	private ProgressBar spinner;
-	private TextView title, created, recordLabel, catalogueNumber, releaseType, acceptBitrates, acceptFormats,
-		acceptMedia, votes, bounty, tags;
+	private TextView title, created, recordLabel, recordLabelText, catalogueNumber, catalogueNumberText,
+		releaseType, acceptBitrates, acceptFormats, acceptMedia, votes, bounty, tags;
 	/**
 	 * The list shows the artists & top contributors
 	 */
@@ -92,7 +92,9 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 		spinner = (ProgressBar)header.findViewById(R.id.loading_indicator);
 		title = (TextView)header.findViewById(R.id.title);
 		created = (TextView)header.findViewById(R.id.created);
+		recordLabelText = (TextView)header.findViewById(R.id.record_label_text);
 		recordLabel = (TextView)header.findViewById(R.id.record_label);
+		catalogueNumberText = (TextView)header.findViewById(R.id.catalogue_number_text);
 		catalogueNumber = (TextView)header.findViewById(R.id.catalogue_number);
 		releaseType = (TextView)header.findViewById(R.id.release_type);
 		acceptBitrates = (TextView)header.findViewById(R.id.accept_bitrates);
@@ -119,10 +121,22 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 			image.setVisibility(View.GONE);
 			spinner.setVisibility(View.GONE);
 		}
+		if (response.getRecordLabel() != null && !response.getRecordLabel().isEmpty()){
+			recordLabel.setText(response.getRecordLabel());
+		}
+		else {
+			recordLabelText.setVisibility(View.GONE);
+			recordLabel.setVisibility(View.GONE);
+		}
+		if (response.getCatalogueNumber() != null && !response.getCatalogueNumber().isEmpty()){
+			catalogueNumber.setText(response.getCatalogueNumber());
+		}
+		else {
+			catalogueNumberText.setVisibility(View.GONE);
+			catalogueNumber.setVisibility(View.GONE);
+		}
 		title.setText(response.getTitle());
 		created.setText(response.getTimeAdded());
-		recordLabel.setText(response.getRecordLabel());
-		catalogueNumber.setText(response.getCatalogueNumber());
 		releaseType.setText(response.getReleaseName());
 		votes.setText(response.getVoteCount().toString());
 		bounty.setText(Utils.toHumanReadableSize(response.getTotalBounty().longValue()));
