@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
+
+import java.util.Date;
 
 /**
  */
@@ -53,7 +56,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	/**
 	 * The user's stats being shown
 	 */
-	private TextView username, userClass, upload, download, ratio, paranoia;
+	private TextView username, userClass, joined, upload, download, ratio, paranoia;
 	/**
 	 * Text views saying what the various numbers in the profile mean, so we can hide those that are hidden
 	 * by the user's paranoia
@@ -65,7 +68,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	 */
 	private ViewPager recentSnatches, recentUploads;
 	private RecentTorrentPagerAdapter snatchesAdapter, uploadsAdapter;
-	private View snatchesHeader, uploadsHeader, donor, warned, banned;
+	private View snatchesContainer, uploadsContainer, donor, warned, banned;
 
 	/**
 	 * Use this factory method to create a new instance of the fragment displaying the
@@ -107,6 +110,13 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		else {
 			updateProfile();
 		}
+	}
+
+	/**
+	 * Reload the profile being viewed to update it
+	 */
+	public void refresh(){
+		new LoadProfile().execute(userID);
 	}
 
 	/**
@@ -155,6 +165,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		spinner = (ProgressBar)view.findViewById(R.id.loading_indicator);
 		username = (TextView)view.findViewById(R.id.username);
 		userClass = (TextView)view.findViewById(R.id.user_class);
+		joined = (TextView)view.findViewById(R.id.joined);
 		upload = (TextView)view.findViewById(R.id.upload);
 		uploadText = (TextView)view.findViewById(R.id.uploaded_text);
 		download = (TextView)view.findViewById(R.id.download);
@@ -166,9 +177,9 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		//Hide the paranoia text until we figure out what the user's paranoia settings are
 		paranoiaText.setVisibility(View.GONE);
 		recentSnatches = (ViewPager)view.findViewById(R.id.recent_snatches);
-		snatchesHeader = view.findViewById(R.id.snatches_header);
+		snatchesContainer = view.findViewById(R.id.snatches_container);
 		recentUploads = (ViewPager)view.findViewById(R.id.recent_uploads);
-		uploadsHeader = view.findViewById(R.id.uploads_header);
+		uploadsContainer = view.findViewById(R.id.uploads_container);
 		donor = view.findViewById(R.id.donor);
 		warned = view.findViewById(R.id.warned);
 		banned = view.findViewById(R.id.banned);
@@ -186,6 +197,8 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		setTitle.setTitle(profile.getUsername());
 		username.setText(profile.getUsername());
 		userClass.setText(profile.getPersonal().getUserClass());
+		joined.setText("Joined " + DateUtils.getRelativeTimeSpanString(profile.getStats().getJoinedDate().getTime(),
+			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
 
 		//We need to check all the paranoia cases that may cause a field to be missing and hide the views for it
 		String avatarUrl = profile.getAvatar();
@@ -234,8 +247,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 				recentSnatches.setAdapter(snatchesAdapter);
 			}
 			else {
-				snatchesHeader.setVisibility(View.GONE);
-				recentSnatches.setVisibility(View.GONE);
+				snatchesContainer.setVisibility(View.GONE);
 			}
 			if (recentTorrents.getUploads().size() > 0){
 				if (uploadsAdapter == null){
@@ -244,16 +256,12 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 				recentUploads.setAdapter(uploadsAdapter);
 			}
 			else {
-				uploadsHeader.setVisibility(View.GONE);
-				recentUploads.setVisibility(View.GONE);
+				uploadsContainer.setVisibility(View.GONE);
 			}
 		}
 		else {
-			snatchesHeader.setVisibility(View.GONE);
-			recentSnatches.setVisibility(View.GONE);
-			recentSnatches.setVisibility(View.GONE);
-			uploadsHeader.setVisibility(View.GONE);
-			recentUploads.setVisibility(View.GONE);
+			snatchesContainer.setVisibility(View.GONE);
+			uploadsContainer.setVisibility(View.GONE);
 		}
 
 		if (!profile.getPersonal().isDonor()){

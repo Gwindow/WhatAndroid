@@ -88,10 +88,14 @@ public class ProfileActivity extends LoggedInActivity
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.profile))){
+			//If we're not viewing our own profile go to it, if we are then refresh the profile
 			if (profileFragment.getUserID() != MySoup.getUserId()){
 				Intent intent = new Intent(this, ProfileActivity.class);
 				intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
 				startActivity(intent);
+			}
+			else {
+				profileFragment.refresh();
 			}
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog))){

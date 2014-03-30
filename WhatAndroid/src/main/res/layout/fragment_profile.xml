@@ -63,6 +63,13 @@
                     android:textSize="14sp"
                     android:textAllCaps="true"/>
 
+            <TextView
+                    android:id="@+id/joined"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/user_class"
+                    android:textSize="12sp"/>
 
             <LinearLayout
                     android:layout_width="wrap_content"
@@ -212,58 +219,62 @@
 
         </RelativeLayout>
 
-        <LinearLayout
-                android:id="@+id/snatches_header"
+        <RelativeLayout
+                android:id="@+id/snatches_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
                 android:background="#444">
 
             <TextView
+                    android:id="@+id/snatches_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
                     android:text="@string/snatches"
                     android:textSize="14sp"
                     android:textColor="@android:color/secondary_text_dark"/>
-        </LinearLayout>
 
-        <android.support.v4.view.ViewPager
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/recent_snatches"
-                android:layout_width="match_parent"
-                android:layout_height="196dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:background="#222"/>
+            <android.support.v4.view.ViewPager
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/recent_snatches"
+                    android:layout_width="match_parent"
+                    android:layout_height="196dp"
+                    android:layout_below="@id/snatches_header"
+                    android:paddingBottom="8dp"
+                    android:background="#222"/>
+        </RelativeLayout>
 
-        <LinearLayout
-                android:id="@+id/uploads_header"
+        <RelativeLayout
+                android:id="@+id/uploads_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
                 android:background="#444">
 
             <TextView
+                    android:id="@+id/uploads_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
                     android:text="@string/uploads"
                     android:textSize="14sp"
                     android:textColor="@android:color/secondary_text_dark"/>
-        </LinearLayout>
 
-        <android.support.v4.view.ViewPager
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/recent_uploads"
-                android:layout_width="match_parent"
-                android:layout_height="196dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:background="#222"/>
+            <android.support.v4.view.ViewPager
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/recent_uploads"
+                    android:layout_width="match_parent"
+                    android:layout_height="196dp"
+                    android:layout_below="@id/uploads_header"
+                    android:paddingBottom="8dp"
+                    android:background="#222"/>
+        </RelativeLayout>
+
+
     </LinearLayout>
 </ScrollView>
