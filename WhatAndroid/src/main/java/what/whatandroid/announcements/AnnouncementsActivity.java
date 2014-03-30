@@ -98,6 +98,11 @@ public class AnnouncementsActivity extends LoggedInActivity {
 			intent.putExtra(SearchActivity.SEARCH, SearchActivity.ARTIST);
 			startActivity(intent);
 		}
+		else if (selection.equalsIgnoreCase(getString(R.string.requests))){
+			Intent intent = new Intent(this, SearchActivity.class);
+			intent.putExtra(SearchActivity.SEARCH, SearchActivity.REQUEST);
+			startActivity(intent);
+		}
 		else if (selection.equalsIgnoreCase(getString(R.string.users))){
 			Intent intent = new Intent(this, SearchActivity.class);
 			intent.putExtra(SearchActivity.SEARCH, SearchActivity.USER);

@@ -79,12 +79,8 @@ public class ProfileActivity extends LoggedInActivity
 		if (navDrawer == null){
 			return;
 		}
-
-		//Pass an argument to the activity telling it which to show?
 		String selection = navDrawer.getItem(position);
 		if (selection.equalsIgnoreCase(getString(R.string.announcements))){
-			//Launch AnnouncementsActivity viewing announcements
-			//For now both just return to the announcements view
 			Intent intent = new Intent(this, AnnouncementsActivity.class);
 			intent.putExtra(AnnouncementsActivity.SHOW, AnnouncementsActivity.ANNOUNCEMENTS);
 			startActivity(intent);
@@ -97,7 +93,6 @@ public class ProfileActivity extends LoggedInActivity
 			}
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
-			//Launch AnnouncementsActivity viewing blog posts
 			Intent intent = new Intent(this, AnnouncementsActivity.class);
 			intent.putExtra(AnnouncementsActivity.SHOW, AnnouncementsActivity.BLOGS);
 			startActivity(intent);
@@ -110,6 +105,11 @@ public class ProfileActivity extends LoggedInActivity
 		else if (selection.equalsIgnoreCase(getString(R.string.artists))){
 			Intent intent = new Intent(this, SearchActivity.class);
 			intent.putExtra(SearchActivity.SEARCH, SearchActivity.ARTIST);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.requests))){
+			Intent intent = new Intent(this, SearchActivity.class);
+			intent.putExtra(SearchActivity.SEARCH, SearchActivity.REQUEST);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.users))){

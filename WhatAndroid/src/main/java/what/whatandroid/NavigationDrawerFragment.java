@@ -93,7 +93,7 @@ public class NavigationDrawerFragment extends Fragment {
 			//getString(R.string.forums),
 			getString(R.string.torrents),
 			getString(R.string.artists),
-			//getString(R.string.requests),
+			getString(R.string.requests),
 			getString(R.string.users),
 			//getString(R.string.barcode_scanner)
 		};
