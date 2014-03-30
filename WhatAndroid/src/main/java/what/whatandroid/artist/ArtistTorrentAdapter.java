@@ -1,11 +1,13 @@
 package what.whatandroid.artist;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import api.cli.Utils;
+import api.soup.MySoup;
 import api.torrents.ReleaseType;
 import api.torrents.artist.Requests;
 import api.torrents.artist.TorrentGroup;
@@ -16,10 +18,7 @@ import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
+import java.util.*;
 
 /**
  * Displays the list of the Artist's torrent groups for selection
@@ -157,7 +156,9 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 		holder.year.setText(holder.request.getYear().toString());
 		holder.votes.setText(holder.request.getVotes().toString());
 		holder.bounty.setText(Utils.toHumanReadableSize(holder.request.getBounty().longValue()));
-		holder.created.setText(holder.request.getTimeAdded());
+		Date createDate = MySoup.parseDate(holder.request.getTimeAdded());
+		holder.created.setText(DateUtils.getRelativeTimeSpanString(createDate.getTime(),
+			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
 		return convert;
 	}
 
