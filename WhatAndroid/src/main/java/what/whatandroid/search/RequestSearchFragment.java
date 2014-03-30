@@ -11,15 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
-import api.search.torrents.TorrentSearch;
+import api.search.requests.RequestsSearch;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 
 /**
- * Fragment for searching for torrents
+ * Fragment for searching for requests
  */
-public class TorrentSearchFragment extends Fragment
+public class RequestSearchFragment extends Fragment
 	implements View.OnClickListener, TextView.OnEditorActionListener, OnLoggedInCallback {
 	/**
 	 * Search terms and tags sent to use by the intent
@@ -28,7 +28,7 @@ public class TorrentSearchFragment extends Fragment
 	/**
 	 * The torrent search we're viewing
 	 */
-	private TorrentSearch torrentSearch;
+	private RequestsSearch requestSearch;
 	/**
 	 * The search input boxes
 	 */
@@ -37,28 +37,21 @@ public class TorrentSearchFragment extends Fragment
 	 * The list of search results and the search result adapter
 	 */
 	private ListView resultsList;
-	private TorrentSearchAdapter resultsAdapter;
+	private RequestSearchAdapter resultsAdapter;
 	/**
 	 * The loading status footer
 	 */
 	private View footer;
 
-	/**
-	 * Create a torrent search fragment and have it start loading the search desired when the view
-	 * is created. If the terms are empty then no search will be launched
-	 * @param terms terms to search for
-	 * @param tags tags to search for
-	 * @return a torrent search fragment that will load the desired search
-	 */
-	public static TorrentSearchFragment newInstance(String terms, String tags){
-		TorrentSearchFragment f = new TorrentSearchFragment();
-		f.searchTerms = terms;
-		f.searchTags = tags;
-		return f;
+	public static RequestSearchFragment newInstance(String terms, String tags){
+		RequestSearchFragment fragment = new RequestSearchFragment();
+		fragment.searchTerms = terms;
+		fragment.searchTags = tags;
+		return fragment;
 	}
 
-	public TorrentSearchFragment(){
-		//required empty ctor
+	public RequestSearchFragment(){
+		//Required empty ctor
 	}
 
 	@Override
@@ -66,21 +59,20 @@ public class TorrentSearchFragment extends Fragment
 		super.onAttach(activity);
 		try {
 			SetTitleCallback callback = (SetTitleCallback)activity;
-			callback.setTitle("Torrent Search");
+			callback.setTitle("Request Search");
 		}
 		catch (ClassCastException e){
-			throw new ClassCastException(activity.toString() + " must implement SetTitleCallback");
+			throw new ClassCastException(activity.toString() + " must implement SetTitleCallbacks");
 		}
 	}
 
 	@Override
 	public void onLoggedIn(){
-		//If we were sent a search to load from the intent, start loading it
-		if (searchTerms != null && torrentSearch == null){
+		if (searchTerms != null && requestSearch == null){
 			if (searchTags == null){
 				searchTags = "";
 			}
-			new LoadTorrentSearch().execute(searchTerms, searchTags);
+			new LoadRequestSearch().execute(searchTerms, searchTags);
 		}
 	}
 
@@ -101,9 +93,9 @@ public class TorrentSearchFragment extends Fragment
 		//We should only show the footer if we're loading a search
 		footer.setVisibility(View.GONE);
 
-		resultsAdapter = new TorrentSearchAdapter(getActivity(), footer);
-		if (torrentSearch != null){
-			resultsAdapter.viewSearch(torrentSearch);
+		resultsAdapter = new RequestSearchAdapter(getActivity(), footer);
+		if (requestSearch != null){
+			resultsAdapter.viewSearch(requestSearch);
 		}
 		if (searchTerms == null || searchTerms.isEmpty()){
 			editTerms.requestFocus();
@@ -111,7 +103,7 @@ public class TorrentSearchFragment extends Fragment
 		else {
 			editTerms.setText(searchTerms);
 			editTags.setText(searchTags);
-			if (torrentSearch == null){
+			if (requestSearch == null){
 				footer.setVisibility(View.VISIBLE);
 			}
 		}
@@ -128,7 +120,7 @@ public class TorrentSearchFragment extends Fragment
 		if (!searchTerms.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-			new LoadTorrentSearch().execute(searchTerms, editTags.getText().toString());
+			new LoadRequestSearch().execute(searchTerms, editTags.getText().toString());
 		}
 		else {
 			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
@@ -144,7 +136,7 @@ public class TorrentSearchFragment extends Fragment
 			if (!searchTerms.isEmpty()){
 				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-				new LoadTorrentSearch().execute(searchTerms, editTags.getText().toString());
+				new LoadRequestSearch().execute(searchTerms, editTags.getText().toString());
 			}
 			else {
 				Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
@@ -155,9 +147,10 @@ public class TorrentSearchFragment extends Fragment
 	}
 
 	/**
-	 * Load the first page of torrent search results in the background, params should be { terms, tags }
+	 * Load the first page of request search results, params should be { terms, tags }
 	 */
-	private class LoadTorrentSearch extends AsyncTask<String, Void, TorrentSearch> {
+	private class LoadRequestSearch extends AsyncTask<String, Void, RequestsSearch> {
+
 		@Override
 		protected void onPreExecute(){
 			if (footer != null){
@@ -166,13 +159,13 @@ public class TorrentSearchFragment extends Fragment
 			if (resultsAdapter != null){
 				resultsAdapter.clearSearch();
 			}
-			torrentSearch = null;
+			requestSearch = null;
 		}
 
 		@Override
-		protected TorrentSearch doInBackground(String... params){
+		protected RequestsSearch doInBackground(String... params){
 			try {
-				TorrentSearch s = TorrentSearch.search(params[0], params[1]);
+				RequestsSearch s = RequestsSearch.search(params[0], params[1]);
 				if (s != null && s.getStatus()){
 					return s;
 				}
@@ -184,13 +177,13 @@ public class TorrentSearchFragment extends Fragment
 		}
 
 		@Override
-		protected void onPostExecute(TorrentSearch search){
+		protected void onPostExecute(RequestsSearch search){
 			if (search != null){
-				torrentSearch = search;
+				requestSearch = search;
 				if (resultsAdapter != null){
-					resultsAdapter.viewSearch(torrentSearch);
+					resultsAdapter.viewSearch(requestSearch);
 				}
-				if (footer != null && !torrentSearch.hasNextPage()){
+				if (footer != null && !requestSearch.hasNextPage()){
 					footer.setVisibility(View.GONE);
 				}
 			}

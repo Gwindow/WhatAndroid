@@ -6,18 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import api.search.torrents.TorrentGroup;
-import api.search.torrents.TorrentSearch;
+import api.cli.Utils;
+import api.search.requests.Request;
+import api.search.requests.RequestsSearch;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
-import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.callbacks.ViewRequestCallbacks;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
 /**
- * Adapter for viewing list of torrent search results
+ * Adapter to display request search results
  */
-public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
+public class RequestSearchAdapter extends ArrayAdapter<Request>
 	implements AdapterView.OnItemClickListener, AbsListView.OnScrollListener {
 
 	private final Context context;
@@ -25,11 +26,11 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 	/**
 	 * The search being viewed
 	 */
-	private TorrentSearch search;
+	private RequestsSearch search;
 	/**
-	 * Callbacks to view the selected torrent group
+	 * Callbacks to view the selected request
 	 */
-	private ViewTorrentCallbacks callbacks;
+	private ViewRequestCallbacks callbacks;
 	/**
 	 * Loading indicator footer to hide once loading is done
 	 */
@@ -40,24 +41,23 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 	private boolean loadingNext;
 
 	/**
-	 * Construct the empty adapter. A new search can be set to be viewed in the adapter by
-	 * calling viewSearch
+	 * Construct the empty adapter. A new search can be set to be displayed via viewSearch
 	 */
-	public TorrentSearchAdapter(Context context, View footer){
-		super(context, R.layout.list_artist_torrent);
+	public RequestSearchAdapter(Context context, View footer){
+		super(context, R.layout.list_request);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
 		this.footer = footer;
 		loadingNext = false;
 		try {
-			callbacks = (ViewTorrentCallbacks)context;
+			callbacks = (ViewRequestCallbacks)context;
 		}
 		catch (ClassCastException e){
-			throw new ClassCastException(context.toString() + " must implement ViewTorrentCallbacks");
+			throw new ClassCastException(context.toString() + " must implement ViewRequestCallbacks");
 		}
 	}
 
-	public void viewSearch(TorrentSearch search){
+	public void viewSearch(RequestsSearch search){
 		clear();
 		addAll(search.getResponse().getResults());
 		notifyDataSetChanged();
@@ -77,53 +77,46 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 			holder = (ViewHolder)convertView.getTag();
 		}
 		else {
-			convertView = inflater.inflate(R.layout.list_torrent_search, parent, false);
+			convertView = inflater.inflate(R.layout.list_request_search, parent, false);
 			holder = new ViewHolder();
 			holder.art = (ImageView)convertView.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
 			holder.listener = new ImageLoadingListener(holder.spinner);
-			holder.artist = (TextView)convertView.findViewById(R.id.artist_name);
-			holder.title = (TextView)convertView.findViewById(R.id.album_name);
-			holder.year = (TextView)convertView.findViewById(R.id.album_year);
-			holder.tags = (TextView)convertView.findViewById(R.id.album_tags);
+			holder.title = (TextView)convertView.findViewById(R.id.title);
+			holder.year = (TextView)convertView.findViewById(R.id.year);
+			holder.votes = (TextView)convertView.findViewById(R.id.votes);
+			holder.bounty = (TextView)convertView.findViewById(R.id.bounty);
+			holder.created = (TextView)convertView.findViewById(R.id.created);
 			convertView.setTag(holder);
 		}
-		TorrentGroup group = getItem(position);
-		String coverUrl = group.getCover();
-		if (SettingsActivity.imagesEnabled(context) && coverUrl != null && !coverUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(coverUrl, holder.art, holder.listener);
+		Request r = getItem(position);
+		holder.title.setText(r.getTitle());
+		holder.votes.setText(r.getVoteCount().toString());
+		holder.bounty.setText(Utils.toHumanReadableSize(r.getBounty().longValue()));
+		holder.created.setText(r.getTimeAdded());
+
+		String imgUrl = r.getImage();
+		if (SettingsActivity.imagesEnabled(context) && imgUrl != null && !imgUrl.isEmpty()){
+			ImageLoader.getInstance().displayImage(imgUrl, holder.art, holder.listener);
 		}
 		else {
 			holder.art.setVisibility(View.GONE);
 			holder.spinner.setVisibility(View.GONE);
 		}
-		if (group.getArtist() != null){
-			holder.artist.setText(group.getArtist());
-			holder.title.setVisibility(View.VISIBLE);
-			holder.title.setText(group.getGroupName());
-		}
-		else {
-			holder.artist.setText(group.getGroupName());
-			holder.title.setVisibility(View.GONE);
-		}
-		if (group.getReleaseType() != null && group.getGroupYear() != null){
-			holder.year.setText(group.getReleaseType() + " [" + group.getGroupYear() + "]");
+		if (r.getYear().intValue() != 0){
+			holder.year.setText(r.getYear().toString());
 		}
 		else {
 			holder.year.setVisibility(View.GONE);
 		}
-		String tagString = group.getTags().toString();
-		//Remove the brackets from the tag string
-		tagString = tagString.substring(tagString.indexOf('[') + 1, tagString.lastIndexOf(']'));
-		holder.tags.setText(tagString);
 		return convertView;
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-		//Clicking the footer gives us an out of bounds click event so subtract 1 to account for this
+		//Clicking the footer gives us an out of bounds event so account for this
 		if (position - 1 < getCount()){
-			callbacks.viewTorrentGroup(getItem(position - 1).getGroupId().intValue());
+			callbacks.viewRequest(getItem(position - 1).getRequestId().intValue());
 		}
 	}
 
@@ -134,36 +127,33 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
-		//Load more if we're within 15 items of the end and there's a next page to load
+		//Load more if we're within 15 items of the end of the page & there's more to load
 		if (search != null && search.hasNextPage() && !loadingNext && firstVisibleItem + visibleItemCount + 10 >= totalItemCount){
 			loadingNext = true;
 			new LoadNextPage().execute();
 		}
 	}
 
-	/**
-	 * View holder for the torrent group information
-	 */
-	private static class ViewHolder {
+	private class ViewHolder {
 		public ImageView art;
 		public ProgressBar spinner;
 		public ImageLoadingListener listener;
-		public TextView artist, title, year, tags;
+		public TextView title, year, votes, bounty, created;
 	}
 
 	/**
-	 * Load the next page of the current torrent search
+	 * Load the next page of the current search
 	 */
-	private class LoadNextPage extends AsyncTask<Void, Void, TorrentSearch> {
+	private class LoadNextPage extends AsyncTask<Void, Void, RequestsSearch> {
 		@Override
 		protected void onPreExecute(){
 			footer.setVisibility(View.VISIBLE);
 		}
 
 		@Override
-		protected TorrentSearch doInBackground(Void... params){
+		protected RequestsSearch doInBackground(Void... params){
 			try {
-				TorrentSearch s = search.nextPage();
+				RequestsSearch s = search.nextPage();
 				if (s != null && s.getStatus()){
 					return s;
 				}
@@ -175,15 +165,15 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup>
 		}
 
 		@Override
-		protected void onPostExecute(TorrentSearch torrentSearch){
+		protected void onPostExecute(RequestsSearch requestsSearch){
 			loadingNext = false;
-			if (torrentSearch != null){
-				search = torrentSearch;
+			if (requestsSearch != null){
+				search = requestsSearch;
 				addAll(search.getResponse().getResults());
 				notifyDataSetChanged();
 			}
 			//Else show a toast error?
-			if (torrentSearch == null || !search.hasNextPage()){
+			if (requestsSearch == null || !search.hasNextPage()){
 				footer.setVisibility(View.GONE);
 			}
 		}

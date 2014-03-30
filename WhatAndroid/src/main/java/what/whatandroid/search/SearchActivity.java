@@ -8,17 +8,20 @@ import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.callbacks.OnLoggedInCallback;
+import what.whatandroid.callbacks.ViewRequestCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.profile.ProfileActivity;
+import what.whatandroid.request.RequestActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 /**
  * Activity for performing Torrent, User or Request searches. The searching itself is handled
  * by the specific fragments
  */
-public class SearchActivity extends LoggedInActivity implements ViewTorrentCallbacks, ViewUserCallbacks, OnLoggedInCallback {
+public class SearchActivity extends LoggedInActivity
+	implements ViewTorrentCallbacks, ViewUserCallbacks, ViewRequestCallbacks, OnLoggedInCallback {
 	/**
 	 * Param to pass the search type desired and terms and tags if desired
 	 */
@@ -60,6 +63,8 @@ public class SearchActivity extends LoggedInActivity implements ViewTorrentCallb
 				fragment = UserSearchFragment.newInstance(terms);
 				break;
 			case REQUEST:
+				fragment = RequestSearchFragment.newInstance(terms, tags);
+				break;
 			default:
 				fragment = TorrentSearchFragment.newInstance(terms, tags);
 				break;
@@ -93,6 +98,13 @@ public class SearchActivity extends LoggedInActivity implements ViewTorrentCallb
 	public void viewUser(int id){
 		Intent intent = new Intent(this, ProfileActivity.class);
 		intent.putExtra(ProfileActivity.USER_ID, id);
+		startActivity(intent);
+	}
+
+	@Override
+	public void viewRequest(int id){
+		Intent intent = new Intent(this, RequestActivity.class);
+		intent.putExtra(RequestActivity.REQUEST_ID, id);
 		startActivity(intent);
 	}
 
@@ -134,6 +146,13 @@ public class SearchActivity extends LoggedInActivity implements ViewTorrentCallb
 			searchFragment = f;
 			fm.beginTransaction().replace(R.id.container, f).commit();
 			type = ARTIST;
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.requests))){
+			FragmentManager fm = getSupportFragmentManager();
+			RequestSearchFragment f = new RequestSearchFragment();
+			searchFragment = f;
+			fm.beginTransaction().replace(R.id.container, f).commit();
+			type = REQUEST;
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.users))){
 			FragmentManager fm = getSupportFragmentManager();
