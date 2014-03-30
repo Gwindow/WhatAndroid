@@ -32,12 +32,15 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 	private int requestId;
 	private SetTitleCallback callbacks;
 	/**
-	 * Various views displaying the information about the request
+	 * Various views displaying the information about the request along with associated headers/text
+	 * so that we can hide any unused views
 	 */
 	private ImageView image;
 	private ProgressBar spinner;
-	private TextView title, created, recordLabel, recordLabelText, catalogueNumber, catalogueNumberText,
-		releaseType, acceptBitrates, acceptFormats, acceptMedia, votes, bounty, tags;
+	private TextView title, created, recordLabel, catalogueNumber, releaseType,
+		acceptBitrates, acceptFormats, acceptMedia, votes, bounty, tags;
+	private View recordLabelText, catalogueNumberText, releaseTypeText,
+		bitratesContainer, formatsContainer, mediaContainer;
 	/**
 	 * The list shows the artists & top contributors
 	 */
@@ -103,14 +106,18 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 		spinner = (ProgressBar)header.findViewById(R.id.loading_indicator);
 		title = (TextView)header.findViewById(R.id.title);
 		created = (TextView)header.findViewById(R.id.created);
-		recordLabelText = (TextView)header.findViewById(R.id.record_label_text);
+		recordLabelText = header.findViewById(R.id.record_label_text);
 		recordLabel = (TextView)header.findViewById(R.id.record_label);
-		catalogueNumberText = (TextView)header.findViewById(R.id.catalogue_number_text);
+		catalogueNumberText = header.findViewById(R.id.catalogue_number_text);
 		catalogueNumber = (TextView)header.findViewById(R.id.catalogue_number);
 		releaseType = (TextView)header.findViewById(R.id.release_type);
+		releaseTypeText = header.findViewById(R.id.release_type_text);
 		acceptBitrates = (TextView)header.findViewById(R.id.accept_bitrates);
+		bitratesContainer = header.findViewById(R.id.accept_bitrates_container);
 		acceptFormats = (TextView)header.findViewById(R.id.accept_formats);
+		formatsContainer = header.findViewById(R.id.accept_formats_container);
 		acceptMedia = (TextView)header.findViewById(R.id.accept_media);
+		mediaContainer = header.findViewById(R.id.accept_media_container);
 		votes = (TextView)header.findViewById(R.id.votes);
 		bounty = (TextView)header.findViewById(R.id.bounty);
 		tags = (TextView)header.findViewById(R.id.tags);
@@ -123,7 +130,16 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 	private void updateRequest(){
 		Response response = request.getResponse();
 		callbacks.setTitle(response.getTitle());
+		title.setText(response.getTitle());
+		created.setText(response.getTimeAdded());
+		votes.setText(response.getVoteCount().toString());
+		bounty.setText(Utils.toHumanReadableSize(response.getTotalBounty().longValue()));
 
+		RequestAdapter adapter = new RequestAdapter(getActivity(), response.getMusicInfo(), response.getTopContributors());
+		list.setAdapter(adapter);
+		list.setOnChildClickListener(adapter);
+
+		//Requests may be missing any of these fields
 		String imgUrl = response.getImage();
 		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
 			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner));
@@ -146,28 +162,37 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 			catalogueNumberText.setVisibility(View.GONE);
 			catalogueNumber.setVisibility(View.GONE);
 		}
-		title.setText(response.getTitle());
-		created.setText(response.getTimeAdded());
-		releaseType.setText(response.getReleaseName());
-		votes.setText(response.getVoteCount().toString());
-		bounty.setText(Utils.toHumanReadableSize(response.getTotalBounty().longValue()));
-
-		RequestAdapter adapter = new RequestAdapter(getActivity(), response.getMusicInfo(), response.getTopContributors());
-		list.setAdapter(adapter);
-		list.setOnChildClickListener(adapter);
-
-		String bitrates = response.getBitrateList().toString();
-		bitrates = bitrates.substring(bitrates.indexOf('[') + 1, bitrates.lastIndexOf(']'));
-		acceptBitrates.setText(bitrates);
-
-		String formats = response.getFormatList().toString();
-		formats = formats.substring(formats.indexOf('[') + 1, formats.lastIndexOf(']'));
-		acceptFormats.setText(formats);
-
-		String media = response.getMediaList().toString();
-		media = media.substring(media.indexOf('[') + 1, media.lastIndexOf(']'));
-		acceptMedia.setText(media);
-
+		if (response.getReleaseName() != null && !response.getReleaseName().isEmpty()){
+			releaseType.setText(response.getReleaseName());
+		}
+		else {
+			releaseTypeText.setVisibility(View.GONE);
+			releaseType.setVisibility(View.GONE);
+		}
+		if (!response.getBitrateList().isEmpty()){
+			String bitrates = response.getBitrateList().toString();
+			bitrates = bitrates.substring(bitrates.indexOf('[') + 1, bitrates.lastIndexOf(']'));
+			acceptBitrates.setText(bitrates);
+		}
+		else {
+			bitratesContainer.setVisibility(View.GONE);
+		}
+		if (!response.getFormatList().isEmpty()){
+			String formats = response.getFormatList().toString();
+			formats = formats.substring(formats.indexOf('[') + 1, formats.lastIndexOf(']'));
+			acceptFormats.setText(formats);
+		}
+		else {
+			formatsContainer.setVisibility(View.GONE);
+		}
+		if (!response.getMediaList().isEmpty()){
+			String media = response.getMediaList().toString();
+			media = media.substring(media.indexOf('[') + 1, media.lastIndexOf(']'));
+			acceptMedia.setText(media);
+		}
+		else {
+			mediaContainer.setVisibility(View.GONE);
+		}
 		String tagString = response.getTags().toString();
 		tagString = tagString.substring(tagString.indexOf('[') + 1, tagString.lastIndexOf(']'));
 		tags.setText(tagString);

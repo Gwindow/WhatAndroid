@@ -31,10 +31,12 @@ public class RequestAdapter extends BaseExpandableListAdapter implements Expanda
 	private ViewArtistCallbacks viewArtist;
 	private ViewUserCallbacks viewUser;
 
-	public RequestAdapter(Context context, MusicInfo info, List<TopContributor> contributors){
+	public RequestAdapter(Context context, MusicInfo musicInfo, List<TopContributor> contributors){
 		super();
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		artists = info.getAllArtists();
+		if (musicInfo != null){
+			artists = musicInfo.getAllArtists();
+		}
 		topContributors = contributors;
 		try {
 			viewArtist = (ViewArtistCallbacks)context;
@@ -47,12 +49,12 @@ public class RequestAdapter extends BaseExpandableListAdapter implements Expanda
 
 	@Override
 	public int getChildrenCount(int groupPosition){
-		return groupPosition == 0 ? artists.size() : topContributors.size();
+		return groupPosition == 0 && artists != null ? artists.size() : topContributors.size();
 	}
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition){
-		return groupPosition == 0 ? artists.get(childPosition) : topContributors.get(childPosition);
+		return groupPosition == 0 && artists != null ? artists.get(childPosition) : topContributors.get(childPosition);
 	}
 
 	@Override
@@ -73,7 +75,7 @@ public class RequestAdapter extends BaseExpandableListAdapter implements Expanda
 			holder.type = (TextView)convertView.findViewById(R.id.artist_type);
 			convertView.setTag(holder);
 		}
-		if (groupPosition == 0){
+		if (groupPosition == 0 && artists != null){
 			holder.name.setText(artists.get(childPosition).getName());
 			holder.type.setText(artists.get(childPosition).getType().toString());
 		}
@@ -91,12 +93,12 @@ public class RequestAdapter extends BaseExpandableListAdapter implements Expanda
 
 	@Override
 	public int getGroupCount(){
-		return 2;
+		return artists != null ? 2 : 1;
 	}
 
 	@Override
 	public Object getGroup(int groupPosition){
-		return groupPosition == 0 ? artists : topContributors;
+		return groupPosition == 0 && artists != null ? artists : topContributors;
 	}
 
 	@Override
@@ -116,7 +118,7 @@ public class RequestAdapter extends BaseExpandableListAdapter implements Expanda
 			holder.groupName = (TextView)convertView.findViewById(R.id.group_category);
 			convertView.setTag(holder);
 		}
-		if (groupPosition == 0){
+		if (groupPosition == 0 && artists != null){
 			holder.groupName.setText("Artists");
 		}
 		else {
@@ -127,7 +129,7 @@ public class RequestAdapter extends BaseExpandableListAdapter implements Expanda
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id){
-		if (groupPosition == 0){
+		if (groupPosition == 0 && artists != null){
 			Artist a = (Artist)getChild(groupPosition, childPosition);
 			if (a != null){
 				viewArtist.viewArtist(a.getId().intValue());

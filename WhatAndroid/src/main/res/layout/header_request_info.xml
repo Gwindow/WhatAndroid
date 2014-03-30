@@ -183,148 +183,164 @@
         </RelativeLayout>
 
         <!-- Header & listing for acceptable bitrates -->
-        <LinearLayout
+        <RelativeLayout
+                android:id="@+id/accept_bitrates_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
                 android:background="#444">
 
             <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/accept_bitrates_header"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/accept_bitrates"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/secondary_text_dark"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin">
-
-            <TextView
-                    android:id="@+id/accept_bitrates"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="italic"
-                    android:textColor="@android:color/primary_text_dark"/>
-
-        </LinearLayout>
-
-        <!-- Header & listing for acceptable formats -->
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
-                android:background="#444">
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
                     android:text="@string/accept_formats"
                     android:textSize="14sp"
                     android:textColor="@android:color/secondary_text_dark"/>
 
-        </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/accept_bitrates_header"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:background="#222">
+
+                <TextView
+                        android:id="@+id/accept_bitrates"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:textColor="@android:color/primary_text_dark"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Header & listing for acceptable formats -->
+        <RelativeLayout
+                android:id="@+id/accept_formats_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin">
+                android:background="#444">
 
             <TextView
-                    android:id="@+id/accept_formats"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/accept_formats_header"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textStyle="italic"
-                    android:textColor="@android:color/primary_text_dark"/>
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:text="@string/accept_formats"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/secondary_text_dark"/>
 
-        </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/accept_formats_header"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:background="#222">
+
+                <TextView
+                        android:id="@+id/accept_formats"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:textColor="@android:color/primary_text_dark"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
 
         <!-- Header & listing for acceptable media -->
-        <LinearLayout
+        <RelativeLayout
+                android:id="@+id/accept_media_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
                 android:background="#444">
 
             <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/accept_media_header"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/accept_media"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:text="@string/accept_formats"
                     android:textSize="14sp"
                     android:textColor="@android:color/secondary_text_dark"/>
 
-        </LinearLayout>
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin">
-
-            <TextView
-                    android:id="@+id/accept_media"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textStyle="italic"
-                    android:textColor="@android:color/primary_text_dark"/>
+                    android:layout_below="@id/accept_media_header"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:background="#222">
 
-        </LinearLayout>
+                <TextView
+                        android:id="@+id/accept_media"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:textColor="@android:color/primary_text_dark"/>
+
+            </LinearLayout>
+        </RelativeLayout>
 
         <!-- Header & listing for tags -->
-        <LinearLayout
+        <RelativeLayout
+                android:id="@+id/tags_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
                 android:background="#444">
 
             <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tags_header"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/tags"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:text="@string/accept_formats"
                     android:textSize="14sp"
                     android:textColor="@android:color/secondary_text_dark"/>
 
-        </LinearLayout>
 
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin">
-
-            <TextView
-                    android:id="@+id/tags"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textStyle="italic"
-                    android:textColor="@android:color/primary_text_dark"/>
+                    android:layout_below="@id/tags_header"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:background="#222">
 
-        </LinearLayout>
+                <TextView
+                        android:id="@+id/tags"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:textColor="@android:color/primary_text_dark"/>
+
+            </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>
