@@ -105,6 +105,13 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 		return request;
 	}
 
+	/**
+	 * Refresh the request, this is used to update the view after voting
+	 */
+	public void refresh(){
+		new LoadRequest().execute(requestId);
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.expandable_list_view, container, false);

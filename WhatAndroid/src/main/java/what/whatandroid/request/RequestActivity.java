@@ -153,6 +153,7 @@ public class RequestActivity extends LoggedInActivity
 		protected void onPostExecute(Boolean status){
 			if (status){
 				Toast.makeText(RequestActivity.this, "Bounty added", Toast.LENGTH_SHORT).show();
+				fragment.refresh();
 			}
 			else {
 				Toast.makeText(RequestActivity.this, "Failed to add bounty", Toast.LENGTH_SHORT).show();
