@@ -133,28 +133,28 @@ public class SearchActivity extends LoggedInActivity
 			intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){
+		else if (selection.equalsIgnoreCase(getString(R.string.torrents)) && type != TORRENT){
 			FragmentManager fm = getSupportFragmentManager();
 			TorrentSearchFragment f = new TorrentSearchFragment();
 			searchFragment = f;
 			fm.beginTransaction().replace(R.id.container, f).commit();
 			type = TORRENT;
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.artists))){
+		else if (selection.equalsIgnoreCase(getString(R.string.artists)) && type != ARTIST){
 			FragmentManager fm = getSupportFragmentManager();
 			ArtistSearchFragment f = new ArtistSearchFragment();
 			searchFragment = f;
 			fm.beginTransaction().replace(R.id.container, f).commit();
 			type = ARTIST;
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.requests))){
+		else if (selection.equalsIgnoreCase(getString(R.string.requests)) && type != REQUEST){
 			FragmentManager fm = getSupportFragmentManager();
 			RequestSearchFragment f = new RequestSearchFragment();
 			searchFragment = f;
 			fm.beginTransaction().replace(R.id.container, f).commit();
 			type = REQUEST;
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.users))){
+		else if (selection.equalsIgnoreCase(getString(R.string.users)) && type != USER){
 			FragmentManager fm = getSupportFragmentManager();
 			UserSearchFragment f = new UserSearchFragment();
 			searchFragment = f;
