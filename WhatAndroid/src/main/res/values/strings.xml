@@ -28,6 +28,7 @@
     <string name="search_terms">Search Terms</string>
     <string name="search_tags">Tags (eg: hip.hop indie)</string>
     <string name="logout">Logout</string>
+    <string name="refresh">Refresh</string>
     <string name="send_to_pywa">Send to PyWA</string>
     <string name="download_to_phone">Download to phone</string>
     <string name="cancel">Cancel</string>

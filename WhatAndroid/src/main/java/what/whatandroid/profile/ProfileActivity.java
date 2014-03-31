@@ -3,6 +3,8 @@ package what.whatandroid.profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 import api.son.MySon;
 import api.soup.MySoup;
@@ -77,6 +79,28 @@ public class ProfileActivity extends LoggedInActivity
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu){
+		if (navDrawer == null || !navDrawer.isDrawerOpen()){
+			getMenuInflater().inflate(R.menu.profile, menu);
+			restoreActionBar();
+			return true;
+		}
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch (item.getItemId()){
+			case R.id.action_refresh:
+				profileFragment.refresh();
+				return true;
+			default:
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	public void onNavigationDrawerItemSelected(int position){
 		if (navDrawer == null){
 			return;
@@ -88,14 +112,11 @@ public class ProfileActivity extends LoggedInActivity
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.profile))){
-			//If we're not viewing our own profile go to it, if we are then refresh the profile
+			//If we're not viewing our own profile go to it
 			if (profileFragment.getUserID() != MySoup.getUserId()){
 				Intent intent = new Intent(this, ProfileActivity.class);
 				intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
 				startActivity(intent);
-			}
-			else {
-				profileFragment.refresh();
 			}
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
