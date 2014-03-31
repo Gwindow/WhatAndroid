@@ -56,6 +56,10 @@
         <service
                 android:name=".updater.UpdateService"
                 android:exported="false"/>
+
+        <receiver
+                android:name=".updater.UpdateBroadcastReceiver"
+                android:exported="false"/>
     </application>
 
 </manifest>

@@ -59,7 +59,9 @@
     <string name="preferences">Preferences</string>
     <string name="pref_img_on_wifi_only">Load Images on Wifi Only</string>
     <string name="key_pref_img_wifi">pref_img_wifi_only</string>
-    <string name="img_wifi_description">Check if you only want to download images when on Wifi</string>
+    <string name="pref_disable_updater">Disable Periodic Update Checking</string>
+    <string name="key_pref_disable_updater">pref_disable_updater</string>
+    <string name="pref_updater_description">To force an update check press the version number below</string>
     <string name="pref_pywhat">PyWhat Server</string>
     <string name="pref_pywhat_host">Hostname</string>
     <string name="pref_pywhat_port">Port</string>

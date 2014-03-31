@@ -47,7 +47,7 @@ public class ErrorReporterService extends IntentService {
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, "WhatAndroid Crash Report");
 			emailIntent.putExtra(Intent.EXTRA_TEXT, reports.toString());
 			emailIntent = Intent.createChooser(emailIntent, "Send crash reports");
-			PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, emailIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+			PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, emailIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 			builder.setContentIntent(pendingIntent);
 
 			NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);

@@ -8,8 +8,14 @@
         <CheckBoxPreference
                 android:title="@string/pref_img_on_wifi_only"
                 android:key="@string/key_pref_img_wifi"
-                android:summary="@string/img_wifi_description"
                 android:defaultValue="false"/>
+
+        <CheckBoxPreference
+                android:title="@string/pref_disable_updater"
+                android:key="@string/key_pref_disable_updater"
+                android:summary="@string/pref_updater_description"
+                android:defaultValue="false"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

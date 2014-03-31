@@ -1,6 +1,8 @@
 package what.whatandroid.login;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +30,7 @@ import what.whatandroid.errors.ErrorLogger;
 import what.whatandroid.errors.ErrorReporterService;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.settings.SettingsFragment;
+import what.whatandroid.updater.UpdateBroadcastReceiver;
 import what.whatandroid.updater.UpdateService;
 
 /**
@@ -72,18 +75,20 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	 */
 	public static void initImageLoader(Context context){
 		//Setup Universal Image loader global config
-		DisplayImageOptions options = new DisplayImageOptions.Builder()
-			.cacheOnDisc(true)
-			.cacheInMemory(true)
-			.build();
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context.getApplicationContext())
-			.defaultDisplayImageOptions(options)
-			.denyCacheImageMultipleSizesInMemory()
-			.memoryCache(new LruMemoryCache(5 * 512 * 512))
-			.discCacheExtraOptions(512, 512, Bitmap.CompressFormat.JPEG, 75, null)
-			.discCacheSize(50 * 512 * 512)
-			.build();
-		ImageLoader.getInstance().init(config);
+		if (!ImageLoader.getInstance().isInited()){
+			DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.cacheOnDisc(true)
+				.cacheInMemory(true)
+				.build();
+			ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context.getApplicationContext())
+				.defaultDisplayImageOptions(options)
+				.denyCacheImageMultipleSizesInMemory()
+				.memoryCache(new LruMemoryCache(5 * 512 * 512))
+				.discCacheExtraOptions(512, 512, Bitmap.CompressFormat.JPEG, 75, null)
+				.discCacheSize(50 * 512 * 512)
+				.build();
+			ImageLoader.getInstance().init(config);
+		}
 	}
 
 	/**
@@ -96,8 +101,24 @@ public abstract class LoggedInActivity extends ActionBarActivity
 		Intent checkReports = new Intent(context, ErrorReporterService.class);
 		context.startService(checkReports);
 
-		Intent checkUpdates = new Intent(context, UpdateService.class);
-		context.startService(checkUpdates);
+		//Only set the periodic updater if it's enabled and we haven't already set it
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		if (!preferences.getBoolean(context.getString(R.string.key_pref_disable_updater), false)){
+			Intent updater = new Intent(context, UpdateBroadcastReceiver.class);
+			PendingIntent pending = PendingIntent.getBroadcast(context, 2, updater, PendingIntent.FLAG_NO_CREATE);
+			if (pending == null){
+				pending = PendingIntent.getBroadcast(context, 2, updater, 0);
+				AlarmManager alarmMgr = (AlarmManager)context.getSystemService(ALARM_SERVICE);
+				alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, AlarmManager.INTERVAL_DAY,
+					AlarmManager.INTERVAL_DAY, pending);
+			}
+		}
+		//We do still want to check once and a while for updates so if periodic checking is disabled do it only
+		//when the app is first started
+		else {
+			Intent checkUpdates = new Intent(context, UpdateService.class);
+			context.startService(checkUpdates);
+		}
 	}
 
 	@Override
