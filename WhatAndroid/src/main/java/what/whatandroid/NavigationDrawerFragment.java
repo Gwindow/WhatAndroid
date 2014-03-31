@@ -84,7 +84,7 @@ public class NavigationDrawerFragment extends Fragment {
 			}
 		});
 		String navs[] = {
-			getString(R.string.announcements),
+			//getString(R.string.announcements),
 			//getString(R.string.blog),
 			getString(R.string.profile),
 			//getString(R.string.inbox),
