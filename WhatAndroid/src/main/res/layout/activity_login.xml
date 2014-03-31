@@ -35,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:inputType="textPassword"
+            android:fontFamily="sans-serif"
             android:hint="@string/password"
             android:layout_marginTop="8dp"
             android:layout_below="@id/username_input"/>
