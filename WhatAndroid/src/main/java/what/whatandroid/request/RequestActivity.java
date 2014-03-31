@@ -92,7 +92,12 @@ public class RequestActivity extends LoggedInActivity
 
 	@Override
 	public void addBounty(int request, long amt){
-		new AddBountyTask().execute(request, amt);
+		if (request != -1){
+			new AddBountyTask().execute(request, amt);
+		}
+		else {
+			Toast.makeText(this, "Invalid request id", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override

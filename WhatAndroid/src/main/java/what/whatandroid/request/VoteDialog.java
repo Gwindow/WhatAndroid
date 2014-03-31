@@ -34,9 +34,15 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 	}
 
 	/**
-	 * Request we're deciding to vote on
+	 * Constants for size of megabyte and gigabyte in bytes and the minimum vote (20 MB)
 	 */
-	private Request request;
+	private static final long megaByte = 1048576, gigaByte = 1073741824, minVote = 20 * megaByte;
+	private static final String REQUEST_TAX = "what.whatandroid.REQUEST_TAX";
+	/**
+	 * Request we're deciding to vote on and its tax percentage
+	 */
+	private int requestId = -1;
+	private float taxPercent;
 	/**
 	 * Input text to enter size and spinner to select units
 	 */
@@ -55,17 +61,24 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 	 */
 	private VoteDialogListener listener;
 
-	private final float taxPercent;
-	private static final long megaByte = 1048576, gigaByte = 1073741824;
-
 	public VoteDialog(Request r){
 		super();
-		request = r;
-		taxPercent = request.getResponse().getRequestTax().floatValue();
+		requestId = r.getResponse().getRequestId().intValue();
+		taxPercent = r.getResponse().getRequestTax().floatValue();
+	}
+
+	public VoteDialog(){
+		//Required empty ctor
 	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState){
+		//If we should be loading from the saved state the requestId will be -1 (ie invalid)
+		if (savedInstanceState != null && requestId == -1){
+			requestId = savedInstanceState.getInt(RequestActivity.REQUEST_ID);
+			taxPercent = savedInstanceState.getFloat(REQUEST_TAX);
+		}
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_request_vote, null);
@@ -91,7 +104,7 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 				public void onClick(DialogInterface dialog, int which){
 					long unitsAmt = units.getSelectedItemPosition() == 0 ? megaByte : gigaByte;
 					float voteAmt = Float.parseFloat(size.getText().toString());
-					listener.addBounty(request.getResponse().getRequestId().intValue(), (long)(voteAmt * unitsAmt));
+					listener.addBounty(requestId, (long)(voteAmt * unitsAmt));
 				}
 			})
 			.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -107,6 +120,13 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 		return dialog;
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		outState.putInt(RequestActivity.REQUEST_ID, requestId);
+		outState.putFloat(REQUEST_TAX, taxPercent);
+	}
+
 	/**
 	 * Listen to changes on the vote amount and update the new upload/ratio fields appropriately
 	 */
@@ -119,7 +139,7 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 				dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 			}
 			warning.setVisibility(View.VISIBLE);
-			warning.setText("Minumum vote: " + Utils.toHumanReadableSize(request.getResponse().getMinimumVote().longValue()));
+			warning.setText("Minumum vote: " + Utils.toHumanReadableSize(minVote));
 		}
 		else {
 			updateVote(Float.parseFloat(input));
@@ -148,13 +168,13 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 		float newRatio = newUpload / MySoup.getIndex().getResponse().getUserstats().getDownloaded().floatValue();
 		float requiredRatio = MySoup.getIndex().getResponse().getUserstats().getRequiredRatio().floatValue();
 
-		if (voteBytes < request.getResponse().getMinimumVote().longValue() || newUpload < 0){
+		if (voteBytes < minVote || newUpload < 0){
 			if (dialog.getButton(DialogInterface.BUTTON_POSITIVE) != null){
 				dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 			}
 			warning.setVisibility(View.VISIBLE);
-			if (voteBytes < request.getResponse().getMinimumVote().longValue()){
-				warning.setText("Minumum vote: " + Utils.toHumanReadableSize(request.getResponse().getMinimumVote().longValue()));
+			if (voteBytes < minVote){
+				warning.setText("Minumum vote: " + Utils.toHumanReadableSize(minVote));
 			}
 			else {
 				warning.setText("You can't afford that vote");
