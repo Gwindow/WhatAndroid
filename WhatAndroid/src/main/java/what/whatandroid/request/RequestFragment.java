@@ -267,6 +267,9 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 		protected Request doInBackground(Integer... params){
 			try {
 				Request r = Request.fromId(params[0]);
+				//Also update the user's index so we've got up to date values for
+				//their uploaded, ratio and required ratio to help them decide how much to vote
+				MySoup.loadIndex();
 				if (r != null && r.getStatus()){
 					return r;
 				}

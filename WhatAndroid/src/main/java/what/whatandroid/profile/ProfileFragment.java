@@ -291,10 +291,6 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 			try {
 				User user = User.fromId(params[0]);
 				recentTorrents = UserRecents.recentsForUser(params[0]);
-				//If we're loading our profile also update our index for MySoup
-				if (params[0] == MySoup.getUserId()){
-					MySoup.loadIndex();
-				}
 				if (user.getStatus() && recentTorrents != null && recentTorrents.getStatus()){
 					return user;
 				}
