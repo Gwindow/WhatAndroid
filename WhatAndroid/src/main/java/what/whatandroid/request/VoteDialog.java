@@ -83,7 +83,6 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 		units.setAdapter(adapter);
 		units.setOnItemSelectedListener(this);
 		initText();
-		warning.setText("Minumum vote: " + Utils.toHumanReadableSize(request.getResponse().getMinimumVote().longValue()));
 
 		builder.setView(view)
 			.setTitle("Select Vote Amount")
@@ -102,6 +101,9 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 				}
 			});
 		dialog = builder.create();
+		//Start the view with the site minimum vote of 20 MB
+		size.setText("20");
+		size.setSelection(2);
 		return dialog;
 	}
 
@@ -113,7 +115,9 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 		String input = s.toString();
 		if (input.isEmpty()){
 			initText();
-			dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+			if (dialog.getButton(DialogInterface.BUTTON_POSITIVE) != null){
+				dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+			}
 			warning.setVisibility(View.VISIBLE);
 			warning.setText("Minumum vote: " + Utils.toHumanReadableSize(request.getResponse().getMinimumVote().longValue()));
 		}
@@ -145,18 +149,22 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 		float requiredRatio = MySoup.getIndex().getResponse().getUserstats().getRequiredRatio().floatValue();
 
 		if (voteBytes < request.getResponse().getMinimumVote().longValue() || newUpload < 0){
-			dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+			if (dialog.getButton(DialogInterface.BUTTON_POSITIVE) != null){
+				dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+			}
 			warning.setVisibility(View.VISIBLE);
 			if (voteBytes < request.getResponse().getMinimumVote().longValue()){
 				warning.setText("Minumum vote: " + Utils.toHumanReadableSize(request.getResponse().getMinimumVote().longValue()));
 			}
 			else {
-				warning.setText("Cannot afford that vote");
+				warning.setText("You can't afford that vote");
 			}
 			initText();
 		}
 		else {
-			dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+			if (dialog.getButton(DialogInterface.BUTTON_POSITIVE) != null){
+				dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+			}
 			afterTax.setText(Utils.toHumanReadableSize((long)(voteBytes - voteBytes * taxPercent)));
 			upload.setText(Utils.toHumanReadableSize(newUpload));
 			setRatio(newRatio);
