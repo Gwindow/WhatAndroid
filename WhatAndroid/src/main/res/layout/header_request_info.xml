@@ -54,7 +54,7 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin">
+                android:paddingBottom="4dp">
 
             <TextView
                     android:id="@+id/created_text"
@@ -156,8 +156,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/votes_text"
+                    android:paddingRight="8dp"
                     android:textSize="18sp"
                     android:textColor="@android:color/primary_text_dark"/>
+
 
             <TextView
                     android:id="@+id/bounty_text"
@@ -178,6 +180,16 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/bounty_text"
                     android:textSize="18sp"
+                    android:textColor="@android:color/primary_text_dark"/>
+
+            <Button
+                    android:id="@+id/add_vote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/bounty_text"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/vote"
                     android:textColor="@android:color/primary_text_dark"/>
 
             <TextView
@@ -208,6 +220,7 @@
                     android:layout_below="@+id/filled_torrent_text"
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="8dp"
+                    android:paddingBottom="12dp"
                     android:text="@string/filled_by"
                     android:textSize="18sp"
                     android:textStyle="bold"

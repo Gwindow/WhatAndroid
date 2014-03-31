@@ -1,9 +1,11 @@
 package what.whatandroid.request;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
+import android.widget.Toast;
 import api.requests.Request;
 import api.son.MySon;
 import api.soup.MySoup;
@@ -22,7 +24,7 @@ import what.whatandroid.torrentgroup.TorrentGroupActivity;
  * View information about a request
  */
 public class RequestActivity extends LoggedInActivity
-	implements ViewArtistCallbacks, ViewUserCallbacks, ViewTorrentCallbacks {
+	implements ViewArtistCallbacks, ViewUserCallbacks, ViewTorrentCallbacks, VoteDialog.VoteDialogListener {
 	/**
 	 * Param to pass the request id to be shown
 	 */
@@ -89,6 +91,11 @@ public class RequestActivity extends LoggedInActivity
 	}
 
 	@Override
+	public void addBounty(int request, long amt){
+		new AddBountyTask().execute(request, amt);
+	}
+
+	@Override
 	public void onNavigationDrawerItemSelected(int position){
 		if (navDrawer == null){
 			return;
@@ -128,6 +135,28 @@ public class RequestActivity extends LoggedInActivity
 			Intent intent = new Intent(this, SearchActivity.class);
 			intent.putExtra(SearchActivity.SEARCH, SearchActivity.USER);
 			startActivity(intent);
+		}
+	}
+
+	/**
+	 * Add bounty to some request. params should be { requestId, voteAmount }
+	 */
+	private class AddBountyTask extends AsyncTask<Number, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(Number... params){
+			int id = params[0].intValue();
+			long amt = params[1].longValue();
+			return Request.addBounty(id, amt);
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status){
+			if (status){
+				Toast.makeText(RequestActivity.this, "Bounty added", Toast.LENGTH_SHORT).show();
+			}
+			else {
+				Toast.makeText(RequestActivity.this, "Failed to add bounty", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 }

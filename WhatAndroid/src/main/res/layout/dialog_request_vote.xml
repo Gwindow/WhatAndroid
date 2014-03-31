@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+    <LinearLayout
+            android:id="@+id/input_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+        <EditText
+                android:id="@+id/size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="numberDecimal"/>
+
+        <Spinner
+                android:id="@+id/units"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:paddingLeft="8dp"/>
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/after_tax_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/input_container"
+            android:paddingTop="8dp"
+            android:textSize="18sp"
+            android:text="@string/after_tax"/>
+
+    <TextView
+            android:id="@+id/after_tax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/after_tax_text"
+            android:layout_alignParentRight="true"
+            android:textSize="18sp"/>
+
+    <TextView
+            android:id="@+id/new_upload_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/after_tax_text"
+            android:paddingTop="4dp"
+            android:textSize="18sp"
+            android:text="@string/uploaded"/>
+
+    <TextView
+            android:id="@+id/new_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/new_upload_text"
+            android:layout_alignParentRight="true"
+            android:textSize="18sp"/>
+
+    <TextView
+            android:id="@+id/new_ratio_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/new_upload_text"
+            android:paddingTop="4dp"
+            android:textSize="18sp"
+            android:text="@string/ratio_required"/>
+
+    <TextView
+            android:id="@+id/new_ratio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/new_ratio_text"
+            android:layout_alignParentRight="true"
+            android:textSize="18sp"/>
+
+    <TextView
+            android:id="@+id/warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/new_ratio_text"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="8dp"
+            android:textColor="@android:color/holo_red_dark"/>
+
+</RelativeLayout>

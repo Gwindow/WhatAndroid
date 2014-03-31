@@ -27,7 +27,7 @@ import java.util.Date;
 /**
  * Display the details of a request, bounty, artists etc.
  */
-public class RequestFragment extends Fragment implements OnLoggedInCallback {
+public class RequestFragment extends Fragment implements OnLoggedInCallback, View.OnClickListener {
 	/**
 	 * The request being viewed
 	 */
@@ -48,7 +48,7 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 	private TextView title, created, recordLabel, catalogueNumber, releaseType, filled, filledBy,
 		acceptBitrates, acceptFormats, acceptMedia, votes, bounty, tags;
 	private View recordLabelText, catalogueNumberText, releaseTypeText, filledText, filledByText,
-		bitratesContainer, formatsContainer, mediaContainer;
+		bitratesContainer, formatsContainer, mediaContainer, addVote;
 	/**
 	 * The list shows the artists & top contributors
 	 */
@@ -109,7 +109,6 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.expandable_list_view, container, false);
 		list = (ExpandableListView)view.findViewById(R.id.exp_list);
-
 		View header = inflater.inflate(R.layout.header_request_info, null);
 		list.addHeaderView(header);
 
@@ -136,7 +135,15 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 		votes = (TextView)header.findViewById(R.id.votes);
 		bounty = (TextView)header.findViewById(R.id.bounty);
 		tags = (TextView)header.findViewById(R.id.tags);
+		addVote = header.findViewById(R.id.add_vote);
+		addVote.setOnClickListener(this);
 		return view;
+	}
+
+	@Override
+	public void onClick(View v){
+		VoteDialog dialog = new VoteDialog(request);
+		dialog.show(getChildFragmentManager(), "vote_dialog");
 	}
 
 	/**
@@ -166,6 +173,7 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback {
 			spinner.setVisibility(View.GONE);
 		}
 		if (response.isFilled()){
+			addVote.setVisibility(View.GONE);
 			filled.setText("Yes");
 			filled.setOnClickListener(new View.OnClickListener() {
 				@Override
