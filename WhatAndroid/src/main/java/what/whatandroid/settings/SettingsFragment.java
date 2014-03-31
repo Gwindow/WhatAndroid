@@ -1,11 +1,17 @@
 package what.whatandroid.settings;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import what.whatandroid.R;
+import what.whatandroid.updater.UpdateBroadcastReceiver;
 import what.whatandroid.updater.UpdateService;
 
 /**
@@ -31,11 +37,30 @@ public class SettingsFragment extends PreferenceFragment {
 
 	@Override
 	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference){
-		//If the version number is clicked launch an update check
-		if (preference.getKey() != null && preference.getKey().equalsIgnoreCase(getString(R.string.key_pref_version_name))){
-			if (getActivity() != null){
+		if (preference.getKey() != null && getActivity() != null){
+			//If the version number is clicked launch an update check
+			if (preference.getKey().equalsIgnoreCase(getString(R.string.key_pref_version_name))){
 				Intent checkUpdates = new Intent(getActivity(), UpdateService.class);
 				getActivity().startService(checkUpdates);
+				return true;
+			}
+			//If we're enabling or disabling the periodic update checker then cancel or recreate the alarm as necessary
+			else if (preference.getKey().equalsIgnoreCase(getString(R.string.key_pref_disable_updater))){
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+				Intent updater = new Intent(getActivity(), UpdateBroadcastReceiver.class);
+				PendingIntent pending = PendingIntent.getBroadcast(getActivity(), 2, updater, PendingIntent.FLAG_NO_CREATE);
+				AlarmManager alarmMgr = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+				boolean checkerDisabled = preferences.getBoolean(getActivity().getString(R.string.key_pref_disable_updater), false);
+				//Cancel the alarm if we're disabling the checker
+				if (pending != null && checkerDisabled){
+					alarmMgr.cancel(pending);
+				}
+				//Set the alarm if we're re-enabling it and it was removed (ie. pending == null)
+				else {
+					pending = PendingIntent.getBroadcast(getActivity(), 2, updater, 0);
+					alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, AlarmManager.INTERVAL_DAY,
+						AlarmManager.INTERVAL_DAY, pending);
+				}
 				return true;
 			}
 		}
