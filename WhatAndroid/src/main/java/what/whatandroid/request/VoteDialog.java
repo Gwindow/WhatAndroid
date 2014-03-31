@@ -61,10 +61,16 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 	 */
 	private VoteDialogListener listener;
 
-	public VoteDialog(Request r){
-		super();
-		requestId = r.getResponse().getRequestId().intValue();
-		taxPercent = r.getResponse().getRequestTax().floatValue();
+
+	/**
+	 * Use this factory method to create a vote dialog displaying a bounty vote prompt for
+	 * the request
+	 */
+	public static VoteDialog newInstance(Request r){
+		VoteDialog d = new VoteDialog();
+		d.requestId = r.getResponse().getRequestId().intValue();
+		d.taxPercent = r.getResponse().getRequestTax().floatValue();
+		return d;
 	}
 
 	public VoteDialog(){
@@ -191,7 +197,7 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 			//Also warn the user about voting themselves into ratio watch but don't prevent it
 			if (newRatio < requiredRatio){
 				warning.setVisibility(View.VISIBLE);
-				warning.setText("Vote may put you on ratio watch");
+				warning.setText("Your ratio will fall below your required ratio");
 			}
 			else {
 				warning.setVisibility(View.GONE);

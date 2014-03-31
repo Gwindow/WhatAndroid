@@ -149,7 +149,7 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 
 	@Override
 	public void onClick(View v){
-		VoteDialog dialog = new VoteDialog(request);
+		VoteDialog dialog = VoteDialog.newInstance(request);
 		dialog.show(getChildFragmentManager(), "vote_dialog");
 	}
 
