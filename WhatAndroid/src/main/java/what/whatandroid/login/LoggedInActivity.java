@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -84,7 +83,6 @@ public abstract class LoggedInActivity extends ActionBarActivity
 				.defaultDisplayImageOptions(options)
 				.denyCacheImageMultipleSizesInMemory()
 				.memoryCache(new LruMemoryCache(5 * 512 * 512))
-				.discCacheExtraOptions(512, 512, Bitmap.CompressFormat.PNG, 100, null)
 				.discCacheSize(50 * 512 * 512)
 				.build();
 			ImageLoader.getInstance().init(config);
