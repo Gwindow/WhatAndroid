@@ -1,3 +1,0 @@
-How to integrate the WhatAPI library to be usable as a gradle dependency?
-For now just grab the latest WhatAPI release from: https://github.com/Gwindow/WhatAPI/
-

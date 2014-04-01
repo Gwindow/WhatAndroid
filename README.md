@@ -10,4 +10,8 @@ Dependencies
 -
 - [WhatAPI](https://github.com/Gwindow/WhatAPI) Grab the latest release from the repo.
 - [Universal Image Loader](https://github.com/nostra13/Android-Universal-Image-Loader)
+- [commons-io-2.4](https://commons.apache.org/proper/commons-io/download_io.cgi),
+- [commons-lang3-3.1](https://commons.apache.org/proper/commons-lang/download_lang.cgi),
+- [gson-2.2.4](https://code.google.com/p/google-gson/downloads/list)
+- [signpost-core-1.2.1.2.jar](http://code.google.com/p/oauth-signpost/downloads/list)
 

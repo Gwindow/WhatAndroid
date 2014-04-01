@@ -28,7 +28,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="4dp"
-                android:text="@string/fa_star"
+                android:text="@string/fa_gift"
+                android:textSize="18sp"
                 android:textColor="@color/Gold"
                 app:font="@string/fontawesome_font"/>
 
@@ -37,6 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fa_exclamation_triangle"
+                android:textSize="18sp"
                 android:textColor="@android:color/holo_red_dark"
                 app:font="@string/fontawesome_font"/>
 
