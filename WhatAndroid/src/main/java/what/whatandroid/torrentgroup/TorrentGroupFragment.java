@@ -123,10 +123,13 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 		}
 		albumTitle.setText(group.getResponse().getGroup().getName());
 
-		TorrentGroupAdapter adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(),
-			group.getResponse().getGroup().getMusicInfo(), editions);
-		torrentList.setAdapter(adapter);
-		torrentList.setOnChildClickListener(adapter);
+		//Don't initialize if we're moving away from the view
+		if (getActivity() != null){
+			TorrentGroupAdapter adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(),
+				group.getResponse().getGroup().getMusicInfo(), editions);
+			torrentList.setAdapter(adapter);
+			torrentList.setOnChildClickListener(adapter);
+		}
 	}
 
 	/**
