@@ -21,6 +21,7 @@ import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
+import what.whatandroid.views.ImageDialog;
 
 import java.util.Date;
 
@@ -144,13 +145,20 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 		tags = (TextView)header.findViewById(R.id.tags);
 		addVote = header.findViewById(R.id.add_vote);
 		addVote.setOnClickListener(this);
+		image.setOnClickListener(this);
 		return view;
 	}
 
 	@Override
 	public void onClick(View v){
-		VoteDialog dialog = VoteDialog.newInstance(request);
-		dialog.show(getChildFragmentManager(), "vote_dialog");
+		if (v.getId() == R.id.add_vote){
+			VoteDialog dialog = VoteDialog.newInstance(request);
+			dialog.show(getChildFragmentManager(), "vote_dialog");
+		}
+		else if (v.getId() == R.id.image){
+			ImageDialog dialog = ImageDialog.newInstance(request.getResponse().getImage());
+			dialog.show(getChildFragmentManager(), "image_dialog");
+		}
 	}
 
 	/**

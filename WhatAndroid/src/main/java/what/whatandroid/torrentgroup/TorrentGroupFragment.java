@@ -16,13 +16,14 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
+import what.whatandroid.views.ImageDialog;
 
 import java.util.List;
 
 /**
  * Fragment for viewing a torrent group's information
  */
-public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback {
+public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback, View.OnClickListener {
 	/**
 	 * The torrent group being viewed
 	 */
@@ -98,14 +99,29 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.expandable_list_view, container, false);
 		torrentList = (ExpandableListView)view.findViewById(R.id.exp_list);
+
 		imageHeader = inflater.inflate(R.layout.header_image, null);
-		torrentList.addHeaderView(imageHeader);
 		image = (ImageView)imageHeader.findViewById(R.id.image);
 		spinner = (ProgressBar)imageHeader.findViewById(R.id.loading_indicator);
+		image.setOnClickListener(this);
+
 		titleHeader = inflater.inflate(R.layout.header_album_title, null);
-		torrentList.addHeaderView(titleHeader);
 		albumTitle = (TextView)titleHeader.findViewById(R.id.title);
+
+		torrentList.addHeaderView(imageHeader);
+		torrentList.addHeaderView(titleHeader);
 		return view;
+	}
+
+	/**
+	 * When the image in the header is clicked toggle expand/hide on it
+	 */
+	@Override
+	public void onClick(View v){
+		if (v.getId() == R.id.image){
+			ImageDialog dialog = ImageDialog.newInstance(group.getResponse().getGroup().getWikiImage());
+			dialog.show(getChildFragmentManager(), "image_dialog");
+		}
 	}
 
 	/**

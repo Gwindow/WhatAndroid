@@ -42,8 +42,8 @@ public abstract class LoggedInActivity extends ActionBarActivity
 
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-	//public static final String SITE = "192.168.1.5:8080/";
-	public static final String SITE = "what.cd";
+	public static final String SITE = "192.168.1.5:8080/";
+	//public static final String SITE = "what.cd";
 	protected NavigationDrawerFragment navDrawer;
 	/**
 	 * Used to store the last screen title, for use in restoreActionBar
@@ -63,7 +63,7 @@ public abstract class LoggedInActivity extends ActionBarActivity
 	 * Initialize MySoup so that we can start making API requests
 	 */
 	public static void initSoup(){
-		MySoup.setSite(SITE, true);
+		MySoup.setSite(SITE, false);
 		MySoup.setUserAgent("WhatAndroid Android");
 	}
 
@@ -82,7 +82,7 @@ public abstract class LoggedInActivity extends ActionBarActivity
 			ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context.getApplicationContext())
 				.defaultDisplayImageOptions(options)
 				.denyCacheImageMultipleSizesInMemory()
-				.memoryCache(new LruMemoryCache(5 * 512 * 512))
+				.memoryCache(new LruMemoryCache(2 * 1024 * 1024))
 				.discCacheSize(50 * 512 * 512)
 				.build();
 			ImageLoader.getInstance().init(config);

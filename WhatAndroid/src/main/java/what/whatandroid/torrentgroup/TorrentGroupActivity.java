@@ -58,7 +58,8 @@ public class TorrentGroupActivity extends LoggedInActivity implements ViewArtist
 	protected void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
 		TorrentGroup group = fragment.getGroup();
-		if (group != null){
+		//Don't serialize the group if it's too big and would cause lag
+		if (group != null && group.getResponse().getTorrents().size() < 15){
 			outState.putInt(GROUP_ID, group.getId());
 			outState.putString(GROUP, MySon.toJson(group, TorrentGroup.class));
 		}

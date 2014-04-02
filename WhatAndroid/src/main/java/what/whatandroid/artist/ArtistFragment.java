@@ -19,11 +19,12 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
+import what.whatandroid.views.ImageDialog;
 
 /**
  * Fragment for viewing an artist's information and torrent groups
  */
-public class ArtistFragment extends Fragment implements OnLoggedInCallback {
+public class ArtistFragment extends Fragment implements OnLoggedInCallback, View.OnClickListener {
 	/**
 	 * The artist being viewed
 	 */
@@ -115,11 +116,20 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback {
 		header = inflater.inflate(R.layout.header_image, null);
 		torrentList.addHeaderView(header);
 		image = (ImageView)header.findViewById(R.id.image);
+		image.setOnClickListener(this);
 		spinner = (ProgressBar)header.findViewById(R.id.loading_indicator);
 		if (artist != null){
 			updateArtist();
 		}
 		return view;
+	}
+
+	@Override
+	public void onClick(View v){
+		if (v.getId() == R.id.image){
+			ImageDialog dialog = ImageDialog.newInstance(artist.getResponse().getImage());
+			dialog.show(getChildFragmentManager(), "image_dialog");
+		}
 	}
 
 	/**
