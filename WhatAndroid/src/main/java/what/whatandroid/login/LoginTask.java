@@ -87,9 +87,7 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 
 	@Override
 	protected void onPostExecute(Boolean status){
-		if (dialog.isShowing()){
-			dialog.dismiss();
-		}
+		dismissDialog();
 	}
 
 	/**

@@ -179,7 +179,7 @@ public abstract class LoggedInActivity extends ActionBarActivity
 		super.onPause();
 		calledLogin = false;
 		if (loginTask != null){
-			loginTask.dismissDialog();
+			loginTask.cancel(true);
 		}
 		if (logoutTask != null){
 			logoutTask.dismissDialog();
@@ -252,9 +252,8 @@ public abstract class LoggedInActivity extends ActionBarActivity
 				calledLogin = true;
 				onLoggedIn();
 			}
-			else {
-				//kick them to login activity?
-				Toast.makeText(getApplicationContext(), "Login failed, check username and password", Toast.LENGTH_LONG).show();
+			else if (!status){
+				Toast.makeText(LoggedInActivity.this, "Login failed, check username and password", Toast.LENGTH_LONG).show();
 				Intent intent = new Intent(LoggedInActivity.this, LoginActivity.class);
 				intent.putExtra(LoginActivity.LOGIN_REQUEST, true);
 				startActivityForResult(intent, 0);

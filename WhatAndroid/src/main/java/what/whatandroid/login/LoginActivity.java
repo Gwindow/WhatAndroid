@@ -72,10 +72,8 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 	@Override
 	protected void onPause(){
 		super.onPause();
-		//If the user's phone orientation changes while running the login task we need
-		//to dismiss the dialog
 		if (loginTask != null){
-			loginTask.dismissDialog();
+			loginTask.cancel(true);
 		}
 	}
 
