@@ -185,7 +185,7 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 
 	@Override
 	public int getGroupCount(){
-		return groups.size() + 1;
+		return requests.isEmpty() ? groups.size() : groups.size() + 1;
 	}
 
 	@Override
