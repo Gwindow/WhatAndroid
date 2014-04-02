@@ -38,6 +38,10 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 	 */
 	private SetTitleCallback callbacks;
 	/**
+	 * Task used to load the group so we can cancel if we navigate away
+	 */
+	private LoadGroup loadGroup;
+	/**
 	 * Various content views displaying the group information
 	 */
 	private ImageView image;
@@ -86,9 +90,19 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 	}
 
 	@Override
+	public void onDetach(){
+		super.onDetach();
+		//Cancel the loading task if it's running
+		if (loadGroup != null){
+			loadGroup.cancel(true);
+		}
+	}
+
+	@Override
 	public void onLoggedIn(){
 		if (group == null){
-			new LoadGroup().execute(groupID);
+			loadGroup = new LoadGroup();
+			loadGroup.execute(groupID);
 		}
 		else {
 			updateTorrentGroup(group.getEditions());
@@ -139,13 +153,10 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 		}
 		albumTitle.setText(group.getResponse().getGroup().getName());
 
-		//Don't initialize if we're moving away from the view
-		if (getActivity() != null){
-			TorrentGroupAdapter adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(),
-				group.getResponse().getGroup().getMusicInfo(), editions);
-			torrentList.setAdapter(adapter);
-			torrentList.setOnChildClickListener(adapter);
-		}
+		TorrentGroupAdapter adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(),
+			group.getResponse().getGroup().getMusicInfo(), editions);
+		torrentList.setAdapter(adapter);
+		torrentList.setOnChildClickListener(adapter);
 	}
 
 	/**
@@ -185,15 +196,13 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 
 		@Override
 		protected void onPostExecute(TorrentGroup torrentGroup){
-			if (getActivity() != null){
-				getActivity().setProgressBarIndeterminateVisibility(false);
-				getActivity().setProgressBarIndeterminate(false);
-			}
+			getActivity().setProgressBarIndeterminateVisibility(false);
+			getActivity().setProgressBarIndeterminate(false);
 			if (torrentGroup != null){
 				group = torrentGroup;
 				updateTorrentGroup(editions);
 			}
-			else if (getActivity() != null){
+			else {
 				Toast.makeText(getActivity(), "Failed to load torrent group", Toast.LENGTH_SHORT).show();
 			}
 		}

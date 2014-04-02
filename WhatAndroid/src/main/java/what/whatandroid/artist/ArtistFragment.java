@@ -42,6 +42,10 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	 */
 	private SetTitleCallback callbacks;
 	/**
+	 * Loading task so we can cancel if we navigate away
+	 */
+	private LoadArtist loadArtist;
+	/**
 	 * Various content views displaying the artist information
 	 */
 	private ImageView image;
@@ -89,16 +93,6 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	}
 
 	@Override
-	public void onLoggedIn(){
-		if (artist == null){
-			new LoadArtist().execute(artistID);
-		}
-		else if (releases == null){
-			releases = new Releases(artist);
-		}
-	}
-
-	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
@@ -106,6 +100,25 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(activity.toString() + " must implement ViewTorrentCallbacks!");
+		}
+	}
+
+	@Override
+	public void onDetach(){
+		super.onDetach();
+		if (loadArtist != null){
+			loadArtist.cancel(true);
+		}
+	}
+
+	@Override
+	public void onLoggedIn(){
+		if (artist == null){
+			loadArtist = new LoadArtist();
+			loadArtist.execute(artistID);
+		}
+		else if (releases == null){
+			releases = new Releases(artist);
 		}
 	}
 
@@ -145,13 +158,10 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 			image.setVisibility(View.GONE);
 			spinner.setVisibility(View.GONE);
 		}
-		//Don't initialize if we're moving away from the view
-		if (getActivity() != null){
-			ArtistTorrentAdapter adapter = new ArtistTorrentAdapter(getActivity(), releases.flatten(),
-				artist.getResponse().getRequests());
-			torrentList.setAdapter(adapter);
-			torrentList.setOnChildClickListener(adapter);
-		}
+		ArtistTorrentAdapter adapter = new ArtistTorrentAdapter(getActivity(), releases.flatten(),
+			artist.getResponse().getRequests());
+		torrentList.setAdapter(adapter);
+		torrentList.setOnChildClickListener(adapter);
 	}
 
 	/**
@@ -189,10 +199,8 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 
 		@Override
 		protected void onPostExecute(Artist a){
-			if (getActivity() != null){
-				getActivity().setProgressBarIndeterminateVisibility(false);
-				getActivity().setProgressBarIndeterminate(false);
-			}
+			getActivity().setProgressBarIndeterminateVisibility(false);
+			getActivity().setProgressBarIndeterminate(false);
 			if (a != null){
 				artist = a;
 				updateArtist();

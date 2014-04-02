@@ -34,6 +34,10 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 	 */
 	private Request request;
 	/**
+	 * Loading task so we can cancel if we move away
+	 */
+	private LoadRequest loadRequest;
+	/**
 	 * Request id passed through when the fragment is created so we can defer loading
 	 */
 	private int requestId;
@@ -93,9 +97,18 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 	}
 
 	@Override
+	public void onDetach(){
+		super.onDetach();
+		if (loadRequest != null){
+			loadRequest.cancel(true);
+		}
+	}
+
+	@Override
 	public void onLoggedIn(){
 		if (request == null){
-			new LoadRequest().execute(requestId);
+			loadRequest = new LoadRequest();
+			loadRequest.execute(requestId);
 		}
 		else {
 			updateRequest();
@@ -174,12 +187,9 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 		created.setText(DateUtils.getRelativeTimeSpanString(createDate.getTime(),
 			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
 
-		//Don't initialize if we're moving away from the view
-		if (getActivity() != null){
-			RequestAdapter adapter = new RequestAdapter(getActivity(), response.getMusicInfo(), response.getTopContributors());
-			list.setAdapter(adapter);
-			list.setOnChildClickListener(adapter);
-		}
+		RequestAdapter adapter = new RequestAdapter(getActivity(), response.getMusicInfo(), response.getTopContributors());
+		list.setAdapter(adapter);
+		list.setOnChildClickListener(adapter);
 
 		//Requests may be missing any of these fields
 		String imgUrl = response.getImage();
@@ -301,15 +311,13 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 
 		@Override
 		protected void onPostExecute(Request r){
-			if (getActivity() != null){
-				getActivity().setProgressBarIndeterminateVisibility(false);
-				getActivity().setProgressBarIndeterminate(false);
-			}
+			getActivity().setProgressBarIndeterminateVisibility(false);
+			getActivity().setProgressBarIndeterminate(false);
 			if (r != null){
 				request = r;
 				updateRequest();
 			}
-			else if (getActivity() != null){
+			else {
 				Toast.makeText(getActivity(), "Failed to load torrent group", Toast.LENGTH_SHORT).show();
 			}
 		}
