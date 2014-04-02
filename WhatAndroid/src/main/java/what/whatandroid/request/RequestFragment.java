@@ -174,9 +174,12 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 		created.setText(DateUtils.getRelativeTimeSpanString(createDate.getTime(),
 			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
 
-		RequestAdapter adapter = new RequestAdapter(getActivity(), response.getMusicInfo(), response.getTopContributors());
-		list.setAdapter(adapter);
-		list.setOnChildClickListener(adapter);
+		//Don't initialize if we're moving away from the view
+		if (getActivity() != null){
+			RequestAdapter adapter = new RequestAdapter(getActivity(), response.getMusicInfo(), response.getTopContributors());
+			list.setAdapter(adapter);
+			list.setOnChildClickListener(adapter);
+		}
 
 		//Requests may be missing any of these fields
 		String imgUrl = response.getImage();

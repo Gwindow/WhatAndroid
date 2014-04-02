@@ -145,10 +145,13 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 			image.setVisibility(View.GONE);
 			spinner.setVisibility(View.GONE);
 		}
-		ArtistTorrentAdapter adapter = new ArtistTorrentAdapter(getActivity(), releases.flatten(),
-			artist.getResponse().getRequests());
-		torrentList.setAdapter(adapter);
-		torrentList.setOnChildClickListener(adapter);
+		//Don't initialize if we're moving away from the view
+		if (getActivity() != null){
+			ArtistTorrentAdapter adapter = new ArtistTorrentAdapter(getActivity(), releases.flatten(),
+				artist.getResponse().getRequests());
+			torrentList.setAdapter(adapter);
+			torrentList.setOnChildClickListener(adapter);
+		}
 	}
 
 	/**

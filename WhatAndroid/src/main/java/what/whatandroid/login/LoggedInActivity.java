@@ -83,7 +83,7 @@ public abstract class LoggedInActivity extends ActionBarActivity
 				.defaultDisplayImageOptions(options)
 				.denyCacheImageMultipleSizesInMemory()
 				.memoryCache(new LruMemoryCache(2 * 1024 * 1024))
-				.discCacheSize(50 * 512 * 512)
+				.discCacheSize(10 * 1024 * 1024)
 				.build();
 			ImageLoader.getInstance().init(config);
 		}
