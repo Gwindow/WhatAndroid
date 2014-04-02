@@ -90,6 +90,11 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 		dismissDialog();
 	}
 
+	@Override
+	protected void onCancelled(Boolean aBoolean){
+		dismissDialog();
+	}
+
 	/**
 	 * Explicitly dismiss the progress dialog. This should be done if the view is being destroyed
 	 */
