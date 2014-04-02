@@ -28,9 +28,12 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 	 */
 	private final FragmentManager fragmentManager;
 	/**
-	 * The artists who appeared on this release
+	 * The artists who appeared on this release and the string for the artist header
+	 * this header text is Additional Artists if some artists are being shown in the title
+	 * header, or is simply Artists on a various artists release
 	 */
-	List<Artist> artists;
+	private List<Artist> artists;
+	private final String artistHeader;
 	/**
 	 * Callbacks to the parent activity for viewing an artist from the group
 	 */
@@ -55,7 +58,25 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 			artists = musicInfo.getAllArtists();
 		}
 		editions = objects;
+		artistHeader = "Artists";
+		try {
+			callbacks = (ViewArtistCallbacks)context;
+		}
+		catch (ClassCastException e){
+			throw new ClassCastException(context.toString() + " must implement ViewArtistCallbacks");
+		}
+	}
 
+	/**
+	 * Setup the adapter to display a list of torrents for some group and the passed list of artists
+	 */
+	public TorrentGroupAdapter(Context context, FragmentManager fm, List<Artist> a, List<EditionTorrents> objects){
+		super();
+		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		fragmentManager = fm;
+		artists = a;
+		editions = objects;
+		artistHeader = "Additional Artists";
 		try {
 			callbacks = (ViewArtistCallbacks)context;
 		}
@@ -69,7 +90,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 	 */
 	@Override
 	public int getChildType(int groupPosition, int childPosition){
-		return groupPosition == 0 && artists != null ? 0 : 1;
+		return groupPosition == 0 && artists != null && !artists.isEmpty() ? 0 : 1;
 	}
 
 	@Override
@@ -79,7 +100,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 
 	@Override
 	public int getChildrenCount(int groupPosition){
-		if (artists != null){
+		if (artists != null && !artists.isEmpty()){
 			return groupPosition == 0 ? artists.size()
 				: editions.get(groupPosition - 1).getTorrents().size();
 		}
@@ -88,7 +109,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition){
-		if (artists != null){
+		if (artists != null && !artists.isEmpty()){
 			return groupPosition == 0 ? artists.get(childPosition)
 				: editions.get(groupPosition - 1).getTorrents().get(childPosition);
 		}
@@ -189,12 +210,12 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 
 	@Override
 	public int getGroupCount(){
-		return artists != null ? 1 + editions.size() : editions.size();
+		return artists != null && !artists.isEmpty() ? 1 + editions.size() : editions.size();
 	}
 
 	@Override
 	public Object getGroup(int groupPosition){
-		if (artists != null){
+		if (artists != null && !artists.isEmpty()){
 			return groupPosition == 0 ? artists : editions.get(groupPosition - 1);
 		}
 		return editions.get(groupPosition);
@@ -217,9 +238,9 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 			holder.groupName = (TextView)convertView.findViewById(R.id.group_category);
 			convertView.setTag(holder);
 		}
-		if (artists != null){
+		if (artists != null && !artists.isEmpty()){
 			if (groupPosition == 0){
-				holder.groupName.setText("Artists");
+				holder.groupName.setText(artistHeader);
 			}
 			else {
 				holder.groupName.setText(editions.get(groupPosition - 1).getEdition().toString());
@@ -238,7 +259,7 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id){
-		if (artists != null && groupPosition == 0){
+		if (artists != null && !artists.isEmpty() && groupPosition == 0){
 			ArtistViewHolder holder = (ArtistViewHolder)v.getTag();
 			callbacks.viewArtist(holder.artist.getId().intValue());
 		}

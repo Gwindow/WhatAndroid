@@ -8,12 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import api.torrents.torrents.Artist;
 import api.torrents.torrents.EditionTorrents;
+import api.torrents.torrents.MusicInfo;
 import api.torrents.torrents.TorrentGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
+import what.whatandroid.callbacks.ViewArtistCallbacks;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.views.ImageDialog;
@@ -34,18 +37,22 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 	 */
 	private int groupID;
 	/**
-	 * Callbacks to the parent activity for setting the title
+	 * Callbacks to the parent activity for setting the title and viewing artists
 	 */
-	private SetTitleCallback callbacks;
+	private SetTitleCallback setTitle;
+	private ViewArtistCallbacks viewArtist;
 	/**
 	 * Task used to load the group so we can cancel if we navigate away
 	 */
 	private LoadGroup loadGroup;
 	/**
 	 * Various content views displaying the group information
+	 * artistA and artistB are used to show and hide artists if there were one or two artists
+	 * on the album. If there's 3+ we show various artists in A and show the listing of artists
 	 */
 	private ImageView image;
-	private View imageHeader, titleHeader;
+	private View imageHeader;
+	private TextView artistA, artistB;
 	private ProgressBar spinner;
 	private TextView albumTitle;
 	private ExpandableListView torrentList;
@@ -82,10 +89,11 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			callbacks = (SetTitleCallback)activity;
+			setTitle = (SetTitleCallback)activity;
+			viewArtist = (ViewArtistCallbacks)activity;
 		}
 		catch (ClassCastException e){
-			throw new ClassCastException(activity.toString() + " must implement SetTitleCallbacks");
+			throw new ClassCastException(activity.toString() + " must implement SetTitle and ViewArtist callbacks");
 		}
 	}
 
@@ -119,7 +127,9 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 		spinner = (ProgressBar)imageHeader.findViewById(R.id.loading_indicator);
 		image.setOnClickListener(this);
 
-		titleHeader = inflater.inflate(R.layout.header_album_title, null);
+		View titleHeader = inflater.inflate(R.layout.header_album_title, null);
+		artistA = (TextView)titleHeader.findViewById(R.id.artist_a);
+		artistB = (TextView)titleHeader.findViewById(R.id.artist_b);
 		albumTitle = (TextView)titleHeader.findViewById(R.id.title);
 
 		torrentList.addHeaderView(imageHeader);
@@ -136,13 +146,19 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 			ImageDialog dialog = ImageDialog.newInstance(group.getResponse().getGroup().getWikiImage());
 			dialog.show(getChildFragmentManager(), "image_dialog");
 		}
+		else if (v.getId() == R.id.artist_a){
+			viewArtist.viewArtist(group.getResponse().getGroup().getMusicInfo().getArtists().get(0).getId().intValue());
+		}
+		else if (v.getId() == R.id.artist_b){
+			viewArtist.viewArtist(group.getResponse().getGroup().getMusicInfo().getArtists().get(1).getId().intValue());
+		}
 	}
 
 	/**
 	 * Update all the torrent group information being shown after loading
 	 */
 	private void updateTorrentGroup(List<EditionTorrents> editions){
-		callbacks.setTitle(group.getResponse().getGroup().getName());
+		setTitle.setTitle(group.getResponse().getGroup().getName());
 
 		String imgUrl = group.getResponse().getGroup().getWikiImage();
 		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
@@ -153,8 +169,31 @@ public class TorrentGroupFragment extends Fragment implements OnLoggedInCallback
 		}
 		albumTitle.setText(group.getResponse().getGroup().getName());
 
-		TorrentGroupAdapter adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(),
-			group.getResponse().getGroup().getMusicInfo(), editions);
+		//Choose the names for ArtistA and ArtistB or hide entirely depending on the number of artists
+		TorrentGroupAdapter adapter;
+		MusicInfo musicInfo = group.getResponse().getGroup().getMusicInfo();
+		if (musicInfo == null || musicInfo.getArtists().size() > 2 || musicInfo.getArtists().isEmpty()){
+			adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(), musicInfo, editions);
+			artistA.setText("Various Artists");
+			artistB.setVisibility(View.GONE);
+		}
+		else {
+			artistA.setOnClickListener(this);
+			artistB.setOnClickListener(this);
+			List<Artist> artists = musicInfo.getAllArtists();
+			if (musicInfo.getArtists().size() == 2){
+				artistA.setText(musicInfo.getArtists().get(0).getName());
+				artistB.setText(musicInfo.getArtists().get(1).getName());
+				adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(),
+					artists.subList(2, artists.size()), editions);
+			}
+			else {
+				artistA.setText(musicInfo.getArtists().get(0).getName());
+				artistB.setVisibility(View.GONE);
+				adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(),
+					artists.subList(1, artists.size()), editions);
+			}
+		}
 		torrentList.setAdapter(adapter);
 		torrentList.setOnChildClickListener(adapter);
 	}
