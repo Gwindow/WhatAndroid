@@ -32,6 +32,7 @@ public class UserSearchFragment extends Fragment
 	 * The first page of the user search results
 	 */
 	private UserSearch userSearch;
+	private LoadUserSearch loadUserSearch;
 	/**
 	 * The search terms input box
 	 */
@@ -77,10 +78,22 @@ public class UserSearchFragment extends Fragment
 	}
 
 	@Override
+	public void onDetach(){
+		super.onDetach();
+		if (loadUserSearch != null){
+			loadUserSearch.cancel(true);
+		}
+	}
+
+	@Override
 	public void onLoggedIn(){
 		//If we were sent a search to load from the intent and haven't already loaded it, start loading it
 		if (searchTerms != null && userSearch == null){
-			new LoadUserSearch().execute(searchTerms);
+			if (loadUserSearch != null){
+				loadUserSearch.cancel(true);
+			}
+			loadUserSearch = new LoadUserSearch();
+			loadUserSearch.execute(searchTerms);
 		}
 	}
 
@@ -125,7 +138,11 @@ public class UserSearchFragment extends Fragment
 		if (!searchTerms.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-			new LoadUserSearch().execute(searchTerms);
+			if (loadUserSearch != null){
+				loadUserSearch.cancel(true);
+			}
+			loadUserSearch = new LoadUserSearch();
+			loadUserSearch.execute(searchTerms);
 		}
 		else {
 			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
@@ -140,7 +157,11 @@ public class UserSearchFragment extends Fragment
 			if (!searchTerms.isEmpty()){
 				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-				new LoadUserSearch().execute(searchTerms);
+				if (loadUserSearch != null){
+					loadUserSearch.cancel(true);
+				}
+				loadUserSearch = new LoadUserSearch();
+				loadUserSearch.execute(searchTerms);
 			}
 			else {
 				Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();

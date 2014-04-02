@@ -36,6 +36,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	 */
 	private Profile profile;
 	/**
+	 * Loading task so we can cancel it
+	 */
+	private LoadProfile loadProfile;
+	/**
 	 * The user's recently uploaded/snatched torrents
 	 */
 	private UserRecents recentTorrents;
@@ -105,7 +109,8 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	@Override
 	public void onLoggedIn(){
 		if (profile == null){
-			new LoadProfile().execute(userID);
+			loadProfile = new LoadProfile();
+			loadProfile.execute(userID);
 		}
 		else {
 			updateProfile();
@@ -155,6 +160,14 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(activity.toString() + " must implement ViewTorrent & SetTitle Callbacks");
+		}
+	}
+
+	@Override
+	public void onDetach(){
+		super.onDetach();
+		if (loadProfile != null){
+			loadProfile.cancel(true);
 		}
 	}
 
@@ -311,10 +324,8 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 
 		@Override
 		protected void onPostExecute(User user){
-			if (getActivity() != null){
-				getActivity().setProgressBarIndeterminateVisibility(false);
-				getActivity().setProgressBarIndeterminate(false);
-			}
+			getActivity().setProgressBarIndeterminateVisibility(false);
+			getActivity().setProgressBarIndeterminate(false);
 			if (user != null){
 				profile = user.getProfile();
 				updateProfile();

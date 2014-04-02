@@ -29,6 +29,7 @@ public class TorrentSearchFragment extends Fragment
 	 * The torrent search we're viewing
 	 */
 	private TorrentSearch torrentSearch;
+	private LoadTorrentSearch loadTorrentSearch;
 	/**
 	 * The search input boxes
 	 */
@@ -74,13 +75,25 @@ public class TorrentSearchFragment extends Fragment
 	}
 
 	@Override
+	public void onDetach(){
+		super.onDetach();
+		if (loadTorrentSearch != null){
+			loadTorrentSearch.cancel(true);
+		}
+	}
+
+	@Override
 	public void onLoggedIn(){
 		//If we were sent a search to load from the intent, start loading it
 		if (searchTerms != null && torrentSearch == null){
 			if (searchTags == null){
 				searchTags = "";
 			}
-			new LoadTorrentSearch().execute(searchTerms, searchTags);
+			if (loadTorrentSearch != null){
+				loadTorrentSearch.cancel(true);
+			}
+			loadTorrentSearch = new LoadTorrentSearch();
+			loadTorrentSearch.execute(searchTerms, searchTags);
 		}
 	}
 
@@ -128,7 +141,11 @@ public class TorrentSearchFragment extends Fragment
 		if (!searchTerms.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-			new LoadTorrentSearch().execute(searchTerms, editTags.getText().toString());
+			if (loadTorrentSearch != null){
+				loadTorrentSearch.cancel(true);
+			}
+			loadTorrentSearch = new LoadTorrentSearch();
+			loadTorrentSearch.execute(searchTerms, searchTags);
 		}
 		else {
 			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
@@ -144,7 +161,11 @@ public class TorrentSearchFragment extends Fragment
 			if (!searchTerms.isEmpty()){
 				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-				new LoadTorrentSearch().execute(searchTerms, editTags.getText().toString());
+				if (loadTorrentSearch != null){
+					loadTorrentSearch.cancel(true);
+				}
+				loadTorrentSearch = new LoadTorrentSearch();
+				loadTorrentSearch.execute(searchTerms, searchTags);
 			}
 			else {
 				Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();

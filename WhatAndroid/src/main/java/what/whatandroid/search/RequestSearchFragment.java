@@ -29,6 +29,7 @@ public class RequestSearchFragment extends Fragment
 	 * The torrent search we're viewing
 	 */
 	private RequestsSearch requestSearch;
+	private LoadRequestSearch loadRequestSearch;
 	/**
 	 * The search input boxes
 	 */
@@ -67,12 +68,24 @@ public class RequestSearchFragment extends Fragment
 	}
 
 	@Override
+	public void onDetach(){
+		super.onDetach();
+		if (loadRequestSearch != null){
+			loadRequestSearch.cancel(true);
+		}
+	}
+
+	@Override
 	public void onLoggedIn(){
 		if (searchTerms != null && requestSearch == null){
 			if (searchTags == null){
 				searchTags = "";
 			}
-			new LoadRequestSearch().execute(searchTerms, searchTags);
+			if (loadRequestSearch != null){
+				loadRequestSearch.cancel(true);
+			}
+			loadRequestSearch = new LoadRequestSearch();
+			loadRequestSearch.execute(searchTerms, searchTags);
 		}
 	}
 
@@ -120,7 +133,11 @@ public class RequestSearchFragment extends Fragment
 		if (!searchTerms.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-			new LoadRequestSearch().execute(searchTerms, editTags.getText().toString());
+			if (loadRequestSearch != null){
+				loadRequestSearch.cancel(true);
+			}
+			loadRequestSearch = new LoadRequestSearch();
+			loadRequestSearch.execute(searchTerms, searchTags);
 		}
 		else {
 			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
@@ -136,7 +153,11 @@ public class RequestSearchFragment extends Fragment
 			if (!searchTerms.isEmpty()){
 				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-				new LoadRequestSearch().execute(searchTerms, editTags.getText().toString());
+				if (loadRequestSearch != null){
+					loadRequestSearch.cancel(true);
+				}
+				loadRequestSearch = new LoadRequestSearch();
+				loadRequestSearch.execute(searchTerms, searchTags);
 			}
 			else {
 				Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();

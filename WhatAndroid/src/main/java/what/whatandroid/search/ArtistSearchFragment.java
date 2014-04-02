@@ -35,6 +35,7 @@ public class ArtistSearchFragment extends Fragment
 	 */
 	private static Artist artist;
 	private static Releases releases;
+	private LoadArtistSearch loadArtistSearch;
 	/**
 	 * The search input box and loading indicator
 	 */
@@ -70,6 +71,14 @@ public class ArtistSearchFragment extends Fragment
 	}
 
 	@Override
+	public void onDetach(){
+		super.onDetach();
+		if (loadArtistSearch != null){
+			loadArtistSearch.cancel(true);
+		}
+	}
+
+	@Override
 	public void onLoggedIn(){
 		//Artist search fragment really shouldn't auto-search, since it only re-directs to new fragments
 		//based on the result
@@ -99,7 +108,11 @@ public class ArtistSearchFragment extends Fragment
 		if (!searchTerms.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromInputMethod(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-			new LoadArtistSearch().execute(searchTerms);
+			if (loadArtistSearch != null){
+				loadArtistSearch.cancel(true);
+			}
+			loadArtistSearch = new LoadArtistSearch();
+			loadArtistSearch.execute(searchTerms);
 		}
 		else {
 			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
@@ -114,7 +127,11 @@ public class ArtistSearchFragment extends Fragment
 			if (!searchTerms.isEmpty()){
 				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromInputMethod(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-				new LoadArtistSearch().execute(searchTerms);
+				if (loadArtistSearch != null){
+					loadArtistSearch.cancel(true);
+				}
+				loadArtistSearch = new LoadArtistSearch();
+				loadArtistSearch.execute(searchTerms);
 			}
 			else {
 				Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
