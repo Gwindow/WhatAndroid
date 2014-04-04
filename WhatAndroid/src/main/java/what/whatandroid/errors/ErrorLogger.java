@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.os.Build;
 
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.Date;
 import java.util.Random;
 
@@ -50,11 +47,21 @@ public class ErrorLogger implements Thread.UncaughtExceptionHandler {
 		try {
 			Random rand = new Random();
 			String fName = rand.nextInt() + ".report";
-			FileOutputStream file = context.openFileOutput(fName, Context.MODE_PRIVATE);
-			file.write(report.getBytes());
-			file.close();
+			FileOutputStream file = null;
+			try {
+				file = context.openFileOutput(fName, Context.MODE_PRIVATE);
+				file.write(report.getBytes());
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+			finally {
+				if (file != null){
+					file.close();
+				}
+			}
 		}
-		catch (Exception e){
+		catch (IOException e){
 			e.printStackTrace();
 		}
 	}
