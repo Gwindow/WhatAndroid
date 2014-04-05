@@ -15,6 +15,7 @@ import api.torrents.torrents.MusicInfo;
 import api.torrents.torrents.Torrents;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewArtistCallbacks;
+import what.whatandroid.callbacks.ViewTorrentCallbacks;
 
 import java.util.List;
 
@@ -35,9 +36,10 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 	private List<Artist> artists;
 	private final String artistHeader;
 	/**
-	 * Callbacks to the parent activity for viewing an artist from the group
+	 * Callbacks to the parent activity for viewing an artists and torrents from the group
 	 */
-	private ViewArtistCallbacks callbacks;
+	private ViewArtistCallbacks viewArtist;
+	private ViewTorrentCallbacks viewTorrent;
 	/**
 	 * The list of editions being displayed
 	 */
@@ -60,10 +62,11 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 		editions = objects;
 		artistHeader = "Artists";
 		try {
-			callbacks = (ViewArtistCallbacks)context;
+			viewArtist = (ViewArtistCallbacks)context;
+			viewTorrent = (ViewTorrentCallbacks)context;
 		}
 		catch (ClassCastException e){
-			throw new ClassCastException(context.toString() + " must implement ViewArtistCallbacks");
+			throw new ClassCastException(context.toString() + " must implement ViewArtist and ViewTorrent callbacks");
 		}
 	}
 
@@ -78,10 +81,11 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 		editions = objects;
 		artistHeader = "Additional Artists";
 		try {
-			callbacks = (ViewArtistCallbacks)context;
+			viewArtist = (ViewArtistCallbacks)context;
+			viewTorrent = (ViewTorrentCallbacks)context;
 		}
 		catch (ClassCastException e){
-			throw new ClassCastException(context.toString() + " must implement ViewArtistCallbacks");
+			throw new ClassCastException(context.toString() + " must implement ViewArtist and ViewTorrent callbacks");
 		}
 	}
 
@@ -261,12 +265,11 @@ public class TorrentGroupAdapter extends BaseExpandableListAdapter implements Ex
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id){
 		if (artists != null && !artists.isEmpty() && groupPosition == 0){
 			ArtistViewHolder holder = (ArtistViewHolder)v.getTag();
-			callbacks.viewArtist(holder.artist.getId().intValue());
+			viewArtist.viewArtist(holder.artist.getId().intValue());
 		}
 		else {
 			TorrentViewHolder holder = (TorrentViewHolder)v.getTag();
-			DownloadDialog dialog = DownloadDialog.newInstance(holder.torrent);
-			dialog.show(fragmentManager, "DownloadDialog");
+			viewTorrent.viewTorrent(TorrentGroupActivity.CURRENT_GROUP, holder.torrent.getId().intValue());
 		}
 		return true;
 	}

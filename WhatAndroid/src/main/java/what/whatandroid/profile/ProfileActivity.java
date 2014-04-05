@@ -16,6 +16,7 @@ import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.search.SearchActivity;
+import what.whatandroid.testing.TestingActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 public class ProfileActivity extends LoggedInActivity
@@ -66,6 +67,11 @@ public class ProfileActivity extends LoggedInActivity
 		Intent intent = new Intent(this, TorrentGroupActivity.class);
 		intent.putExtra(TorrentGroupActivity.GROUP_ID, id);
 		startActivity(intent);
+	}
+
+	@Override
+	public void viewTorrent(int group, int torrent){
+
 	}
 
 	@Override

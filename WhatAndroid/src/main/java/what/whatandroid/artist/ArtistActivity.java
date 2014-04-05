@@ -91,6 +91,11 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 	}
 
 	@Override
+	public void viewTorrent(int group, int torrent){
+
+	}
+
+	@Override
 	public void viewRequest(int id){
 		Intent intent = new Intent(this, RequestActivity.class);
 		intent.putExtra(RequestActivity.REQUEST_ID, id);

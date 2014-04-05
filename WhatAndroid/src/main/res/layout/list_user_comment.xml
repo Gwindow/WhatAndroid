@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <LinearLayout
+            android:id="@+id/user_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#444"
+            android:orientation="horizontal">
+
+        <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/primary_text_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+        <TextView
+                android:id="@+id/post_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:textColor="@android:color/secondary_text_dark"
+                android:textSize="14sp"/>
+    </LinearLayout>
+
+    <RelativeLayout
+            android:id="@+id/art_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_header"
+            android:layout_alignParentLeft="true">
+
+        <ImageView
+                android:id="@+id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxHeight="156dp"
+                android:contentDescription="@string/avatar"
+                android:scaleType="fitCenter"/>
+
+        <ProgressBar
+                android:id="@+id/loading_indicator"
+                style="@android:style/Widget.Holo.ProgressBar.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+    <TextView
+            android:id="@+id/comment_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/art_container"
+            android:layout_below="@id/user_header"
+            android:textColor="@android:color/primary_text_dark"/>
+
+</RelativeLayout>

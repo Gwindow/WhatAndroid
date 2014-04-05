@@ -91,6 +91,11 @@ public class RequestActivity extends LoggedInActivity
 	}
 
 	@Override
+	public void viewTorrent(int group, int torrent){
+
+	}
+
+	@Override
 	public void addBounty(int request, long amt){
 		if (request != -1){
 			new AddBountyTask().execute(request, amt);

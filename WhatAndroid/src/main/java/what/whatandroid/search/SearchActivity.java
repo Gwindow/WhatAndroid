@@ -95,6 +95,11 @@ public class SearchActivity extends LoggedInActivity
 	}
 
 	@Override
+	public void viewTorrent(int group, int torrent){
+
+	}
+
+	@Override
 	public void viewUser(int id){
 		Intent intent = new Intent(this, ProfileActivity.class);
 		intent.putExtra(ProfileActivity.USER_ID, id);
