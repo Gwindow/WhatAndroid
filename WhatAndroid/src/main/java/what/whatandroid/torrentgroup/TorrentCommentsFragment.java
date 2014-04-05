@@ -87,7 +87,6 @@ public class TorrentCommentsFragment extends Fragment
 	public void onLoadingComplete(TorrentGroup data){
 		Bundle args = new Bundle();
 		groupId = data.getId();
-		System.out.println("Comments group id is: " + groupId);
 		args.putInt(TorrentGroupActivity.GROUP_ID, groupId);
 		getLoaderManager().initLoader(0, args, this);
 	}
