@@ -9,12 +9,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#444"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
 
         <TextView
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:textColor="@android:color/primary_text_dark"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -33,13 +36,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_header"
-            android:layout_alignParentLeft="true">
+            android:layout_alignParentLeft="true"
+            android:padding="8dp">
 
         <ImageView
                 android:id="@+id/image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxHeight="156dp"
+                android:maxHeight="112dp"
+                android:maxWidth="96dp"
                 android:contentDescription="@string/avatar"
                 android:scaleType="fitCenter"/>
 
@@ -58,6 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/art_container"
             android:layout_below="@id/user_header"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark"
+            android:padding="8dp"/>
 
 </RelativeLayout>
