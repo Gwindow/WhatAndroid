@@ -2,15 +2,19 @@ package what.whatandroid.torrentgroup;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import api.cli.Utils;
+import api.soup.MySoup;
 import api.torrents.torrents.Torrents;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
+
+import java.util.Date;
 
 /**
  * A fragment showing a detailed view of a torrent
@@ -24,7 +28,7 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 	 * Views displaying the torrent information
 	 */
 	private TextView editionTitle, format, size,
-		snatches, leechers, seeders, description, folderTitle;
+		snatches, leechers, seeders, uploadDate, uploader, description, folderTitle;
 	private View freeleech, reported;
 	private ListView fileList;
 	private TorrentFilesAdapter adapter;
@@ -54,6 +58,8 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 		snatches = (TextView)header.findViewById(R.id.snatches);
 		leechers = (TextView)header.findViewById(R.id.leechers);
 		seeders = (TextView)header.findViewById(R.id.seeders);
+		uploadDate = (TextView)header.findViewById(R.id.uploaded_date);
+		uploader = (TextView)header.findViewById(R.id.uploaded_by);
 		description = (TextView)header.findViewById(R.id.description);
 		folderTitle = (TextView)header.findViewById(R.id.folder_title);
 		freeleech = header.findViewById(R.id.freeleech_icon);
@@ -80,7 +86,12 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 		snatches.setText(torrent.getSnatched().toString());
 		leechers.setText(torrent.getLeechers().toString());
 		seeders.setText(torrent.getSeeders().toString());
+		uploader.setText(torrent.getUsername());
 		folderTitle.setText("/" + torrent.getFilePath() + "/");
+		Date uploaded = MySoup.parseDate(torrent.getTime());
+		uploadDate.setText("Uploaded " + DateUtils.getRelativeTimeSpanString(uploaded.getTime(),
+			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
+
 		if (!torrent.isFreeTorrent()){
 			freeleech.setVisibility(View.GONE);
 		}
