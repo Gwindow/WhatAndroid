@@ -10,10 +10,10 @@
             android:layout_height="wrap_content"
             android:background="#444"
             android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp">
 
-        <TextView
+    <TextView
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

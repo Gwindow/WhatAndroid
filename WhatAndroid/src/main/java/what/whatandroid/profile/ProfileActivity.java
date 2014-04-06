@@ -16,7 +16,6 @@ import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.search.SearchActivity;
-import what.whatandroid.testing.TestingActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 public class ProfileActivity extends LoggedInActivity
