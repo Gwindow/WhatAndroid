@@ -1,6 +1,7 @@
 package what.whatandroid.comments;
 
 import android.content.Context;
+import android.text.Html;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import api.comments.SimpleComment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.imgloader.HtmlImageHider;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
@@ -23,15 +25,18 @@ import java.util.List;
  */
 public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 	private final LayoutInflater inflater;
+	private final HtmlImageHider imageGetter;
 
 	public CommentsAdapter(Context context){
 		super(context, R.layout.list_user_comment);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		imageGetter = new HtmlImageHider(context);
 	}
 
 	public CommentsAdapter(Context context, List<? extends SimpleComment> comments){
 		super(context, R.layout.list_user_comment);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		imageGetter = new HtmlImageHider(context);
 		//Constructor doesn't take a ? extends type but add all does
 		addAll(comments);
 		notifyDataSetChanged();
@@ -58,7 +63,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 		holder.username.setText(comment.getAuthor());
 		holder.postDate.setText(DateUtils.getRelativeTimeSpanString(comment.getTimePosted().getTime(),
 			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
-		holder.commentText.setText(comment.getBody());
+		holder.commentText.setText(Html.fromHtml(comment.getBody(), imageGetter, null));
 
 		String imgUrl = comment.getAvatar();
 		if (SettingsActivity.imagesEnabled(getContext()) && imgUrl != null && !imgUrl.isEmpty()){

@@ -3,7 +3,9 @@ package what.whatandroid.torrentgroup;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
+import api.torrents.torrents.comments.Comment;
 import api.torrents.torrents.comments.TorrentComments;
+import what.whatandroid.imgloader.SmileyProcessor;
 
 /**
  * AsyncTaskLoader to load comments for some torrent, pass the torrent id
@@ -32,7 +34,7 @@ public class TorrentCommentsAsyncLoader extends AsyncTaskLoader<TorrentComments>
 		//If we've been told we hit the rate limit then sleep for a bit
 		if (rateLimit){
 			try {
-				Thread.sleep(3 * 1000, 0);
+				Thread.sleep(2 * 1000, 0);
 			}
 			catch (InterruptedException e){
 				Thread.currentThread().interrupt();
@@ -47,6 +49,9 @@ public class TorrentCommentsAsyncLoader extends AsyncTaskLoader<TorrentComments>
 			}
 			else {
 				comments = TorrentComments.fromId(groupId, page);
+			}
+			for (Comment c : comments.getResponse().getComments()){
+				c.setBody(SmileyProcessor.smileyToEmoji(c.getBody()));
 			}
 		}
 		return comments;

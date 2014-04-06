@@ -21,7 +21,9 @@ public class TorrentGroupAsyncLoader extends AsyncTaskLoader<TorrentGroup> {
 	public TorrentGroup loadInBackground(){
 		if (torrentGroup == null){
 			torrentGroup = TorrentGroup.fromId(groupId);
-			torrentGroup.getEditions();
+			if (torrentGroup.getResponse() != null){
+				torrentGroup.getEditions();
+			}
 		}
 		return torrentGroup;
 	}
