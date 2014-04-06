@@ -3,7 +3,7 @@ package what.whatandroid.torrentgroup;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
-import api.torrents.torrents.comments.Comment;
+import api.comments.SimpleComment;
 import api.torrents.torrents.comments.TorrentComments;
 import what.whatandroid.imgloader.SmileyProcessor;
 
@@ -50,7 +50,7 @@ public class TorrentCommentsAsyncLoader extends AsyncTaskLoader<TorrentComments>
 			else {
 				comments = TorrentComments.fromId(groupId, page);
 			}
-			for (Comment c : comments.getResponse().getComments()){
+			for (SimpleComment c : comments.getResponse().getComments()){
 				c.setBody(SmileyProcessor.smileyToEmoji(c.getBody()));
 			}
 		}
