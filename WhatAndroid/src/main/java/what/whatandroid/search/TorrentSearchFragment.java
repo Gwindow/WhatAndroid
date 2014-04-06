@@ -37,12 +37,12 @@ public class TorrentSearchFragment extends Fragment
 	/**
 	 * The list of search results and the search result adapter
 	 */
-	private ListView resultsList;
 	private TorrentSearchAdapter resultsAdapter;
 	/**
 	 * The loading status footer
 	 */
 	private View footer;
+	private TextView noResults;
 
 	/**
 	 * Create a torrent search fragment and have it start loading the search desired when the view
@@ -100,7 +100,9 @@ public class TorrentSearchFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
-		resultsList = (ListView)view.findViewById(R.id.list);
+		ListView resultsList = (ListView)view.findViewById(R.id.list);
+		noResults = (TextView)view.findViewById(R.id.no_content_notice);
+		noResults.setText("No Results");
 
 		View header = inflater.inflate(R.layout.header_search, null);
 		editTerms = (EditText)header.findViewById(R.id.search_terms);
@@ -209,6 +211,12 @@ public class TorrentSearchFragment extends Fragment
 			if (search != null){
 				torrentSearch = search;
 				if (resultsAdapter != null){
+					if (torrentSearch.getResponse().getResults().isEmpty()){
+						noResults.setVisibility(View.VISIBLE);
+					}
+					else {
+						noResults.setVisibility(View.GONE);
+					}
 					resultsAdapter.viewSearch(torrentSearch);
 				}
 				if (footer != null && !torrentSearch.hasNextPage()){
