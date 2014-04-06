@@ -40,6 +40,15 @@ public class TorrentFilesAdapter extends ArrayAdapter<TorrentFile> {
 		return convertView;
 	}
 
+	/**
+	 * Don't let items in the adapter be clickable since there's no action to be done when
+	 * clicking on a filename
+	 */
+	@Override
+	public boolean isEnabled(int position){
+		return false;
+	}
+
 	private static class ViewHolder {
 		public TextView name, size;
 	}

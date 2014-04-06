@@ -6,7 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
+import android.view.ContextThemeWrapper;
 import api.torrents.torrents.Torrents;
 import what.whatandroid.R;
 
@@ -15,7 +15,10 @@ import what.whatandroid.R;
  * or to some pyWA server
  */
 public class DownloadDialog extends DialogFragment {
-	private Torrents torrent;
+	private static final String TORRENT_ID = "what.whatandroid.DOWNLOAD_TORRENT_ID",
+		DOWNLOAD_LINK = "what.whatandroid.DOWNLOAD_LINK", DOWNLOAD_TITLE = "what.whatandroid.DOWNLOAD_TITLE";
+	private int torrentId;
+	private String downloadLink, title;
 	private DownloadDialogListener listener;
 
 	/**
@@ -24,9 +27,13 @@ public class DownloadDialog extends DialogFragment {
 	 *
 	 * @param t torrent to download
 	 */
-	public static DownloadDialog newInstance(Torrents t){
+	public static DownloadDialog newInstance(String title, Torrents t){
 		DownloadDialog f = new DownloadDialog();
-		f.torrent = t;
+		Bundle args = new Bundle();
+		args.putInt(TORRENT_ID, t.getId().intValue());
+		args.putString(DOWNLOAD_LINK, t.getDownloadLink());
+		args.putString(DOWNLOAD_TITLE, title);
+		f.setArguments(args);
 		return f;
 	}
 
@@ -36,30 +43,26 @@ public class DownloadDialog extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState){
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		LayoutInflater inflater = getActivity().getLayoutInflater();
+		torrentId = getArguments().getInt(TORRENT_ID);
+		downloadLink = getArguments().getString(DOWNLOAD_LINK);
+		title = getArguments().getString(DOWNLOAD_TITLE);
+		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo_Dialog));
 
-		builder.setTitle("Download Torrent")
+		builder.setTitle("Download " + title)
 			.setPositiveButton(R.string.send_to_pywa, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which){
 					if (listener != null){
-						listener.sendToPywa(torrent);
+						listener.sendToPywa(torrentId);
 					}
 				}
 			})
-			.setNeutralButton(R.string.download_to_phone, new DialogInterface.OnClickListener() {
+			.setNegativeButton(R.string.download_to_phone, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which){
 					if (listener != null){
-						listener.downloadToPhone(torrent);
+						listener.downloadToPhone(downloadLink);
 					}
-				}
-			})
-			.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which){
-					DownloadDialog.this.getDialog().cancel();
 				}
 			});
 		return builder.create();
@@ -83,13 +86,15 @@ public class DownloadDialog extends DialogFragment {
 		/**
 		 * If the user wants to download the torrent to their PyWA server
 		 *
-		 * @param t torrent to send
+		 * @param torrentId id of the torrent to download
 		 */
-		public void sendToPywa(Torrents t);
+		public void sendToPywa(int torrentId);
 
 		/**
 		 * If the user wants to download the torrent to their phone
+		 *
+		 * @param link download link for the torrent
 		 */
-		public void downloadToPhone(Torrents t);
+		public void downloadToPhone(String link);
 	}
 }

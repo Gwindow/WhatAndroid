@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import api.torrents.torrents.TorrentGroup;
 import api.torrents.torrents.Torrents;
 import what.whatandroid.R;
@@ -49,6 +47,13 @@ public class TorrentsFragment extends Fragment implements LoadingListener<Torren
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		//We want to show a download icon to download the torrent
+		setHasOptionsMenu(true);
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_view_pager_strip, container, false);
 		viewPager = (ViewPager)view.findViewById(R.id.pager);
@@ -77,6 +82,23 @@ public class TorrentsFragment extends Fragment implements LoadingListener<Torren
 				populateAdapter();
 			}
 		}
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		//should we not inflate if torrent group is null?
+		inflater.inflate(R.menu.torrent_file, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		if (item.getItemId() == R.id.download && torrentGroup != null){
+			Torrents t = torrentGroup.getResponse().getTorrents().get(viewPager.getCurrentItem());
+			DownloadDialog dialog = DownloadDialog.newInstance(torrentGroup.getResponse().getGroup().getName(), t);
+			dialog.show(getChildFragmentManager(), "download_dialog");
+			return true;
+		}
+		return false;
 	}
 
 	/**

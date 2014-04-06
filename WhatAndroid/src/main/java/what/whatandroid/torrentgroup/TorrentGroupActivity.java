@@ -14,13 +14,13 @@ import android.view.Window;
 import android.widget.Toast;
 import api.soup.MySoup;
 import api.torrents.torrents.TorrentGroup;
-import api.torrents.torrents.Torrents;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.artist.ArtistActivity;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.ViewArtistCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
@@ -30,7 +30,7 @@ import what.whatandroid.settings.SettingsActivity;
  * View information about a torrent group and the torrents in it
  */
 public class TorrentGroupActivity extends LoggedInActivity
-	implements ViewArtistCallbacks, ViewTorrentCallbacks, DownloadDialog.DownloadDialogListener,
+	implements ViewArtistCallbacks, ViewTorrentCallbacks, ViewUserCallbacks, DownloadDialog.DownloadDialogListener,
 	LoaderManager.LoaderCallbacks<TorrentGroup> {
 	/**
 	 * Param to pass the torrent group id to be shown
@@ -121,6 +121,13 @@ public class TorrentGroupActivity extends LoggedInActivity
 	}
 
 	@Override
+	public void viewUser(int id){
+		Intent intent = new Intent(this, ProfileActivity.class);
+		intent.putExtra(ProfileActivity.USER_ID, id);
+		startActivity(intent);
+	}
+
+	@Override
 	public void viewTorrentGroup(int id){
 	}
 
@@ -140,7 +147,7 @@ public class TorrentGroupActivity extends LoggedInActivity
 	}
 
 	@Override
-	public void sendToPywa(Torrents t){
+	public void sendToPywa(int torrentId){
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		String host = preferences.getString(getString(R.string.key_pref_pywhat_host), "");
 		String port = preferences.getString(getString(R.string.key_pref_pywhat_port), "");
@@ -152,13 +159,13 @@ public class TorrentGroupActivity extends LoggedInActivity
 			startActivity(intent);
 		}
 		else {
-			new SendToPyWA().execute(host, port, pass, t.getId().toString());
+			new SendToPyWA().execute(host, port, pass, Integer.toString(torrentId));
 		}
 	}
 
 	@Override
-	public void downloadToPhone(Torrents t){
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(t.getDownloadLink()));
+	public void downloadToPhone(String link){
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
 		startActivity(intent);
 	}
 

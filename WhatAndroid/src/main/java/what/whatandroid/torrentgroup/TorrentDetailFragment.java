@@ -1,5 +1,6 @@
 package what.whatandroid.torrentgroup;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
@@ -13,17 +14,22 @@ import api.soup.MySoup;
 import api.torrents.torrents.Torrents;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
+import what.whatandroid.callbacks.ViewUserCallbacks;
 
 import java.util.Date;
 
 /**
  * A fragment showing a detailed view of a torrent
  */
-public class TorrentDetailFragment extends Fragment implements LoadingListener<Torrents> {
+public class TorrentDetailFragment extends Fragment implements LoadingListener<Torrents>, View.OnClickListener {
 	/**
 	 * The torrent being displayed
 	 */
 	private Torrents torrent;
+	/**
+	 * Callbacks to view the user who uploaded the torrent
+	 */
+	private ViewUserCallbacks viewUser;
 	/**
 	 * Views displaying the torrent information
 	 */
@@ -44,6 +50,17 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 	}
 
 	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		try {
+			viewUser = (ViewUserCallbacks)activity;
+		}
+		catch (ClassCastException e){
+			throw new ClassCastException(activity.toString() + " must implement ViewUserCallbacks");
+		}
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		fileList = (ListView)view.findViewById(R.id.list);
@@ -60,6 +77,7 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 		seeders = (TextView)header.findViewById(R.id.seeders);
 		uploadDate = (TextView)header.findViewById(R.id.uploaded_date);
 		uploader = (TextView)header.findViewById(R.id.uploaded_by);
+		uploader.setOnClickListener(this);
 		description = (TextView)header.findViewById(R.id.description);
 		folderTitle = (TextView)header.findViewById(R.id.folder_title);
 		freeleech = header.findViewById(R.id.freeleech_icon);
@@ -68,6 +86,11 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 			populateView();
 		}
 		return view;
+	}
+
+	@Override
+	public void onClick(View v){
+		viewUser.viewUser(torrent.getUserId().intValue());
 	}
 
 	@Override
