@@ -55,23 +55,28 @@ public class SearchActivity extends LoggedInActivity
 		String tags = getIntent().getStringExtra(TAGS);
 
 		Fragment fragment;
-		switch (type){
-			case ARTIST:
-				fragment = ArtistSearchFragment.newInstance(terms);
-				break;
-			case USER:
-				fragment = UserSearchFragment.newInstance(terms);
-				break;
-			case REQUEST:
-				fragment = RequestSearchFragment.newInstance(terms, tags);
-				break;
-			default:
-				fragment = TorrentSearchFragment.newInstance(terms, tags);
-				break;
+		if (savedInstanceState == null){
+			switch (type){
+				case ARTIST:
+					fragment = ArtistSearchFragment.newInstance(terms);
+					break;
+				case USER:
+					fragment = UserSearchFragment.newInstance(terms);
+					break;
+				case REQUEST:
+					fragment = RequestSearchFragment.newInstance(terms, tags);
+					break;
+				default:
+					fragment = TorrentSearchFragment.newInstance(terms, tags);
+					break;
+			}
+			getSupportFragmentManager().beginTransaction()
+				.add(R.id.container, fragment).commit();
+		}
+		else {
+			fragment = getSupportFragmentManager().findFragmentById(R.id.container);
 		}
 		searchFragment = (OnLoggedInCallback)fragment;
-		FragmentManager manager = getSupportFragmentManager();
-		manager.beginTransaction().add(R.id.container, fragment).commit();
 	}
 
 	@Override
