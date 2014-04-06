@@ -7,6 +7,8 @@ import api.comments.SimpleComment;
 import api.torrents.torrents.comments.TorrentComments;
 import what.whatandroid.imgloader.SmileyProcessor;
 
+import java.util.Collections;
+
 /**
  * AsyncTaskLoader to load comments for some torrent, pass the torrent id
  * and the page number desired to be loaded. If the last page of comments is
@@ -50,8 +52,12 @@ public class TorrentCommentsAsyncLoader extends AsyncTaskLoader<TorrentComments>
 			else {
 				comments = TorrentComments.fromId(groupId, page);
 			}
-			for (SimpleComment c : comments.getResponse().getComments()){
-				c.setBody(SmileyProcessor.smileyToEmoji(c.getBody()));
+			if (comments.getResponse() != null){
+				Collections.sort(comments.getResponse().getComments(),
+					Collections.reverseOrder(new SimpleComment.DateComparator()));
+				for (SimpleComment c : comments.getResponse().getComments()){
+					c.setBody(SmileyProcessor.smileyToEmoji(c.getBody()));
+				}
 			}
 		}
 		return comments;

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.TextView;
 import api.torrents.torrents.TorrentGroup;
 import api.torrents.torrents.comments.TorrentComments;
 import what.whatandroid.R;
@@ -27,6 +28,7 @@ public class TorrentCommentsFragment extends Fragment
 	private ListView list;
 	private CommentsAdapter adapter;
 	private View footer;
+	private TextView noComments;
 	private boolean loadingPrev;
 
 	public static TorrentCommentsFragment newInstance(int groupId){
@@ -46,6 +48,8 @@ public class TorrentCommentsFragment extends Fragment
 		groupId = getArguments().getInt(TorrentGroupActivity.GROUP_ID);
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		list = (ListView)view.findViewById(R.id.list);
+		noComments = (TextView)view.findViewById(R.id.no_content_notice);
+		noComments.setText("No comments");
 		footer = inflater.inflate(R.layout.footer_loading_indicator, null);
 		adapter = new CommentsAdapter(getActivity());
 		list.addFooterView(footer);
@@ -53,17 +57,25 @@ public class TorrentCommentsFragment extends Fragment
 		list.setOnScrollListener(this);
 		//If we loaded the comments before creating the view
 		if (comments != null){
-			//If we're reloading the last page clear all previous comments
-			if (!comments.hasNextPage()){
-				adapter.clear();
-			}
-			adapter.addAll(comments.getResponse().getComments());
-			adapter.notifyDataSetChanged();
-			if (!comments.hasPreviousPage()){
-				footer.setVisibility(View.GONE);
-			}
+			updateComments();
 		}
 		return view;
+	}
+
+	private void updateComments(){
+		//If we're reloading the last page clear all previous comments
+		if (!comments.hasNextPage()){
+			adapter.clear();
+			//If this is the first shown page of comments and it's empty show the no comments message
+			if (comments.getResponse().getComments().isEmpty()){
+				noComments.setVisibility(View.VISIBLE);
+			}
+		}
+		adapter.addAll(comments.getResponse().getComments());
+		adapter.notifyDataSetChanged();
+		if (!comments.hasPreviousPage()){
+			footer.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
@@ -110,17 +122,8 @@ public class TorrentCommentsFragment extends Fragment
 		else {
 			loadingPrev = false;
 			comments = data;
-			//If we loaded before creating the view
 			if (adapter != null){
-				//If we're reloading the last page clear all previous comments
-				if (!comments.hasNextPage()){
-					adapter.clear();
-				}
-				adapter.addAll(comments.getResponse().getComments());
-				adapter.notifyDataSetChanged();
-				if (!comments.hasPreviousPage()){
-					footer.setVisibility(View.GONE);
-				}
+				updateComments();
 			}
 		}
 	}

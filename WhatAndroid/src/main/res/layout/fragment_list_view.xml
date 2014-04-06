@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -14,4 +14,16 @@
             android:dividerHeight="2dp"
             android:divider="#333"/>
 
-</LinearLayout>
+    <!-- The no content notice will only be shown if there's no content -->
+    <TextView
+            android:id="@+id/no_content_notice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/list"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/secondary_text_dark"
+            android:textSize="14sp"
+            android:textAllCaps="true"
+            android:visibility="gone"/>
+
+</RelativeLayout>
