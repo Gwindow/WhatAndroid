@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.v4.content.IntentCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -146,6 +147,7 @@ public abstract class LoggedInActivity extends ActionBarActivity
 			if (cookie == null || username == null || password == null){
 				Intent intent = new Intent(this, LoginActivity.class);
 				intent.putExtra(LoginActivity.LOGIN_REQUEST, true);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivityForResult(intent, 0);
 			}
 			else {
