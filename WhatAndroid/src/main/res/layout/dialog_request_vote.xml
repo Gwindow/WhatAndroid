@@ -23,7 +23,6 @@
                 android:layout_weight="1"
                 android:inputType="numberDecimal"
                 android:gravity="right"
-                android:textColor="@android:color/primary_text_dark"
                 android:textCursorDrawable="@null"/>
 
         <Spinner
@@ -43,8 +42,7 @@
             android:layout_below="@id/input_container"
             android:paddingTop="8dp"
             android:textSize="18sp"
-            android:text="@string/after_tax"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:text="@string/after_tax"/>
 
     <TextView
             android:id="@+id/after_tax"
@@ -52,8 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/after_tax_text"
             android:layout_alignParentRight="true"
-            android:textSize="18sp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textSize="18sp"/>
 
     <TextView
             android:id="@+id/new_upload_text"
@@ -63,8 +60,7 @@
             android:layout_below="@id/after_tax_text"
             android:paddingTop="4dp"
             android:textSize="18sp"
-            android:text="@string/uploaded"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:text="@string/uploaded"/>
 
     <TextView
             android:id="@+id/new_upload"
@@ -72,8 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/new_upload_text"
             android:layout_alignParentRight="true"
-            android:textSize="18sp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textSize="18sp"/>
 
     <TextView
             android:id="@+id/new_ratio_text"
@@ -83,8 +78,7 @@
             android:layout_below="@id/new_upload_text"
             android:paddingTop="4dp"
             android:textSize="18sp"
-            android:text="@string/ratio_required"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:text="@string/ratio_required"/>
 
     <TextView
             android:id="@+id/new_ratio"
@@ -92,8 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/new_ratio_text"
             android:layout_alignParentRight="true"
-            android:textSize="18sp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textSize="18sp"/>
 
     <TextView
             android:id="@+id/warning"
@@ -102,6 +95,6 @@
             android:layout_below="@id/new_ratio_text"
             android:layout_centerHorizontal="true"
             android:paddingTop="8dp"
-            android:textColor="@android:color/holo_red_light"/>
+            android:textColor="@android:color/holo_red_dark"/>
 
 </RelativeLayout>

@@ -62,15 +62,16 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 	 */
 	private VoteDialogListener listener;
 
-
 	/**
 	 * Use this factory method to create a vote dialog displaying a bounty vote prompt for
 	 * the request
 	 */
 	public static VoteDialog newInstance(Request r){
 		VoteDialog d = new VoteDialog();
-		d.requestId = r.getResponse().getRequestId().intValue();
-		d.taxPercent = r.getResponse().getRequestTax().floatValue();
+		Bundle args = new Bundle();
+		args.putInt(RequestActivity.REQUEST_ID, r.getResponse().getRequestId().intValue());
+		args.putFloat(REQUEST_TAX, r.getResponse().getRequestTax().floatValue());
+		d.setArguments(args);
 		return d;
 	}
 
@@ -80,13 +81,10 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState){
-		//If we should be loading from the saved state the requestId will be -1 (ie invalid)
-		if (savedInstanceState != null && requestId == -1){
-			requestId = savedInstanceState.getInt(RequestActivity.REQUEST_ID);
-			taxPercent = savedInstanceState.getFloat(REQUEST_TAX);
-		}
+		requestId = getArguments().getInt(RequestActivity.REQUEST_ID);
+		taxPercent = getArguments().getFloat(REQUEST_TAX);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo_Dialog));
+		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo_Light_Dialog));
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_request_vote, null);
 		size = (EditText)view.findViewById(R.id.size);
@@ -125,13 +123,6 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 		size.setText("20");
 		size.setSelection(2);
 		return dialog;
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState){
-		super.onSaveInstanceState(outState);
-		outState.putInt(RequestActivity.REQUEST_ID, requestId);
-		outState.putFloat(REQUEST_TAX, taxPercent);
 	}
 
 	/**

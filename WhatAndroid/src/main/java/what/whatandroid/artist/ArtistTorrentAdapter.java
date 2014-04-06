@@ -153,12 +153,19 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 		}
 		holder.request = (Requests)getChild(groupPos, childPos);
 		holder.title.setText(holder.request.getTitle());
-		holder.year.setText(holder.request.getYear().toString());
 		holder.votes.setText(holder.request.getVotes().toString());
 		holder.bounty.setText(Utils.toHumanReadableSize(holder.request.getBounty().longValue()));
 		Date createDate = MySoup.parseDate(holder.request.getTimeAdded());
 		holder.created.setText(DateUtils.getRelativeTimeSpanString(createDate.getTime(),
 			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
+
+		if (holder.request.getYear().intValue() != 0){
+			holder.year.setVisibility(View.VISIBLE);
+			holder.year.setText(holder.request.getYear().toString());
+		}
+		else {
+			holder.year.setVisibility(View.GONE);
+		}
 		return convert;
 	}
 
