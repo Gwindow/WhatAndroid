@@ -9,7 +9,7 @@
         android:paddingTop="8dp"
         android:paddingBottom="@dimen/activity_vertical_margin">
 
-<LinearLayout
+    <LinearLayout
             android:id="@+id/input_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +22,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="numberDecimal"
-                android:gravity="right"/>
+                android:gravity="right"
+                android:textColor="@android:color/primary_text_dark"
+                android:textCursorDrawable="@null"/>
 
         <Spinner
                 android:id="@+id/units"
@@ -30,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:paddingLeft="8dp"/>
+
     </LinearLayout>
 
     <TextView
@@ -40,7 +43,8 @@
             android:layout_below="@id/input_container"
             android:paddingTop="8dp"
             android:textSize="18sp"
-            android:text="@string/after_tax"/>
+            android:text="@string/after_tax"
+            android:textColor="@android:color/primary_text_dark"/>
 
     <TextView
             android:id="@+id/after_tax"
@@ -48,7 +52,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/after_tax_text"
             android:layout_alignParentRight="true"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:textColor="@android:color/primary_text_dark"/>
 
     <TextView
             android:id="@+id/new_upload_text"
@@ -58,7 +63,8 @@
             android:layout_below="@id/after_tax_text"
             android:paddingTop="4dp"
             android:textSize="18sp"
-            android:text="@string/uploaded"/>
+            android:text="@string/uploaded"
+            android:textColor="@android:color/primary_text_dark"/>
 
     <TextView
             android:id="@+id/new_upload"
@@ -66,7 +72,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/new_upload_text"
             android:layout_alignParentRight="true"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:textColor="@android:color/primary_text_dark"/>
 
     <TextView
             android:id="@+id/new_ratio_text"
@@ -76,7 +83,8 @@
             android:layout_below="@id/new_upload_text"
             android:paddingTop="4dp"
             android:textSize="18sp"
-            android:text="@string/ratio_required"/>
+            android:text="@string/ratio_required"
+            android:textColor="@android:color/primary_text_dark"/>
 
     <TextView
             android:id="@+id/new_ratio"
@@ -84,7 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/new_ratio_text"
             android:layout_alignParentRight="true"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:textColor="@android:color/primary_text_dark"/>
 
     <TextView
             android:id="@+id/warning"
@@ -93,6 +102,6 @@
             android:layout_below="@id/new_ratio_text"
             android:layout_centerHorizontal="true"
             android:paddingTop="8dp"
-            android:textColor="@android:color/holo_red_dark"/>
+            android:textColor="@android:color/holo_red_light"/>
 
 </RelativeLayout>
