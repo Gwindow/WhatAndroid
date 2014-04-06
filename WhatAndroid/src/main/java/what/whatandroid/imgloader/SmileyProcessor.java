@@ -20,7 +20,6 @@ public class SmileyProcessor {
 		put("&#x1f633;", Pattern.compile("(<img [^>]*src=\"[^\"]+smileys/blush.gif\"[^>]*>)"));
 		put("&#x1f60e;", Pattern.compile("(<img [^>]*src=\"[^\"]+smileys/cool.gif\"[^>]*>)"));
 		put("&#x1f622;", Pattern.compile("(<img [^>]*src=\"[^\"]+smileys/(crying|sad|sorry).gif\"[^>]*>)"));
-		//Does android have this one?
 		put("&#x1f619;", Pattern.compile("(<img [^>]*src=\"[^\"]+smileys/eyesright.gif\"[^>]*>)"));
 		put("&#x1f60f;", Pattern.compile("(<img [^>]*src=\"[^\"]+smileys/creepy.gif\"[^>]*>)"));
 		put("&#x1f61e;", Pattern.compile("(<img [^>]*src=\"[^\"]+smileys/(frown|no).gif\"[^>]*>)"));
