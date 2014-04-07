@@ -42,7 +42,6 @@ public class RequestActivity extends LoggedInActivity
 
 		int intentId = getIntent().getIntExtra(REQUEST_ID, 1);
 		if (savedInstanceState != null && savedInstanceState.getInt(REQUEST_ID) == intentId){
-			System.out.println("Re-using saved request");
 			Request r = (Request)MySon.toObjectFromString(savedInstanceState.getString(REQUEST), Request.class);
 			fragment = RequestFragment.newInstance(r);
 		}
@@ -86,7 +85,7 @@ public class RequestActivity extends LoggedInActivity
 	@Override
 	public void viewTorrentGroup(int id){
 		Intent intent = new Intent(this, TorrentGroupActivity.class);
-		intent.putExtra(TorrentGroupActivity.GROUP_ID, id);
+		intent.putExtra(TorrentGroupActivity.TORRENT_ID, id);
 		startActivity(intent);
 	}
 

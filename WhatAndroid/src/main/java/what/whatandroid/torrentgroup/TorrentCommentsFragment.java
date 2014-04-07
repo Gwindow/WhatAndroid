@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
+import api.soup.MySoup;
 import api.torrents.torrents.TorrentGroup;
 import api.torrents.torrents.comments.TorrentComments;
 import what.whatandroid.R;
@@ -55,9 +56,11 @@ public class TorrentCommentsFragment extends Fragment
 		list.addFooterView(footer);
 		list.setAdapter(adapter);
 		list.setOnScrollListener(this);
-		//If we loaded the comments before creating the view
-		if (comments != null){
-			updateComments();
+
+		if (MySoup.isLoggedIn()){
+			Bundle args = new Bundle();
+			args.putInt(TorrentGroupActivity.GROUP_ID, groupId);
+			getLoaderManager().initLoader(0, args, this);
 		}
 		return view;
 	}
@@ -97,10 +100,14 @@ public class TorrentCommentsFragment extends Fragment
 
 	@Override
 	public void onLoadingComplete(TorrentGroup data){
-		Bundle args = new Bundle();
 		groupId = data.getId();
-		args.putInt(TorrentGroupActivity.GROUP_ID, groupId);
-		getLoaderManager().initLoader(0, args, this);
+		//Keep the group id argument up to date
+		getArguments().putInt(TorrentGroupActivity.GROUP_ID, groupId);
+		if (isAdded() && comments == null){
+			Bundle args = new Bundle();
+			args.putInt(TorrentGroupActivity.GROUP_ID, groupId);
+			getLoaderManager().initLoader(0, args, this);
+		}
 	}
 
 	@Override
@@ -124,6 +131,16 @@ public class TorrentCommentsFragment extends Fragment
 			comments = data;
 			if (adapter != null){
 				updateComments();
+
+			}
+			//If we just loaded the first page start loading the next page too since they're pretty small pages
+			if (!comments.hasNextPage() && comments.hasPreviousPage() && !loadingPrev){
+				loadingPrev = true;
+				Bundle args = new Bundle();
+				args.putInt(TorrentGroupActivity.GROUP_ID, groupId);
+				args.putInt(COMMENTS_PAGE, comments.getPage() - 1);
+				//The first page of comments is loaded by loader 0 so loader ids are really page + 1
+				getLoaderManager().initLoader(comments.getPage(), args, this);
 			}
 		}
 	}

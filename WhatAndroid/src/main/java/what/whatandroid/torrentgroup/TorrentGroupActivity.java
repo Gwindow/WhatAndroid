@@ -27,7 +27,8 @@ import what.whatandroid.search.SearchActivity;
 import what.whatandroid.settings.SettingsActivity;
 
 /**
- * View information about a torrent group and the torrents in it
+ * View information about a torrent group and the torrents in it. Must pass in the intent at least one
+ * of group id or torrent id within the group to view
  */
 public class TorrentGroupActivity extends LoggedInActivity
 	implements ViewArtistCallbacks, ViewTorrentCallbacks, ViewUserCallbacks, DownloadDialog.DownloadDialogListener,
@@ -45,7 +46,7 @@ public class TorrentGroupActivity extends LoggedInActivity
 	 * The torrent group and comments being viewed the various view fragments get their data from
 	 * the activity using the torrent group callbacks
 	 */
-	private int groupId;
+	private int groupId, torrentId;
 	private LoadingListener<TorrentGroup> loadingListener;
 
 	@Override
@@ -57,19 +58,30 @@ public class TorrentGroupActivity extends LoggedInActivity
 		setTitle(getTitle());
 
 		//Check if our saved state matches the group we want to view
-		groupId = getIntent().getIntExtra(GROUP_ID, 1);
+		groupId = getIntent().getIntExtra(GROUP_ID, -1);
+		torrentId = getIntent().getIntExtra(TORRENT_ID, -1);
 		FragmentManager manager = getSupportFragmentManager();
 		if (savedInstanceState != null){
 			Fragment f = manager.findFragmentById(R.id.container);
 			loadingListener = (LoadingListener)f;
 			Bundle args = new Bundle();
 			args.putInt(GROUP_ID, groupId);
+			args.putInt(TORRENT_ID, torrentId);
 			getSupportLoaderManager().initLoader(0, args, this);
 		}
 		else {
+			//We always want the group fragment to be accessible, in the case of viewing a specific torrent
+			//we push it on the back stack so we can go back to it
 			Fragment f = TorrentGroupFragment.newInstance(groupId);
-			loadingListener = (LoadingListener)f;
 			manager.beginTransaction().add(R.id.container, f).commit();
+			if (torrentId != -1){
+				f = TorrentsFragment.newInstance(torrentId);
+				getSupportFragmentManager().beginTransaction()
+					.replace(R.id.container, f)
+					.addToBackStack(null)
+					.commit();
+			}
+			loadingListener = (LoadingListener)f;
 		}
 	}
 
@@ -77,6 +89,7 @@ public class TorrentGroupActivity extends LoggedInActivity
 	public void onLoggedIn(){
 		Bundle args = new Bundle();
 		args.putInt(GROUP_ID, groupId);
+		args.putInt(TORRENT_ID, torrentId);
 		getSupportLoaderManager().initLoader(0, args, this);
 	}
 
@@ -89,6 +102,7 @@ public class TorrentGroupActivity extends LoggedInActivity
 			loadingListener = (LoadingListener)getSupportFragmentManager().findFragmentById(R.id.container);
 			Bundle args = new Bundle();
 			args.putInt(GROUP_ID, groupId);
+			args.putInt(TORRENT_ID, torrentId);
 			getSupportLoaderManager().initLoader(0, args, this);
 		}
 		else {
@@ -106,6 +120,7 @@ public class TorrentGroupActivity extends LoggedInActivity
 	@Override
 	public void onLoadFinished(Loader<TorrentGroup> loader, TorrentGroup data){
 		setProgressBarIndeterminateVisibility(false);
+		groupId = data.getId();
 		loadingListener.onLoadingComplete(data);
 	}
 
@@ -142,6 +157,7 @@ public class TorrentGroupActivity extends LoggedInActivity
 				.commit();
 			Bundle args = new Bundle();
 			args.putInt(GROUP_ID, groupId);
+			args.putInt(TORRENT_ID, torrentId);
 			getSupportLoaderManager().initLoader(0, args, this);
 		}
 	}
