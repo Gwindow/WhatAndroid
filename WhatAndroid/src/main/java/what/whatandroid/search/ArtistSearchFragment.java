@@ -26,6 +26,10 @@ import what.whatandroid.callbacks.SetTitleCallback;
 public class ArtistSearchFragment extends Fragment
 	implements View.OnClickListener, TextView.OnEditorActionListener, OnLoggedInCallback {
 	/**
+	 * So we can set the action bar title
+	 */
+	SetTitleCallback setTitle;
+	/**
 	 * Search terms sent to us by the intent
 	 */
 	private String searchTerms;
@@ -45,6 +49,7 @@ public class ArtistSearchFragment extends Fragment
 	/**
 	 * Create an artist search fragment and have it start loading the search desired when the view
 	 * is resumed. If the terms are empty then no search will be launched at load
+	 *
 	 * @param terms terms to run search with. If empty no search will be launched
 	 * @return Artist Search fragment viewing the search results, or ready to take input
 	 */
@@ -62,8 +67,7 @@ public class ArtistSearchFragment extends Fragment
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			SetTitleCallback callback = (SetTitleCallback)activity;
-			callback.setTitle("Artist Search");
+			setTitle = (SetTitleCallback)activity;
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(activity.toString() + " must implement SetTitleCallback");
@@ -86,6 +90,7 @@ public class ArtistSearchFragment extends Fragment
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		setTitle.setTitle("Artist Search");
 		View view = inflater.inflate(R.layout.fragment_artist_search, container, false);
 		Button searchButton = (Button)view.findViewById(R.id.search_button);
 		searchButton.setOnClickListener(this);
@@ -143,6 +148,7 @@ public class ArtistSearchFragment extends Fragment
 
 	/**
 	 * Get the loaded artist from the search
+	 *
 	 * @return the loaded artist from the search
 	 */
 	public static Artist getArtist(){
@@ -151,6 +157,7 @@ public class ArtistSearchFragment extends Fragment
 
 	/**
 	 * Get the loaded releases from the search
+	 *
 	 * @return the loaded releases
 	 */
 	public static Releases getReleases(){

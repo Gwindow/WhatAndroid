@@ -25,6 +25,10 @@ import what.whatandroid.profile.ProfileActivity;
 public class UserSearchFragment extends Fragment
 	implements View.OnClickListener, TextView.OnEditorActionListener, OnLoggedInCallback {
 	/**
+	 * So we can set the action bar title
+	 */
+	SetTitleCallback setTitle;
+	/**
 	 * Search terms sent to us through the intent
 	 */
 	private String searchTerms;
@@ -69,8 +73,7 @@ public class UserSearchFragment extends Fragment
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			SetTitleCallback callback = (SetTitleCallback)activity;
-			callback.setTitle("User Search");
+			setTitle = (SetTitleCallback)activity;
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(activity.toString() + " must implement SetTitleCallback");
@@ -99,6 +102,7 @@ public class UserSearchFragment extends Fragment
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		setTitle.setTitle("User Search");
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		ListView resultsList = (ListView)view.findViewById(R.id.list);
 		noResults = (TextView)view.findViewById(R.id.no_content_notice);

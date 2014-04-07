@@ -22,6 +22,10 @@ import what.whatandroid.callbacks.SetTitleCallback;
 public class TorrentSearchFragment extends Fragment
 	implements View.OnClickListener, TextView.OnEditorActionListener, OnLoggedInCallback {
 	/**
+	 * So we can set the action bar title
+	 */
+	SetTitleCallback setTitle;
+	/**
 	 * Search terms and tags sent to use by the intent
 	 */
 	private String searchTerms, searchTags;
@@ -47,8 +51,9 @@ public class TorrentSearchFragment extends Fragment
 	/**
 	 * Create a torrent search fragment and have it start loading the search desired when the view
 	 * is created. If the terms are empty then no search will be launched
+	 *
 	 * @param terms terms to search for
-	 * @param tags tags to search for
+	 * @param tags  tags to search for
 	 * @return a torrent search fragment that will load the desired search
 	 */
 	public static TorrentSearchFragment newInstance(String terms, String tags){
@@ -66,8 +71,7 @@ public class TorrentSearchFragment extends Fragment
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			SetTitleCallback callback = (SetTitleCallback)activity;
-			callback.setTitle("Torrent Search");
+			setTitle = (SetTitleCallback)activity;
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(activity.toString() + " must implement SetTitleCallback");
@@ -99,6 +103,7 @@ public class TorrentSearchFragment extends Fragment
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		setTitle.setTitle("Torrent Search");
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		ListView resultsList = (ListView)view.findViewById(R.id.list);
 		noResults = (TextView)view.findViewById(R.id.no_content_notice);

@@ -43,7 +43,6 @@ public class SearchActivity extends LoggedInActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_frame);
 		setupNavDrawer();
-		setTitle(getTitle());
 
 		if (savedInstanceState != null){
 			type = savedInstanceState.getInt(SEARCH);

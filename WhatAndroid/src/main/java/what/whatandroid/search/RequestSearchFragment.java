@@ -22,6 +22,10 @@ import what.whatandroid.callbacks.SetTitleCallback;
 public class RequestSearchFragment extends Fragment
 	implements View.OnClickListener, TextView.OnEditorActionListener, OnLoggedInCallback {
 	/**
+	 * So we can set the action bar title
+	 */
+	SetTitleCallback setTitle;
+	/**
 	 * Search terms and tags sent to use by the intent
 	 */
 	private String searchTerms, searchTags;
@@ -59,8 +63,7 @@ public class RequestSearchFragment extends Fragment
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			SetTitleCallback callback = (SetTitleCallback)activity;
-			callback.setTitle("Request Search");
+			setTitle = (SetTitleCallback)activity;
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(activity.toString() + " must implement SetTitleCallbacks");
@@ -91,6 +94,7 @@ public class RequestSearchFragment extends Fragment
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		setTitle.setTitle("Request Search");
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		ListView resultsList = (ListView)view.findViewById(R.id.list);
 		noResults = (TextView)view.findViewById(R.id.no_content_notice);
