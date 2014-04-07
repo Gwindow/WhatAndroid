@@ -27,10 +27,13 @@ public class TorrentGroupAsyncLoader extends AsyncTaskLoader<TorrentGroup> {
 			//we can load the group
 			if (groupId == -1){
 				Torrent t = Torrent.fromId(torrentId);
+				if (t == null || !t.getStatus()){
+					return null;
+				}
 				groupId = t.getGroup().getId().intValue();
 			}
 			torrentGroup = TorrentGroup.fromId(groupId);
-			if (torrentGroup.getResponse() != null){
+			if (torrentGroup != null && torrentGroup.getStatus()){
 				torrentGroup.getEditions();
 			}
 		}
