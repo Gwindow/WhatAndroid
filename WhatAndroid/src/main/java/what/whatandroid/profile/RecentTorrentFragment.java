@@ -12,23 +12,32 @@ import android.widget.TextView;
 import api.user.recent.RecentTorrent;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
+import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 /**
  * Fragment for displaying information about a recently uploaded
  * or snatched torrent
  */
-public class RecentTorrentFragment extends Fragment implements View.OnClickListener {
+public class RecentTorrentFragment extends Fragment implements View.OnClickListener, LoadingListener<RecentTorrent> {
 	/**
-	 * The torrent we're displaying
+	 * The torrent we're displaying. We track the torrent id separately to serialize it in a bundle
 	 */
 	private RecentTorrent torrent;
+	private int torrentId;
 	/**
 	 * Callbacks to let us go view a recent torrent
 	 */
 	private ViewTorrentCallbacks callbacks;
+	/**
+	 * Views displaying the torrent information
+	 */
+	private ImageView art;
+	private ProgressBar spinner;
+	private TextView albumName, artistName;
 
 	/**
 	 * Create a new RecentTorrentFragment to display information about the torrent
@@ -39,6 +48,9 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 	public static RecentTorrentFragment newInstance(RecentTorrent t){
 		RecentTorrentFragment fragment = new RecentTorrentFragment();
 		fragment.torrent = t;
+		Bundle args = new Bundle();
+		args.putInt(TorrentGroupActivity.GROUP_ID, t.getId());
+		fragment.setArguments(args);
 		return fragment;
 	}
 
@@ -47,34 +59,20 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		torrentId = getArguments().getInt(TorrentGroupActivity.GROUP_ID);
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_recent_torrent, container, false);
+		art = (ImageView)view.findViewById(R.id.art);
+		spinner = (ProgressBar)view.findViewById(R.id.loading_indicator);
+		albumName = (TextView)view.findViewById(R.id.album_name);
+		artistName = (TextView)view.findViewById(R.id.artist_name);
 		if (torrent != null){
-			ImageView art = (ImageView)view.findViewById(R.id.art);
-			ProgressBar spinner = (ProgressBar)view.findViewById(R.id.loading_indicator);
-			String imgUrl = torrent.getWikiImage();
-			if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
-				ImageLoader.getInstance().displayImage(torrent.getWikiImage(), art, new ImageLoadingListener(spinner));
-			}
-			else {
-				art.setVisibility(View.GONE);
-				spinner.setVisibility(View.GONE);
-			}
-			TextView albumName = (TextView)view.findViewById(R.id.album_name);
-			albumName.setText(torrent.getName());
-			TextView artistName = (TextView)view.findViewById(R.id.artist_name);
-			//For 3+ artists show Various Artists, for 2 show A & B for 1 just show the artist name
-			switch (torrent.getArtists().size()){
-				case 1:
-					artistName.setText(torrent.getArtists().get(0).getName());
-					break;
-				case 2:
-					artistName.setText(torrent.getArtists().get(0).getName()
-						+ " & " + torrent.getArtists().get(1).getName());
-					break;
-				default:
-					artistName.setText("Various Artists");
-			}
+			populateView();
 		}
 		view.setOnClickListener(this);
 		return view;
@@ -93,8 +91,42 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 
 	@Override
 	public void onClick(View v){
-		callbacks.viewTorrentGroup(torrent.getId());
+		callbacks.viewTorrentGroup(torrentId);
 	}
 
+	@Override
+	public void onLoadingComplete(RecentTorrent data){
+		torrent = data;
+		torrentId = torrent.getId();
+		getArguments().putInt(TorrentGroupActivity.GROUP_ID, torrentId);
+		populateView();
+	}
+
+	private void populateView(){
+		//If we've got the views then update them
+		if (artistName != null){
+			String imgUrl = torrent.getWikiImage();
+			if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
+				ImageLoader.getInstance().displayImage(torrent.getWikiImage(), art, new ImageLoadingListener(spinner));
+			}
+			else {
+				art.setVisibility(View.GONE);
+				spinner.setVisibility(View.GONE);
+			}
+			albumName.setText(torrent.getName());
+			//For 3+ artists show Various Artists, for 2 show A & B for 1 just show the artist name
+			switch (torrent.getArtists().size()){
+				case 1:
+					artistName.setText(torrent.getArtists().get(0).getName());
+					break;
+				case 2:
+					artistName.setText(torrent.getArtists().get(0).getName()
+						+ " & " + torrent.getArtists().get(1).getName());
+					break;
+				default:
+					artistName.setText("Various Artists");
+			}
+		}
+	}
 }
 

@@ -1,14 +1,13 @@
 package what.whatandroid.profile;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.text.format.DateUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,13 +15,12 @@ import android.widget.Toast;
 import api.cli.Utils;
 import api.soup.MySoup;
 import api.user.Profile;
-import api.user.User;
+import api.user.UserProfile;
 import api.user.recent.UserRecents;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
-import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
@@ -30,19 +28,11 @@ import java.util.Date;
 
 /**
  */
-public class ProfileFragment extends Fragment implements OnLoggedInCallback {
+public class ProfileFragment extends Fragment implements OnLoggedInCallback, LoaderManager.LoaderCallbacks<UserProfile> {
 	/**
 	 * The user's profile information
 	 */
-	private Profile profile;
-	/**
-	 * Loading task so we can cancel it
-	 */
-	private LoadProfile loadProfile;
-	/**
-	 * The user's recently uploaded/snatched torrents
-	 */
-	private UserRecents recentTorrents;
+	private UserProfile userProfile;
 	/**
 	 * The user id we want to view, passed earlier as a param since we defer loading until onCreate
 	 */
@@ -51,7 +41,6 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	 * Callbacks to the activity so we can go set the title
 	 */
 	private SetTitleCallback setTitle;
-	private ViewTorrentCallbacks viewTorrent;
 	/**
 	 * Various content views displaying the user's information
 	 */
@@ -82,56 +71,14 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	 */
 	public static ProfileFragment newInstance(int id){
 		ProfileFragment fragment = new ProfileFragment();
-		fragment.userID = id;
-		return fragment;
-	}
-
-	/**
-	 * Use this factory method to create a new profile fragment for some previously loaded user
-	 *
-	 * @param id      user id
-	 * @param profile user profile
-	 * @param recents user's recent torrents
-	 * @return Profile Fragment viewing the user's information
-	 */
-	public static ProfileFragment newInstance(int id, Profile profile, UserRecents recents){
-		ProfileFragment fragment = new ProfileFragment();
-		fragment.userID = id;
-		fragment.profile = profile;
-		fragment.recentTorrents = recents;
+		Bundle args = new Bundle();
+		args.putInt(ProfileActivity.USER_ID, id);
+		fragment.setArguments(args);
 		return fragment;
 	}
 
 	public ProfileFragment(){
 		// Required empty public constructor
-	}
-
-	@Override
-	public void onLoggedIn(){
-		if (profile == null){
-			loadProfile = new LoadProfile();
-			loadProfile.execute(userID);
-		}
-		else {
-			updateProfile();
-		}
-	}
-
-	/**
-	 * Reload the profile being viewed to update it
-	 */
-	public void refresh(){
-		new LoadProfile().execute(userID);
-	}
-
-	/**
-	 * Set the user id, should use this if we weren't originally logged in when creating the fragment
-	 * since in that case the user id is invalid
-	 *
-	 * @param id user id to view
-	 */
-	public void setUserID(int id){
-		userID = id;
 	}
 
 	/**
@@ -143,19 +90,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		return userID;
 	}
 
-	public Profile getProfile(){
-		return profile;
-	}
-
-	public UserRecents getRecentTorrents(){
-		return recentTorrents;
-	}
-
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			viewTorrent = (ViewTorrentCallbacks)activity;
 			setTitle = (SetTitleCallback)activity;
 		}
 		catch (ClassCastException e){
@@ -164,11 +102,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	}
 
 	@Override
-	public void onDetach(){
-		super.onDetach();
-		if (loadProfile != null){
-			loadProfile.cancel(true);
-		}
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		userID = getArguments().getInt(ProfileActivity.USER_ID);
+		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -196,7 +133,81 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		donor = view.findViewById(R.id.donor);
 		warned = view.findViewById(R.id.warned);
 		banned = view.findViewById(R.id.banned);
+
+		snatchesAdapter = new RecentTorrentPagerAdapter(getChildFragmentManager());
+		uploadsAdapter = new RecentTorrentPagerAdapter(getChildFragmentManager());
+		recentSnatches.setAdapter(snatchesAdapter);
+		recentUploads.setAdapter(uploadsAdapter);
+
+		if (MySoup.isLoggedIn()){
+			//We could get -1 user id if we were logged out and trying to view our own profile, so update it
+			if (userID == -1){
+				userID = MySoup.getUserId();
+				getArguments().putInt(ProfileActivity.USER_ID, userID);
+			}
+			Bundle args = new Bundle();
+			args.putInt(ProfileActivity.USER_ID, userID);
+			getLoaderManager().initLoader(0, args, this);
+		}
 		return view;
+	}
+
+	@Override
+	public void onLoggedIn(){
+		if (isAdded()){
+			//We could get -1 user id if we were logged out and trying to view our own profile, so update it
+			if (userID == -1){
+				userID = MySoup.getUserId();
+				getArguments().putInt(ProfileActivity.USER_ID, userID);
+			}
+			Bundle args = new Bundle();
+			args.putInt(ProfileActivity.USER_ID, userID);
+			getLoaderManager().initLoader(0, args, this);
+		}
+	}
+
+	@Override
+	public Loader<UserProfile> onCreateLoader(int id, Bundle args){
+		if (isAdded()){
+			getActivity().setProgressBarIndeterminate(true);
+			getActivity().setProgressBarIndeterminateVisibility(true);
+		}
+		return new ProfileAsyncLoader(getActivity(), args);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<UserProfile> loader, UserProfile data){
+		userProfile = data;
+		//Uploads adapter is the last view we make
+		if (userProfile.getStatus() && isAdded()){
+			populateViews();
+		}
+		if (!userProfile.getStatus()){
+			Toast.makeText(getActivity(), "Failed to load profile", Toast.LENGTH_SHORT).show();
+		}
+		if (isAdded()){
+			getActivity().setProgressBarIndeterminate(false);
+			getActivity().setProgressBarIndeterminateVisibility(false);
+		}
+	}
+
+	@Override
+	public void onLoaderReset(Loader<UserProfile> loader){
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		inflater.inflate(R.menu.profile, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		if (item.getItemId() == R.id.action_refresh){
+			Bundle args = new Bundle();
+			args.putInt(ProfileActivity.USER_ID, userID);
+			getLoaderManager().restartLoader(0, args, this);
+		}
+		return false;
 	}
 
 	/**
@@ -206,7 +217,8 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 	 * When viewing our own profile we'll get all the data back but will still see our paranoia value so we need to
 	 * ignore the paranoia if it's our own profile
 	 */
-	private void updateProfile(){
+	private void populateViews(){
+		Profile profile = userProfile.getUser().getProfile();
 		setTitle.setTitle(profile.getUsername());
 		username.setText(profile.getUsername());
 		userClass.setText(profile.getPersonal().getUserClass());
@@ -253,21 +265,18 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 			ratio.setVisibility(View.GONE);
 		}
 		//TODO: Keep an eye on this API endpoint and watch for when it starts respecting paranoia and we get null back
+		UserRecents recentTorrents = userProfile.getUserRecents();
 		if (profile.getPersonal().getParanoia().intValue() < 6 || userID == MySoup.getUserId()){
 			if (recentTorrents.getSnatches().size() > 0){
-				if (snatchesAdapter == null){
-					snatchesAdapter = new RecentTorrentPagerAdapter(recentTorrents.getSnatches(), getChildFragmentManager());
-				}
-				recentSnatches.setAdapter(snatchesAdapter);
+				snatchesAdapter.onLoadingComplete(recentTorrents.getSnatches());
+				snatchesAdapter.notifyDataSetChanged();
 			}
 			else {
 				snatchesContainer.setVisibility(View.GONE);
 			}
 			if (recentTorrents.getUploads().size() > 0){
-				if (uploadsAdapter == null){
-					uploadsAdapter = new RecentTorrentPagerAdapter(recentTorrents.getUploads(), getChildFragmentManager());
-				}
-				recentUploads.setAdapter(uploadsAdapter);
+				uploadsAdapter.onLoadingComplete(recentTorrents.getUploads());
+				uploadsAdapter.notifyDataSetChanged();
 			}
 			else {
 				uploadsContainer.setVisibility(View.GONE);
@@ -286,53 +295,6 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback {
 		}
 		if (profile.getPersonal().isEnabled()){
 			banned.setVisibility(View.GONE);
-		}
-	}
-
-	/**
-	 * Async task to load the user's profile
-	 */
-	private class LoadProfile extends AsyncTask<Integer, Void, User> {
-		/**
-		 * Load some user from their id
-		 *
-		 * @param params params[0] should be the user id to load
-		 * @return the user loaded, or null if something went wrong
-		 */
-		@Override
-		protected User doInBackground(Integer... params){
-			try {
-				User user = User.fromId(params[0]);
-				recentTorrents = UserRecents.recentsForUser(params[0]);
-				if (user.getStatus() && recentTorrents != null && recentTorrents.getStatus()){
-					return user;
-				}
-			}
-			catch (Exception e){
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPreExecute(){
-			if (getActivity() != null){
-				getActivity().setProgressBarIndeterminateVisibility(true);
-				getActivity().setProgressBarIndeterminate(true);
-			}
-		}
-
-		@Override
-		protected void onPostExecute(User user){
-			getActivity().setProgressBarIndeterminateVisibility(false);
-			getActivity().setProgressBarIndeterminate(false);
-			if (user != null){
-				profile = user.getProfile();
-				updateProfile();
-			}
-			else {
-				Toast.makeText(getActivity(), "Failed to load user", Toast.LENGTH_LONG).show();
-			}
 		}
 	}
 }
