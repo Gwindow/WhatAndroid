@@ -2,12 +2,8 @@ package what.whatandroid.artist;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.view.Window;
-import api.son.MySon;
 import api.soup.MySoup;
-import api.torrents.artist.Artist;
-import api.torrents.artist.Releases;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.callbacks.ViewRequestCallbacks;
@@ -15,7 +11,6 @@ import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.request.RequestActivity;
-import what.whatandroid.search.ArtistSearchFragment;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
@@ -28,12 +23,8 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 	 * the USE_SEARCH parameter should be set to true and will indicate that the artist
 	 * to be viewed is coming from the ArtistSearchFragment
 	 */
-	public static final String ARTIST_ID = "what.whatandroid.ARTIST_ID",
+	public static final String ARTIST_ID = "what.whatandroid.ARTIST_ID", ARTIST_NAME = "what.whatandroid.ARTIST_NAME",
 		USE_SEARCH = "what.whatandroid.USE_SEARCH";
-	/**
-	 * Keys to save artist information in the bundle with
-	 */
-	private static final String ARTIST = "what.whatandroid.ARTIST";
 	private ArtistFragment artistFragment;
 
 	@Override
@@ -42,45 +33,21 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_frame);
 		setupNavDrawer();
-		setTitle(getTitle());
 
 		int id = getIntent().getIntExtra(ARTIST_ID, 1);
 		boolean useSearch = getIntent().getBooleanExtra(USE_SEARCH, false);
-		//If we're coming from the ArtistSearchFragment then the artist was already loaded over there, so re-use it
-		if (useSearch){
-			if (ArtistSearchFragment.getArtist() != null){
-				artistFragment = ArtistFragment.newInstance(ArtistSearchFragment.getArtist(),
-					ArtistSearchFragment.getReleases());
-			}
+		if (savedInstanceState != null){
+			artistFragment = (ArtistFragment)getSupportFragmentManager().findFragmentById(R.id.container);
 		}
-		else if (savedInstanceState != null && savedInstanceState.getInt(ARTIST_ID) == id){
-			Artist a = (Artist)MySon.toObjectFromString(savedInstanceState.getString(ARTIST), Artist.class);
-			Releases r = new Releases(a);
-			artistFragment = ArtistFragment.newInstance(a, r);
+		else {
+			artistFragment = ArtistFragment.newInstance(id, useSearch);
+			getSupportFragmentManager().beginTransaction().add(R.id.container, artistFragment).commit();
 		}
-		//If no artist from search or previous instance then download the data
-		if (artistFragment == null){
-			artistFragment = ArtistFragment.newInstance(id);
-		}
-		FragmentManager manager = getSupportFragmentManager();
-		manager.beginTransaction().add(R.id.container, artistFragment).commit();
 	}
 
 	@Override
 	public void onLoggedIn(){
 		artistFragment.onLoggedIn();
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState){
-		super.onSaveInstanceState(outState);
-		//For artists with tons of releases the cost of serializing & deserializing is about the same as re-downloading
-		//them and while we do the serialization the app hangs so we look unresponsive. So only save artists
-		//below some size
-		if (artistFragment.getArtist() != null && artistFragment.getArtist().getResponse().getTorrentgroup().size() < 25){
-			outState.putInt(ARTIST_ID, artistFragment.getArtistID());
-			outState.putString(ARTIST, MySon.toJson(artistFragment.getArtist(), Artist.class));
-		}
 	}
 
 	@Override
@@ -92,7 +59,6 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 
 	@Override
 	public void viewTorrent(int group, int torrent){
-
 	}
 
 	@Override
