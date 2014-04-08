@@ -99,7 +99,7 @@ public class TorrentGroupActivity extends LoggedInActivity
 		if (fm.getBackStackEntryCount() > 0){
 			fm.popBackStackImmediate();
 			//The only fragment we go back to is the MasterFragment
-			loadingListener = (LoadingListener)getSupportFragmentManager().findFragmentById(R.id.container);
+			loadingListener = (LoadingListener)fm.findFragmentById(R.id.container);
 			Bundle args = new Bundle();
 			args.putInt(GROUP_ID, groupId);
 			args.putInt(TORRENT_ID, torrentId);

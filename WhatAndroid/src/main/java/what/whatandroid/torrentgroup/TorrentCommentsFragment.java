@@ -45,8 +45,13 @@ public class TorrentCommentsFragment extends Fragment
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
 		groupId = getArguments().getInt(TorrentGroupActivity.GROUP_ID);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		list = (ListView)view.findViewById(R.id.list);
 		noComments = (TextView)view.findViewById(R.id.no_content_notice);
@@ -117,31 +122,19 @@ public class TorrentCommentsFragment extends Fragment
 
 	@Override
 	public void onLoadFinished(Loader<TorrentComments> loader, TorrentComments data){
-		if (data.getResponse() == null){
-			//If we get a null response it's because we're making too many requests
-			//so re-launch the request but also have the loader sleep a bit before hitting the site
+		loadingPrev = false;
+		comments = data;
+		if (isAdded()){
+			updateComments();
+		}
+		//If we just loaded the first page start loading the next page too since they're pretty small pages
+		if (!comments.hasNextPage() && comments.hasPreviousPage() && !loadingPrev){
+			loadingPrev = true;
 			Bundle args = new Bundle();
 			args.putInt(TorrentGroupActivity.GROUP_ID, groupId);
 			args.putInt(COMMENTS_PAGE, comments.getPage() - 1);
-			args.putBoolean(TorrentCommentsAsyncLoader.RATE_LIMIT, true);
-			getLoaderManager().restartLoader(loader.getId(), args, this);
-		}
-		else {
-			loadingPrev = false;
-			comments = data;
-			if (adapter != null){
-				updateComments();
-
-			}
-			//If we just loaded the first page start loading the next page too since they're pretty small pages
-			if (!comments.hasNextPage() && comments.hasPreviousPage() && !loadingPrev){
-				loadingPrev = true;
-				Bundle args = new Bundle();
-				args.putInt(TorrentGroupActivity.GROUP_ID, groupId);
-				args.putInt(COMMENTS_PAGE, comments.getPage() - 1);
-				//The first page of comments is loaded by loader 0 so loader ids are really page + 1
-				getLoaderManager().initLoader(comments.getPage(), args, this);
-			}
+			//The first page of comments is loaded by loader 0 so loader ids are really page + 1
+			getLoaderManager().initLoader(comments.getPage(), args, this);
 		}
 	}
 

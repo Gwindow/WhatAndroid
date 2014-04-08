@@ -96,7 +96,7 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 	@Override
 	public void onLoadingComplete(Torrents t){
 		torrent = t;
-		if (fileList != null){
+		if (isAdded()){
 			populateView();
 		}
 	}

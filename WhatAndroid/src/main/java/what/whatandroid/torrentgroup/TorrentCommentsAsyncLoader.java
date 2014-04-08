@@ -18,46 +18,49 @@ import java.util.Collections;
  * the loader knows to sleep for a bit
  */
 public class TorrentCommentsAsyncLoader extends AsyncTaskLoader<TorrentComments> {
-	public static final String RATE_LIMIT = "what.whatandroid.LOADER_RATE_LIMIT";
 	private TorrentComments comments;
-	private int groupId;
-	private int page;
-	private boolean rateLimit;
+	private int groupId, page;
 
 	public TorrentCommentsAsyncLoader(Context context, Bundle args){
 		super(context);
 		groupId = args.getInt(TorrentGroupActivity.GROUP_ID);
 		page = args.getInt(TorrentCommentsFragment.COMMENTS_PAGE, -1);
-		rateLimit = args.getBoolean(RATE_LIMIT, false);
 	}
 
 	@Override
 	public TorrentComments loadInBackground(){
-		//If we've been told we hit the rate limit then sleep for a bit
-		if (rateLimit){
-			try {
-				Thread.sleep(2 * 1000, 0);
-			}
-			catch (InterruptedException e){
-				Thread.currentThread().interrupt();
-			}
-		}
-		//If we're loading the last page of comments then no page number is set. This lets us
-		//mimic the site behavior of showing most recent comments first
 		if (comments == null || comments.getResponse() == null){
-			if (page == -1){
-				comments = TorrentComments.fromId(groupId);
-				page = comments.getPage();
-			}
-			else {
-				comments = TorrentComments.fromId(groupId, page);
-			}
-			if (comments.getResponse() != null){
-				Collections.sort(comments.getResponse().getComments(),
-					Collections.reverseOrder(new SimpleComment.DateComparator()));
-				for (SimpleComment c : comments.getResponse().getComments()){
-					c.setBody(SmileyProcessor.smileyToEmoji(c.getBody()));
+			while (true){
+				//If we're loading the last page of comments then no page number is set. This lets us
+				//mimic the site behavior of showing most recent comments first
+				if (page == -1){
+					comments = TorrentComments.fromId(groupId);
+					if (comments.getStatus()){
+						page = comments.getPage();
+					}
 				}
+				else {
+					comments = TorrentComments.fromId(groupId, page);
+				}
+				//If we get rate limited wait and retry. It's very unlikely the user has used all 5 of our
+				//requests per 10s so don't wait the whole time initially
+				if (!comments.getStatus() && comments.getError().equalsIgnoreCase("rate limit exceeded")){
+					try {
+						Thread.sleep(3000);
+					}
+					catch (InterruptedException e){
+						Thread.currentThread().interrupt();
+					}
+				}
+				else {
+					break;
+				}
+			}
+			//Sort the comments to have newest ones at the top
+			Collections.sort(comments.getResponse().getComments(),
+				Collections.reverseOrder(new SimpleComment.DateComparator()));
+			for (SimpleComment c : comments.getResponse().getComments()){
+				c.setBody(SmileyProcessor.smileyToEmoji(c.getBody()));
 			}
 		}
 		return comments;
