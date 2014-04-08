@@ -13,9 +13,6 @@ import java.util.Collections;
  * AsyncTaskLoader to load comments for some torrent, pass the torrent id
  * and the page number desired to be loaded. If the last page of comments is
  * desired then pass -1.
- * If you get back a null response you're hitting the site too frequently and should
- * restart the loader with an additional argument of RATE_LIMIT = true so
- * the loader knows to sleep for a bit
  */
 public class TorrentCommentsAsyncLoader extends AsyncTaskLoader<TorrentComments> {
 	private TorrentComments comments;
@@ -29,7 +26,7 @@ public class TorrentCommentsAsyncLoader extends AsyncTaskLoader<TorrentComments>
 
 	@Override
 	public TorrentComments loadInBackground(){
-		if (comments == null || comments.getResponse() == null){
+		if (comments == null){
 			while (true){
 				//If we're loading the last page of comments then no page number is set. This lets us
 				//mimic the site behavior of showing most recent comments first
