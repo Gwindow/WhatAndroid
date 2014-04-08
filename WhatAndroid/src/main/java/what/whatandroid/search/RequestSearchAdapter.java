@@ -1,7 +1,6 @@
 package what.whatandroid.search;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.*;
 import api.cli.Utils;
 import api.search.requests.Request;
-import api.search.requests.RequestsSearch;
 import api.soup.MySoup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
@@ -22,27 +20,13 @@ import java.util.Date;
 /**
  * Adapter to display request search results
  */
-public class RequestSearchAdapter extends ArrayAdapter<Request>
-	implements AdapterView.OnItemClickListener, AbsListView.OnScrollListener {
-
+public class RequestSearchAdapter extends ArrayAdapter<Request> implements AdapterView.OnItemClickListener {
 	private final Context context;
 	private final LayoutInflater inflater;
-	/**
-	 * The search being viewed
-	 */
-	private RequestsSearch search;
 	/**
 	 * Callbacks to view the selected request
 	 */
 	private ViewRequestCallbacks callbacks;
-	/**
-	 * Loading indicator footer to hide once loading is done
-	 */
-	private View footer;
-	/**
-	 * Track if we're loading the next page of results
-	 */
-	private boolean loadingNext;
 
 	/**
 	 * Construct the empty adapter. A new search can be set to be displayed via viewSearch
@@ -51,27 +35,12 @@ public class RequestSearchAdapter extends ArrayAdapter<Request>
 		super(context, R.layout.list_request);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
-		this.footer = footer;
-		loadingNext = false;
 		try {
 			callbacks = (ViewRequestCallbacks)context;
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(context.toString() + " must implement ViewRequestCallbacks");
 		}
-	}
-
-	public void viewSearch(RequestsSearch search){
-		clear();
-		addAll(search.getResponse().getResults());
-		notifyDataSetChanged();
-		this.search = search;
-	}
-
-	public void clearSearch(){
-		clear();
-		notifyDataSetChanged();
-		search = null;
 	}
 
 	@Override
@@ -126,62 +95,10 @@ public class RequestSearchAdapter extends ArrayAdapter<Request>
 		}
 	}
 
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState){
-
-	}
-
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
-		//Load more if we're within 15 items of the end of the page & there's more to load
-		if (search != null && search.hasNextPage() && !loadingNext && firstVisibleItem + visibleItemCount + 10 >= totalItemCount){
-			loadingNext = true;
-			new LoadNextPage().execute();
-		}
-	}
-
 	private class ViewHolder {
 		public ImageView art;
 		public ProgressBar spinner;
 		public ImageLoadingListener listener;
 		public TextView title, year, votes, bounty, created;
-	}
-
-	/**
-	 * Load the next page of the current search
-	 */
-	private class LoadNextPage extends AsyncTask<Void, Void, RequestsSearch> {
-		@Override
-		protected void onPreExecute(){
-			footer.setVisibility(View.VISIBLE);
-		}
-
-		@Override
-		protected RequestsSearch doInBackground(Void... params){
-			try {
-				RequestsSearch s = search.nextPage();
-				if (s != null && s.getStatus()){
-					return s;
-				}
-			}
-			catch (Exception e){
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(RequestsSearch requestsSearch){
-			loadingNext = false;
-			if (requestsSearch != null){
-				search = requestsSearch;
-				addAll(search.getResponse().getResults());
-				notifyDataSetChanged();
-			}
-			//Else show a toast error?
-			if (requestsSearch == null || !search.hasNextPage()){
-				footer.setVisibility(View.GONE);
-			}
-		}
 	}
 }
