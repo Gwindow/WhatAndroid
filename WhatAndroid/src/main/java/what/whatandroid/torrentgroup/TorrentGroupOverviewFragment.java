@@ -82,7 +82,7 @@ public class TorrentGroupOverviewFragment extends Fragment implements View.OnCli
 		albumTitle = (TextView)titleHeader.findViewById(R.id.title);
 
 		torrentList.addHeaderView(imageHeader);
-		torrentList.addHeaderView(titleHeader);
+		torrentList.addHeaderView(titleHeader, null, false);
 		if (group != null){
 			populateViews();
 		}
