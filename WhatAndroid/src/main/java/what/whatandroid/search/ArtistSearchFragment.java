@@ -3,9 +3,10 @@ package what.whatandroid.search;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import api.torrents.artist.Artist;
-import api.torrents.artist.Releases;
 import what.whatandroid.R;
 import what.whatandroid.artist.ArtistActivity;
+import what.whatandroid.artist.ArtistAsyncLoader;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 
@@ -23,12 +24,12 @@ import what.whatandroid.callbacks.SetTitleCallback;
  * Fragment for searching for artists. If only one artist name is returned from the search
  * we view that artist, if multiple ones are returned we go to a torrent search with the search term
  */
-public class ArtistSearchFragment extends Fragment
-	implements View.OnClickListener, TextView.OnEditorActionListener, OnLoggedInCallback {
+public class ArtistSearchFragment extends Fragment implements View.OnClickListener, TextView.OnEditorActionListener,
+	OnLoggedInCallback, LoaderManager.LoaderCallbacks<Artist> {
 	/**
 	 * So we can set the action bar title
 	 */
-	SetTitleCallback setTitle;
+	private SetTitleCallback setTitle;
 	/**
 	 * Search terms sent to us by the intent
 	 */
@@ -38,8 +39,6 @@ public class ArtistSearchFragment extends Fragment
 	 * the loaded artist without having to re-download it
 	 */
 	private static Artist artist;
-	private static Releases releases;
-	private LoadArtistSearch loadArtistSearch;
 	/**
 	 * The search input box and loading indicator
 	 */
@@ -55,7 +54,9 @@ public class ArtistSearchFragment extends Fragment
 	 */
 	public static ArtistSearchFragment newInstance(String terms){
 		ArtistSearchFragment f = new ArtistSearchFragment();
-		f.searchTerms = terms;
+		Bundle args = new Bundle();
+		args.putString(SearchActivity.TERMS, terms);
+		f.setArguments(args);
 		return f;
 	}
 
@@ -75,11 +76,9 @@ public class ArtistSearchFragment extends Fragment
 	}
 
 	@Override
-	public void onDetach(){
-		super.onDetach();
-		if (loadArtistSearch != null){
-			loadArtistSearch.cancel(true);
-		}
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		searchTerms = getArguments().getString(SearchActivity.TERMS, "");
 	}
 
 	@Override
@@ -97,14 +96,15 @@ public class ArtistSearchFragment extends Fragment
 		editTerms = (EditText)view.findViewById(R.id.search_terms);
 		editTerms.setOnEditorActionListener(this);
 		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
-
-		if (searchTerms == null || searchTerms.isEmpty()){
-			loadingIndicator.setVisibility(View.GONE);
-		}
-		else {
-			editTerms.setText(searchTerms);
-		}
+		editTerms.setText(searchTerms);
 		return view;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		//We just update the arguments instead since we treat them the same
+		getArguments().putString(SearchActivity.TERMS, searchTerms);
 	}
 
 	@Override
@@ -113,11 +113,9 @@ public class ArtistSearchFragment extends Fragment
 		if (!searchTerms.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromInputMethod(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-			if (loadArtistSearch != null){
-				loadArtistSearch.cancel(true);
-			}
-			loadArtistSearch = new LoadArtistSearch();
-			loadArtistSearch.execute(searchTerms);
+			Bundle args = new Bundle();
+			args.putString(ArtistActivity.ARTIST_NAME, searchTerms);
+			getLoaderManager().restartLoader(0, args, this);
 		}
 		else {
 			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
@@ -132,11 +130,9 @@ public class ArtistSearchFragment extends Fragment
 			if (!searchTerms.isEmpty()){
 				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromInputMethod(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-				if (loadArtistSearch != null){
-					loadArtistSearch.cancel(true);
-				}
-				loadArtistSearch = new LoadArtistSearch();
-				loadArtistSearch.execute(searchTerms);
+				Bundle args = new Bundle();
+				args.putString(ArtistActivity.ARTIST_NAME, searchTerms);
+				getLoaderManager().restartLoader(0, args, this);
 			}
 			else {
 				Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
@@ -155,58 +151,22 @@ public class ArtistSearchFragment extends Fragment
 		return artist;
 	}
 
-	/**
-	 * Get the loaded releases from the search
-	 *
-	 * @return the loaded releases
-	 */
-	public static Releases getReleases(){
-		return releases;
+
+	@Override
+	public Loader<Artist> onCreateLoader(int id, Bundle args){
+		if (isAdded()){
+			loadingIndicator.setVisibility(View.VISIBLE);
+		}
+		return new ArtistAsyncLoader(getActivity(), args);
 	}
 
-	/**
-	 * Load the artist auto completions for some artist name as a "search". If only one completion
-	 * is returned we launch an intent to view that artist, if multiple completions are returned we
-	 * launch a torrent search with the same terms, as the site does.
-	 */
-	private class LoadArtistSearch extends AsyncTask<String, Void, Artist> {
-		/**
-		 * Artist name we're trying to load
-		 */
-		String name;
-
-		@Override
-		protected void onPreExecute(){
-			if (loadingIndicator != null){
-				loadingIndicator.setVisibility(View.VISIBLE);
-			}
-			artist = null;
-			releases = null;
-		}
-
-		@Override
-		protected Artist doInBackground(String... params){
-			name = params[0];
-			try {
-				Artist a = Artist.fromName(params[0]);
-				if (a != null){
-					releases = new Releases(a);
-					return a;
-				}
-			}
-			catch (Exception e){
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Artist a){
-			if (loadingIndicator != null){
-				loadingIndicator.setVisibility(View.GONE);
-			}
-			if (a != null){
-				artist = a;
+	@Override
+	public void onLoadFinished(Loader<Artist> loader, Artist data){
+		artist = data;
+		if (isAdded()){
+			loadingIndicator.setVisibility(View.GONE);
+			//If we found the artist then go to the artist's page, otherwise launch a torrent search with the terms
+			if (artist != null && artist.getStatus()){
 				Intent intent = new Intent(getActivity(), ArtistActivity.class);
 				intent.putExtra(ArtistActivity.ARTIST_ID, artist.getId());
 				intent.putExtra(ArtistActivity.USE_SEARCH, true);
@@ -215,9 +175,14 @@ public class ArtistSearchFragment extends Fragment
 			else {
 				Intent intent = new Intent(getActivity(), SearchActivity.class);
 				intent.putExtra(SearchActivity.SEARCH, SearchActivity.TORRENT);
-				intent.putExtra(SearchActivity.TERMS, name);
+				intent.putExtra(SearchActivity.TERMS, searchTerms);
 				startActivity(intent);
 			}
 		}
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Artist> loader){
+
 	}
 }

@@ -40,7 +40,7 @@ public class ArtistAsyncLoader extends AsyncTaskLoader<Artist> {
 				}
 				//If we get rate limited wait and retry. It's very unlikely the user has used all 5 of our
 				//requests per 10s so don't wait the whole time initially
-				if (!artist.getStatus() && artist.getError().equalsIgnoreCase("rate limit exceeded")){
+				if (artist != null && !artist.getStatus() && artist.getError().equalsIgnoreCase("rate limit exceeded")){
 					try {
 						Thread.sleep(3000);
 					}
