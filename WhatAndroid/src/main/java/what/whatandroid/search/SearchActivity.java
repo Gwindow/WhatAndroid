@@ -26,7 +26,7 @@ public class SearchActivity extends LoggedInActivity
 	 * Param to pass the search type desired and terms and tags if desired
 	 */
 	public static final String SEARCH = "what.whatandroid.SEARCH", TERMS = "what.whatandroid.SEARCH.TERMS",
-		TAGS = "what.whatandroid.SEARCH.TAGS";
+		TAGS = "what.whatandroid.SEARCH.TAGS", PAGE = "what.whatandroid.SEARCH_PAGE";
 	/**
 	 * The parameters to specify what we want to search for
 	 */
