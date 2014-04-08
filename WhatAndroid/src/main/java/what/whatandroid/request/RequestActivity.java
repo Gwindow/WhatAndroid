@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.view.Window;
 import android.widget.Toast;
 import api.requests.Request;
-import api.son.MySon;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
@@ -40,26 +39,14 @@ public class RequestActivity extends LoggedInActivity
 		setupNavDrawer();
 		setTitle(getTitle());
 
+		FragmentManager manager = getSupportFragmentManager();
 		int intentId = getIntent().getIntExtra(REQUEST_ID, 1);
-		if (savedInstanceState != null && savedInstanceState.getInt(REQUEST_ID) == intentId){
-			Request r = (Request)MySon.toObjectFromString(savedInstanceState.getString(REQUEST), Request.class);
-			fragment = RequestFragment.newInstance(r);
+		if (savedInstanceState != null){
+			fragment = (RequestFragment)manager.findFragmentById(R.id.container);
 		}
 		else {
 			fragment = RequestFragment.newInstance(intentId);
-		}
-		FragmentManager manager = getSupportFragmentManager();
-		manager.beginTransaction().add(R.id.container, fragment).commit();
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState){
-		super.onSaveInstanceState(outState);
-		//Don't save too large requests since its too slow
-		Request request = fragment.getRequest();
-		if (request != null && request.getResponse().getComments().size() < 25){
-			outState.putInt(REQUEST_ID, request.getResponse().getRequestId().intValue());
-			outState.putString(REQUEST, MySon.toJson(request, Request.class));
+			manager.beginTransaction().add(R.id.container, fragment).commit();
 		}
 	}
 
@@ -91,7 +78,6 @@ public class RequestActivity extends LoggedInActivity
 
 	@Override
 	public void viewTorrent(int group, int torrent){
-
 	}
 
 	@Override

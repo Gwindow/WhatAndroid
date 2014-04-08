@@ -1,9 +1,10 @@
 package what.whatandroid.request;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,19 +29,15 @@ import java.util.Date;
 /**
  * Display the details of a request, bounty, artists etc.
  */
-public class RequestFragment extends Fragment implements OnLoggedInCallback, View.OnClickListener {
+public class RequestFragment extends Fragment implements OnLoggedInCallback, View.OnClickListener,
+	LoaderManager.LoaderCallbacks<Request> {
 	/**
 	 * The request being viewed
 	 */
 	private Request request;
 	/**
-	 * Loading task so we can cancel if we move away
-	 */
-	private LoadRequest loadRequest;
-	/**
 	 * Request id passed through when the fragment is created so we can defer loading
 	 */
-	private int requestId;
 	private SetTitleCallback setTitle;
 	private ViewUserCallbacks viewUser;
 	private ViewTorrentCallbacks viewTorrent;
@@ -67,14 +64,9 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 	 */
 	public static RequestFragment newInstance(int id){
 		RequestFragment fragment = new RequestFragment();
-		fragment.requestId = id;
-		return fragment;
-	}
-
-	public static RequestFragment newInstance(Request r){
-		RequestFragment fragment = new RequestFragment();
-		fragment.request = r;
-		fragment.requestId = r.getResponse().getRequestId().intValue();
+		Bundle args = new Bundle();
+		args.putInt(RequestActivity.REQUEST_ID, id);
+		fragment.setArguments(args);
 		return fragment;
 	}
 
@@ -97,33 +89,17 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 	}
 
 	@Override
-	public void onDetach(){
-		super.onDetach();
-		if (loadRequest != null){
-			loadRequest.cancel(true);
-		}
-	}
-
-	@Override
 	public void onLoggedIn(){
-		if (request == null){
-			loadRequest = new LoadRequest();
-			loadRequest.execute(requestId);
+		if (isAdded()){
+			getLoaderManager().initLoader(0, getArguments(), this);
 		}
-		else {
-			updateRequest();
-		}
-	}
-
-	public Request getRequest(){
-		return request;
 	}
 
 	/**
 	 * Refresh the request, this is used to update the view after voting
 	 */
 	public void refresh(){
-		new LoadRequest().execute(requestId);
+		getLoaderManager().restartLoader(0, getArguments(), this);
 	}
 
 	@Override
@@ -273,53 +249,27 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 		tags.setText(tagString);
 	}
 
-	/**
-	 * Async task to load the request
-	 */
-	private class LoadRequest extends AsyncTask<Integer, Void, Request> {
+	@Override
+	public Loader<Request> onCreateLoader(int id, Bundle args){
+		return new RequestAsyncLoader(getActivity(), args);
+	}
 
-		/**
-		 * Load some request from its id
-		 *
-		 * @param params params[0] should contain the id to load
-		 * @return the loaded request, or null if something went wrong
-		 */
-		@Override
-		protected Request doInBackground(Integer... params){
-			try {
-				Request r = Request.fromId(params[0]);
-				//Also update the user's index so we've got up to date values for
-				//their uploaded, ratio and required ratio to help them decide how much to vote
-				MySoup.loadIndex();
-				if (r != null && r.getStatus()){
-					return r;
-				}
-			}
-			catch (Exception e){
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPreExecute(){
-			if (getActivity() != null){
-				getActivity().setProgressBarIndeterminateVisibility(true);
-				getActivity().setProgressBarIndeterminate(true);
-			}
-		}
-
-		@Override
-		protected void onPostExecute(Request r){
+	@Override
+	public void onLoadFinished(Loader<Request> loader, Request data){
+		request = data;
+		if (isAdded()){
 			getActivity().setProgressBarIndeterminateVisibility(false);
 			getActivity().setProgressBarIndeterminate(false);
-			if (r != null){
-				request = r;
+			if (request.getStatus()){
 				updateRequest();
 			}
 			else {
-				Toast.makeText(getActivity(), "Failed to load torrent group", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Failed to load request", Toast.LENGTH_LONG).show();
 			}
 		}
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Request> loader){
 	}
 }
