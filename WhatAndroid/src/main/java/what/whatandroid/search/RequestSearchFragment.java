@@ -240,7 +240,7 @@ public class RequestSearchFragment extends Fragment implements View.OnClickListe
 				}
 			}
 		}
-		else {
+		else if (isAdded()){
 			Toast.makeText(getActivity(), "Failed to load search results", Toast.LENGTH_SHORT).show();
 		}
 	}

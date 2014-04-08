@@ -111,7 +111,6 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 		footer = inflater.inflate(R.layout.footer_loading_indicator, null);
 		resultsList.addHeaderView(header);
 		resultsList.addFooterView(footer);
-		//We should only show the footer if we're loading a search
 		footer.setVisibility(View.GONE);
 
 		resultsAdapter = new TorrentSearchAdapter(getActivity());
@@ -249,7 +248,7 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 				}
 			}
 		}
-		else {
+		else if (isAdded()){
 			Toast.makeText(getActivity(), "Failed to load search results", Toast.LENGTH_SHORT).show();
 		}
 	}
