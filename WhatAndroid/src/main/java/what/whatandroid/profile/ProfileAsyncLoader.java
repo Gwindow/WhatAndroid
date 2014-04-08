@@ -42,7 +42,7 @@ public class ProfileAsyncLoader extends AsyncTaskLoader<UserProfile> {
 
 	@Override
 	protected void onStartLoading(){
-		if (profile != null && profile.getStatus()){
+		if (profile != null){
 			deliverResult(profile);
 		}
 		else {

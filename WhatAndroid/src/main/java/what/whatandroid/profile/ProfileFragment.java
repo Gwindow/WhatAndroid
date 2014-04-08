@@ -59,7 +59,6 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 	 * View pagers & adapters for displaying the lists of recent snatches and uploads & headers for the views
 	 * headers are needed so we can hide the views if hidden by paranoia
 	 */
-	private ViewPager recentSnatches, recentUploads;
 	private RecentTorrentPagerAdapter snatchesAdapter, uploadsAdapter;
 	private View snatchesContainer, uploadsContainer, donor, warned, banned;
 
@@ -126,9 +125,9 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 		paranoiaText = (TextView)view.findViewById(R.id.paranoia_text);
 		//Hide the paranoia text until we figure out what the user's paranoia settings are
 		paranoiaText.setVisibility(View.GONE);
-		recentSnatches = (ViewPager)view.findViewById(R.id.recent_snatches);
+		ViewPager recentSnatches = (ViewPager)view.findViewById(R.id.recent_snatches);
 		snatchesContainer = view.findViewById(R.id.snatches_container);
-		recentUploads = (ViewPager)view.findViewById(R.id.recent_uploads);
+		ViewPager recentUploads = (ViewPager)view.findViewById(R.id.recent_uploads);
 		uploadsContainer = view.findViewById(R.id.uploads_container);
 		donor = view.findViewById(R.id.donor);
 		warned = view.findViewById(R.id.warned);
@@ -178,16 +177,15 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 	@Override
 	public void onLoadFinished(Loader<UserProfile> loader, UserProfile data){
 		userProfile = data;
-		//Uploads adapter is the last view we make
-		if (userProfile.getStatus() && isAdded()){
-			populateViews();
-		}
-		if (!userProfile.getStatus()){
-			Toast.makeText(getActivity(), "Could not load profile, " + userProfile.getError(), Toast.LENGTH_LONG).show();
-		}
 		if (isAdded()){
 			getActivity().setProgressBarIndeterminate(false);
 			getActivity().setProgressBarIndeterminateVisibility(false);
+			if (userProfile.getStatus()){
+				populateViews();
+			}
+			else {
+				Toast.makeText(getActivity(), "Could not load profile, " + userProfile.getError(), Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 
