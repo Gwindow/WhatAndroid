@@ -2,10 +2,10 @@ package what.whatandroid.search;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,18 +16,19 @@ import api.search.user.UserSearch;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
-import what.whatandroid.profile.ProfileActivity;
+import what.whatandroid.callbacks.ViewUserCallbacks;
 
 /**
  * Fragment for searching for users. If only one user is returned as a result we go to their profile,
  * otherwise a list of found users is displayed
  */
-public class UserSearchFragment extends Fragment
-	implements View.OnClickListener, TextView.OnEditorActionListener, OnLoggedInCallback {
+public class UserSearchFragment extends Fragment implements View.OnClickListener, TextView.OnEditorActionListener,
+	OnLoggedInCallback, LoaderManager.LoaderCallbacks<UserSearch>, AbsListView.OnScrollListener {
 	/**
-	 * So we can set the action bar title
+	 * So we can set the action bar title and viewing a user
 	 */
-	SetTitleCallback setTitle;
+	private SetTitleCallback setTitle;
+	private ViewUserCallbacks viewUser;
 	/**
 	 * Search terms sent to us through the intent
 	 */
@@ -36,7 +37,6 @@ public class UserSearchFragment extends Fragment
 	 * The first page of the user search results
 	 */
 	private UserSearch userSearch;
-	private LoadUserSearch loadUserSearch;
 	/**
 	 * The search terms input box
 	 */
@@ -60,7 +60,9 @@ public class UserSearchFragment extends Fragment
 	 */
 	public static UserSearchFragment newInstance(String terms){
 		UserSearchFragment f = new UserSearchFragment();
-		f.searchTerms = terms;
+		Bundle args = new Bundle();
+		args.putString(SearchActivity.TERMS, terms);
+		f.setArguments(args);
 		return f;
 	}
 
@@ -68,35 +70,26 @@ public class UserSearchFragment extends Fragment
 		//Required empty ctor
 	}
 
-
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
 			setTitle = (SetTitleCallback)activity;
+			viewUser = (ViewUserCallbacks)activity;
 		}
 		catch (ClassCastException e){
-			throw new ClassCastException(activity.toString() + " must implement SetTitleCallback");
+			throw new ClassCastException(activity.toString() + " must implement SetTitle and ViewUser callbacks");
 		}
 	}
 
 	@Override
-	public void onDetach(){
-		super.onDetach();
-		if (loadUserSearch != null){
-			loadUserSearch.cancel(true);
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		if (savedInstanceState == null){
+			searchTerms = getArguments().getString(SearchActivity.TERMS, "");
 		}
-	}
-
-	@Override
-	public void onLoggedIn(){
-		//If we were sent a search to load from the intent and haven't already loaded it, start loading it
-		if (searchTerms != null && userSearch == null){
-			if (loadUserSearch != null){
-				loadUserSearch.cancel(true);
-			}
-			loadUserSearch = new LoadUserSearch();
-			loadUserSearch.execute(searchTerms);
+		else {
+			searchTerms = savedInstanceState.getString(SearchActivity.TERMS, "");
 		}
 	}
 
@@ -118,25 +111,33 @@ public class UserSearchFragment extends Fragment
 		footer = inflater.inflate(R.layout.footer_loading_indicator, null);
 		resultsList.addHeaderView(header);
 		resultsList.addFooterView(footer);
+		footer.setVisibility(View.GONE);
 
 		resultsAdapter = new UserSearchAdapter(getActivity(), footer);
-		if (userSearch != null){
-			resultsAdapter.viewSearch(userSearch);
-		}
-		//If we're not loading a search hide the loading indicator
-		if (searchTerms == null || searchTerms.isEmpty()){
+		resultsList.setAdapter(resultsAdapter);
+		resultsList.setOnItemClickListener(resultsAdapter);
+		resultsList.setOnScrollListener(this);
+
+		if (searchTerms.isEmpty()){
 			editTerms.requestFocus();
-			footer.setVisibility(View.GONE);
 		}
 		else {
 			editTerms.setText(searchTerms);
 		}
-		resultsList.setAdapter(resultsAdapter);
-		resultsList.setOnItemClickListener(resultsAdapter);
-		resultsList.setOnScrollListener(resultsAdapter);
 		return view;
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		outState.putString(SearchActivity.TERMS, editTerms.getText().toString());
+	}
+
+	@Override
+	public void onLoggedIn(){
+		//Don't auto-search since this fragment redirects to user's profile if we only
+		//get one result
+	}
 
 	@Override
 	public void onClick(View v){
@@ -144,11 +145,10 @@ public class UserSearchFragment extends Fragment
 		if (!searchTerms.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-			if (loadUserSearch != null){
-				loadUserSearch.cancel(true);
-			}
-			loadUserSearch = new LoadUserSearch();
-			loadUserSearch.execute(searchTerms);
+			resultsAdapter.clear();
+			resultsAdapter.notifyDataSetChanged();
+			footer.setVisibility(View.VISIBLE);
+			startSearch(searchTerms, 1);
 		}
 		else {
 			Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
@@ -163,11 +163,10 @@ public class UserSearchFragment extends Fragment
 			if (!searchTerms.isEmpty()){
 				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-				if (loadUserSearch != null){
-					loadUserSearch.cancel(true);
-				}
-				loadUserSearch = new LoadUserSearch();
-				loadUserSearch.execute(searchTerms);
+				resultsAdapter.clear();
+				resultsAdapter.notifyDataSetChanged();
+				footer.setVisibility(View.VISIBLE);
+				startSearch(searchTerms, 1);
 			}
 			else {
 				Toast.makeText(getActivity(), "Enter search terms", Toast.LENGTH_SHORT).show();
@@ -177,63 +176,78 @@ public class UserSearchFragment extends Fragment
 		return true;
 	}
 
-	private class LoadUserSearch extends AsyncTask<String, Void, UserSearch> {
-		@Override
-		protected void onPreExecute(){
-			if (footer != null){
-				footer.setVisibility(View.VISIBLE);
-			}
-			if (resultsAdapter != null){
-				resultsAdapter.clearSearch();
-			}
-			userSearch = null;
-		}
+	@Override
+	public Loader<UserSearch> onCreateLoader(int id, Bundle args){
+		return new UserSearchAsyncLoader(getActivity(), args);
+	}
 
-		@Override
-		protected UserSearch doInBackground(String... params){
-			try {
-				UserSearch s = UserSearch.search(params[0]);
-				if (s != null && s.getStatus()){
-					return s;
-				}
-			}
-			catch (Exception e){
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(UserSearch search){
-			if (search != null){
-				userSearch = search;
+	@Override
+	public void onLoadFinished(Loader<UserSearch> loader, UserSearch data){
+		userSearch = data;
+		if (userSearch != null){
+			if (isAdded()){
 				//If there's only one user in the search go view their profile
 				if (userSearch.getResponse().getResults().size() == 1){
-					if (resultsAdapter != null){
-						resultsAdapter.clearSearch();
-					}
-					if (footer != null){
-						footer.setVisibility(View.GONE);
-					}
-					Intent intent = new Intent(getActivity(), ProfileActivity.class);
-					intent.putExtra(ProfileActivity.USER_ID, userSearch.getResponse().getResults().get(0).getUserId().intValue());
-					startActivity(intent);
+					resultsAdapter.clear();
+					resultsAdapter.notifyDataSetChanged();
+					footer.setVisibility(View.GONE);
+					viewUser.viewUser(userSearch.getResponse().getResults().get(0).getUserId().intValue());
 				}
-				else if (resultsAdapter != null){
+				else {
 					if (userSearch.getResponse().getResults().isEmpty()){
 						noResults.setVisibility(View.VISIBLE);
 					}
 					else {
 						noResults.setVisibility(View.GONE);
 					}
-					resultsAdapter.viewSearch(userSearch);
-					if (footer != null && !userSearch.hasNextPage()){
+					if (userSearch.getPage() == 1){
+						resultsAdapter.clear();
+					}
+					resultsAdapter.addAll(userSearch.getResponse().getResults());
+					resultsAdapter.notifyDataSetChanged();
+					if (!userSearch.hasNextPage()){
 						footer.setVisibility(View.GONE);
 					}
 				}
 			}
+		}
+		else if (isAdded()){
+			Toast.makeText(getActivity(), "Failed to load search results", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	@Override
+	public void onLoaderReset(Loader<UserSearch> loader){
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState){
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
+		if (userSearch != null && userSearch.hasNextPage() && firstVisibleItem + visibleItemCount + 10 >= totalItemCount){
+			startSearch(searchTerms, userSearch.getPage() + 1);
+		}
+	}
+
+	private void startSearch(String terms, int page){
+		Bundle args = new Bundle();
+		args.putString(SearchActivity.TERMS, terms);
+		args.putInt(SearchActivity.PAGE, page);
+		LoaderManager lm = getLoaderManager();
+		Loader l = lm.getLoader(page);
+		if (l == null){
+			lm.initLoader(page, args, this);
+		}
+		//Check if the terms and tags are different from what the loader has and restart if they're different
+		else {
+			UserSearchAsyncLoader s = (UserSearchAsyncLoader)l;
+			if (!s.getTerms().equalsIgnoreCase(searchTerms)){
+				lm.restartLoader(page, args, this);
+			}
 			else {
-				Toast.makeText(getActivity(), "Failed to load search results", Toast.LENGTH_SHORT).show();
+				lm.initLoader(page, args, this);
 			}
 		}
 	}
