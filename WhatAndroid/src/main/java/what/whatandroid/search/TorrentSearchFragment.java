@@ -84,16 +84,18 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		searchTerms = getArguments().getString(SearchActivity.TERMS, "");
-		searchTags = getArguments().getString(SearchActivity.TAGS, "");
+		if (savedInstanceState == null){
+			searchTerms = getArguments().getString(SearchActivity.TERMS, "");
+			searchTags = getArguments().getString(SearchActivity.TAGS, "");
+		}
+		else {
+			searchTerms = savedInstanceState.getString(SearchActivity.TERMS, "");
+			searchTags = savedInstanceState.getString(SearchActivity.TAGS, "");
+		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		if (savedInstanceState != null){
-			searchTerms = savedInstanceState.getString(SearchActivity.TERMS, "");
-			searchTags = savedInstanceState.getString(SearchActivity.TAGS, "");
-		}
 		setTitle.setTitle("Torrent Search");
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		ListView resultsList = (ListView)view.findViewById(R.id.list);
@@ -141,7 +143,7 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 	@Override
 	public void onLoggedIn(){
 		//If we were sent a search intent and are added then start loading it
-		if (!searchTerms.isEmpty() || !searchTags.isEmpty() && isAdded()){
+		if (!searchTerms.isEmpty() || !searchTags.isEmpty()){
 			startSearch(searchTerms, searchTags, 1);
 		}
 	}
@@ -153,7 +155,8 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 		if (!searchTerms.isEmpty() || !searchTags.isEmpty()){
 			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-			resultsAdapter.clearSearch();
+			resultsAdapter.clear();
+			resultsAdapter.notifyDataSetChanged();
 			footer.setVisibility(View.VISIBLE);
 			startSearch(searchTerms, searchTags, 1);
 		}
@@ -171,7 +174,8 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 			if (!searchTerms.isEmpty() || !searchTags.isEmpty()){
 				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(editTerms.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-				resultsAdapter.clearSearch();
+				resultsAdapter.clear();
+				resultsAdapter.notifyDataSetChanged();
 				footer.setVisibility(View.VISIBLE);
 				startSearch(searchTerms, searchTags, 1);
 			}
@@ -236,9 +240,10 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 				}
 				//If it's the first page then clear any previous search
 				if (torrentSearch.getPage() == 1){
-					resultsAdapter.clearSearch();
+					resultsAdapter.clear();
 				}
-				resultsAdapter.addResults(torrentSearch);
+				resultsAdapter.addAll(torrentSearch.getResponse().getResults());
+				resultsAdapter.notifyDataSetChanged();
 				if (!torrentSearch.hasNextPage()){
 					footer.setVisibility(View.GONE);
 				}

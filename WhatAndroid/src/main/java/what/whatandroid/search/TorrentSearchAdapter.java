@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import api.search.torrents.TorrentGroup;
-import api.search.torrents.TorrentSearch;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
@@ -38,16 +37,6 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 		catch (ClassCastException e){
 			throw new ClassCastException(context.toString() + " must implement ViewTorrentCallbacks");
 		}
-	}
-
-	public void addResults(TorrentSearch search){
-		addAll(search.getResponse().getResults());
-		notifyDataSetChanged();
-	}
-
-	public void clearSearch(){
-		clear();
-		notifyDataSetChanged();
 	}
 
 	@Override
