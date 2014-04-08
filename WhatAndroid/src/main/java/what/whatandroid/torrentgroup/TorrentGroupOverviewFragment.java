@@ -120,7 +120,8 @@ public class TorrentGroupOverviewFragment extends Fragment implements View.OnCli
 			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner));
 		}
 		else {
-			imageHeader.setVisibility(View.GONE);
+			image.setVisibility(View.GONE);
+			spinner.setVisibility(View.GONE);
 		}
 		albumTitle.setText(group.getResponse().getGroup().getName());
 
