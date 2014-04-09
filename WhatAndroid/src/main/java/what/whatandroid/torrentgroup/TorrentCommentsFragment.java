@@ -59,6 +59,7 @@ public class TorrentCommentsFragment extends Fragment
 		footer = inflater.inflate(R.layout.footer_loading_indicator, null);
 		adapter = new CommentsAdapter(getActivity());
 		list.addFooterView(footer);
+		list.setFooterDividersEnabled(false);
 		list.setAdapter(adapter);
 		list.setOnScrollListener(this);
 

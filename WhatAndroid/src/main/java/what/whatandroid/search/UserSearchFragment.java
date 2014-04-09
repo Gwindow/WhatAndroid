@@ -111,6 +111,7 @@ public class UserSearchFragment extends Fragment implements View.OnClickListener
 		footer = inflater.inflate(R.layout.footer_loading_indicator, null);
 		resultsList.addHeaderView(header);
 		resultsList.addFooterView(footer);
+		resultsList.setFooterDividersEnabled(false);
 		footer.setVisibility(View.GONE);
 
 		resultsAdapter = new UserSearchAdapter(getActivity(), footer);

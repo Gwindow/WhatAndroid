@@ -111,6 +111,7 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 		footer = inflater.inflate(R.layout.footer_loading_indicator, null);
 		resultsList.addHeaderView(header);
 		resultsList.addFooterView(footer);
+		resultsList.setFooterDividersEnabled(false);
 		footer.setVisibility(View.GONE);
 
 		resultsAdapter = new TorrentSearchAdapter(getActivity());

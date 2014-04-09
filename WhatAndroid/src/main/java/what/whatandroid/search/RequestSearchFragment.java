@@ -103,6 +103,7 @@ public class RequestSearchFragment extends Fragment implements View.OnClickListe
 		footer = inflater.inflate(R.layout.footer_loading_indicator, null);
 		resultsList.addHeaderView(header);
 		resultsList.addFooterView(footer);
+		resultsList.setFooterDividersEnabled(false);
 		//We should only show the footer if we're loading a search
 		footer.setVisibility(View.GONE);
 

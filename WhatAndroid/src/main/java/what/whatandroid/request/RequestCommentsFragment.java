@@ -44,6 +44,7 @@ public class RequestCommentsFragment extends Fragment implements LoadingListener
 		footer = inflater.inflate(R.layout.footer_loading_indicator, null);
 		adapter = new CommentsAdapter(getActivity());
 		list.addFooterView(footer);
+		list.setFooterDividersEnabled(false);
 		list.setAdapter(adapter);
 		list.setOnScrollListener(this);
 		return view;
