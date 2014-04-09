@@ -251,6 +251,10 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 
 	@Override
 	public Loader<Request> onCreateLoader(int id, Bundle args){
+		if (isAdded()){
+			getActivity().setProgressBarIndeterminate(true);
+			getActivity().setProgressBarIndeterminateVisibility(true);
+		}
 		return new RequestAsyncLoader(getActivity(), args);
 	}
 
