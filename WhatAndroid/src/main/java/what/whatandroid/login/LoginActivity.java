@@ -149,6 +149,18 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	public void onBackPressed(){
+		if (loginRequest){
+			Intent result = new Intent();
+			setResult(Activity.RESULT_CANCELED, result);
+			LoginActivity.this.finish();
+		}
+		else {
+			super.onBackPressed();
+		}
+	}
+
 	/**
 	 * Login async task, takes user's username and password and logs them
 	 * into the site via the api library
