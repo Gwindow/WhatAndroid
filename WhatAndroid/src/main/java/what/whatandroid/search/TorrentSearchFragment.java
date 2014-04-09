@@ -143,6 +143,7 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 	public void onLoggedIn(){
 		//If we were sent a search intent and are added then start loading it
 		if (!searchTerms.isEmpty() || !searchTags.isEmpty()){
+			footer.setVisibility(View.VISIBLE);
 			startSearch(searchTerms, searchTags, 1);
 		}
 	}
