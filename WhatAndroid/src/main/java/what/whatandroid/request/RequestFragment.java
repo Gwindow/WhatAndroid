@@ -107,7 +107,7 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 		View view = inflater.inflate(R.layout.expandable_list_view, container, false);
 		list = (ExpandableListView)view.findViewById(R.id.exp_list);
 		View header = inflater.inflate(R.layout.header_request_info, null);
-		list.addHeaderView(header);
+		list.addHeaderView(header, null, false);
 
 		image = (ImageView)header.findViewById(R.id.image);
 		spinner = (ProgressBar)header.findViewById(R.id.loading_indicator);

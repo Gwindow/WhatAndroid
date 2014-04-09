@@ -145,7 +145,15 @@ public class RequestActivity extends LoggedInActivity
 		}
 
 		@Override
+		protected void onPreExecute(){
+			setProgressBarIndeterminate(true);
+			setProgressBarIndeterminateVisibility(true);
+		}
+
+		@Override
 		protected void onPostExecute(Boolean status){
+			setProgressBarIndeterminate(false);
+			setProgressBarIndeterminateVisibility(false);
 			if (status){
 				Toast.makeText(RequestActivity.this, "Bounty added", Toast.LENGTH_LONG).show();
 				fragment.refresh();
