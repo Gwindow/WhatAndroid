@@ -32,7 +32,7 @@ public class TorrentCommentsAsyncLoader extends AsyncTaskLoader<TorrentComments>
 				//mimic the site behavior of showing most recent comments first
 				if (page == -1){
 					comments = TorrentComments.fromId(groupId);
-					if (comments.getStatus()){
+					if (comments != null && comments.getStatus()){
 						page = comments.getPage();
 					}
 				}
@@ -41,7 +41,7 @@ public class TorrentCommentsAsyncLoader extends AsyncTaskLoader<TorrentComments>
 				}
 				//If we get rate limited wait and retry. It's very unlikely the user has used all 5 of our
 				//requests per 10s so don't wait the whole time initially
-				if (!comments.getStatus() && comments.getError().equalsIgnoreCase("rate limit exceeded")){
+				if (comments != null && !comments.getStatus() && comments.getError() != null && comments.getError().equalsIgnoreCase("rate limit exceeded")){
 					try {
 						Thread.sleep(3000);
 					}
@@ -53,11 +53,13 @@ public class TorrentCommentsAsyncLoader extends AsyncTaskLoader<TorrentComments>
 					break;
 				}
 			}
-			//Sort the comments to have newest ones at the top
-			Collections.sort(comments.getResponse().getComments(),
-				Collections.reverseOrder(new SimpleComment.DateComparator()));
-			for (SimpleComment c : comments.getResponse().getComments()){
-				c.setBody(SmileyProcessor.smileyToEmoji(c.getBody()));
+			if (comments != null){
+				//Sort the comments to have newest ones at the top
+				Collections.sort(comments.getResponse().getComments(),
+					Collections.reverseOrder(new SimpleComment.DateComparator()));
+				for (SimpleComment c : comments.getResponse().getComments()){
+					c.setBody(SmileyProcessor.smileyToEmoji(c.getBody()));
+				}
 			}
 		}
 		return comments;

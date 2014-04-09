@@ -22,7 +22,7 @@ public class RequestAsyncLoader extends AsyncTaskLoader<Request> {
 		if (request == null){
 			while (true){
 				request = Request.fromId(requestId);
-				if (!request.getStatus() && request.getError().equalsIgnoreCase("rate limit exceeded")){
+				if (request != null && !request.getStatus() && request.getError() != null && request.getError().equalsIgnoreCase("rate limit exceeded")){
 					try {
 						Thread.sleep(3000);
 					}

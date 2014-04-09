@@ -44,7 +44,8 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	/**
 	 * Use this factory method to create a new artist fragment displaying information about
 	 * the artist with the id
-	 * @param id artist id to show
+	 *
+	 * @param id        artist id to show
 	 * @param useSearch true if the artist information was loaded by the ArtistSearch fragment
 	 *                  and we should get it from there
 	 * @return Artist Fragment displaying the artist's info
@@ -118,7 +119,7 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 		if (isAdded()){
 			getActivity().setProgressBarIndeterminate(false);
 			getActivity().setProgressBarIndeterminateVisibility(false);
-			if (artist.getStatus()){
+			if (artist != null && artist.getStatus()){
 				populateViews();
 			}
 			else {

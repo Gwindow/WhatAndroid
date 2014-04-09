@@ -159,7 +159,7 @@ public class RequestActivity extends LoggedInActivity
 				fragment.refresh();
 			}
 			else {
-				Toast.makeText(RequestActivity.this, "Failed to add bounty", Toast.LENGTH_LONG).show();
+				Toast.makeText(RequestActivity.this, "Could not add bounty", Toast.LENGTH_LONG).show();
 			}
 		}
 	}

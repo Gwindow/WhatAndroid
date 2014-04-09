@@ -28,7 +28,7 @@ public class UserSearchAsyncLoader extends AsyncTaskLoader<UserSearch> {
 				search = UserSearch.search(terms, page);
 				//If we get rate limited wait and retry. It's very unlikely the user has used all 5 of our
 				//requests per 10s so don't wait the whole time initially
-				if (!search.getStatus() && search.getError().equalsIgnoreCase("rate limit exceeded")){
+				if (search != null && !search.getStatus() && search.getError() != null && search.getError().equalsIgnoreCase("rate limit exceeded")){
 					try {
 						Thread.sleep(3000);
 					}

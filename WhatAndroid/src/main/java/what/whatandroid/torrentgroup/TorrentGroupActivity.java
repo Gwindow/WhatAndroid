@@ -121,7 +121,7 @@ public class TorrentGroupActivity extends LoggedInActivity
 	public void onLoadFinished(Loader<TorrentGroup> loader, TorrentGroup data){
 		setProgressBarIndeterminateVisibility(false);
 		if (data == null || !data.getStatus()){
-			Toast.makeText(this, "Failed to load torrent group", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Could not load torrent group", Toast.LENGTH_SHORT).show();
 		}
 		else {
 			groupId = data.getId();
@@ -262,7 +262,7 @@ public class TorrentGroupActivity extends LoggedInActivity
 		@Override
 		protected void onPostExecute(Boolean status){
 			if (status){
-				Toast.makeText(TorrentGroupActivity.this, "Torrent sent", Toast.LENGTH_SHORT).show();
+				Toast.makeText(TorrentGroupActivity.this, "Torrent sent", Toast.LENGTH_LONG).show();
 			}
 			else {
 				Toast.makeText(TorrentGroupActivity.this, "Failed to send torrent, check PyWA settings",

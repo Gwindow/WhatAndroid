@@ -197,9 +197,6 @@ public class UserSearchFragment extends Fragment implements View.OnClickListener
 					if (userSearch.getResponse().getResults().isEmpty()){
 						noResults.setVisibility(View.VISIBLE);
 					}
-					else {
-						noResults.setVisibility(View.GONE);
-					}
 					if (userSearch.getPage() == 1){
 						resultsAdapter.clear();
 					}
@@ -212,7 +209,8 @@ public class UserSearchFragment extends Fragment implements View.OnClickListener
 			}
 		}
 		else if (isAdded()){
-			Toast.makeText(getActivity(), "Failed to load search results", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "Could not load search results", Toast.LENGTH_LONG).show();
+			footer.setVisibility(View.GONE);
 		}
 	}
 
@@ -232,6 +230,7 @@ public class UserSearchFragment extends Fragment implements View.OnClickListener
 	}
 
 	private void startSearch(String terms, int page){
+		noResults.setVisibility(View.GONE);
 		Bundle args = new Bundle();
 		args.putString(SearchActivity.TERMS, terms);
 		args.putInt(SearchActivity.PAGE, page);

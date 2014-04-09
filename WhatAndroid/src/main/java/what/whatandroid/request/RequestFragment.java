@@ -264,11 +264,11 @@ public class RequestFragment extends Fragment implements OnLoggedInCallback, Vie
 		if (isAdded()){
 			getActivity().setProgressBarIndeterminateVisibility(false);
 			getActivity().setProgressBarIndeterminate(false);
-			if (request.getStatus()){
+			if (request != null && request.getStatus()){
 				updateRequest();
 			}
 			else {
-				Toast.makeText(getActivity(), "Failed to load request", Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), "Could not load request", Toast.LENGTH_LONG).show();
 			}
 		}
 	}

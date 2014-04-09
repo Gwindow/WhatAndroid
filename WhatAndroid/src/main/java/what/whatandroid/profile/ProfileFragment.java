@@ -184,7 +184,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 				populateViews();
 			}
 			else {
-				Toast.makeText(getActivity(), "Could not load profile, " + userProfile.getError(), Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), "Could not load profile", Toast.LENGTH_LONG).show();
 			}
 		}
 	}

@@ -200,6 +200,7 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 	}
 
 	private void startSearch(String terms, String tags, int page){
+		noResults.setVisibility(View.GONE);
 		Bundle args = new Bundle();
 		args.putString(SearchActivity.TERMS, terms);
 		args.putString(SearchActivity.TAGS, tags);
@@ -235,9 +236,6 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 				if (torrentSearch.getResponse().getResults().isEmpty()){
 					noResults.setVisibility(View.VISIBLE);
 				}
-				else {
-					noResults.setVisibility(View.GONE);
-				}
 				//If it's the first page then clear any previous search
 				if (torrentSearch.getPage() == 1){
 					resultsAdapter.clear();
@@ -250,7 +248,8 @@ public class TorrentSearchFragment extends Fragment implements View.OnClickListe
 			}
 		}
 		else if (isAdded()){
-			Toast.makeText(getActivity(), "Failed to load search results", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "Could not load search results", Toast.LENGTH_LONG).show();
+			footer.setVisibility(View.GONE);
 		}
 	}
 

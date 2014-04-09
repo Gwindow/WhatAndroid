@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import api.soup.MySoup;
 import api.torrents.torrents.TorrentGroup;
 import api.torrents.torrents.comments.TorrentComments;
@@ -124,6 +125,11 @@ public class TorrentCommentsFragment extends Fragment
 	public void onLoadFinished(Loader<TorrentComments> loader, TorrentComments data){
 		loadingPrev = false;
 		comments = data;
+		if (comments == null){
+			Toast.makeText(getActivity(), "Could not load comments", Toast.LENGTH_LONG).show();
+			footer.setVisibility(View.GONE);
+			return;
+		}
 		if (isAdded()){
 			updateComments();
 		}
