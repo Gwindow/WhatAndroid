@@ -15,8 +15,6 @@ import what.whatandroid.callbacks.LoadingListener;
  */
 public class TorrentGroupFragment extends android.support.v4.app.Fragment implements LoadingListener<TorrentGroup> {
 	private TorrentGroupPagerAdapter torrentGroupPagerAdapter;
-	private ViewPager viewPager;
-	private PagerSlidingTabStrip tabs;
 
 	public static TorrentGroupFragment newInstance(int groupId){
 		TorrentGroupFragment f = new TorrentGroupFragment();
@@ -32,19 +30,12 @@ public class TorrentGroupFragment extends android.support.v4.app.Fragment implem
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		int groupId;
-		if (savedInstanceState != null){
-			groupId = savedInstanceState.getInt(TorrentGroupActivity.GROUP_ID);
-		}
-		else {
-			groupId = getArguments().getInt(TorrentGroupActivity.GROUP_ID);
-		}
-
+		int groupId = getArguments().getInt(TorrentGroupActivity.GROUP_ID);
 		View view = inflater.inflate(R.layout.fragment_view_pager_tabs, container, false);
-		viewPager = (ViewPager)view.findViewById(R.id.pager);
+		ViewPager viewPager = (ViewPager)view.findViewById(R.id.pager);
 		torrentGroupPagerAdapter = new TorrentGroupPagerAdapter(getChildFragmentManager(), groupId);
 		viewPager.setAdapter(torrentGroupPagerAdapter);
-		tabs = (PagerSlidingTabStrip)view.findViewById(R.id.tabs);
+		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip)view.findViewById(R.id.tabs);
 		tabs.setViewPager(viewPager);
 		return view;
 	}

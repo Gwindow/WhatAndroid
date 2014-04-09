@@ -121,7 +121,7 @@ public class TorrentGroupActivity extends LoggedInActivity
 	public void onLoadFinished(Loader<TorrentGroup> loader, TorrentGroup data){
 		setProgressBarIndeterminateVisibility(false);
 		if (data == null || !data.getStatus()){
-			Toast.makeText(this, "Could not load torrent group", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Could not load torrent group", Toast.LENGTH_LONG).show();
 		}
 		else {
 			groupId = data.getId();

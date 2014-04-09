@@ -27,7 +27,6 @@ public class TorrentCommentsFragment extends Fragment
 	public static final String COMMENTS_PAGE = "what.whatandroid.TORRENT_COMMENTS_PAGE";
 	private TorrentComments comments;
 	private int groupId;
-	private ListView list;
 	private CommentsAdapter adapter;
 	private View footer;
 	private TextView noComments;
@@ -54,7 +53,7 @@ public class TorrentCommentsFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
-		list = (ListView)view.findViewById(R.id.list);
+		ListView list = (ListView)view.findViewById(R.id.list);
 		noComments = (TextView)view.findViewById(R.id.no_content_notice);
 		noComments.setText("No comments");
 		footer = inflater.inflate(R.layout.footer_loading_indicator, null);
@@ -93,7 +92,6 @@ public class TorrentCommentsFragment extends Fragment
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
-		//We hide the footer when we load the final item
 		if (comments != null && comments.hasPreviousPage() && !loadingPrev && firstVisibleItem + visibleItemCount + 5 >= totalItemCount){
 			loadingPrev = true;
 			Bundle args = new Bundle();
@@ -125,7 +123,7 @@ public class TorrentCommentsFragment extends Fragment
 	public void onLoadFinished(Loader<TorrentComments> loader, TorrentComments data){
 		loadingPrev = false;
 		comments = data;
-		if (comments == null){
+		if (comments == null || !comments.getStatus()){
 			Toast.makeText(getActivity(), "Could not load comments", Toast.LENGTH_LONG).show();
 			footer.setVisibility(View.GONE);
 			return;

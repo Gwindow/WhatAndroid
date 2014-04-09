@@ -32,9 +32,6 @@ public class TorrentCommentsAsyncLoader extends AsyncTaskLoader<TorrentComments>
 				//mimic the site behavior of showing most recent comments first
 				if (page == -1){
 					comments = TorrentComments.fromId(groupId);
-					if (comments != null && comments.getStatus()){
-						page = comments.getPage();
-					}
 				}
 				else {
 					comments = TorrentComments.fromId(groupId, page);
@@ -53,7 +50,7 @@ public class TorrentCommentsAsyncLoader extends AsyncTaskLoader<TorrentComments>
 					break;
 				}
 			}
-			if (comments != null){
+			if (comments != null && comments.getStatus()){
 				//Sort the comments to have newest ones at the top
 				Collections.sort(comments.getResponse().getComments(),
 					Collections.reverseOrder(new SimpleComment.DateComparator()));

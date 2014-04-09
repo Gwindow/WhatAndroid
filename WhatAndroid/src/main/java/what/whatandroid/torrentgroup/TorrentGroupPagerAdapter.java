@@ -71,11 +71,11 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object){
 		super.destroyItem(container, position, object);
-		if (position == 0){
-			overview = null;
-		}
-		else {
-			comments = null;
+		switch (position){
+			case 0:
+				overview = null;
+			default:
+				comments = null;
 		}
 	}
 
