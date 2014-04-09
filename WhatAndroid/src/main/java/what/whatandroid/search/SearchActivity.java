@@ -144,28 +144,28 @@ public class SearchActivity extends LoggedInActivity
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.torrents)) && type != TORRENT){
 			FragmentManager fm = getSupportFragmentManager();
-			TorrentSearchFragment f = new TorrentSearchFragment();
+			TorrentSearchFragment f = TorrentSearchFragment.newInstance("", "");
 			searchFragment = f;
 			fm.beginTransaction().replace(R.id.container, f).commit();
 			type = TORRENT;
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.artists)) && type != ARTIST){
 			FragmentManager fm = getSupportFragmentManager();
-			ArtistSearchFragment f = new ArtistSearchFragment();
+			ArtistSearchFragment f = ArtistSearchFragment.newInstance("");
 			searchFragment = f;
 			fm.beginTransaction().replace(R.id.container, f).commit();
 			type = ARTIST;
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.requests)) && type != REQUEST){
 			FragmentManager fm = getSupportFragmentManager();
-			RequestSearchFragment f = new RequestSearchFragment();
+			RequestSearchFragment f = RequestSearchFragment.newInstance("", "");
 			searchFragment = f;
 			fm.beginTransaction().replace(R.id.container, f).commit();
 			type = REQUEST;
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.users)) && type != USER){
 			FragmentManager fm = getSupportFragmentManager();
-			UserSearchFragment f = new UserSearchFragment();
+			UserSearchFragment f = UserSearchFragment.newInstance("");
 			searchFragment = f;
 			fm.beginTransaction().replace(R.id.container, f).commit();
 			type = USER;
