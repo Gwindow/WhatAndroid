@@ -65,7 +65,7 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		fileList = (ListView)view.findViewById(R.id.list);
 		View header = inflater.inflate(R.layout.header_torrent_detail, null);
-		fileList.addHeaderView(header);
+		fileList.addHeaderView(header, null, false);
 		adapter = new TorrentFilesAdapter(getActivity());
 		fileList.setAdapter(adapter);
 

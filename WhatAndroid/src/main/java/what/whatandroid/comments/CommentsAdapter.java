@@ -76,6 +76,12 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 		return convertView;
 	}
 
+	//Temporarily disable all comments until we put in link handling and going to commenter profiles
+	@Override
+	public boolean isEnabled(int position){
+		return false;
+	}
+
 	private static class ViewHolder {
 		public TextView username, postDate, commentText;
 		public ImageView image;
