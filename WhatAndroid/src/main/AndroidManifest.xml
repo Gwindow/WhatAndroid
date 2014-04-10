@@ -49,6 +49,16 @@
                 android:name=".request.RequestActivity"
                 android:label="@string/request">
         </activity>
+        <activity
+                android:name=".barcode.BarcodeActivity"
+                android:label="@string/barcode_scanner">
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/csv"/>
+            </intent-filter>
+        </activity>
 
         <service
                 android:name=".errors.ErrorReporterService"

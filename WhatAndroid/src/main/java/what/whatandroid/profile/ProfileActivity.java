@@ -8,6 +8,7 @@ import api.soup.MySoup;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
+import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.search.SearchActivity;
@@ -113,6 +114,10 @@ public class ProfileActivity extends LoggedInActivity
 		else if (selection.equalsIgnoreCase(getString(R.string.users))){
 			Intent intent = new Intent(this, SearchActivity.class);
 			intent.putExtra(SearchActivity.SEARCH, SearchActivity.USER);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.barcode_scanner))){
+			Intent intent = new Intent(this, BarcodeActivity.class);
 			startActivity(intent);
 		}
 	}
