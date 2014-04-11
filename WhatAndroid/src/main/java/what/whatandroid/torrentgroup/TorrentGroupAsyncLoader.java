@@ -26,13 +26,45 @@ public class TorrentGroupAsyncLoader extends AsyncTaskLoader<TorrentGroup> {
 			//If we're only given a torrent id to load we need to load the torrent to get the groupId and then
 			//we can load the group
 			if (groupId == -1){
-				Torrent t = Torrent.fromId(torrentId);
-				if (t == null || !t.getStatus()){
-					return null;
+				while (true){
+					Torrent t = Torrent.fromId(torrentId);
+					//If we get rate limited wait and retry. It's very unlikely the user has used all 5 of our
+					//requests per 10s so don't wait the whole time initially
+					if (!t.getStatus() && t.getError() != null && t.getError().equalsIgnoreCase("rate limit exceeded")){
+						try {
+							Thread.sleep(3000);
+						}
+						catch (InterruptedException e){
+							Thread.currentThread().interrupt();
+						}
+					}
+					else if (t == null || !t.getStatus()){
+						return null;
+					}
+					else {
+						groupId = t.getGroup().getId().intValue();
+						break;
+					}
 				}
-				groupId = t.getGroup().getId().intValue();
 			}
-			torrentGroup = TorrentGroup.fromId(groupId);
+			//Load the torrent group and retry if we fail
+			while (true){
+				torrentGroup = TorrentGroup.fromId(groupId);
+				//If we get rate limited wait and retry. It's very unlikely the user has used all 5 of our
+				//requests per 10s so don't wait the whole time initially
+				if (torrentGroup != null && !torrentGroup.getStatus() && torrentGroup.getError() != null
+					&& torrentGroup.getError().equalsIgnoreCase("rate limit exceeded")){
+					try {
+						Thread.sleep(3000);
+					}
+					catch (InterruptedException e){
+						Thread.currentThread().interrupt();
+					}
+				}
+				else {
+					break;
+				}
+			}
 			if (torrentGroup != null && torrentGroup.getStatus()){
 				torrentGroup.getEditions();
 			}
