@@ -129,10 +129,17 @@ public class TorrentGroupOverviewFragment extends Fragment implements View.OnCli
 		MusicInfo musicInfo = group.getResponse().getGroup().getMusicInfo();
 		if (musicInfo == null || musicInfo.getArtists().size() > 2 || musicInfo.getArtists().isEmpty()){
 			adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(), musicInfo, editions);
-			artistA.setText("Various Artists");
-			//Change color to indicate it's not clickable
-			artistA.setTextColor(getResources().getColor(android.R.color.secondary_text_dark));
-			artistB.setVisibility(View.GONE);
+			//Don't show artist name at all if there's no artist
+			if (musicInfo == null || musicInfo.getArtists().isEmpty()){
+				artistA.setVisibility(View.GONE);
+				artistB.setVisibility(View.GONE);
+			}
+			else {
+				artistA.setText("Various Artists");
+				//Change color to indicate it's not clickable
+				artistA.setTextColor(getResources().getColor(android.R.color.secondary_text_dark));
+				artistB.setVisibility(View.GONE);
+			}
 		}
 		else {
 			artistA.setOnClickListener(this);
