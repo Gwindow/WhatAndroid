@@ -6,9 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.support.v4.content.AsyncTaskLoader;
 import api.barcode.Barcode;
-import api.soup.MySoup;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,9 +17,8 @@ import java.util.List;
 public class BarcodeAsyncLoader extends AsyncTaskLoader<List<Barcode>> {
 	private BarcodeDatabaseHelper dbHelper;
 	private List<Barcode> barcodes;
-	private final String[] allCols = {BarcodeDatabaseHelper.COL_ID, BarcodeDatabaseHelper.COL_UPC,
-		BarcodeDatabaseHelper.COL_DATE, BarcodeDatabaseHelper.COL_TERMS, BarcodeDatabaseHelper.COL_TAGS,
-		BarcodeDatabaseHelper.COL_LABEL};
+	private final String[] allCols = {BarcodeDatabaseHelper.COL_UPC, BarcodeDatabaseHelper.COL_DATE,
+		BarcodeDatabaseHelper.COL_TERMS, BarcodeDatabaseHelper.COL_TAGS, BarcodeDatabaseHelper.COL_LABEL};
 
 	public BarcodeAsyncLoader(Context context){
 		super(context);
@@ -32,7 +31,8 @@ public class BarcodeAsyncLoader extends AsyncTaskLoader<List<Barcode>> {
 		try {
 			SQLiteDatabase database = dbHelper.getWritableDatabase();
 			if (database != null){
-				Cursor cursor = database.query(BarcodeDatabaseHelper.TABLE, allCols, null, null, null, null, null);
+				Cursor cursor = database.query(BarcodeDatabaseHelper.TABLE, allCols, null, null, null, null,
+					BarcodeDatabaseHelper.COL_DATE + " DESC");
 				cursor.moveToFirst();
 				barcodes = new ArrayList<Barcode>();
 				while (!cursor.isAfterLast()){
@@ -50,8 +50,8 @@ public class BarcodeAsyncLoader extends AsyncTaskLoader<List<Barcode>> {
 	}
 
 	private Barcode readBarcode(Cursor cursor){
-		return new Barcode(cursor.getString(1), MySoup.parseDate(cursor.getString(2)),
-			cursor.getString(3), cursor.getString(4), cursor.getString(5));
+		return new Barcode(cursor.getString(0), new Date(cursor.getLong(1)),
+			cursor.getString(2), cursor.getString(3), cursor.getString(4));
 	}
 
 	@Override

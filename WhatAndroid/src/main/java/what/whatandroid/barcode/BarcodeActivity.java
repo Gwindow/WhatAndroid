@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import api.products.ProductSearch;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
@@ -38,6 +39,10 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 				.add(R.id.container, new BarcodeFragment())
 				.commit();
 		}
+
+		//Setup our Semantics3 fallback API info
+		ProductSearch.setCredentials("API KEY",
+			"API SECRET", true);
 	}
 
 	public void restoreActionBar(){

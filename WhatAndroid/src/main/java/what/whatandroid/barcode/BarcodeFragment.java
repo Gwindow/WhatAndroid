@@ -19,7 +19,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.barcode.Barcode;
-import api.soup.MySoup;
 import what.whatandroid.R;
 
 import java.io.BufferedInputStream;
@@ -61,11 +60,10 @@ public class BarcodeFragment extends Fragment implements LoaderManager.LoaderCal
 						String info[] = line.replaceAll("\"", "").split(",");
 						//Read the barcode info for exported product barcodes only
 						if (info[2].matches("(UPC|EAN|RSS)_.+")){
-							Date scanned = new Date(Long.parseLong(info[3]));
-							barcodes.add(new Barcode(info[0], scanned));
+							barcodes.add(new Barcode(info[0], new Date(Long.parseLong(info[3]))));
 						}
 					}
-					new SaveBarcodesTask(false).execute(barcodes);
+					new CreateBarcodesTask().execute(barcodes);
 				}
 				catch (Exception e){
 					e.printStackTrace();
@@ -82,14 +80,14 @@ public class BarcodeFragment extends Fragment implements LoaderManager.LoaderCal
 		noBarcodes.setText("No barcodes");
 		barcodeAdapter = new BarcodeAdapter(getActivity());
 		list.setAdapter(barcodeAdapter);
-		getLoaderManager().initLoader(0, null, this);
 		return view;
 	}
 
 	@Override
-	public void onStop(){
-		super.onStop();
-		new SaveBarcodesTask(true).execute(barcodeAdapter.getBarcodes());
+	public void onResume(){
+		super.onResume();
+		//We always want to read the latest information from the database
+		getLoaderManager().restartLoader(0, null, this);
 	}
 
 	@Override
@@ -114,19 +112,13 @@ public class BarcodeFragment extends Fragment implements LoaderManager.LoaderCal
 	}
 
 	/**
-	 * Async task to write some barcodes to the database. Params[0] should be the list of barcodes to add
+	 * Async task to write new barcodes to the database, if an entry already exists with the
+	 * same UPC the barcode is ignored.
 	 */
-	private class SaveBarcodesTask extends AsyncTask<List<Barcode>, Void, Boolean> {
-		private boolean replace;
+	private class CreateBarcodesTask extends AsyncTask<List<Barcode>, Void, Boolean> {
 		private BarcodeDatabaseHelper helper;
 
-		/**
-		 * Context to open database in. Replace indicates that we should replace
-		 * conflicting UPC entries with the new one passed, if false then the conflicting
-		 * UPC won't be saved
-		 */
-		public SaveBarcodesTask(boolean replace){
-			this.replace = replace;
+		public CreateBarcodesTask(){
 			helper = new BarcodeDatabaseHelper(getActivity());
 		}
 
@@ -135,19 +127,20 @@ public class BarcodeFragment extends Fragment implements LoaderManager.LoaderCal
 			try {
 				SQLiteDatabase database = helper.getWritableDatabase();
 				if (database != null){
-					String cmd = "INSERT OR " + (replace ? "REPLACE" : "IGNORE") + " INTO ";
-					SQLiteStatement statement = database.compileStatement(cmd
-						+ BarcodeDatabaseHelper.TABLE + "(" + BarcodeDatabaseHelper.COL_UPC + ", " + BarcodeDatabaseHelper.COL_DATE
-						+ ", " + BarcodeDatabaseHelper.COL_TERMS + ", " + BarcodeDatabaseHelper.COL_TAGS
-						+ ", " + BarcodeDatabaseHelper.COL_LABEL + ") VALUES(?, ?, ?, ?, ?);");
+					SQLiteStatement statement = database.compileStatement("INSERT OR IGNORE INTO "
+						+ BarcodeDatabaseHelper.TABLE + "(" + BarcodeDatabaseHelper.COL_UPC + ", "
+						+ BarcodeDatabaseHelper.COL_DATE + ", " + BarcodeDatabaseHelper.COL_TERMS
+						+ ", " + BarcodeDatabaseHelper.COL_TAGS + ", " + BarcodeDatabaseHelper.COL_LABEL
+						+ ") VALUES(?, ?, ?, ?, ?);");
 					for (Barcode b : params[0]){
 						statement.bindString(1, b.getUpc());
-						statement.bindString(2, MySoup.writeDate(b.getAdded()));
+						statement.bindLong(2, b.getAdded().getTime());
 						statement.bindString(3, b.getSearchTerms());
 						statement.bindString(4, b.getSearchTags());
 						statement.bindString(5, b.getUserLabel());
 						statement.executeInsert();
 					}
+					statement.close();
 				}
 				return true;
 			}
@@ -159,15 +152,13 @@ public class BarcodeFragment extends Fragment implements LoaderManager.LoaderCal
 
 		@Override
 		protected void onPostExecute(Boolean status){
-			if (isAdded()){
-				if (status){
-					Toast.makeText(getActivity(), "Barcodes saved", Toast.LENGTH_SHORT).show();
-					//Reload viewed barcodes
-					getLoaderManager().restartLoader(0, null, BarcodeFragment.this);
-				}
-				else {
-					Toast.makeText(getActivity(), "Could not save barcodes", Toast.LENGTH_SHORT).show();
-				}
+			if (status){
+				Toast.makeText(getActivity(), "Barcodes added", Toast.LENGTH_SHORT).show();
+				//Reload viewed barcodes
+				getLoaderManager().restartLoader(0, null, BarcodeFragment.this);
+			}
+			else {
+				Toast.makeText(getActivity(), "Could not add barcodes", Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

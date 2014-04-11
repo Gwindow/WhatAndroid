@@ -8,15 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Class for managing the user's barcode database
  */
 public class BarcodeDatabaseHelper extends SQLiteOpenHelper {
-	public static final String TABLE = "barcodes", COL_ID = "_id", COL_UPC = "upc",
-		COL_TERMS = "terms", COL_TAGS = "tags", COL_DATE = "date", COL_LABEL = "label";
+	public static final String TABLE = "barcodes", COL_UPC = "upc", COL_TERMS = "terms",
+		COL_TAGS = "tags", COL_DATE = "date", COL_LABEL = "label";
 	private static final String DB_NAME = "barcodes.db";
 	private static final int DB_VERSION = 1;
 	private static final String DB_CREATE = "CREATE TABLE " + TABLE + "("
-		+ COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_UPC + " TEXT NOT NULL, "
-		+ COL_DATE + " TEXT, " + COL_TERMS + " TEXT, " + COL_TAGS + " TEXT, " + COL_LABEL + " TEXT, "
-		+ "UNIQUE(" + COL_UPC + "));";
-	private static final String DB_BUILD_IDX = "CREATE INDEX upcidx ON " + TABLE + "(" + COL_UPC + ");";
+		+ COL_UPC + " TEXT PRIMARY KEY, " + COL_DATE + " INTEGER, " + COL_TERMS + " TEXT, "
+		+ COL_TAGS + " TEXT, " + COL_LABEL + " TEXT);";
 
 	public BarcodeDatabaseHelper(Context context){
 		super(context, DB_NAME, null, DB_VERSION);
@@ -24,9 +22,7 @@ public class BarcodeDatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db){
-		System.out.println("DB created");
 		db.execSQL(DB_CREATE);
-		db.execSQL(DB_BUILD_IDX);
 	}
 
 	@Override
