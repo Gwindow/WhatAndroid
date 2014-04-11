@@ -16,7 +16,7 @@
     <string name="users">Users</string>
     <string name="artists">Artists</string>
     <string name="requests">Requests</string>
-    <string name="barcode_scanner">Barcode Scanner</string>
+    <string name="barcode_lookup">Barcode Lookup</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

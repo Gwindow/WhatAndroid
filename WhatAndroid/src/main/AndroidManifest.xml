@@ -4,7 +4,7 @@
           android:versionCode="12"
           android:versionName="2.0.4.a">
 
-<uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -51,7 +51,7 @@
         </activity>
         <activity
                 android:name=".barcode.BarcodeActivity"
-                android:label="@string/barcode_scanner">
+                android:label="@string/barcode_lookup">
 
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>

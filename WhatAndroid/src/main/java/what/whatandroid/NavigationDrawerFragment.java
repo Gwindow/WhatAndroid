@@ -95,7 +95,7 @@ public class NavigationDrawerFragment extends Fragment {
 			getString(R.string.artists),
 			getString(R.string.requests),
 			getString(R.string.users),
-			getString(R.string.barcode_scanner)
+			getString(R.string.barcode_lookup)
 		};
 		ArrayList<String> navElems = new ArrayList<String>(Arrays.asList(navs));
 		adapter = new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_list_item_1,

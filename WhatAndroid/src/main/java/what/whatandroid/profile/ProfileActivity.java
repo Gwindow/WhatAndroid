@@ -116,7 +116,7 @@ public class ProfileActivity extends LoggedInActivity
 			intent.putExtra(SearchActivity.SEARCH, SearchActivity.USER);
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.barcode_scanner))){
+		else if (selection.equalsIgnoreCase(getString(R.string.barcode_lookup))){
 			Intent intent = new Intent(this, BarcodeActivity.class);
 			startActivity(intent);
 		}

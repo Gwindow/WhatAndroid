@@ -1,6 +1,5 @@
 package what.whatandroid.barcode;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,15 +9,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
-import org.apache.commons.io.IOUtils;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.settings.SettingsActivity;
-
-import java.io.InputStream;
 
 /**
  * Activity for receiving intents for loading barcodes, viewing scanned barcodes
@@ -41,25 +37,6 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 			getSupportFragmentManager().beginTransaction()
 				.add(R.id.container, new BarcodeFragment())
 				.commit();
-		}
-
-		//Need to also perform some validation to make sure we're getting valid content from ZXing
-		Intent intent = getIntent();
-		String action = intent.getAction();
-		String type = intent.getType();
-		if (Intent.ACTION_SEND.equals(action) && type != null && type.equals("text/csv")){
-			System.out.println("Received action send");
-			Uri history = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-			ContentResolver resolver = getContentResolver();
-			if (history != null){
-				try {
-					InputStream in = resolver.openInputStream(history);
-					System.out.println(IOUtils.toString(in));
-				}
-				catch (Exception e){
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 

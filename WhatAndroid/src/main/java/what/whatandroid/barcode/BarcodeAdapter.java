@@ -63,6 +63,10 @@ public class BarcodeAdapter extends BaseAdapter {
 		barcodes.addAll(b);
 	}
 
+	public void clear(){
+		barcodes.clear();
+	}
+
 	private static class ViewHolder {
 		public TextView barcodeUpc;
 	}
