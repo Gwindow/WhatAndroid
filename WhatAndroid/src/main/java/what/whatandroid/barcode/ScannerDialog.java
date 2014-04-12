@@ -38,7 +38,7 @@ public class ScannerDialog extends DialogFragment {
 			android.R.style.Theme_Holo_Dialog));
 
 		builder.setTitle("Select Scan Mode")
-			.setMessage("Bulk scan: scan as many barcodes as you like then export your history to the app\n\nSingle scan: scan a single barcode")
+			.setMessage("Bulk scan: scan as many barcodes as you like then share your history to the app\n\nSingle scan: scan a single barcode")
 			.setPositiveButton("Single Scan", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which){

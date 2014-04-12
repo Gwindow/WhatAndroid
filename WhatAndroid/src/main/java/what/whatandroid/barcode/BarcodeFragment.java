@@ -1,6 +1,5 @@
 package what.whatandroid.barcode;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -40,40 +39,39 @@ public class BarcodeFragment extends Fragment implements LoaderManager.LoaderCal
 	}
 
 	@Override
-	public void onAttach(Activity activity){
-		super.onAttach(activity);
-		//See if we got an intent containing some barcodes to add
-		Intent intent = activity.getIntent();
-		String action = intent.getAction();
-		String type = intent.getType();
-		if (Intent.ACTION_SEND.equals(action) && type != null && type.equals("text/csv")){
-			Uri history = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-			ContentResolver resolver = activity.getContentResolver();
-			if (history != null){
-				try {
-					List<Barcode> barcodes = new ArrayList<Barcode>();
-					InputStream in = new BufferedInputStream(resolver.openInputStream(history));
-					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-					for (String line = reader.readLine(); line != null; line = reader.readLine()){
-						String info[] = line.replaceAll("\"", "").split(",");
-						//Read the barcode info for exported product barcodes only
-						if (info[2].matches("(UPC|EAN|RSS)_.+")){
-							barcodes.add(new Barcode(info[0], new Date(Long.parseLong(info[3]))));
-						}
-					}
-					new CreateBarcodesTask().execute(barcodes);
-				}
-				catch (Exception e){
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+
+		//See if we got an intent containing some barcodes to add, we also don't want to re-handle an
+		//intent if orientation changed or such, so ignore it if we've got a saved state
+		if (savedInstanceState == null){
+			Intent intent = getActivity().getIntent();
+			String action = intent.getAction();
+			String type = intent.getType();
+			if (Intent.ACTION_SEND.equals(action) && type != null && type.equals("text/csv")){
+				Uri history = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+				ContentResolver resolver = getActivity().getContentResolver();
+				if (history != null){
+					try {
+						List<Barcode> barcodes = new ArrayList<Barcode>();
+						InputStream in = new BufferedInputStream(resolver.openInputStream(history));
+						BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+						for (String line = reader.readLine(); line != null; line = reader.readLine()){
+							String info[] = line.replaceAll("\"", "").split(",");
+							//Read the barcode info for exported product barcodes only
+							if (info[2].matches("(UPC|EAN|RSS)_.+")){
+								barcodes.add(new Barcode(info[0], new Date(Long.parseLong(info[3]))));
+							}
+						}
+						new CreateBarcodesTask().execute(barcodes);
+					}
+					catch (Exception e){
+						e.printStackTrace();
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -137,6 +135,15 @@ public class BarcodeFragment extends Fragment implements LoaderManager.LoaderCal
 	}
 
 	/**
+	 * Add some barcode to the database and the viewed list of barcodes
+	 */
+	public void addBarcode(Barcode b){
+		List<Barcode> barcodes = new ArrayList<Barcode>();
+		barcodes.add(b);
+		new CreateBarcodesTask().execute(barcodes);
+	}
+
+	/**
 	 * Async task to write new barcodes to the database, if an entry already exists with the
 	 * same UPC the barcode is ignored.
 	 */
@@ -166,6 +173,7 @@ public class BarcodeFragment extends Fragment implements LoaderManager.LoaderCal
 						statement.executeInsert();
 					}
 					statement.close();
+					database.close();
 				}
 				return true;
 			}

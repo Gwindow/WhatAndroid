@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
             android:contentDescription="@string/delete"
             android:background="@drawable/ic_action_discard"/>
 
@@ -38,19 +39,25 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/delete"
             android:background="@drawable/ic_action_search"
             android:contentDescription="@string/load_terms"/>
+
+    <ProgressBar
+            android:id="@+id/loading_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"/>
 
     <TextView
             android:id="@+id/date_scanned_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/barcode_secondary"
-            android:paddingTop="8dp"
             android:textSize="18sp"
-            android:textColor="@android:color/primary_text_dark"
-            android:text="@string/scanned_on"/>
+            android:textColor="@android:color/secondary_text_dark"
+            android:text="@string/scanned"/>
 
     <TextView
             android:id="@+id/date_scanned"
@@ -60,6 +67,40 @@
             android:layout_toRightOf="@id/date_scanned_text"
             android:paddingLeft="4dp"
             android:textSize="18sp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/secondary_text_dark"/>
+
+    <Button
+            android:id="@+id/search_torrents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/date_scanned_text"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="12dp"
+            android:drawableLeft="@drawable/ic_action_search"
+            android:drawablePadding="4dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/torrents"
+            android:textColor="@android:color/secondary_text_dark"
+            android:visibility="gone"/>
+
+    <Button
+            android:id="@+id/search_requests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/search_torrents"
+            android:layout_toRightOf="@id/search_torrents"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="12dp"
+            android:drawableLeft="@drawable/ic_action_search"
+            android:drawablePadding="4dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/requests"
+            android:textColor="@android:color/secondary_text_dark"
+            android:visibility="gone"/>
 
 </RelativeLayout>

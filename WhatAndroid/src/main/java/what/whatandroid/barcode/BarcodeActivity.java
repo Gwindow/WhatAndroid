@@ -1,31 +1,42 @@
 package what.whatandroid.barcode;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.Toast;
+import api.barcode.Barcode;
 import api.products.ProductSearch;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
+import what.whatandroid.callbacks.ViewSearchCallbacks;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.settings.SettingsActivity;
+
+import java.util.Date;
 
 /**
  * Activity for receiving intents for loading barcodes, viewing scanned barcodes
  * and launching searches with the terms
  */
 public class BarcodeActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
-	ScannerDialog.ScannerDialogListener {
+	ScannerDialog.ScannerDialogListener, ViewSearchCallbacks {
 
 	private NavigationDrawerFragment navDrawer;
 	private CharSequence title;
+	private BarcodeFragment fragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -37,9 +48,12 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 		title = getTitle();
 
 		if (savedInstanceState == null){
+			fragment = new BarcodeFragment();
 			getSupportFragmentManager().beginTransaction()
-				.add(R.id.container, new BarcodeFragment())
-				.commit();
+				.add(R.id.container, fragment).commit();
+		}
+		else {
+			fragment = (BarcodeFragment)getSupportFragmentManager().findFragmentById(R.id.container);
 		}
 
 		//Setup our Semantics3 fallback API info
@@ -84,13 +98,70 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 	}
 
 	@Override
+	public void startSearch(int type, String terms, String tags){
+		Intent intent = new Intent(this, SearchActivity.class);
+		intent.putExtra(SearchActivity.SEARCH, type);
+		intent.putExtra(SearchActivity.TERMS, terms);
+		intent.putExtra(SearchActivity.TAGS, tags);
+		startActivity(intent);
+	}
+
+	@Override
 	public void startSingleScan(){
-		System.out.println("Single scan");
+		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+		//If ZXing is installed launch it, otherwise ask the user to install it
+		if (!getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).isEmpty()){
+			intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+			startActivityForResult(intent, 0);
+		}
+		else {
+			noScannerAlert();
+		}
 	}
 
 	@Override
 	public void startBulkScan(){
-		System.out.println("Bulk scan");
+		Intent intent = getPackageManager().getLaunchIntentForPackage("com.google.zxing.client.android");
+		if (intent == null){
+			noScannerAlert();
+		}
+		else {
+			intent.addCategory(Intent.CATEGORY_LAUNCHER);
+			startActivity(intent);
+		}
+	}
+
+	/**
+	 * Display a dialog to the user that they don't have the required scanner installed
+	 * and prompt them to install it
+	 */
+	private void noScannerAlert(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this,
+			android.R.style.Theme_Holo_Dialog));
+		builder.setTitle("ZXing Barcode Scanner Not Found")
+			.setMessage("The ZXing Barcode scanner is required to use the scanning features, would you like to install it?")
+			.setPositiveButton("Install", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which){
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.google.zxing.client.android"));
+					startActivity(intent);
+				}
+			})
+			.setNegativeButton("Not now", null);
+		builder.create().show();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data){
+		if (requestCode == 0){
+			if (resultCode == Activity.RESULT_OK){
+				fragment.addBarcode(new Barcode(data.getStringExtra("SCAN_RESULT"), new Date()));
+			}
+			else if (resultCode == Activity.RESULT_CANCELED){
+				Toast.makeText(this, "Scan canceled", Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 
 	@Override
