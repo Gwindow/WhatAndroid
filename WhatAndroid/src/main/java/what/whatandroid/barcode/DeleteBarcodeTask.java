@@ -8,7 +8,8 @@ import android.widget.Toast;
 import api.barcode.Barcode;
 
 /**
- * Async task to delete some barcode from the database
+ * Async task to delete some barcode from the database no parameters will indicate
+ * to clear all barcodes
  */
 public class DeleteBarcodeTask extends AsyncTask<Barcode, Void, Boolean> {
 	private final Context context;
@@ -24,8 +25,15 @@ public class DeleteBarcodeTask extends AsyncTask<Barcode, Void, Boolean> {
 		try {
 			SQLiteDatabase database = helper.getWritableDatabase();
 			if (database != null){
-				boolean status = database.delete(BarcodeDatabaseHelper.TABLE,
-					BarcodeDatabaseHelper.COL_UPC + "='" + params[0].getUpc() + "';", null) > 0;
+				boolean status;
+				if (params.length == 0){
+					database.delete(BarcodeDatabaseHelper.TABLE, null, null);
+					status = true;
+				}
+				else {
+					status = database.delete(BarcodeDatabaseHelper.TABLE,
+						BarcodeDatabaseHelper.COL_UPC + "='" + params[0].getUpc() + "';", null) > 0;
+				}
 				database.close();
 				return status;
 			}

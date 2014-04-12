@@ -12,9 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,12 +71,18 @@ public class BarcodeFragment extends Fragment implements LoaderManager.LoaderCal
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		ListView list = (ListView)view.findViewById(R.id.list);
 		noBarcodes = (TextView)view.findViewById(R.id.no_content_notice);
 		noBarcodes.setText("No barcodes");
-		barcodeAdapter = new BarcodeAdapter(getActivity());
+		barcodeAdapter = new BarcodeAdapter(getActivity(), noBarcodes);
 		list.setAdapter(barcodeAdapter);
 		return view;
 	}
@@ -88,6 +92,27 @@ public class BarcodeFragment extends Fragment implements LoaderManager.LoaderCal
 		super.onResume();
 		//We always want to read the latest information from the database
 		getLoaderManager().restartLoader(0, null, this);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		inflater.inflate(R.menu.barcodes, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		if (item.getItemId() == R.id.action_delete){
+			new DeleteBarcodeTask(getActivity()).execute();
+			barcodeAdapter.clear();
+			barcodeAdapter.notifyDataSetChanged();
+			noBarcodes.setVisibility(View.VISIBLE);
+			return true;
+		}
+		else if (item.getItemId() == R.id.action_new){
+			new ScannerDialog().show(getChildFragmentManager(), "scanner_dialog");
+			return true;
+		}
+		return false;
 	}
 
 	@Override

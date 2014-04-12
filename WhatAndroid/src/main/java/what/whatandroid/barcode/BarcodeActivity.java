@@ -21,7 +21,9 @@ import what.whatandroid.settings.SettingsActivity;
  * Activity for receiving intents for loading barcodes, viewing scanned barcodes
  * and launching searches with the terms
  */
-public class BarcodeActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class BarcodeActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+	ScannerDialog.ScannerDialogListener {
+
 	private NavigationDrawerFragment navDrawer;
 	private CharSequence title;
 
@@ -41,8 +43,8 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 		}
 
 		//Setup our Semantics3 fallback API info
-		ProductSearch.setCredentials("API KEY",
-			"API SECRET", true);
+		ProductSearch.setCredentials("",
+			"", true);
 	}
 
 	public void restoreActionBar(){
@@ -79,6 +81,16 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void startSingleScan(){
+		System.out.println("Single scan");
+	}
+
+	@Override
+	public void startBulkScan(){
+		System.out.println("Bulk scan");
 	}
 
 	@Override

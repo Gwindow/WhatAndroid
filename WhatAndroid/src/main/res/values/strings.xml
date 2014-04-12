@@ -62,6 +62,8 @@
     <string name="delete">Delete</string>
     <string name="load_terms">Load Terms</string>
     <string name="scanned_on">Scanned on</string>
+    <string name="add_barcodes">Scan Barcodes</string>
+    <string name="delete_all">Clear All</string>
     <string name="preferences">Preferences</string>
     <string name="pref_img_on_wifi_only">Load Images on Wifi Only</string>
     <string name="key_pref_img_wifi">pref_img_wifi_only</string>

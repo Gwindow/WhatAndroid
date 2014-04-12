@@ -20,10 +20,12 @@ import java.util.Date;
  */
 public class BarcodeAdapter extends ArrayAdapter<Barcode> {
 	private final LayoutInflater inflater;
+	private final TextView noBarcodes;
 
-	public BarcodeAdapter(Context context){
+	public BarcodeAdapter(Context context, TextView noBarcodes){
 		super(context, R.layout.list_barcode);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.noBarcodes = noBarcodes;
 	}
 
 	@Override
@@ -67,6 +69,9 @@ public class BarcodeAdapter extends ArrayAdapter<Barcode> {
 				remove(b);
 				notifyDataSetChanged();
 				new DeleteBarcodeTask(getContext()).execute(b);
+				if (getCount() == 0){
+					noBarcodes.setVisibility(View.VISIBLE);
+				}
 			}
 		});
 		return convertView;

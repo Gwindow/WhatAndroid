@@ -42,11 +42,23 @@ public class DownloadDialog extends DialogFragment {
 	}
 
 	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		try {
+			listener = (DownloadDialogListener)activity;
+		}
+		catch (ClassCastException e){
+			throw new ClassCastException(activity.toString() + " must implement DownloadDialogListener");
+		}
+	}
+
+	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState){
 		torrentId = getArguments().getInt(TORRENT_ID);
 		downloadLink = getArguments().getString(DOWNLOAD_LINK);
 		title = getArguments().getString(DOWNLOAD_TITLE);
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo_Dialog));
+		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(),
+			android.R.style.Theme_Holo_Dialog));
 
 		builder.setTitle("Download " + title)
 			.setPositiveButton(R.string.send_to_pywa, new DialogInterface.OnClickListener() {
@@ -66,17 +78,6 @@ public class DownloadDialog extends DialogFragment {
 				}
 			});
 		return builder.create();
-	}
-
-	@Override
-	public void onAttach(Activity activity){
-		super.onAttach(activity);
-		try {
-			listener = (DownloadDialogListener)activity;
-		}
-		catch (ClassCastException e){
-			throw new ClassCastException(activity.toString() + " must implement DownloadDialogListener");
-		}
 	}
 
 	/**
