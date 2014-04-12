@@ -12,8 +12,11 @@
             android:id="@+id/barcode_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/delete"
             android:textColor="@android:color/primary_text_dark"
-            android:textSize="22sp"/>
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
     <TextView
             android:id="@+id/barcode_secondary"

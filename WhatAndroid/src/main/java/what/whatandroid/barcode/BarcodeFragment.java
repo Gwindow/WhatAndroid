@@ -120,14 +120,15 @@ public class BarcodeFragment extends Fragment implements LoaderManager.LoaderCal
 
 	@Override
 	public void onLoadFinished(Loader<List<Barcode>> loader, List<Barcode> data){
+		barcodeAdapter.clear();
 		if (data == null || data.isEmpty()){
 			noBarcodes.setVisibility(View.VISIBLE);
 		}
 		else {
-			barcodeAdapter.clear();
+			noBarcodes.setVisibility(View.GONE);
 			barcodeAdapter.addAll(data);
-			barcodeAdapter.notifyDataSetChanged();
 		}
+		barcodeAdapter.notifyDataSetChanged();
 	}
 
 	@Override
