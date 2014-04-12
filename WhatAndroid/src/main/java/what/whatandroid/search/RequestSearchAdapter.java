@@ -55,7 +55,8 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 			holder.art = (ImageView)convertView.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
 			holder.listener = new ImageLoadingListener(holder.spinner);
-			holder.title = (TextView)convertView.findViewById(R.id.title);
+			holder.artistName = (TextView)convertView.findViewById(R.id.artist_name);
+			holder.albumName = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.year);
 			holder.votes = (TextView)convertView.findViewById(R.id.votes);
 			holder.bounty = (TextView)convertView.findViewById(R.id.bounty);
@@ -63,12 +64,29 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 			convertView.setTag(holder);
 		}
 		Request r = getItem(position);
-		holder.title.setText(r.getTitle());
+		holder.albumName.setText(r.getTitle());
 		holder.votes.setText(r.getVoteCount().toString());
 		holder.bounty.setText(Utils.toHumanReadableSize(r.getBounty().longValue()));
 		Date createDate = MySoup.parseDate(r.getTimeAdded());
 		holder.created.setText(DateUtils.getRelativeTimeSpanString(createDate.getTime(),
 			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
+
+		if (r.getArtists().isEmpty() || r.getArtists().get(0).isEmpty()){
+			holder.artistName.setVisibility(View.GONE);
+		}
+		else {
+			holder.artistName.setVisibility(View.VISIBLE);
+			if (r.getArtists().get(0).size() > 2){
+				holder.artistName.setText("Various Artists");
+			}
+			else if (r.getArtists().get(0).size() == 2){
+				holder.artistName.setText(r.getArtists().get(0).get(0).getName()
+					+ " & " + r.getArtists().get(0).get(1).getName());
+			}
+			else {
+				holder.artistName.setText(r.getArtists().get(0).get(0).getName());
+			}
+		}
 
 		String imgUrl = r.getImage();
 		if (SettingsActivity.imagesEnabled(context) && imgUrl != null && !imgUrl.isEmpty()){
@@ -99,6 +117,6 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 		public ImageView art;
 		public ProgressBar spinner;
 		public ImageLoadingListener listener;
-		public TextView title, year, votes, bounty, created;
+		public TextView artistName, albumName, year, votes, bounty, created;
 	}
 }

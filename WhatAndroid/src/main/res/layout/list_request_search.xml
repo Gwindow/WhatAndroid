@@ -29,14 +29,16 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
+            android:id="@+id/title_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingLeft="16dp"
             android:layout_toRightOf="@id/art_container">
 
         <TextView
-                android:id="@+id/title"
+                android:id="@+id/artist_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
@@ -44,66 +46,77 @@
                 android:textColor="@android:color/primary_text_dark"/>
 
         <TextView
+                android:id="@+id/album_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@android:color/primary_text_dark"/>
+
+        <TextView
                 android:id="@+id/year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/title"
                 android:textColor="@android:color/secondary_text_dark"
                 android:textSize="18sp"/>
 
-        <TextView
-                android:id="@+id/votes_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/year"
-                android:layout_marginTop="8dp"
-                android:textColor="@android:color/primary_text_dark"
-                android:textStyle="bold"
-                android:text="@string/votes"/>
 
-        <TextView
-                android:id="@+id/votes"
+        <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/votes_text"
-                android:layout_alignParentRight="true"
-                android:textColor="@android:color/primary_text_dark"/>
+                android:layout_height="wrap_content">
 
-        <TextView
-                android:id="@+id/bounty_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/votes_text"
-                android:layout_marginTop="4dp"
-                android:textColor="@android:color/primary_text_dark"
-                android:textStyle="bold"
-                android:text="@string/bounty"/>
+            <TextView
+                    android:id="@+id/votes_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:textStyle="bold"
+                    android:text="@string/votes"/>
 
-        <TextView
-                android:id="@+id/bounty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/bounty_text"
-                android:layout_alignParentRight="true"
-                android:textColor="@android:color/primary_text_dark"/>
+            <TextView
+                    android:id="@+id/votes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/votes_text"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@android:color/primary_text_dark"/>
 
-        <TextView
-                android:id="@+id/created_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bounty_text"
-                android:layout_marginTop="4dp"
-                android:textColor="@android:color/primary_text_dark"
-                android:textStyle="bold"
-                android:text="@string/created"/>
+            <TextView
+                    android:id="@+id/bounty_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/votes_text"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:textStyle="bold"
+                    android:text="@string/bounty"/>
 
-        <TextView
-                android:id="@+id/created"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/created_text"
-                android:layout_alignParentRight="true"
-                android:textColor="@android:color/primary_text_dark"/>
+            <TextView
+                    android:id="@+id/bounty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/bounty_text"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@android:color/primary_text_dark"/>
 
-    </RelativeLayout>
+            <TextView
+                    android:id="@+id/created_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bounty_text"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@android:color/primary_text_dark"
+                    android:textStyle="bold"
+                    android:text="@string/created"/>
+
+            <TextView
+                    android:id="@+id/created"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/created_text"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@android:color/primary_text_dark"/>
+
+        </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

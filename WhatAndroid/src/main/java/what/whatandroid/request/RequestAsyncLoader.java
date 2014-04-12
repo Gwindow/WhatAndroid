@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 import api.comments.SimpleComment;
+import api.index.Index;
 import api.requests.Request;
+import api.soup.MySoup;
 import what.whatandroid.imgloader.SmileyProcessor;
 
 import java.util.Collections;
@@ -28,6 +30,11 @@ public class RequestAsyncLoader extends AsyncTaskLoader<Request> {
 		if (request == null){
 			while (true){
 				if (page == -1){
+					//Reload the user's index as well to give them up to date information on the effect their vote
+					//will have on their ratio. If we fail to load the index then we'll likely also fail to load the request
+					if (!refreshIndex()){
+						return null;
+					}
 					request = Request.fromId(requestId);
 				}
 				else {
@@ -55,6 +62,26 @@ public class RequestAsyncLoader extends AsyncTaskLoader<Request> {
 			}
 		}
 		return request;
+	}
+
+	private boolean refreshIndex(){
+		//Also handle the case where we've been rate limited
+		while (true){
+			MySoup.loadIndex();
+			Index index = MySoup.getIndex();
+			if (index != null && !index.getStatus() && index.getError() != null && index.getError().equalsIgnoreCase("rate limit exceeded")){
+				try {
+					Thread.sleep(3000);
+				}
+				catch (InterruptedException e){
+					Thread.currentThread().interrupt();
+				}
+			}
+			else {
+				break;
+			}
+		}
+		return MySoup.getIndex() != null && MySoup.getIndex().getStatus();
 	}
 
 	@Override
