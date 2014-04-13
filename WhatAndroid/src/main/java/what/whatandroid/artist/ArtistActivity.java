@@ -15,6 +15,9 @@ import what.whatandroid.request.RequestActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * View information about the artist and a list of their torrent groups
  */
@@ -26,6 +29,12 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 	 */
 	public static final String ARTIST_ID = "what.whatandroid.ARTIST_ID", ARTIST_NAME = "what.whatandroid.ARTIST_NAME",
 		USE_SEARCH = "what.whatandroid.USE_SEARCH";
+	/**
+	 * Patterns to match artist names and ids
+	 * TODO: Should these also be moved to the future site link processing class?
+	 */
+	private final static Pattern artistName = Pattern.compile(".*artistname=([^&]+).*"),
+		artistId = Pattern.compile(".*id=(\\d+).*");
 	private ArtistFragment artistFragment;
 
 	@Override
@@ -35,13 +44,31 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 		setContentView(R.layout.activity_frame);
 		setupNavDrawer();
 
-		int id = getIntent().getIntExtra(ARTIST_ID, 1);
-		boolean useSearch = getIntent().getBooleanExtra(USE_SEARCH, false);
 		if (savedInstanceState != null){
 			artistFragment = (ArtistFragment)getSupportFragmentManager().findFragmentById(R.id.container);
 		}
 		else {
-			artistFragment = ArtistFragment.newInstance(id, useSearch);
+			Intent intent = getIntent();
+			//Use -1 to force a load failure if no artist id or name was passed
+			int id = intent.getIntExtra(ARTIST_ID, -1);
+			String name = intent.getStringExtra(ARTIST_NAME);
+			boolean useSearch = intent.getBooleanExtra(USE_SEARCH, false);
+			//If we're opening an artist url parse out the artist we're trying to view
+			if (intent.getScheme() != null && intent.getScheme().equalsIgnoreCase("what.artist")){
+				String uri = intent.getData().toString();
+				Matcher m = artistName.matcher(uri);
+				if (m.find()){
+					name = m.group(1);
+				}
+				else {
+					//Is it possible that people will send the artist id instead of the name?
+					m = artistId.matcher(uri);
+					if (m.find()){
+						id = Integer.parseInt(m.group(1));
+					}
+				}
+			}
+			artistFragment = ArtistFragment.newInstance(id, name, useSearch);
 			getSupportFragmentManager().beginTransaction().add(R.id.container, artistFragment).commit();
 		}
 	}

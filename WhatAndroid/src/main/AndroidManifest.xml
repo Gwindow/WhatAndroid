@@ -32,6 +32,12 @@
         <activity
                 android:name=".artist.ArtistActivity"
                 android:label="@string/artist">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="what.artist"/>
+            </intent-filter>
         </activity>
         <activity
                 android:name=".torrentgroup.TorrentGroupActivity"

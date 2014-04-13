@@ -45,15 +45,17 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	 * Use this factory method to create a new artist fragment displaying information about
 	 * the artist with the id
 	 *
-	 * @param id        artist id to show
+	 * @param id        artist id to load
+	 * @param name        artist name to load
 	 * @param useSearch true if the artist information was loaded by the ArtistSearch fragment
 	 *                  and we should get it from there
 	 * @return Artist Fragment displaying the artist's info
 	 */
-	public static ArtistFragment newInstance(int id, boolean useSearch){
+	public static ArtistFragment newInstance(int id, String name, boolean useSearch){
 		ArtistFragment f = new ArtistFragment();
 		Bundle args = new Bundle();
 		args.putInt(ArtistActivity.ARTIST_ID, id);
+		args.putString(ArtistActivity.ARTIST_NAME, name);
 		args.putBoolean(ArtistActivity.USE_SEARCH, useSearch);
 		f.setArguments(args);
 		return f;
