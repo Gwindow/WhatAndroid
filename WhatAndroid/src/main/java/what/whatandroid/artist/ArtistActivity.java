@@ -6,6 +6,7 @@ import android.view.Window;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
+import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.callbacks.ViewRequestCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.login.LoggedInActivity;
@@ -111,6 +112,10 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 		else if (selection.equalsIgnoreCase(getString(R.string.users))){
 			Intent intent = new Intent(this, SearchActivity.class);
 			intent.putExtra(SearchActivity.SEARCH, SearchActivity.USER);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.barcode_lookup))){
+			Intent intent = new Intent(this, BarcodeActivity.class);
 			startActivity(intent);
 		}
 	}

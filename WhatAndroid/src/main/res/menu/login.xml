@@ -6,8 +6,15 @@
         tools:context=".WhatAndroid">
 
     <item
+            android:id="@+id/action_barcodes"
+            android:title="@string/barcode_lookup"
+            android:orderInCategory="10"
+            app:showAsAction="never"/>
+
+    <item
             android:id="@+id/action_feedback"
             android:title="@string/action_send_feedback"
+            android:orderInCategory="90"
             app:showAsAction="never"/>
 
     <item

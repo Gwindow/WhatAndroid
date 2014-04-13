@@ -143,6 +143,7 @@ public abstract class LoggedInActivity extends ActionBarActivity
 			String username = preferences.getString(SettingsFragment.USER_NAME, null);
 			String password = preferences.getString(SettingsFragment.USER_PASSWORD, null);
 			if (cookie == null || username == null || password == null){
+				Toast.makeText(this, "Please log in", Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(this, LoginActivity.class);
 				intent.putExtra(LoginActivity.LOGIN_REQUEST, true);
 				startActivityForResult(intent, 0);

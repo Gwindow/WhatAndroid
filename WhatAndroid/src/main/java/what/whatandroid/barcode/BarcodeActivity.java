@@ -17,6 +17,7 @@ import android.view.Window;
 import android.widget.Toast;
 import api.barcode.Barcode;
 import api.products.ProductSearch;
+import api.soup.MySoup;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
@@ -72,6 +73,10 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 	public boolean onCreateOptionsMenu(Menu menu){
 		if (navDrawer == null || !navDrawer.isDrawerOpen()){
 			getMenuInflater().inflate(R.menu.what_android, menu);
+			if (!MySoup.isLoggedIn()){
+				MenuItem logout = menu.findItem(R.id.action_logout);
+				logout.setVisible(false);
+			}
 			restoreActionBar();
 			return true;
 		}

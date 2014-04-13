@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
+import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.ViewRequestCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
@@ -169,6 +170,10 @@ public class SearchActivity extends LoggedInActivity
 			searchFragment = f;
 			fm.beginTransaction().replace(R.id.container, f).commit();
 			type = USER;
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.barcode_lookup))){
+			Intent intent = new Intent(this, BarcodeActivity.class);
+			startActivity(intent);
 		}
 	}
 }

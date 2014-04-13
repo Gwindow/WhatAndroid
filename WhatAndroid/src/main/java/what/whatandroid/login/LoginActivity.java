@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import what.whatandroid.R;
+import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.settings.SettingsFragment;
@@ -134,6 +135,10 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 	public boolean onOptionsItemSelected(MenuItem item){
 		Intent intent;
 		switch (item.getItemId()){
+			case R.id.action_barcodes:
+				intent = new Intent(this, BarcodeActivity.class);
+				startActivity(intent);
+				return true;
 			case R.id.action_settings:
 				intent = new Intent(this, SettingsActivity.class);
 				startActivity(intent);
