@@ -16,6 +16,7 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 	 */
 	private TorrentGroupOverviewFragment overview;
 	private TorrentCommentsFragment comments;
+	private DescriptionFragment description;
 	private TorrentGroup torrentGroup;
 	private int groupId;
 
@@ -29,6 +30,8 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 		switch (position){
 			case 0:
 				return new TorrentGroupOverviewFragment();
+			case 1:
+				return new DescriptionFragment();
 			default:
 				return TorrentCommentsFragment.newInstance(groupId);
 		}
@@ -36,7 +39,7 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 
 	@Override
 	public int getCount(){
-		return 2;
+		return 3;
 	}
 
 	@Override
@@ -44,6 +47,8 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 		switch (position){
 			case 0:
 				return "Torrent Group";
+			case 1:
+				return "Description";
 			default:
 				return "Comments";
 		}
@@ -51,21 +56,27 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 
 	@Override
 	public Object instantiateItem(ViewGroup container, int position){
+		Fragment f = (Fragment)super.instantiateItem(container, position);
 		if (position == 0){
-			overview = (TorrentGroupOverviewFragment)super.instantiateItem(container, position);
+			overview = (TorrentGroupOverviewFragment)f;
 			if (torrentGroup != null){
 				overview.onLoadingComplete(torrentGroup);
 			}
-			return overview;
+		}
+		else if (position == 1){
+			description = (DescriptionFragment)f;
+			if (torrentGroup != null){
+				description.onLoadingComplete(torrentGroup.getResponse().getGroup().getWikiBody());
+			}
 		}
 		else {
-			comments = (TorrentCommentsFragment)super.instantiateItem(container, position);
+			comments = (TorrentCommentsFragment)f;
 			if (torrentGroup != null){
 				//We call logged in on the fragment if loading's done to let it know that it can start loading
 				comments.onLoadingComplete(torrentGroup);
 			}
-			return comments;
 		}
+		return f;
 	}
 
 	@Override
@@ -74,6 +85,10 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 		switch (position){
 			case 0:
 				overview = null;
+				break;
+			case 1:
+				description = null;
+				break;
 			default:
 				comments = null;
 		}
@@ -84,6 +99,9 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 		torrentGroup = group;
 		if (overview != null){
 			overview.onLoadingComplete(torrentGroup);
+		}
+		if (description != null){
+			description.onLoadingComplete(torrentGroup.getResponse().getGroup().getWikiBody());
 		}
 		if (comments != null){
 			comments.onLoadingComplete(torrentGroup);

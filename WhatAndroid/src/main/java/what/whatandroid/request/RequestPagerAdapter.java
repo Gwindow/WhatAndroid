@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 import api.requests.Request;
 import what.whatandroid.callbacks.LoadingListener;
+import what.whatandroid.torrentgroup.DescriptionFragment;
 
 /**
  * Fragment pager adapter to show the request details and comments
@@ -16,6 +17,7 @@ public class RequestPagerAdapter extends FragmentPagerAdapter implements Loading
 	 */
 	private RequestDetailFragment detail;
 	private RequestCommentsFragment comments;
+	private DescriptionFragment description;
 	private Request request;
 
 	public RequestPagerAdapter(FragmentManager fm){
@@ -27,6 +29,8 @@ public class RequestPagerAdapter extends FragmentPagerAdapter implements Loading
 		switch (position){
 			case 0:
 				return new RequestDetailFragment();
+			case 1:
+				return new DescriptionFragment();
 			default:
 				return new RequestCommentsFragment();
 		}
@@ -34,7 +38,7 @@ public class RequestPagerAdapter extends FragmentPagerAdapter implements Loading
 
 	@Override
 	public int getCount(){
-		return 2;
+		return 3;
 	}
 
 	@Override
@@ -42,6 +46,8 @@ public class RequestPagerAdapter extends FragmentPagerAdapter implements Loading
 		switch (position){
 			case 0:
 				return "Request";
+			case 1:
+				return "Description";
 			default:
 				return "Comments";
 		}
@@ -54,6 +60,12 @@ public class RequestPagerAdapter extends FragmentPagerAdapter implements Loading
 			detail = (RequestDetailFragment)f;
 			if (request != null){
 				detail.onLoadingComplete(request);
+			}
+		}
+		else if (position == 1){
+			description = (DescriptionFragment)f;
+			if (request != null){
+				description.onLoadingComplete(request.getResponse().getDescription());
 			}
 		}
 		else {
@@ -71,6 +83,10 @@ public class RequestPagerAdapter extends FragmentPagerAdapter implements Loading
 		switch (position){
 			case 0:
 				detail = null;
+				break;
+			case 1:
+				description = null;
+				break;
 			default:
 				comments = null;
 		}
@@ -81,6 +97,9 @@ public class RequestPagerAdapter extends FragmentPagerAdapter implements Loading
 		request = data;
 		if (detail != null){
 			detail.onLoadingComplete(data);
+		}
+		if (description != null){
+			description.onLoadingComplete(request.getResponse().getDescription());
 		}
 		if (comments != null){
 			comments.onLoadingComplete(data);

@@ -47,6 +47,10 @@ public class RequestCommentsFragment extends Fragment implements LoadingListener
 		list.setFooterDividersEnabled(false);
 		list.setAdapter(adapter);
 		list.setOnScrollListener(this);
+
+		if (request != null){
+			onCommentsLoaded(request);
+		}
 		return view;
 	}
 

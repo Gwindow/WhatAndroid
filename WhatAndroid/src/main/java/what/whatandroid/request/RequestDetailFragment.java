@@ -115,6 +115,10 @@ public class RequestDetailFragment extends Fragment implements View.OnClickListe
 		addVote = header.findViewById(R.id.add_vote);
 		addVote.setOnClickListener(this);
 		image.setOnClickListener(this);
+
+		if (request != null){
+			populateViews();
+		}
 		return view;
 	}
 
