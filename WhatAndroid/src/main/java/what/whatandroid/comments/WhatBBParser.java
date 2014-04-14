@@ -2,10 +2,7 @@ package what.whatandroid.comments;
 
 import android.graphics.Typeface;
 import android.text.SpannableStringBuilder;
-import android.text.style.CharacterStyle;
-import android.text.style.StrikethroughSpan;
-import android.text.style.StyleSpan;
-import android.text.style.UnderlineSpan;
+import android.text.style.*;
 
 /**
  * Takes a bb formatted string and builds a formatted Spanned to display the text
@@ -15,7 +12,8 @@ public class WhatBBParser {
 	 * Tags for opening and closing a bold section of text
 	 */
 	private static final String[] BOLD = {"[b]", "[/b]"}, ITALIC = {"[i]", "[/i]"}, UNDERLINE = {"[u]", "[/u]"},
-		STRIKETHROUGH = {"[s]", "[/s]"};
+		STRIKETHROUGH = {"[s]", "[/s]"}, IMPORTANT = {"[important]", "[/important]"}, CODE = {"[code]", "[/code]"},
+		PRE = {"[pre]", "[/pre]"};
 
 	public static CharSequence parsebb(String bbText){
 		SpannableStringBuilder ssb = new SpannableStringBuilder(bbText);
@@ -24,6 +22,9 @@ public class WhatBBParser {
 		parseSimpleTag(ssb, text, ITALIC, new StyleSpan(Typeface.ITALIC));
 		parseSimpleTag(ssb, text, UNDERLINE, new UnderlineSpan());
 		parseSimpleTag(ssb, text, STRIKETHROUGH, new StrikethroughSpan());
+		parseSimpleTag(ssb, text, IMPORTANT, new ForegroundColorSpan(0xffff4444));
+		parseSimpleTag(ssb, text, CODE, new TypefaceSpan("monospace"));
+		parseSimpleTag(ssb, text, PRE, new TypefaceSpan("monospace"));
 		return ssb;
 	}
 
