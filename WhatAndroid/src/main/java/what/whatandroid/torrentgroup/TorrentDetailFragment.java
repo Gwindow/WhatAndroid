@@ -15,6 +15,7 @@ import api.torrents.torrents.Torrents;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.ViewUserCallbacks;
+import what.whatandroid.comments.WhatBBParser;
 
 import java.util.Date;
 
@@ -121,7 +122,9 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 			reported.setVisibility(View.GONE);
 		}
 		if (!torrent.getDescription().isEmpty()){
-			description.setText(torrent.getDescription());
+			//We'd probably want to do this parsing in the background as well? How would we pass it
+			//to the views from the loader then?
+			description.setText(WhatBBParser.parsebb(torrent.getDescription()));
 		}
 		else {
 			description.setVisibility(View.GONE);

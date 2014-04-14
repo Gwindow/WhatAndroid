@@ -36,7 +36,18 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="what.artist"/>
+                <data
+                        android:scheme="http"
+                        android:host="what.cd"
+                        android:pathPrefix="/artist"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                        android:scheme="https"
+                        android:host="what.cd"
+                        android:pathPrefix="/artist"/>
             </intent-filter>
         </activity>
         <activity

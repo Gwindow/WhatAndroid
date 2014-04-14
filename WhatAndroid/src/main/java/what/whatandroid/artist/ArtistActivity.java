@@ -15,6 +15,8 @@ import what.whatandroid.request.RequestActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,11 +56,18 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 			String name = intent.getStringExtra(ARTIST_NAME);
 			boolean useSearch = intent.getBooleanExtra(USE_SEARCH, false);
 			//If we're opening an artist url parse out the artist we're trying to view
-			if (intent.getScheme() != null && intent.getScheme().equalsIgnoreCase("what.artist")){
+			if (intent.getScheme() != null){
 				String uri = intent.getData().toString();
 				Matcher m = artistName.matcher(uri);
 				if (m.find()){
 					name = m.group(1);
+					try {
+						//Remove the url formatting in the name
+						name = URLDecoder.decode(name, "UTF-8");
+					}
+					catch (UnsupportedEncodingException e){
+						e.printStackTrace();
+					}
 				}
 				else {
 					//Is it possible that people will send the artist id instead of the name?

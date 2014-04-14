@@ -69,7 +69,8 @@ public class TorrentGroupAsyncLoader extends AsyncTaskLoader<TorrentGroup> {
 				torrentGroup.getEditions();
 				//Testing replacing internal site links with our own app links
 				//This will be moved into a similar processing step like we do with the smilies
-				String body = torrentGroup.getResponse().getGroup().getWikiBody().replaceAll("artist[.]php[?]", "what.artist://");
+				String body = torrentGroup.getResponse().getGroup().getWikiBody()
+					.replaceAll("\"artist[.]php", "\"http://what.cd/artist.php");
 				torrentGroup.getResponse().getGroup().setWikiBody(body);
 			}
 		}
