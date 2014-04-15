@@ -33,6 +33,9 @@ public class ColorTag implements ParameterizedTag {
 		else if (param.equalsIgnoreCase("yellow")){
 			color = 0xffffee33;
 		}
+		else if (param.equalsIgnoreCase("orange")){
+			color = 0xffffbb33;
+		}
 		return new ForegroundColorSpan(color);
 	}
 }
