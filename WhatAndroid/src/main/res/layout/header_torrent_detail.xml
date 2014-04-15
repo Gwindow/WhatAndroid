@@ -167,7 +167,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/size"
             android:paddingTop="12dp"
-            android:textColor="@android:color/secondary_text_dark"/>
+            android:textColor="@android:color/secondary_text_dark"
+            android:linksClickable="true"/>
 
     <TextView
             android:id="@+id/folder_title"

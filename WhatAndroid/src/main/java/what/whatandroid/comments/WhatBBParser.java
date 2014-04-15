@@ -14,7 +14,7 @@ public class WhatBBParser {
 	private static final String[] BOLD = {"[b]", "[/b]"}, ITALIC = {"[i]", "[/i]"}, UNDERLINE = {"[u]", "[/u]"},
 		STRIKETHROUGH = {"[s]", "[/s]"}, IMPORTANT = {"[important]", "[/important]"}, CODE = {"[code]", "[/code]"},
 		PRE = {"[pre]", "[/pre]"}, ALIGN = {"[align=", "[/align]"}, COLOR = {"[color=", "[/color]"},
-		SIZE = {"[size=", "[/size]"};
+		SIZE = {"[size=", "[/size]"}, URL = {"[url", "[/url]"}, ARTIST = {"[artist", "[/artist]"};
 
 	public static CharSequence parsebb(String bbText){
 		SpannableStringBuilder ssb = new SpannableStringBuilder(bbText);
@@ -29,6 +29,8 @@ public class WhatBBParser {
 		parseParameterizedTag(ssb, text, ALIGN, new AlignTag());
 		parseParameterizedTag(ssb, text, COLOR, new ColorTag());
 		parseParameterizedTag(ssb, text, SIZE, new SizeTag());
+		parseParameterizedTag(ssb, text, URL, new URLTag());
+		parseParameterizedTag(ssb, text, ARTIST, new ArtistTag());
 		return ssb;
 	}
 
@@ -56,8 +58,9 @@ public class WhatBBParser {
 	}
 
 	/**
-	 * Parse parameterized tags in the text and apply the corresponding styles returned by the ParameterizedTag handler
-	 * Tag openers should be of the form '[tag=' to make finding the parameter simple
+	 * Parse parameterized tags in the text and apply the style returned by the ParameterizedTag handler
+	 * Tag openers should be of the form '[tag=' to make finding the parameter simple, or if the parameter is
+	 * optional the tag should be '[tag' so that the case of no parameter can be found as well
 	 *
 	 * @param ssb     spannable string builder to apply the styling in
 	 * @param text    a mirror of the text in the spannable string builder, used to look up tag positions and tags will be
@@ -70,12 +73,19 @@ public class WhatBBParser {
 			 s = text.indexOf(tag[0], s) + tag[0].length(), e = text.indexOf(tag[1], s)){
 			//Find the tag parameter
 			int openerClose = text.indexOf("]", s);
-			String param = text.substring(s, openerClose);
+			//handle optional tags
+			String param;
+			if (text.charAt(s) == '='){
+				param = text.substring(s + 1, openerClose);
+			}
+			else {
+				param = text.substring(s, openerClose);
+			}
 			ssb.setSpan(handler.getStyle(param, text.substring(openerClose + 1, e)), s, e, 0);
 			//Remove the open and close tokens
 			ssb.delete(s - tag[0].length(), openerClose + 1);
 			text.delete(s - tag[0].length(), openerClose + 1);
-			e -= param.length() + tag[0].length() + 1;
+			e -= openerClose + 1 - s + tag[0].length();
 			ssb.delete(e, e + tag[1].length());
 			text.delete(e, e + tag[1].length());
 		}
