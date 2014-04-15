@@ -17,7 +17,8 @@ public class WhatBBParser {
 		STRIKETHROUGH = {"[s]", "[/s]"}, IMPORTANT = {"[important]", "[/important]"}, CODE = {"[code]", "[/code]"},
 		PRE = {"[pre]", "[/pre]"}, ALIGN = {"[align=", "[/align]"}, COLOR = {"[color=", "[/color]"},
 		SIZE = {"[size=", "[/size]"}, URL = {"[url", "[/url]"}, ARTIST = {"[artist", "[/artist]"},
-		TORRENT = {"[torrent", "[/torrent]"}, USER = {"[user", "[/user]"};
+		TORRENT = {"[torrent", "[/torrent]"}, USER = {"[user", "[/user]"}, QUOTE = {"[quote", "[/quote]"},
+		HIDDEN = {"[hide", "[/hide]"}, MATURE = {"[mature", "[/mature]"};
 
 	public static CharSequence parsebb(String bbText){
 		SpannableStringBuilder ssb = new SpannableStringBuilder(bbText);
@@ -35,6 +36,9 @@ public class WhatBBParser {
 		parseParameterizedTag(ssb, text, URL, new URLTag());
 		parseParameterizedTag(ssb, text, ARTIST, new ArtistTag());
 		parseParameterizedTag(ssb, text, TORRENT, new TorrentTag());
+		parseQuoteTag(ssb, text);
+		parseHiddenTags(ssb, text, HIDDEN);
+		parseHiddenTags(ssb, text, MATURE);
 		return ssb;
 	}
 
@@ -76,9 +80,8 @@ public class WhatBBParser {
 	private static void parseParameterizedTag(SpannableStringBuilder ssb, StringBuilder text, String tag[], ParameterizedTag handler){
 		for (int s = text.indexOf(tag[0]) + tag[0].length(), e = text.indexOf(tag[1], s); s != -1 && e != -1;
 			 s = text.indexOf(tag[0], s) + tag[0].length(), e = text.indexOf(tag[1], s)){
-			//Find the tag parameter
+			//Find the tag parameter and handle optional parameters
 			int openerClose = text.indexOf("]", s);
-			//handle optional tags
 			String param;
 			if (text.charAt(s) == '='){
 				param = text.substring(s + 1, openerClose);
@@ -93,6 +96,86 @@ public class WhatBBParser {
 			e -= openerClose + 1 - s + tag[0].length();
 			ssb.delete(e, e + tag[1].length());
 			text.delete(e, e + tag[1].length());
+		}
+	}
+
+	/**
+	 * Parse quote tags in the text and apply the quote style and if a user was specified in the quote put
+	 * their name above it, similar to the site
+	 *
+	 * @param ssb  spannable string builder to apply the styling in
+	 * @param text a mirror of the text in the spannable string builder, used to look up tag positions and tags will be
+	 *             removed in here and in the ssb to keep them matching
+	 */
+	private static void parseQuoteTag(SpannableStringBuilder ssb, StringBuilder text){
+		for (int s = text.indexOf(QUOTE[0]) + QUOTE[0].length(), e = text.indexOf(QUOTE[1], s); s != -1 && e != -1;
+			 s = text.indexOf(QUOTE[0], s) + QUOTE[0].length(), e = text.indexOf(QUOTE[1], s)){
+			//Find the quote parameter if there is one
+			int openerClose = text.indexOf("]", s);
+			String user = "";
+			if (text.charAt(s) == '='){
+				user = text.substring(s + 1, openerClose);
+				//We ignore the post id links in quotes
+				int nameEnd = user.indexOf('|');
+				if (nameEnd != -1){
+					user = user.substring(0, nameEnd);
+				}
+				user += " wrote:\n";
+			}
+			if (!user.isEmpty()){
+				ssb.insert(openerClose + 1, user);
+				text.insert(openerClose + 1, user);
+				ssb.setSpan(new StyleSpan(Typeface.BOLD), openerClose + 1, openerClose + 1 + user.length(), 0);
+				e += user.length();
+			}
+			ssb.setSpan(new QuoteSpan(0xff33b5e5), openerClose + 1 + user.length(), e, 0);
+			//Remove the open and close tokens
+			ssb.delete(s - QUOTE[0].length(), openerClose + 1);
+			text.delete(s - QUOTE[0].length(), openerClose + 1);
+			e -= openerClose + 1 - s + QUOTE[0].length();
+			ssb.delete(e, e + QUOTE[1].length());
+			text.delete(e, e + QUOTE[1].length());
+		}
+	}
+
+	/**
+	 * Parse hidden and mature tags and sets them to be clickable spans that will show the hidden text when clicked
+	 * via a callback to the context they're attached in. If the callback isn't implemented nothing will be shown
+	 * The hidden tags should be parsed after all other styes have been applied, otherwise the hidden text may be
+	 * missing some of its markup when shown in the pop-up since it's removed here and passed to the hidden text span
+	 *
+	 * @param ssb  spannable string builder to apply the styling in
+	 * @param text a mirror of the text in the spannable string builder, used to look up tag positions and tags will be
+	 *             removed in here and in the ssb to keep them matching
+	 * @param tag  the tags to look for, either hidden or mature, both are formatted the same way
+	 */
+	private static void parseHiddenTags(SpannableStringBuilder ssb, StringBuilder text, String tag[]){
+		for (int s = text.indexOf(tag[0]) + tag[0].length(), e = text.indexOf(tag[1], s); s != -1 && e != -1;
+			 s = text.indexOf(tag[0], s) + tag[0].length(), e = text.indexOf(tag[1], s)){
+			int openerClose = text.indexOf("]", s);
+			String description;
+			if (text.charAt(s) == '='){
+				description = text.substring(s + 1, openerClose);
+				if (tag[0].contains("mature")){
+					description = "Mature content: " + description;
+				}
+				else {
+					description = "Show hidden text: " + description;
+				}
+			}
+			//Only hidden text can be without a description so pick that title
+			else {
+				description = "Show hidden text";
+			}
+			HiddenTextSpan hiddenSpan = new HiddenTextSpan(description, ssb.subSequence(openerClose + 1, e));
+			//Remove the tags and hidden text and replace with the description
+			s -= tag[0].length();
+			ssb.delete(s, e + tag[1].length());
+			text.delete(s, e + tag[1].length());
+			ssb.insert(s, description);
+			text.insert(s, description);
+			ssb.setSpan(new StyleSpan(Typeface.BOLD), s, s + description.length(), 0);
+			ssb.setSpan(hiddenSpan, s, s + description.length(), 0);
 		}
 	}
 }
