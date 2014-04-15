@@ -19,6 +19,10 @@ public class WhatBBParser {
 		SIZE = {"[size=", "[/size]"}, URL = {"[url", "[/url]"}, ARTIST = {"[artist", "[/artist]"},
 		TORRENT = {"[torrent", "[/torrent]"}, USER = {"[user", "[/user]"}, QUOTE = {"[quote", "[/quote]"},
 		HIDDEN = {"[hide", "[/hide]"}, MATURE = {"[mature", "[/mature]"};
+	/**
+	 * Tags for bulleted and numbered lists
+	 */
+	private static final String BULLET = "[*]", NUMBER = "[#]";
 
 	public static CharSequence parsebb(String bbText){
 		SpannableStringBuilder ssb = new SpannableStringBuilder(bbText);
@@ -37,6 +41,7 @@ public class WhatBBParser {
 		parseParameterizedTag(ssb, text, ARTIST, new ArtistTag());
 		parseParameterizedTag(ssb, text, TORRENT, new TorrentTag());
 		parseQuoteTag(ssb, text);
+		parseBulletLists(ssb, text);
 		parseHiddenTags(ssb, text, HIDDEN);
 		parseHiddenTags(ssb, text, MATURE);
 		return ssb;
@@ -176,6 +181,26 @@ public class WhatBBParser {
 			text.insert(s, description);
 			ssb.setSpan(new StyleSpan(Typeface.BOLD), s, s + description.length(), 0);
 			ssb.setSpan(hiddenSpan, s, s + description.length(), 0);
+		}
+	}
+
+	/**
+	 * Parse any bulleted lists in the text and apply a bulleted list formatting to the list items
+	 *
+	 * @param ssb  spannable string builder to apply the styling in
+	 * @param text a mirror of the text in the spannable string builder, used to look up tag positions and tags will be
+	 *             removed in here and in the ssb to keep them matching
+	 */
+	private static void parseBulletLists(SpannableStringBuilder ssb, StringBuilder text){
+		for (int s = text.indexOf(BULLET), e = text.indexOf("\n", s); s != -1; s = text.indexOf(BULLET, e), e = text.indexOf("\n", s)){
+			//If the last thing in the text is a list item then go to the end
+			if (e == -1){
+				e = text.length() - 1;
+			}
+			ssb.setSpan(new BulletSpan(BulletSpan.STANDARD_GAP_WIDTH), s + BULLET.length(), e, 0);
+			ssb.delete(s, s + BULLET.length());
+			text.delete(s, s + BULLET.length());
+			e -= BULLET.length();
 		}
 	}
 }
