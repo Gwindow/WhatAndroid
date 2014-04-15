@@ -12,7 +12,6 @@ import java.net.URLEncoder;
 public class ArtistTag implements ParameterizedTag {
 	@Override
 	public Object getStyle(String param, String text){
-		System.out.println(text);
 		try {
 			return new URLSpan("https://what.cd/artist.php?artistname=" + URLEncoder.encode(text, "UTF-8"));
 		}

@@ -6,6 +6,8 @@ import android.text.style.*;
 
 /**
  * Takes a bb formatted string and builds a formatted Spanned to display the text
+ * Note: this doesn't properly handle nested tags of the same type, but I don't think
+ * that's really used on the site so it's probably fine.
  */
 public class WhatBBParser {
 	/**
@@ -14,7 +16,8 @@ public class WhatBBParser {
 	private static final String[] BOLD = {"[b]", "[/b]"}, ITALIC = {"[i]", "[/i]"}, UNDERLINE = {"[u]", "[/u]"},
 		STRIKETHROUGH = {"[s]", "[/s]"}, IMPORTANT = {"[important]", "[/important]"}, CODE = {"[code]", "[/code]"},
 		PRE = {"[pre]", "[/pre]"}, ALIGN = {"[align=", "[/align]"}, COLOR = {"[color=", "[/color]"},
-		SIZE = {"[size=", "[/size]"}, URL = {"[url", "[/url]"}, ARTIST = {"[artist", "[/artist]"};
+		SIZE = {"[size=", "[/size]"}, URL = {"[url", "[/url]"}, ARTIST = {"[artist", "[/artist]"},
+		TORRENT = {"[torrent", "[/torrent]"};
 
 	public static CharSequence parsebb(String bbText){
 		SpannableStringBuilder ssb = new SpannableStringBuilder(bbText);
@@ -31,6 +34,7 @@ public class WhatBBParser {
 		parseParameterizedTag(ssb, text, SIZE, new SizeTag());
 		parseParameterizedTag(ssb, text, URL, new URLTag());
 		parseParameterizedTag(ssb, text, ARTIST, new ArtistTag());
+		parseParameterizedTag(ssb, text, TORRENT, new TorrentTag());
 		return ssb;
 	}
 
@@ -60,7 +64,8 @@ public class WhatBBParser {
 	/**
 	 * Parse parameterized tags in the text and apply the style returned by the ParameterizedTag handler
 	 * Tag openers should be of the form '[tag=' to make finding the parameter simple, or if the parameter is
-	 * optional the tag should be '[tag' so that the case of no parameter can be found as well
+	 * optional the tag should be '[tag' so that the case of no parameter can be found as well. Even if the
+	 * parameter is only passed through the text the tag should still be '[tag' for it to be found correctly
 	 *
 	 * @param ssb     spannable string builder to apply the styling in
 	 * @param text    a mirror of the text in the spannable string builder, used to look up tag positions and tags will be

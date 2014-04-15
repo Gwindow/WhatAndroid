@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,7 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		fileList = (ListView)view.findViewById(R.id.list);
 		View header = inflater.inflate(R.layout.header_torrent_detail, null);
-		fileList.addHeaderView(header, null, false);
+		fileList.addHeaderView(header);
 		adapter = new TorrentFilesAdapter(getActivity());
 		fileList.setAdapter(adapter);
 
@@ -83,6 +84,7 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 		folderTitle = (TextView)header.findViewById(R.id.folder_title);
 		freeleech = header.findViewById(R.id.freeleech_icon);
 		reported = header.findViewById(R.id.reported_icon);
+		description.setMovementMethod(LinkMovementMethod.getInstance());
 		if (torrent != null){
 			populateView();
 		}

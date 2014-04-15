@@ -27,6 +27,9 @@ import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.settings.SettingsActivity;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * View information about a torrent group and the torrents in it. Must pass in the intent at least one
  * of group id or torrent id within the group to view
@@ -37,7 +40,7 @@ public class TorrentGroupActivity extends LoggedInActivity
 	/**
 	 * Param to pass the torrent group id to be shown
 	 */
-	public final static String GROUP_ID = "what.whatandroid.GROUP_ID",
+	public static final String GROUP_ID = "what.whatandroid.GROUP_ID",
 		TORRENT_ID = "what.whatandroid.TORRENT_ID";
 	/**
 	 * For use in viewTorrent to indicate that the group of the torrent is the currently open one
@@ -49,6 +52,10 @@ public class TorrentGroupActivity extends LoggedInActivity
 	 */
 	private int groupId, torrentId;
 	private LoadingListener<TorrentGroup> loadingListener;
+	/**
+	 * Patter to match group ids in urls
+	 */
+	private static final Pattern idPattern = Pattern.compile(".*id=(\\d+).*");
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -59,8 +66,9 @@ public class TorrentGroupActivity extends LoggedInActivity
 		setTitle(getTitle());
 
 		//Check if our saved state matches the group we want to view
-		groupId = getIntent().getIntExtra(GROUP_ID, -1);
-		torrentId = getIntent().getIntExtra(TORRENT_ID, -1);
+		Intent intent = getIntent();
+		groupId = intent.getIntExtra(GROUP_ID, -1);
+		torrentId = intent.getIntExtra(TORRENT_ID, -1);
 		FragmentManager manager = getSupportFragmentManager();
 		if (savedInstanceState != null){
 			Fragment f = manager.findFragmentById(R.id.container);
@@ -71,6 +79,14 @@ public class TorrentGroupActivity extends LoggedInActivity
 			getSupportLoaderManager().initLoader(0, args, this);
 		}
 		else {
+			//If we're opening a group url parse out the group id
+			if (intent.getScheme() != null && intent.getData() != null && intent.getData().toString().contains("what.cd")){
+				Matcher m = idPattern.matcher(intent.getData().toString());
+				if (m.find()){
+					groupId = Integer.parseInt(m.group(1));
+					System.out.println("Parsed id from url: " + groupId);
+				}
+			}
 			//We always want the group fragment to be accessible, in the case of viewing a specific torrent
 			//we push it on the back stack so we can go back to it
 			Fragment f = TorrentGroupFragment.newInstance(groupId);
