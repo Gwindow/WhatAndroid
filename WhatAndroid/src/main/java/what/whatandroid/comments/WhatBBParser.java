@@ -13,7 +13,8 @@ public class WhatBBParser {
 	 */
 	private static final String[] BOLD = {"[b]", "[/b]"}, ITALIC = {"[i]", "[/i]"}, UNDERLINE = {"[u]", "[/u]"},
 		STRIKETHROUGH = {"[s]", "[/s]"}, IMPORTANT = {"[important]", "[/important]"}, CODE = {"[code]", "[/code]"},
-		PRE = {"[pre]", "[/pre]"}, ALIGN = {"[align=", "[/align]"}, COLOR = {"[color=", "[/color]"};
+		PRE = {"[pre]", "[/pre]"}, ALIGN = {"[align=", "[/align]"}, COLOR = {"[color=", "[/color]"},
+		SIZE = {"[size=", "[/size]"};
 
 	public static CharSequence parsebb(String bbText){
 		SpannableStringBuilder ssb = new SpannableStringBuilder(bbText);
@@ -27,6 +28,7 @@ public class WhatBBParser {
 		parseSimpleTag(ssb, text, PRE, new TypefaceSpan("monospace"));
 		parseParameterizedTag(ssb, text, ALIGN, new AlignTag());
 		parseParameterizedTag(ssb, text, COLOR, new ColorTag());
+		parseParameterizedTag(ssb, text, SIZE, new SizeTag());
 		return ssb;
 	}
 
