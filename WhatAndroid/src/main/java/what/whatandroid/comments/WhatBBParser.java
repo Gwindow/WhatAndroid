@@ -1,7 +1,6 @@
 package what.whatandroid.comments;
 
 import android.graphics.Typeface;
-import android.text.Layout;
 import android.text.SpannableStringBuilder;
 import android.text.style.*;
 
@@ -14,7 +13,7 @@ public class WhatBBParser {
 	 */
 	private static final String[] BOLD = {"[b]", "[/b]"}, ITALIC = {"[i]", "[/i]"}, UNDERLINE = {"[u]", "[/u]"},
 		STRIKETHROUGH = {"[s]", "[/s]"}, IMPORTANT = {"[important]", "[/important]"}, CODE = {"[code]", "[/code]"},
-		PRE = {"[pre]", "[/pre]"}, ALIGN = {"[align=", "[/align]"};
+		PRE = {"[pre]", "[/pre]"}, ALIGN = {"[align=", "[/align]"}, COLOR = {"[color=", "[/color]"};
 
 	public static CharSequence parsebb(String bbText){
 		SpannableStringBuilder ssb = new SpannableStringBuilder(bbText);
@@ -26,7 +25,8 @@ public class WhatBBParser {
 		parseSimpleTag(ssb, text, IMPORTANT, new ForegroundColorSpan(0xffff4444));
 		parseSimpleTag(ssb, text, CODE, new TypefaceSpan("monospace"));
 		parseSimpleTag(ssb, text, PRE, new TypefaceSpan("monospace"));
-		parseParamterizedTag(ssb, text, ALIGN, new AlignTag());
+		parseParameterizedTag(ssb, text, ALIGN, new AlignTag());
+		parseParameterizedTag(ssb, text, COLOR, new ColorTag());
 		return ssb;
 	}
 
@@ -63,7 +63,7 @@ public class WhatBBParser {
 	 * @param tag     tag[0] is the opening tag, tag[1] is the closing tag
 	 * @param handler handler to return the appropriate tag for the parameters
 	 */
-	private static void parseParamterizedTag(SpannableStringBuilder ssb, StringBuilder text, String tag[], ParameterizedTag handler){
+	private static void parseParameterizedTag(SpannableStringBuilder ssb, StringBuilder text, String tag[], ParameterizedTag handler){
 		for (int s = text.indexOf(tag[0]) + tag[0].length(), e = text.indexOf(tag[1], s); s != -1 && e != -1;
 			 s = text.indexOf(tag[0], s) + tag[0].length(), e = text.indexOf(tag[1], s)){
 			//Find the tag parameter
@@ -76,35 +76,6 @@ public class WhatBBParser {
 			e -= param.length() + tag[0].length() + 1;
 			ssb.delete(e, e + tag[1].length());
 			text.delete(e, e + tag[1].length());
-		}
-	}
-
-	/**
-	 * An interface for creating various types of parameterized tags. The object returned
-	 * must be some kind of Character or Paragraph style
-	 */
-	public static interface ParameterizedTag {
-		/**
-		 * Parse the parameters for the tag (and optionally the text effected) and
-		 * return the appropriate tag
-		 *
-		 * @param param tag parameters
-		 * @param text  text effected by the tag
-		 * @return style to apply to the effected text
-		 */
-		Object getStyle(String param, String text);
-	}
-
-	private static class AlignTag implements ParameterizedTag {
-		@Override
-		public Object getStyle(String param, String text){
-			if (param.equalsIgnoreCase("left")){
-				return new AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL);
-			}
-			else if (param.equalsIgnoreCase("center")){
-				return new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER);
-			}
-			return new AlignmentSpan.Standard(Layout.Alignment.ALIGN_OPPOSITE);
 		}
 	}
 }
