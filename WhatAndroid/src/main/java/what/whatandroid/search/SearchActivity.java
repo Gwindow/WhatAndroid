@@ -45,14 +45,15 @@ public class SearchActivity extends LoggedInActivity
 		setContentView(R.layout.activity_frame);
 		setupNavDrawer();
 
+		Intent intent = getIntent();
 		if (savedInstanceState != null){
 			type = savedInstanceState.getInt(SEARCH);
 		}
 		else {
-			type = getIntent().getIntExtra(SEARCH, TORRENT);
+			type = intent.getIntExtra(SEARCH, TORRENT);
 		}
-		String terms = getIntent().getStringExtra(TERMS);
-		String tags = getIntent().getStringExtra(TAGS);
+		String terms = intent.getStringExtra(TERMS);
+		String tags = intent.getStringExtra(TAGS);
 
 		Fragment fragment;
 		if (savedInstanceState == null){
