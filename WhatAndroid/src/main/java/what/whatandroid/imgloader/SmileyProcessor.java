@@ -51,7 +51,7 @@ public class SmileyProcessor {
 	 */
 	private static final Map<String, Pattern> emojisBB = new HashMap<String, Pattern>() {{
 		put("\uD83D\uDE21", Pattern.compile("(:angry:|:paddle:)"));
-		put("\uD83D\uDE04", Pattern.compile("(:d|:-d)"));
+		put("\uD83D\uDE04", Pattern.compile("(:D|:-D)"));
 		put("\uD83D\uDE10", Pattern.compile("(:\\||:-\\|)"));
 		put("\uD83D\uDE33", Pattern.compile("(:blush:)"));
 		put("\uD83D\uDE0E", Pattern.compile("(:cool:)"));
@@ -67,13 +67,13 @@ public class SmileyProcessor {
 		put("\uD83D\uDE37", Pattern.compile("(:ninja:)"));
 		put("\uD83D\uDE0A", Pattern.compile("(:nod:)"));
 		put("\uD83D\uDE27", Pattern.compile("(:ohno:|:ohnoes:)"));
-		put("\uD83D\uDE32", Pattern.compile("(:omg:|:o|:wtf:)"));
+		put("\uD83D\uDE32", Pattern.compile("(:omg:|:o|:O|:wtf:)"));
 		put("\uD83D\uDE1E", Pattern.compile("(:\\(|:-\\()"));
 		put("\uD83D\uDE12", Pattern.compile("(:shifty:)"));
 		put("\uD83D\uDE30", Pattern.compile("(:sick:)"));
 		put("\uD83D\uDE00", Pattern.compile("(:\\)|:-\\))"));
 		put("\uD83D\uDE04 Thanks!", Pattern.compile("(:thanks:)"));
-		put("\uD83D\uDE1B", Pattern.compile("(:p|:-p)"));
+		put("\uD83D\uDE1B", Pattern.compile("(:P|:-P|:-p)"));
 		put("\uD83D\uDC4B", Pattern.compile("(:wave:)"));
 		put("\uD83D\uDE09", Pattern.compile("(:wink:)"));
 		put("\uD83D\uDE2F", Pattern.compile("(:worried:)"));

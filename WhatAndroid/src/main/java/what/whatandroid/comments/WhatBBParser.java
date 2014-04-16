@@ -32,7 +32,7 @@ public class WhatBBParser {
 
 	public static CharSequence parsebb(String bbText){
 		SpannableStringBuilder ssb = new SpannableStringBuilder(bbText);
-		StringBuilder text = new StringBuilder(bbText.toLowerCase());
+		StringBuilder text = new StringBuilder(bbText);
 		SmileyProcessor.bbSmileytoEmoji(ssb, text);
 		parseSimpleTag(ssb, text, BOLD, new StyleSpan(Typeface.BOLD));
 		parseSimpleTag(ssb, text, ITALIC, new StyleSpan(Typeface.ITALIC));
