@@ -4,6 +4,9 @@ import android.graphics.Typeface;
 import android.text.SpannableStringBuilder;
 import android.text.style.*;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Takes a bb formatted string and builds a formatted Spanned to display the text
  * Note: this doesn't properly handle nested tags of the same type, but I don't think
@@ -20,9 +23,11 @@ public class WhatBBParser {
 		TORRENT = {"[torrent", "[/torrent]"}, USER = {"[user", "[/user]"}, QUOTE = {"[quote", "[/quote]"},
 		HIDDEN = {"[hide", "[/hide]"}, MATURE = {"[mature", "[/mature]"};
 	/**
-	 * Tags for bulleted and numbered lists
+	 * Tags for bulleted lists and a pattern to match numbered lists. The pattern is used so that
+	 * we can figure out when to reset the counter. The site uses \r\n for line endings
 	 */
-	private static final String BULLET = "[*]", NUMBER = "[#]";
+	private static final String BULLET = "[*]";
+	private static final Pattern NUM_LIST = Pattern.compile("\\[#\\][ ]*(.*)($|\r\n)");
 
 	public static CharSequence parsebb(String bbText){
 		SpannableStringBuilder ssb = new SpannableStringBuilder(bbText);
@@ -42,6 +47,7 @@ public class WhatBBParser {
 		parseParameterizedTag(ssb, text, TORRENT, new TorrentTag());
 		parseQuoteTag(ssb, text);
 		parseBulletLists(ssb, text);
+		parseNumberedList(ssb, text);
 		parseHiddenTags(ssb, text, HIDDEN);
 		parseHiddenTags(ssb, text, MATURE);
 		return ssb;
@@ -201,6 +207,33 @@ public class WhatBBParser {
 			ssb.delete(s, s + BULLET.length());
 			text.delete(s, s + BULLET.length());
 			e -= BULLET.length();
+		}
+	}
+
+	/**
+	 * Parse any numbered lists in the text and apply a numbered list formatting to the list items
+	 *
+	 * @param ssb  spannable string builder to apply the styling in
+	 * @param text a mirror of the text in the spannable string builder, used to look up tag positions and tags will be
+	 *             removed in here and in the ssb to keep them matching
+	 */
+	private static void parseNumberedList(SpannableStringBuilder ssb, StringBuilder text){
+		int id = 1, prev = -1;
+		//Because we're changing the text as we match over it we need to reset the matcher each iteration
+		for (Matcher m = NUM_LIST.matcher(text); m.find(); m.reset(text)){
+			if (prev == m.start()){
+				++id;
+			}
+			else {
+				id = 1;
+			}
+			ssb.delete(m.start(), m.start(1));
+			text.delete(m.start(), m.start(1));
+			//Insert the number for the list item and update the previous index to reflect the changes to the string
+			String num = Integer.toString(id) + ". ";
+			ssb.insert(m.start(), num);
+			text.insert(m.start(), num);
+			prev = m.end() - m.start(1) + m.start() + num.length();
 		}
 	}
 }
