@@ -1,7 +1,5 @@
 package what.whatandroid.torrentgroup;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -12,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.view.ContextThemeWrapper;
 import android.view.Window;
 import android.widget.Toast;
 import api.soup.MySoup;
@@ -21,7 +18,10 @@ import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.artist.ArtistActivity;
 import what.whatandroid.barcode.BarcodeActivity;
-import what.whatandroid.callbacks.*;
+import what.whatandroid.callbacks.LoadingListener;
+import what.whatandroid.callbacks.ViewArtistCallbacks;
+import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  */
 public class TorrentGroupActivity extends LoggedInActivity
 	implements ViewArtistCallbacks, ViewTorrentCallbacks, ViewUserCallbacks, DownloadDialog.DownloadDialogListener,
-	LoaderManager.LoaderCallbacks<TorrentGroup>, ShowHiddenTextListener {
+	LoaderManager.LoaderCallbacks<TorrentGroup> {
 	/**
 	 * Param to pass the torrent group id to be shown
 	 */
@@ -55,7 +55,8 @@ public class TorrentGroupActivity extends LoggedInActivity
 	/**
 	 * Patter to match group ids in urls
 	 */
-	private static final Pattern idPattern = Pattern.compile(".*id=(\\d+).*");
+	private static final Pattern groupIdPattern = Pattern.compile(".*id=(\\d+).*"),
+		torrentIdPattern = Pattern.compile(".*torrentid=(\\d+).*");
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -80,12 +81,19 @@ public class TorrentGroupActivity extends LoggedInActivity
 		}
 		else {
 			//If we're opening a group url parse out the group id
-			if (intent.getScheme() != null && intent.getData() != null && intent.getData().toString().contains("what.cd")){
-				Matcher m = idPattern.matcher(intent.getData().toString());
+			if (intent.getScheme() != null && intent.getDataString() != null && intent.getDataString().contains("what.cd")){
+				Matcher m = torrentIdPattern.matcher(intent.getDataString());
 				if (m.find()){
-					groupId = Integer.parseInt(m.group(1));
-					System.out.println("Parsed id from url: " + groupId);
+					torrentId = Integer.parseInt(m.group(1));
 				}
+				//If no torrent id we're just linking to a normal torrent
+				else {
+					m = groupIdPattern.matcher(intent.getDataString());
+					if (m.find()){
+						groupId = Integer.parseInt(m.group(1));
+					}
+				}
+				//If no id at all see if it's a search link maybe?
 			}
 			//We always want the group fragment to be accessible, in the case of viewing a specific torrent
 			//we push it on the back stack so we can go back to it
@@ -205,20 +213,6 @@ public class TorrentGroupActivity extends LoggedInActivity
 	public void downloadToPhone(String link){
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
 		startActivity(intent);
-	}
-
-	@Override
-	public void showHidden(String title, CharSequence text){
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
-		builder.setTitle(title)
-			.setMessage(text)
-			.setPositiveButton("Close", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which){
-					dialog.cancel();
-				}
-			});
-		builder.create().show();
 	}
 
 	@Override

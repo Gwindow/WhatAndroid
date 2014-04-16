@@ -62,6 +62,7 @@
             android:layout_toRightOf="@id/art_container"
             android:layout_below="@id/user_header"
             android:textColor="@android:color/primary_text_dark"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:linksClickable="true"/>
 
 </RelativeLayout>

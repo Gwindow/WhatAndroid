@@ -31,7 +31,7 @@ public class WhatBBParser {
 
 	public static CharSequence parsebb(String bbText){
 		SpannableStringBuilder ssb = new SpannableStringBuilder(bbText);
-		StringBuilder text = new StringBuilder(bbText);
+		StringBuilder text = new StringBuilder(bbText.toLowerCase());
 		parseSimpleTag(ssb, text, BOLD, new StyleSpan(Typeface.BOLD));
 		parseSimpleTag(ssb, text, ITALIC, new StyleSpan(Typeface.ITALIC));
 		parseSimpleTag(ssb, text, UNDERLINE, new UnderlineSpan());
@@ -95,12 +95,12 @@ public class WhatBBParser {
 			int openerClose = text.indexOf("]", s);
 			String param;
 			if (text.charAt(s) == '='){
-				param = text.substring(s + 1, openerClose);
+				param = ssb.subSequence(s + 1, openerClose).toString();
 			}
 			else {
-				param = text.substring(s, openerClose);
+				param = ssb.subSequence(s, openerClose).toString();
 			}
-			ssb.setSpan(handler.getStyle(param, text.substring(openerClose + 1, e)), s, e, 0);
+			ssb.setSpan(handler.getStyle(param, ssb.subSequence(openerClose + 1, e).toString()), openerClose + 1, e, 0);
 			//Remove the open and close tokens
 			ssb.delete(s - tag[0].length(), openerClose + 1);
 			text.delete(s - tag[0].length(), openerClose + 1);
@@ -125,7 +125,7 @@ public class WhatBBParser {
 			int openerClose = text.indexOf("]", s);
 			String user = "";
 			if (text.charAt(s) == '='){
-				user = text.substring(s + 1, openerClose);
+				user = ssb.subSequence(s + 1, openerClose).toString();
 				//We ignore the post id links in quotes
 				int nameEnd = user.indexOf('|');
 				if (nameEnd != -1){
@@ -166,7 +166,7 @@ public class WhatBBParser {
 			int openerClose = text.indexOf("]", s);
 			String description;
 			if (text.charAt(s) == '='){
-				description = text.substring(s + 1, openerClose);
+				description = ssb.subSequence(s + 1, openerClose).toString();
 				if (tag[0].contains("mature")){
 					description = "Mature content: " + description;
 				}

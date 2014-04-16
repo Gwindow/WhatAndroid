@@ -3,6 +3,7 @@ package what.whatandroid.comments;
 import android.content.Context;
 import android.text.Html;
 import android.text.format.DateUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 		else {
 			holder.commentText.setText(Html.fromHtml(comment.getBody(), imageGetter, null));
 		}
+		holder.commentText.setMovementMethod(LinkMovementMethod.getInstance());
 
 		String imgUrl = comment.getAvatar();
 		if (SettingsActivity.imagesEnabled(getContext()) && imgUrl != null && !imgUrl.isEmpty()){
@@ -80,12 +82,6 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 			holder.spinner.setVisibility(View.GONE);
 		}
 		return convertView;
-	}
-
-	//Temporarily disable all comments until we put in link handling and going to commenter profiles
-	@Override
-	public boolean isEnabled(int position){
-		return false;
 	}
 
 	private static class ViewHolder {
