@@ -3,6 +3,7 @@ package what.whatandroid.comments;
 import android.graphics.Typeface;
 import android.text.SpannableStringBuilder;
 import android.text.style.*;
+import what.whatandroid.imgloader.SmileyProcessor;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,6 +33,7 @@ public class WhatBBParser {
 	public static CharSequence parsebb(String bbText){
 		SpannableStringBuilder ssb = new SpannableStringBuilder(bbText);
 		StringBuilder text = new StringBuilder(bbText.toLowerCase());
+		SmileyProcessor.bbSmileytoEmoji(ssb, text);
 		parseSimpleTag(ssb, text, BOLD, new StyleSpan(Typeface.BOLD));
 		parseSimpleTag(ssb, text, ITALIC, new StyleSpan(Typeface.ITALIC));
 		parseSimpleTag(ssb, text, UNDERLINE, new UnderlineSpan());

@@ -1,5 +1,7 @@
 package what.whatandroid.imgloader;
 
+import android.text.SpannableStringBuilder;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -44,6 +46,41 @@ public class SmileyProcessor {
 	}};
 
 	/**
+	 * Emoji bb codes used by the site, not that all characters are lowercase since
+	 * the text is converted to lower case to simplify parsing
+	 */
+	private static final Map<String, Pattern> emojisBB = new HashMap<String, Pattern>() {{
+		put("\uD83D\uDE21", Pattern.compile("(:angry:|:paddle:)"));
+		put("\uD83D\uDE04", Pattern.compile("(:d|:-d)"));
+		put("\uD83D\uDE10", Pattern.compile("(:\\||:-\\|)"));
+		put("\uD83D\uDE33", Pattern.compile("(:blush:)"));
+		put("\uD83D\uDE0E", Pattern.compile("(:cool:)"));
+		put("\uD83D\uDE22", Pattern.compile("(:'\\(|:sorry:)"));
+		put("\uD83D\uDE19", Pattern.compile("(>\\.>)"));
+		put("\uD83D\uDE0F", Pattern.compile("(:creepy:)"));
+		put("\uD83D\uDE20", Pattern.compile("(:frown:)"));
+		put("\u2764\uFE0F", Pattern.compile("(<3)"));
+		put("\uD83D\uDE1F", Pattern.compile("(:unsure:|:no:)"));
+		put("\u2764\uFE0F What.CD", Pattern.compile("(:whatlove:)"));
+		put("\uD83D\uDE06", Pattern.compile("(:lol:)"));
+		put("\u2764\uFE0F FLAC", Pattern.compile("(:loveflac:|:flaclove:)"));
+		put("\uD83D\uDE37", Pattern.compile("(:ninja:)"));
+		put("\uD83D\uDE0A", Pattern.compile("(:nod:)"));
+		put("\uD83D\uDE27", Pattern.compile("(:ohno:|:ohnoes:)"));
+		put("\uD83D\uDE32", Pattern.compile("(:omg:|:o|:wtf:)"));
+		put("\uD83D\uDE1E", Pattern.compile("(:\\(|:-\\()"));
+		put("\uD83D\uDE12", Pattern.compile("(:shifty:)"));
+		put("\uD83D\uDE30", Pattern.compile("(:sick:)"));
+		put("\uD83D\uDE00", Pattern.compile("(:\\)|:-\\))"));
+		put("\uD83D\uDE04 Thanks!", Pattern.compile("(:thanks:)"));
+		put("\uD83D\uDE1B", Pattern.compile("(:p|:-p)"));
+		put("\uD83D\uDC4B", Pattern.compile("(:wave:)"));
+		put("\uD83D\uDE09", Pattern.compile("(:wink:)"));
+		put("\uD83D\uDE2F", Pattern.compile("(:worried:)"));
+		put("\uD83D\uDE0D", Pattern.compile("(:wub:)"));
+	}};
+
+	/**
 	 * Scan through the passed what html user post and replace references to the site
 	 * smilies with corresponding emoticons for emoji to pick up
 	 * I'm not sure about the speed of this, but it's neat to try out
@@ -54,5 +91,22 @@ public class SmileyProcessor {
 			s = m.replaceAll(emoji.getKey());
 		}
 		return s;
+	}
+
+	/**
+	 * Find site bb formatted smilies in the text and convert them to emoji characters in the text
+	 * and the spannable string
+	 *
+	 * @param ssb  spannable string to convert emojis in
+	 * @param text text mirroring the spannable string to use for lookups
+	 */
+	public static void bbSmileytoEmoji(SpannableStringBuilder ssb, StringBuilder text){
+		for (Map.Entry<String, Pattern> e : emojisBB.entrySet()){
+			//We need to reset each time since we're changing the underlying string being matched on
+			for (Matcher m = e.getValue().matcher(text); m.find(); m.reset(text)){
+				ssb.replace(m.start(1), m.end(1), e.getKey());
+				text.replace(m.start(1), m.end(1), e.getKey());
+			}
+		}
 	}
 }
