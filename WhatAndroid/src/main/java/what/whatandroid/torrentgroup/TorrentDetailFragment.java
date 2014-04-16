@@ -124,8 +124,6 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 			reported.setVisibility(View.GONE);
 		}
 		if (!torrent.getDescription().isEmpty()){
-			//We'd probably want to do this parsing in the background as well? How would we pass it
-			//to the views from the loader then?
 			description.setText(WhatBBParser.parsebb(torrent.getDescription()));
 		}
 		else {

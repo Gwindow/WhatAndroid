@@ -63,7 +63,13 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 		holder.username.setText(comment.getAuthor());
 		holder.postDate.setText(DateUtils.getRelativeTimeSpanString(comment.getTimePosted().getTime(),
 			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
-		holder.commentText.setText(Html.fromHtml(comment.getBody(), imageGetter, null));
+		//The RequestComments don't have the bbBody field
+		if (comment.getBBbody() != null){
+			holder.commentText.setText(WhatBBParser.parsebb(comment.getBBbody()));
+		}
+		else {
+			holder.commentText.setText(Html.fromHtml(comment.getBody(), imageGetter, null));
+		}
 
 		String imgUrl = comment.getAvatar();
 		if (SettingsActivity.imagesEnabled(getContext()) && imgUrl != null && !imgUrl.isEmpty()){

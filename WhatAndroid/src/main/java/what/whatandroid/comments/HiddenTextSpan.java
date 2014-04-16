@@ -29,7 +29,7 @@ public class HiddenTextSpan extends ClickableSpan {
 			}
 		}
 		catch (ClassCastException e){
-			Log.w("WARN", "Attemp to show hidden text in context not implementing ShowHiddenTextListener");
+			Log.w("WARN", "Attempt to show hidden text in context not implementing ShowHiddenTextListener");
 		}
 	}
 }
