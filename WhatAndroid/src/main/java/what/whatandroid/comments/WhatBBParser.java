@@ -1,7 +1,9 @@
 package what.whatandroid.comments;
 
 import android.graphics.Typeface;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.*;
 import what.whatandroid.imgloader.SmileyProcessor;
 
@@ -17,12 +19,23 @@ public class WhatBBParser {
 	/**
 	 * Tags for opening and closing a bold section of text
 	 */
-	private static final String[] BOLD = {"[b]", "[/b]"}, ITALIC = {"[i]", "[/i]"}, UNDERLINE = {"[u]", "[/u]"},
-		STRIKETHROUGH = {"[s]", "[/s]"}, IMPORTANT = {"[important]", "[/important]"}, CODE = {"[code]", "[/code]"},
-		PRE = {"[pre]", "[/pre]"}, ALIGN = {"[align=", "[/align]"}, COLOR = {"[color=", "[/color]"},
-		SIZE = {"[size=", "[/size]"}, URL = {"[url", "[/url]"}, ARTIST = {"[artist", "[/artist]"},
-		TORRENT = {"[torrent", "[/torrent]"}, USER = {"[user", "[/user]"}, QUOTE = {"[quote", "[/quote]"},
-		HIDDEN = {"[hide", "[/hide]"}, MATURE = {"[mature", "[/mature]"};
+	private static final Pattern BOLD = Pattern.compile("\\[[bB]\\](.+?)\\[\\/[bB]\\]", Pattern.DOTALL),
+		ITALIC = Pattern.compile("\\[[iI]\\](.+?)\\[\\/[iI]\\]", Pattern.DOTALL),
+		UNDERLINE = Pattern.compile("\\[[uU]\\](.+?)\\[\\/[uU]\\]", Pattern.DOTALL),
+		STRIKETHROUGH = Pattern.compile("\\[[sS]\\](.+?)\\[\\/[sS]\\]", Pattern.DOTALL),
+		IMPORTANT = Pattern.compile("\\[(?:important|IMPORTANT)\\](.+?)\\[\\/(?:important|IMPORTANT)\\]", Pattern.DOTALL),
+		CODE = Pattern.compile("\\[(?:code|CODE|pre|PRE)\\](.+?)\\[\\/(?:code|CODE|pre|PRE)\\]", Pattern.DOTALL),
+		COLOR = Pattern.compile("\\[(?:color|COLOR)=([^\\]]+)\\](.+?)\\[\\/(?:color|COLOR)\\]"),
+		ALIGN = Pattern.compile("\\[(?:align|ALIGN)=(\\w+)\\](.+?)\\[\\/(?:align|ALIGN)\\]"),
+		SIZE = Pattern.compile("\\[(?:size|SIZE)=(\\d+)\\](.+?)\\[\\/(?:size|SIZE)\\]"),
+		URL = Pattern.compile("\\[(?:url|URL)=?([^\\]]+)?\\](.+?)\\[\\/(?:url|URL)\\]"),
+		IMG = Pattern.compile("\\[(?:img|IMG)=?([^\\]]+)?\\](?:(.+?)\\[\\/(?:img|IMG)\\])?"),
+		QUOTE = Pattern.compile("\\[(?:quote|QUOTE)=?([^\\]]+)?\\](.+?)\\[\\/(?:quote|QUOTE)\\]", Pattern.DOTALL),
+		HIDDEN = Pattern.compile("\\[(?:hide|HIDE|mature|MATURE)=?([^\\]]+)?\\](.+?)\\[\\/(?:hide|HIDE|mature|MATURE)\\]", Pattern.DOTALL),
+		ARTIST = Pattern.compile("\\[(?:artist|ARTIST)\\](.+?)\\[\\/(?:artist|ARTIST)\\]", Pattern.DOTALL),
+		USER = Pattern.compile("\\[(?:user|USER)\\](.+?)\\[\\/(?:user|USER)\\]", Pattern.DOTALL),
+		TORRENT = Pattern.compile("\\[(?:torrent|TORRENT)\\](.+?)\\[\\/(?:torrent|TORRENT)\\]", Pattern.DOTALL);
+
 	/**
 	 * Tags for bulleted lists and a pattern to match numbered lists. The pattern is used so that
 	 * we can figure out when to reset the counter. The site uses \r\n for line endings
@@ -40,18 +53,19 @@ public class WhatBBParser {
 		parseSimpleTag(ssb, text, STRIKETHROUGH, new StrikethroughSpan());
 		parseSimpleTag(ssb, text, IMPORTANT, new ForegroundColorSpan(0xffff4444));
 		parseSimpleTag(ssb, text, CODE, new TypefaceSpan("monospace"));
-		parseSimpleTag(ssb, text, PRE, new TypefaceSpan("monospace"));
 		parseParameterizedTag(ssb, text, ALIGN, new AlignTag());
 		parseParameterizedTag(ssb, text, COLOR, new ColorTag());
 		parseParameterizedTag(ssb, text, SIZE, new SizeTag());
 		parseParameterizedTag(ssb, text, URL, new URLTag());
 		parseParameterizedTag(ssb, text, ARTIST, new ArtistTag());
 		parseParameterizedTag(ssb, text, TORRENT, new TorrentTag());
+		/*
 		parseQuoteTag(ssb, text);
 		parseBulletLists(ssb, text);
 		parseNumberedList(ssb, text);
 		parseHiddenTags(ssb, text, HIDDEN);
 		parseHiddenTags(ssb, text, MATURE);
+		*/
 		return ssb;
 	}
 
@@ -65,16 +79,37 @@ public class WhatBBParser {
 	 * @param tag  tag[0] is the opening tag, tag[1] is the closing tag
 	 * @param cs   character style to apply to the text in the tag
 	 */
-	private static void parseSimpleTag(SpannableStringBuilder ssb, StringBuilder text, String tag[], CharacterStyle cs){
-		for (int s = text.indexOf(tag[0]) + tag[0].length(), e = text.indexOf(tag[1], s); s != -1 && e != -1;
-			 s = text.indexOf(tag[0], s) + tag[0].length(), e = text.indexOf(tag[1], s)){
-			ssb.setSpan(CharacterStyle.wrap(cs), s, e, 0);
-			//Remove the open and close tokens
-			ssb.delete(s - tag[0].length(), s);
-			text.delete(s - tag[0].length(), s);
-			e -= tag[0].length();
-			ssb.delete(e, e + tag[1].length());
-			text.delete(e, e + tag[1].length());
+	private static void parseSimpleTag(SpannableStringBuilder ssb, StringBuilder text, Pattern tag, CharacterStyle cs){
+		//Unfortunately because we're changing the text we need to reset each time. If this is too slow then maybe we
+		//could just store the indices and do the replacement after finding all matches
+		for (Matcher m = tag.matcher(text); m.find(); m.reset(text)){
+			SpannableString styled = new SpannableString(m.group(1));
+			styled.setSpan(CharacterStyle.wrap(cs), 0, styled.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			//Get any existing spans in the range and apply them to the text so they'll be preserved if
+			//we replace the entire section they span
+			Object spans[] = ssb.getSpans(m.start(), m.end(), Object.class);
+			if (spans != null){
+				for (Object s : spans){
+					//Figure out what range in the replacement to apply the span to
+					int start = ssb.getSpanStart(s);
+					int end = ssb.getSpanEnd(s);
+					if (start <= m.start(1)){
+						start = 0;
+					}
+					else {
+						start -= m.start(1);
+					}
+					if (end >= m.end(1)){
+						end = styled.length();
+					}
+					else {
+						end = end - m.start(1);
+					}
+					styled.setSpan(s, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				}
+			}
+			ssb.replace(m.start(), m.end(), styled);
+			text.replace(m.start(), m.end(), m.group(1));
 		}
 	}
 
@@ -90,25 +125,47 @@ public class WhatBBParser {
 	 * @param tag     tag[0] is the opening tag, tag[1] is the closing tag
 	 * @param handler handler to return the appropriate tag for the parameters
 	 */
-	private static void parseParameterizedTag(SpannableStringBuilder ssb, StringBuilder text, String tag[], ParameterizedTag handler){
-		for (int s = text.indexOf(tag[0]) + tag[0].length(), e = text.indexOf(tag[1], s); s != -1 && e != -1;
-			 s = text.indexOf(tag[0], s) + tag[0].length(), e = text.indexOf(tag[1], s)){
-			//Find the tag parameter and handle optional parameters
-			int openerClose = text.indexOf("]", s);
-			String param;
-			if (text.charAt(s) == '='){
-				param = ssb.subSequence(s + 1, openerClose).toString();
+	private static void parseParameterizedTag(SpannableStringBuilder ssb, StringBuilder text, Pattern tag, ParameterizedTag handler){
+		//Unfortunately because we're changing the text we need to reset each time. If this is too slow then maybe we
+		//could just store the indices and do the replacement after finding all matches
+		for (Matcher m = tag.matcher(text); m.find(); m.reset(text)){
+			SpannableString styled;
+			int groupStart, groupEnd;
+			if (m.groupCount() == 2){
+				styled = handler.getStyle(m.group(1), m.group(2));
+				groupStart = m.start(2);
+				groupEnd = m.end(2);
 			}
 			else {
-				param = ssb.subSequence(s, openerClose).toString();
+				styled = handler.getStyle(m.group(1), null);
+				groupStart = m.start(1);
+				groupEnd = m.end(1);
 			}
-			ssb.setSpan(handler.getStyle(param, ssb.subSequence(openerClose + 1, e).toString()), openerClose + 1, e, 0);
-			//Remove the open and close tokens
-			ssb.delete(s - tag[0].length(), openerClose + 1);
-			text.delete(s - tag[0].length(), openerClose + 1);
-			e -= openerClose + 1 - s + tag[0].length();
-			ssb.delete(e, e + tag[1].length());
-			text.delete(e, e + tag[1].length());
+			//Get any existing spans in the range and apply them to the text so they'll be preserved if
+			//we replace the entire section they span
+			Object spans[] = ssb.getSpans(m.start(), m.end(), Object.class);
+			if (spans != null){
+				for (Object s : spans){
+					//Figure out what range in the replacement to apply the span to
+					int start = ssb.getSpanStart(s);
+					int end = ssb.getSpanEnd(s);
+					if (start <= groupStart){
+						start = 0;
+					}
+					else {
+						start -= groupStart;
+					}
+					if (end >= groupEnd){
+						end = styled.length();
+					}
+					else {
+						end = end - groupStart;
+					}
+					styled.setSpan(s, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				}
+			}
+			ssb.replace(m.start(), m.end(), styled);
+			text.replace(m.start(), m.end(), styled.toString());
 		}
 	}
 
@@ -120,6 +177,7 @@ public class WhatBBParser {
 	 * @param text a mirror of the text in the spannable string builder, used to look up tag positions and tags will be
 	 *             removed in here and in the ssb to keep them matching
 	 */
+	/*
 	private static void parseQuoteTag(SpannableStringBuilder ssb, StringBuilder text){
 		for (int s = text.indexOf(QUOTE[0]) + QUOTE[0].length(), e = text.indexOf(QUOTE[1], s); s != -1 && e != -1;
 			 s = text.indexOf(QUOTE[0], s) + QUOTE[0].length(), e = text.indexOf(QUOTE[1], s)){
@@ -150,6 +208,7 @@ public class WhatBBParser {
 			text.delete(e, e + QUOTE[1].length());
 		}
 	}
+	*/
 
 	/**
 	 * Parse hidden and mature tags and sets them to be clickable spans that will show the hidden text when clicked

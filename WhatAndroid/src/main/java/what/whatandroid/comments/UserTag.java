@@ -1,7 +1,8 @@
 package what.whatandroid.comments;
 
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.style.URLSpan;
-import android.text.style.UnderlineSpan;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -12,13 +13,15 @@ import java.net.URLEncoder;
  */
 public class UserTag implements ParameterizedTag {
 	@Override
-	public Object getStyle(String param, String text){
+	public SpannableString getStyle(String param, String text){
+		SpannableString styled = new SpannableString(param);
 		try {
-			return new URLSpan("https://what.cd/user.php?action=search&search=" + URLEncoder.encode(text, "UTF-8"));
+			styled.setSpan(new URLSpan("https://what.cd/user.php?action=search&search=" + URLEncoder.encode(text, "UTF-8")),
+				0, styled.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		catch (UnsupportedEncodingException e){
 			e.printStackTrace();
 		}
-		return new UnderlineSpan();
+		return styled;
 	}
 }

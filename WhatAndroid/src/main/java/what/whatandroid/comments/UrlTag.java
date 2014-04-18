@@ -1,5 +1,7 @@
 package what.whatandroid.comments;
 
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.style.URLSpan;
 
 /**
@@ -7,10 +9,14 @@ import android.text.style.URLSpan;
  */
 public class URLTag implements ParameterizedTag {
 	@Override
-	public Object getStyle(String param, String text){
+	public SpannableString getStyle(String param, String text){
+		SpannableString styled = new SpannableString(text);
 		if (param != null && !param.isEmpty()){
-			return new URLSpan(param);
+			styled.setSpan(new URLSpan(param), 0, styled.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
-		return new URLSpan(text);
+		else {
+			styled.setSpan(new URLSpan(text), 0, styled.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		return styled;
 	}
 }

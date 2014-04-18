@@ -1,5 +1,7 @@
 package what.whatandroid.comments;
 
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 
 /**
@@ -7,7 +9,8 @@ import android.text.style.ForegroundColorSpan;
  */
 public class ColorTag implements ParameterizedTag {
 	@Override
-	public Object getStyle(String param, String text){
+	public SpannableString getStyle(String param, String text){
+		SpannableString styled = new SpannableString(text);
 		//Default to secondary text dark if it's some unsupported color
 		int color = 0xffbebebe;
 		//If it's a site hex color then parse the hex value otherwise lookup the color name
@@ -36,6 +39,7 @@ public class ColorTag implements ParameterizedTag {
 		else if (param.equalsIgnoreCase("orange")){
 			color = 0xffffbb33;
 		}
-		return new ForegroundColorSpan(color);
+		styled.setSpan(new ForegroundColorSpan(color), 0, styled.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		return styled;
 	}
 }

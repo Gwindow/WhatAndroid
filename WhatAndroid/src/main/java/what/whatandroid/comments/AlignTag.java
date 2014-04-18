@@ -1,6 +1,8 @@
 package what.whatandroid.comments;
 
 import android.text.Layout;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.style.AlignmentSpan;
 
 /**
@@ -8,13 +10,20 @@ import android.text.style.AlignmentSpan;
  */
 public class AlignTag implements ParameterizedTag {
 	@Override
-	public Object getStyle(String param, String text){
+	public SpannableString getStyle(String param, String text){
+		SpannableString styled = new SpannableString(text);
 		if (param.equalsIgnoreCase("left")){
-			return new AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL);
+			styled.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL), 0, styled.length(),
+				Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
-		if (param.equalsIgnoreCase("center")){
-			return new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER);
+		else if (param.equalsIgnoreCase("center")){
+			styled.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER), 0, styled.length(),
+				Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
-		return new AlignmentSpan.Standard(Layout.Alignment.ALIGN_OPPOSITE);
+		else {
+			styled.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_OPPOSITE), 0, styled.length(),
+				Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		return styled;
 	}
 }

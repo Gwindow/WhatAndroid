@@ -1,5 +1,7 @@
 package what.whatandroid.comments;
 
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 
 /**
@@ -7,11 +9,13 @@ import android.text.style.RelativeSizeSpan;
  */
 public class SizeTag implements ParameterizedTag {
 	@Override
-	public Object getStyle(String param, String text){
+	public SpannableString getStyle(String param, String text){
+		SpannableString styled = new SpannableString(text);
 		int size = Integer.parseInt(param);
 		if (size > 0 && size < 11){
-			return new RelativeSizeSpan(1.f + (size - 2) * 0.2f);
+			styled.setSpan(new RelativeSizeSpan(1.f + (size - 2) * 0.2f), 0, styled.length(),
+				Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
-		return new RelativeSizeSpan(1.f);
+		return styled;
 	}
 }
