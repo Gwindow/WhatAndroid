@@ -17,7 +17,7 @@ public class UserTag implements ParameterizedTag {
 	public Spannable getStyle(String param, String text){
 		SpannableString styled = new SpannableString(param);
 		try {
-			styled.setSpan(new URLSpan("https://what.cd/user.php?action=search&search=" + URLEncoder.encode(text, "UTF-8")),
+			styled.setSpan(new URLSpan("https://what.cd/user.php?action=search&search=" + URLEncoder.encode(param, "UTF-8")),
 				0, styled.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		catch (UnsupportedEncodingException e){

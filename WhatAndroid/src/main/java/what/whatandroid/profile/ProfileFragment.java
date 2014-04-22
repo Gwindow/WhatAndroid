@@ -27,8 +27,10 @@ import what.whatandroid.settings.SettingsActivity;
 import java.util.Date;
 
 /**
+ * Fragment to display a user's profile
  */
 public class ProfileFragment extends Fragment implements OnLoggedInCallback, LoaderManager.LoaderCallbacks<UserProfile> {
+	public static final String DEFER_LOADING = "what.whatandroid.DEFER_LOADING";
 	/**
 	 * The user's profile information
 	 */
@@ -37,6 +39,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 	 * The user id we want to view, passed earlier as a param since we defer loading until onCreate
 	 */
 	private int userID;
+	private boolean deferLoad;
 	/**
 	 * Callbacks to the activity so we can go set the title
 	 */
@@ -67,17 +70,31 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 	 * desired user's profile
 	 *
 	 * @param id The user id to display the profile of
+	 * @param deferLoad True if the fragment should wait to load the profile until the user id is updated
 	 */
-	public static ProfileFragment newInstance(int id){
+	public static ProfileFragment newInstance(int id, boolean deferLoad){
 		ProfileFragment fragment = new ProfileFragment();
 		Bundle args = new Bundle();
 		args.putInt(ProfileActivity.USER_ID, id);
+		args.putBoolean(ProfileFragment.DEFER_LOADING, deferLoad);
 		fragment.setArguments(args);
 		return fragment;
 	}
 
 	public ProfileFragment(){
 		// Required empty public constructor
+	}
+
+	public void setUserID(int id){
+		if (deferLoad){
+			userID = id;
+			getArguments().putInt(ProfileActivity.USER_ID, userID);
+			//We now have the right id so we don't need to defer loading anymore
+			getArguments().putBoolean(ProfileFragment.DEFER_LOADING, false);
+			Bundle args = new Bundle();
+			args.putInt(ProfileActivity.USER_ID, userID);
+			getLoaderManager().initLoader(0, args, this);
+		}
 	}
 
 	/**
@@ -104,6 +121,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		userID = getArguments().getInt(ProfileActivity.USER_ID);
+		deferLoad = getArguments().getBoolean(ProfileFragment.DEFER_LOADING);
 		setHasOptionsMenu(true);
 	}
 
@@ -138,7 +156,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 		recentSnatches.setAdapter(snatchesAdapter);
 		recentUploads.setAdapter(uploadsAdapter);
 
-		if (MySoup.isLoggedIn()){
+		if (MySoup.isLoggedIn() && !deferLoad){
 			//We could get -1 user id if we were logged out and trying to view our own profile, so update it
 			if (userID == -1){
 				userID = MySoup.getUserId();
@@ -153,7 +171,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 
 	@Override
 	public void onLoggedIn(){
-		if (isAdded()){
+		if (isAdded() && !deferLoad){
 			//We could get -1 user id if we were logged out and trying to view our own profile, so update it
 			if (userID == -1){
 				userID = MySoup.getUserId();

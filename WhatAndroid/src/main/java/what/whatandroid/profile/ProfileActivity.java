@@ -3,7 +3,11 @@ package what.whatandroid.profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.Window;
+import android.widget.Toast;
+import api.search.user.UserSearch;
 import api.soup.MySoup;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
@@ -12,14 +16,22 @@ import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.search.SearchActivity;
+import what.whatandroid.search.UserSearchAsyncLoader;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ProfileActivity extends LoggedInActivity
-	implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewTorrentCallbacks {
+	implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewTorrentCallbacks, LoaderManager.LoaderCallbacks<UserSearch> {
 	/**
 	 * Param to pass the user id to display to the activity
 	 */
 	public static final String USER_ID = "what.whatandroid.USER_ID";
+	private static final Pattern userIdPattern = Pattern.compile(".*id=(\\d+).*"),
+		userSearchPattern = Pattern.compile(".*search=([^&]+).*");
 	private ProfileFragment profileFragment;
 
 	@Override
@@ -29,13 +41,36 @@ public class ProfileActivity extends LoggedInActivity
 		setContentView(R.layout.activity_frame);
 		setupNavDrawer();
 
+		Intent intent = getIntent();
+		int id = intent.getIntExtra(USER_ID, MySoup.getUserId());
 		//If we're loading from a saved state then recover the fragment
 		if (savedInstanceState != null){
 			profileFragment = (ProfileFragment)getSupportFragmentManager().findFragmentById(R.id.container);
 		}
 		else {
-			int id = getIntent().getIntExtra(USER_ID, MySoup.getUserId());
-			profileFragment = ProfileFragment.newInstance(id);
+			String terms = null;
+			if (intent.getScheme() != null && intent.getDataString() != null && intent.getDataString().contains("what.cd")){
+				Matcher m = userIdPattern.matcher(intent.getDataString());
+				if (m.find()){
+					id = Integer.parseInt(m.group(1));
+				}
+				//If no user id we could be receiving a search intent
+				else {
+					m = userSearchPattern.matcher(intent.getDataString());
+					if (m.find()){
+						Bundle args = new Bundle();
+						try {
+							terms = URLDecoder.decode(m.group(1), "UTF-8");
+						}
+						catch (UnsupportedEncodingException e){
+							e.printStackTrace();
+						}
+						args.putString(SearchActivity.TERMS, terms);
+						getSupportLoaderManager().initLoader(0, args, this);
+					}
+				}
+			}
+			profileFragment = ProfileFragment.newInstance(id, terms != null);
 			getSupportFragmentManager().beginTransaction().add(R.id.container, profileFragment).commit();
 		}
 	}
@@ -54,6 +89,44 @@ public class ProfileActivity extends LoggedInActivity
 
 	@Override
 	public void viewTorrent(int group, int torrent){
+	}
+
+	@Override
+	public Loader<UserSearch> onCreateLoader(int id, Bundle args){
+		setProgressBarIndeterminate(true);
+		setProgressBarIndeterminateVisibility(true);
+		return new UserSearchAsyncLoader(this, args);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<UserSearch> loader, UserSearch data){
+		setProgressBarIndeterminateVisibility(false);
+		if (data == null || !data.getStatus()){
+			Toast.makeText(this, "Could not load user", Toast.LENGTH_LONG).show();
+		}
+		else if (data.getResponse().getResults().size() == 1){
+			profileFragment.setUserID(data.getResponse().getResults().get(0).getUserId().intValue());
+		}
+		else {
+			Intent intent = new Intent(this, SearchActivity.class);
+			intent.putExtra(SearchActivity.SEARCH, SearchActivity.USER);
+			Matcher m = userSearchPattern.matcher(intent.getDataString());
+			String terms = "";
+			if (m.find()){
+				try {
+					terms = URLDecoder.decode(m.group(1), "UTF-8");
+				}
+				catch (UnsupportedEncodingException e){
+					e.printStackTrace();
+				}
+			}
+			intent.putExtra(SearchActivity.TERMS, terms);
+			startActivity(intent);
+		}
+	}
+
+	@Override
+	public void onLoaderReset(Loader<UserSearch> loader){
 	}
 
 	@Override
@@ -83,7 +156,7 @@ public class ProfileActivity extends LoggedInActivity
 		else if (selection.equalsIgnoreCase(getString(R.string.profile))){
 			//If we're not viewing our own profile go to it
 			if (profileFragment.getUserID() != MySoup.getUserId()){
-				profileFragment = ProfileFragment.newInstance(MySoup.getUserId());
+				profileFragment = ProfileFragment.newInstance(MySoup.getUserId(), false);
 				getSupportFragmentManager().beginTransaction()
 					.replace(R.id.container, profileFragment)
 					.addToBackStack(null)

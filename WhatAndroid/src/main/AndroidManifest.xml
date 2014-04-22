@@ -28,6 +28,23 @@
         <activity
                 android:name=".profile.ProfileActivity"
                 android:label="@string/profile">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                        android:scheme="http"
+                        android:host="what.cd"
+                        android:pathPrefix="/user"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                        android:scheme="https"
+                        android:host="what.cd"
+                        android:pathPrefix="/user"/>
+            </intent-filter>
         </activity>
         <activity
                 android:name=".artist.ArtistActivity"
