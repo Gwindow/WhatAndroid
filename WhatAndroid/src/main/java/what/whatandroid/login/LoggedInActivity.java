@@ -1,10 +1,8 @@
 package what.whatandroid.login;
 
-import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
+import android.app.*;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -13,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -25,6 +24,8 @@ import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
+import what.whatandroid.callbacks.ShowHiddenTextListener;
+import what.whatandroid.comments.WhatBBParser;
 import what.whatandroid.errors.ErrorLogger;
 import what.whatandroid.errors.ErrorReporterService;
 import what.whatandroid.settings.SettingsActivity;
@@ -37,12 +38,12 @@ import what.whatandroid.updater.UpdateService;
  * enters a LoggedInActivity it will try to load their saved cookie, or if no
  * cookie is found will kick them to the login activity.
  */
-public abstract class LoggedInActivity extends ActionBarActivity
-	implements NavigationDrawerFragment.NavigationDrawerCallbacks, SetTitleCallback, OnLoggedInCallback {
+public abstract class LoggedInActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+	SetTitleCallback, OnLoggedInCallback, ShowHiddenTextListener {
 
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-	public static final String SITE = "192.168.1.5:8080/";
+	public static final String SITE = "192.168.1.4:8080/";
 	protected NavigationDrawerFragment navDrawer;
 	/**
 	 * Used to store the last screen title, for use in restoreActionBar
@@ -237,6 +238,20 @@ public abstract class LoggedInActivity extends ActionBarActivity
 				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void showHidden(String title, String text){
+		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+		builder.setTitle(title)
+			.setMessage(WhatBBParser.parsebb(text))
+			.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which){
+					dialog.cancel();
+				}
+			});
+		builder.create().show();
 	}
 
 	/**
