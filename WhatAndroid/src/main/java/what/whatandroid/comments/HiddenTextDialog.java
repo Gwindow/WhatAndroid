@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.method.LinkMovementMethod;
 import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
+import what.whatandroid.R;
 
 /**
  * Displays hidden text
@@ -36,14 +39,20 @@ public class HiddenTextDialog extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState){
 		String title = getArguments().getString(TITLE);
 		String text = getArguments().getString(TEXT);
-		TextView textView = new TextView(getActivity());
+		if (title == null || title.isEmpty()){
+			title = "Hidden Text";
+		}
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo_Dialog));
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		View view = inflater.inflate(R.layout.dialog_text, null);
+		TextView textView = (TextView)view.findViewById(R.id.text);
 		textView.setTextColor(getActivity().getResources().getColor(android.R.color.primary_text_dark));
 		textView.setText(WhatBBParser.parsebb(text));
 		textView.setMovementMethod(LinkMovementMethod.getInstance());
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo_Dialog));
 		builder.setTitle(title)
-			.setView(textView)
+			.setView(view)
 			.setPositiveButton("Close", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which){
