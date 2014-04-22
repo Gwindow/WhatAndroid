@@ -74,9 +74,14 @@ public class BarcodeAdapter extends ArrayAdapter<Barcode> {
 		else {
 			holder.barcodeTitle.setText(b.getUpc());
 			holder.barcodeSecondary.setVisibility(View.INVISIBLE);
-			holder.loadTerms.setVisibility(View.VISIBLE);
 			holder.searchTorrents.setVisibility(View.GONE);
 			holder.searchRequests.setVisibility(View.GONE);
+			if (holder.loadingSpinner.getVisibility() != View.VISIBLE){
+				holder.loadTerms.setVisibility(View.VISIBLE);
+			}
+			else {
+				holder.loadTerms.setVisibility(View.GONE);
+			}
 		}
 		holder.deleteClickListener.setBarcode(b);
 		holder.torrentsListener.setBarcode(b);
