@@ -2,11 +2,15 @@ package what.whatandroid.barcode;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -25,6 +29,7 @@ import what.whatandroid.callbacks.ViewSearchCallbacks;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.settings.SettingsActivity;
+import what.whatandroid.settings.SettingsFragment;
 
 import java.util.Date;
 
@@ -87,6 +92,9 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 	public boolean onOptionsItemSelected(MenuItem item){
 		Intent intent;
 		switch (item.getItemId()){
+			case R.id.action_logout:
+				new LogoutTask().execute();
+				return true;
 			case R.id.action_settings:
 				intent = new Intent(this, SettingsActivity.class);
 				startActivity(intent);
@@ -211,6 +219,60 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 			Intent intent = new Intent(this, SearchActivity.class);
 			intent.putExtra(SearchActivity.SEARCH, SearchActivity.USER);
 			startActivity(intent);
+		}
+	}
+
+	/**
+	 * Async task for logging out the user
+	 */
+	private class LogoutTask extends AsyncTask<Void, Void, Boolean> {
+		private ProgressDialog dialog;
+
+		@Override
+		protected void onPreExecute(){
+			dialog = new ProgressDialog(BarcodeActivity.this);
+			dialog.setIndeterminate(true);
+			dialog.setMessage("Logging out...");
+			dialog.show();
+		}
+
+		/**
+		 * Once we've logged out clear the saved cookie, name and password and head to the home screen
+		 */
+		@Override
+		protected void onPostExecute(Boolean status){
+			if (dialog.isShowing()){
+				dialog.dismiss();
+			}
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BarcodeActivity.this);
+			preferences.edit()
+				.remove(SettingsFragment.USER_COOKIE)
+				.remove(SettingsFragment.USER_NAME)
+				.remove(SettingsFragment.USER_PASSWORD)
+				.commit();
+
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_HOME);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params){
+			Boolean status = false;
+			try {
+				status = MySoup.logout("logout.php");
+			}
+			catch (Exception e){
+				e.printStackTrace();
+			}
+			return status;
+		}
+
+		public void dismissDialog(){
+			if (dialog.isShowing()){
+				dialog.dismiss();
+			}
 		}
 	}
 }
