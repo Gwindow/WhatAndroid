@@ -1,8 +1,10 @@
 package what.whatandroid.login;
 
-import android.app.*;
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -11,7 +13,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -24,14 +25,15 @@ import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
-import what.whatandroid.callbacks.ShowHiddenTextListener;
-import what.whatandroid.comments.WhatBBParser;
+import what.whatandroid.callbacks.ShowHiddenTagListener;
+import what.whatandroid.comments.HiddenTextDialog;
 import what.whatandroid.errors.ErrorLogger;
 import what.whatandroid.errors.ErrorReporterService;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.settings.SettingsFragment;
 import what.whatandroid.updater.UpdateBroadcastReceiver;
 import what.whatandroid.updater.UpdateService;
+import what.whatandroid.views.ImageDialog;
 
 /**
  * Parent activity for ones that require the user to be logged in. If the user
@@ -39,7 +41,7 @@ import what.whatandroid.updater.UpdateService;
  * cookie is found will kick them to the login activity.
  */
 public abstract class LoggedInActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
-	SetTitleCallback, OnLoggedInCallback, ShowHiddenTextListener {
+	SetTitleCallback, OnLoggedInCallback, ShowHiddenTagListener {
 
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
@@ -241,17 +243,15 @@ public abstract class LoggedInActivity extends ActionBarActivity implements Navi
 	}
 
 	@Override
-	public void showHidden(String title, String text){
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
-		builder.setTitle(title)
-			.setMessage(WhatBBParser.parsebb(text))
-			.setPositiveButton("Close", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which){
-					dialog.cancel();
-				}
-			});
-		builder.create().show();
+	public void showText(String title, String text){
+		HiddenTextDialog dialog = HiddenTextDialog.newInstance(title, text);
+		dialog.show(getSupportFragmentManager(), "hidden_text");
+	}
+
+	@Override
+	public void showImage(String url){
+		ImageDialog dialog = ImageDialog.newInstance(url);
+		dialog.show(getSupportFragmentManager(), "image_dialog");
 	}
 
 	/**

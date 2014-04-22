@@ -62,6 +62,7 @@ public class WhatBBParser {
 		parseParameterizedTag(ssb, text, ARTIST, new ArtistTag());
 		parseParameterizedTag(ssb, text, TORRENT, new TorrentTag());
 		parseParameterizedTag(ssb, text, QUOTE, new QuoteTag());
+		parseParameterizedTag(ssb, text, IMG, new ImageTag());
 		parseBulletLists(ssb, text);
 		parseNumberedList(ssb, text);
 		return ssb;
