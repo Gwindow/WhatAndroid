@@ -27,7 +27,7 @@ public class WhatBBParser {
 		IMPORTANT = Pattern.compile("\\[(?:important|IMPORTANT)\\](.+?)\\[\\/(?:important|IMPORTANT)\\]", Pattern.DOTALL),
 		CODE = Pattern.compile("\\[(?:code|CODE|pre|PRE)\\](.+?)\\[\\/(?:code|CODE|pre|PRE)\\]", Pattern.DOTALL),
 		COLOR = Pattern.compile("\\[(?:color|COLOR)=([^\\]]+)\\](.+?)\\[\\/(?:color|COLOR)\\]"),
-		ALIGN = Pattern.compile("\\[(?:align|ALIGN)=(\\w+)\\](.+?)\\[\\/(?:align|ALIGN)\\]"),
+		ALIGN = Pattern.compile("\\[(?:align|ALIGN)=(\\w+)\\](.+?)\\[\\/(?:align|ALIGN)\\]", Pattern.DOTALL),
 		SIZE = Pattern.compile("\\[(?:size|SIZE)=(\\d+)\\](.+?)\\[\\/(?:size|SIZE)\\]"),
 		URL = Pattern.compile("\\[(?:url|URL)=?([^\\]]+)?\\](.+?)\\[\\/(?:url|URL)\\]"),
 		IMG = Pattern.compile("\\[(?:img|IMG)=?([^\\]]+)?\\](?:(.+?)\\[\\/(?:img|IMG)\\])?"),

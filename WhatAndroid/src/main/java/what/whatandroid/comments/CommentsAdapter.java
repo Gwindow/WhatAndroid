@@ -14,6 +14,7 @@ import android.widget.TextView;
 import api.comments.SimpleComment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.imgloader.HtmlImageHider;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
@@ -27,11 +28,18 @@ import java.util.List;
 public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 	private final LayoutInflater inflater;
 	private final HtmlImageHider imageGetter;
+	private ViewUserCallbacks viewUser;
 
 	public CommentsAdapter(Context context){
 		super(context, R.layout.list_user_comment);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		imageGetter = new HtmlImageHider(context);
+		try {
+			viewUser = (ViewUserCallbacks)context;
+		}
+		catch (ClassCastException e){
+			throw new ClassCastException(context.toString() + " must implement ViewUserCallbacks");
+		}
 	}
 
 	public CommentsAdapter(Context context, List<? extends SimpleComment> comments){
@@ -58,9 +66,13 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 			holder.image = (ImageView)convertView.findViewById(R.id.image);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
 			holder.listener = new ImageLoadingListener(holder.spinner);
+			holder.userClickListener = new UserClickListener();
+			View header = convertView.findViewById(R.id.user_header);
+			header.setOnClickListener(holder.userClickListener);
 			convertView.setTag(holder);
 		}
 		SimpleComment comment = getItem(position);
+		holder.userClickListener.userId = comment.getAuthorId();
 		holder.username.setText(comment.getAuthor());
 		holder.postDate.setText(DateUtils.getRelativeTimeSpanString(comment.getTimePosted().getTime(),
 			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
@@ -89,5 +101,15 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 		public ImageView image;
 		public ProgressBar spinner;
 		public ImageLoadingListener listener;
+		public UserClickListener userClickListener;
+	}
+
+	private class UserClickListener implements View.OnClickListener {
+		public int userId;
+
+		@Override
+		public void onClick(View v){
+			viewUser.viewUser(userId);
+		}
 	}
 }

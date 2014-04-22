@@ -45,11 +45,9 @@
             android:id="@+id/uploaded_by_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/uploaded_date"
-            android:layout_alignBaseline="@id/uploaded_date"
+            android:layout_below="@id/uploaded_date"
             android:text="@string/by"
             android:textSize="18sp"
-            android:paddingLeft="4dp"
             android:textColor="@android:color/primary_text_dark"/>
 
     <TextView
@@ -95,7 +93,7 @@
             android:id="@+id/size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/uploaded_date"
+            android:layout_below="@id/uploaded_by_text"
             android:layout_alignParentLeft="true"
             android:paddingTop="12dp"
             android:paddingRight="16dp"
