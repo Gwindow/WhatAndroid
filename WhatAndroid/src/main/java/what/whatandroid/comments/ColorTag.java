@@ -1,5 +1,6 @@
 package what.whatandroid.comments;
 
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -9,7 +10,7 @@ import android.text.style.ForegroundColorSpan;
  */
 public class ColorTag implements ParameterizedTag {
 	@Override
-	public SpannableString getStyle(String param, String text){
+	public Spannable getStyle(String param, String text){
 		SpannableString styled = new SpannableString(text);
 		//Default to secondary text dark if it's some unsupported color
 		int color = 0xffbebebe;

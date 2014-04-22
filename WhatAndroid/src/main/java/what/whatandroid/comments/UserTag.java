@@ -1,5 +1,6 @@
 package what.whatandroid.comments;
 
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.URLSpan;
@@ -13,7 +14,7 @@ import java.net.URLEncoder;
  */
 public class UserTag implements ParameterizedTag {
 	@Override
-	public SpannableString getStyle(String param, String text){
+	public Spannable getStyle(String param, String text){
 		SpannableString styled = new SpannableString(param);
 		try {
 			styled.setSpan(new URLSpan("https://what.cd/user.php?action=search&search=" + URLEncoder.encode(text, "UTF-8")),

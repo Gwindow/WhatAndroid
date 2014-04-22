@@ -1,6 +1,7 @@
 package what.whatandroid.comments;
 
 import android.graphics.Typeface;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -59,8 +60,8 @@ public class WhatBBParser {
 		parseParameterizedTag(ssb, text, URL, new URLTag());
 		parseParameterizedTag(ssb, text, ARTIST, new ArtistTag());
 		parseParameterizedTag(ssb, text, TORRENT, new TorrentTag());
+		parseParameterizedTag(ssb, text, QUOTE, new QuoteTag());
 		/*
-		parseQuoteTag(ssb, text);
 		parseBulletLists(ssb, text);
 		parseNumberedList(ssb, text);
 		parseHiddenTags(ssb, text, HIDDEN);
@@ -129,7 +130,7 @@ public class WhatBBParser {
 		//Unfortunately because we're changing the text we need to reset each time. If this is too slow then maybe we
 		//could just store the indices and do the replacement after finding all matches
 		for (Matcher m = tag.matcher(text); m.find(); m.reset(text)){
-			SpannableString styled;
+			Spannable styled;
 			int groupStart, groupEnd;
 			if (m.groupCount() == 2){
 				styled = handler.getStyle(m.group(1), m.group(2));
@@ -168,47 +169,6 @@ public class WhatBBParser {
 			text.replace(m.start(), m.end(), styled.toString());
 		}
 	}
-
-	/**
-	 * Parse quote tags in the text and apply the quote style and if a user was specified in the quote put
-	 * their name above it, similar to the site
-	 *
-	 * @param ssb  spannable string builder to apply the styling in
-	 * @param text a mirror of the text in the spannable string builder, used to look up tag positions and tags will be
-	 *             removed in here and in the ssb to keep them matching
-	 */
-	/*
-	private static void parseQuoteTag(SpannableStringBuilder ssb, StringBuilder text){
-		for (int s = text.indexOf(QUOTE[0]) + QUOTE[0].length(), e = text.indexOf(QUOTE[1], s); s != -1 && e != -1;
-			 s = text.indexOf(QUOTE[0], s) + QUOTE[0].length(), e = text.indexOf(QUOTE[1], s)){
-			//Find the quote parameter if there is one
-			int openerClose = text.indexOf("]", s);
-			String user = "";
-			if (text.charAt(s) == '='){
-				user = ssb.subSequence(s + 1, openerClose).toString();
-				//We ignore the post id links in quotes
-				int nameEnd = user.indexOf('|');
-				if (nameEnd != -1){
-					user = user.substring(0, nameEnd);
-				}
-				user += " wrote:\n";
-			}
-			if (!user.isEmpty()){
-				ssb.insert(openerClose + 1, user);
-				text.insert(openerClose + 1, user);
-				ssb.setSpan(new StyleSpan(Typeface.BOLD), openerClose + 1, openerClose + 1 + user.length(), 0);
-				e += user.length();
-			}
-			ssb.setSpan(new QuoteSpan(0xff33b5e5), openerClose + 1 + user.length(), e, 0);
-			//Remove the open and close tokens
-			ssb.delete(s - QUOTE[0].length(), openerClose + 1);
-			text.delete(s - QUOTE[0].length(), openerClose + 1);
-			e -= openerClose + 1 - s + QUOTE[0].length();
-			ssb.delete(e, e + QUOTE[1].length());
-			text.delete(e, e + QUOTE[1].length());
-		}
-	}
-	*/
 
 	/**
 	 * Parse hidden and mature tags and sets them to be clickable spans that will show the hidden text when clicked

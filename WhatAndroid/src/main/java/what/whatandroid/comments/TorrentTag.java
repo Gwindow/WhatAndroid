@@ -1,5 +1,6 @@
 package what.whatandroid.comments;
 
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.URLSpan;
@@ -10,7 +11,7 @@ import android.text.style.URLSpan;
  */
 public class TorrentTag implements ParameterizedTag {
 	@Override
-	public SpannableString getStyle(String param, String text){
+	public Spannable getStyle(String param, String text){
 		SpannableString styled = new SpannableString(param);
 		//The torrent tags can be the full url or just the group id
 		if (!param.contains("what.cd")){
