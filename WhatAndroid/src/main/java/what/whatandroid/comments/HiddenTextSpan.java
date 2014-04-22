@@ -11,10 +11,9 @@ import what.whatandroid.callbacks.ShowHiddenTextListener;
  * to display the hidden text
  */
 public class HiddenTextSpan extends ClickableSpan {
-	String title;
-	CharSequence text;
+	String title, text;
 
-	public HiddenTextSpan(String title, CharSequence text){
+	public HiddenTextSpan(String title, String text){
 		super();
 		this.title = title;
 		this.text = text;

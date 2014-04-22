@@ -9,7 +9,7 @@ public interface ShowHiddenTextListener {
 	 * Request that the hidden text be shown in a popup view
 	 *
 	 * @param title the title of the hidden text
-	 * @param text  the hidden text, will contain parsed mark-up
+	 * @param text  the hidden text to show, markup will be parsed
 	 */
-	public void showHidden(String title, CharSequence text);
+	public void showHidden(String title, String text);
 }

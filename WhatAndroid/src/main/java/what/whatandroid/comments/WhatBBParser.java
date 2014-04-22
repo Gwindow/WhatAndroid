@@ -48,6 +48,7 @@ public class WhatBBParser {
 		SpannableStringBuilder ssb = new SpannableStringBuilder(bbText);
 		StringBuilder text = new StringBuilder(bbText);
 		SmileyProcessor.bbSmileytoEmoji(ssb, text);
+		parseParameterizedTag(ssb, text, HIDDEN, new HiddenTag());
 		parseSimpleTag(ssb, text, BOLD, new StyleSpan(Typeface.BOLD));
 		parseSimpleTag(ssb, text, ITALIC, new StyleSpan(Typeface.ITALIC));
 		parseSimpleTag(ssb, text, UNDERLINE, new UnderlineSpan());
@@ -61,12 +62,8 @@ public class WhatBBParser {
 		parseParameterizedTag(ssb, text, ARTIST, new ArtistTag());
 		parseParameterizedTag(ssb, text, TORRENT, new TorrentTag());
 		parseParameterizedTag(ssb, text, QUOTE, new QuoteTag());
-		/*
 		parseBulletLists(ssb, text);
 		parseNumberedList(ssb, text);
-		parseHiddenTags(ssb, text, HIDDEN);
-		parseHiddenTags(ssb, text, MATURE);
-		*/
 		return ssb;
 	}
 
@@ -167,47 +164,6 @@ public class WhatBBParser {
 			}
 			ssb.replace(m.start(), m.end(), styled);
 			text.replace(m.start(), m.end(), styled.toString());
-		}
-	}
-
-	/**
-	 * Parse hidden and mature tags and sets them to be clickable spans that will show the hidden text when clicked
-	 * via a callback to the context they're attached in. If the callback isn't implemented nothing will be shown
-	 * The hidden tags should be parsed after all other styes have been applied, otherwise the hidden text may be
-	 * missing some of its markup when shown in the pop-up since it's removed here and passed to the hidden text span
-	 *
-	 * @param ssb  spannable string builder to apply the styling in
-	 * @param text a mirror of the text in the spannable string builder, used to look up tag positions and tags will be
-	 *             removed in here and in the ssb to keep them matching
-	 * @param tag  the tags to look for, either hidden or mature, both are formatted the same way
-	 */
-	private static void parseHiddenTags(SpannableStringBuilder ssb, StringBuilder text, String tag[]){
-		for (int s = text.indexOf(tag[0]) + tag[0].length(), e = text.indexOf(tag[1], s); s != -1 && e != -1;
-			 s = text.indexOf(tag[0], s) + tag[0].length(), e = text.indexOf(tag[1], s)){
-			int openerClose = text.indexOf("]", s);
-			String description;
-			if (text.charAt(s) == '='){
-				description = ssb.subSequence(s + 1, openerClose).toString();
-				if (tag[0].contains("mature")){
-					description = "Mature content: " + description;
-				}
-				else {
-					description = "Show hidden text: " + description;
-				}
-			}
-			//Only hidden text can be without a description so pick that title
-			else {
-				description = "Show hidden text";
-			}
-			HiddenTextSpan hiddenSpan = new HiddenTextSpan(description, ssb.subSequence(openerClose + 1, e));
-			//Remove the tags and hidden text and replace with the description
-			s -= tag[0].length();
-			ssb.delete(s, e + tag[1].length());
-			text.delete(s, e + tag[1].length());
-			ssb.insert(s, description);
-			text.insert(s, description);
-			ssb.setSpan(new StyleSpan(Typeface.BOLD), s, s + description.length(), 0);
-			ssb.setSpan(hiddenSpan, s, s + description.length(), 0);
 		}
 	}
 
