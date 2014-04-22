@@ -26,7 +26,9 @@ public class ImageDialog extends DialogFragment implements View.OnClickListener 
 	 */
 	public static ImageDialog newInstance(String imgUrl){
 		ImageDialog dialog = new ImageDialog();
-		dialog.imageUrl = imgUrl;
+		Bundle args = new Bundle();
+		args.putString(IMAGE_URL, imgUrl);
+		dialog.setArguments(args);
 		return dialog;
 	}
 
@@ -37,10 +39,7 @@ public class ImageDialog extends DialogFragment implements View.OnClickListener 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		//If we're loading from a saved state
-		if (savedInstanceState != null && imageUrl == null){
-			imageUrl = savedInstanceState.getString(IMAGE_URL);
-		}
+		imageUrl = getArguments().getString(IMAGE_URL);
 		setStyle(STYLE_NO_FRAME, R.style.ImageDialog);
 	}
 
@@ -52,12 +51,6 @@ public class ImageDialog extends DialogFragment implements View.OnClickListener 
 		ImageLoader.getInstance().displayImage(imageUrl, imageView, new ImageLoadingListener(spinner));
 		imageView.setOnClickListener(this);
 		return view;
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState){
-		super.onSaveInstanceState(outState);
-		outState.putString(IMAGE_URL, imageUrl);
 	}
 
 	@Override

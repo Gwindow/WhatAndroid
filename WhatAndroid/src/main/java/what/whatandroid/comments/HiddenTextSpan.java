@@ -3,11 +3,11 @@ package what.whatandroid.comments;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
-import what.whatandroid.callbacks.ShowHiddenTextListener;
+import what.whatandroid.callbacks.ShowHiddenTagListener;
 
 /**
  * Implements the behavior of the site's hidden/mature tags. When clicked we try to
- * get a ShowHiddenTextListener from the context and if it implements it we request
+ * get a ShowHiddenTagListener from the context and if it implements it we request
  * to display the hidden text
  */
 public class HiddenTextSpan extends ClickableSpan {
@@ -22,13 +22,13 @@ public class HiddenTextSpan extends ClickableSpan {
 	@Override
 	public void onClick(View widget){
 		try {
-			ShowHiddenTextListener listener = (ShowHiddenTextListener)widget.getContext();
+			ShowHiddenTagListener listener = (ShowHiddenTagListener)widget.getContext();
 			if (listener != null){
-				listener.showHidden(title, text);
+				listener.showText(title, text);
 			}
 		}
 		catch (ClassCastException e){
-			Log.w("WARN", "Attempt to show hidden text in context not implementing ShowHiddenTextListener");
+			Log.w("WARN", "Attempt to show hidden text in context not implementing ShowHiddenTagListener");
 		}
 	}
 }
