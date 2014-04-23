@@ -75,7 +75,7 @@ public class TorrentGroupFragment extends android.support.v4.app.Fragment implem
 			new ToggleBookmarkTask().execute(group);
 			return true;
 		}
-		return false;
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -93,8 +93,11 @@ public class TorrentGroupFragment extends android.support.v4.app.Fragment implem
 		}
 	}
 
+	/**
+	 * Async task to toggle the torrent group's bookmark status
+	 */
 	private class ToggleBookmarkTask extends AsyncTask<TorrentGroup, Void, Boolean> {
-		TorrentGroup group;
+		private TorrentGroup group;
 
 		@Override
 		protected Boolean doInBackground(TorrentGroup... params){
@@ -130,7 +133,6 @@ public class TorrentGroupFragment extends android.support.v4.app.Fragment implem
 			}
 			else if (bookmarkMenu != null){
 				bookmarkMenu.setVisible(true);
-				//If the group is bookmarked then we removed it, if it's not bookmarked then we added it
 				if (group.getResponse().getGroup().isBookmarked()){
 					bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
 				}

@@ -1,13 +1,12 @@
 package what.whatandroid.artist;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -40,6 +39,10 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	private ImageView image;
 	private ProgressBar spinner;
 	private ExpandableListView torrentList;
+	/**
+	 * Menu items for toggling bookmarks/notifications status
+	 */
+	private MenuItem bookmarkMenu, notificationMenu;
 
 	/**
 	 * Use this factory method to create a new artist fragment displaying information about
@@ -77,6 +80,12 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.expandable_list_view, container, false);
 		torrentList = (ExpandableListView)view.findViewById(R.id.exp_list);
@@ -89,6 +98,34 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 			populateViews();
 		}
 		return view;
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		inflater.inflate(R.menu.artist, menu);
+		bookmarkMenu = menu.findItem(R.id.action_bookmark);
+		notificationMenu = menu.findItem(R.id.action_notifications);
+		if (artist != null){
+			updateMenus();
+		}
+		else {
+			bookmarkMenu.setVisible(false);
+			notificationMenu.setVisible(false);
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch (item.getItemId()){
+			case R.id.action_bookmark:
+				new ToggleBookmarkTask().execute(artist);
+				return true;
+			case R.id.action_notifications:
+				new ToggleNotificationsTask().execute(artist);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
@@ -123,6 +160,7 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 			getActivity().setProgressBarIndeterminateVisibility(false);
 			if (artist != null && artist.getStatus()){
 				populateViews();
+				updateMenus();
 			}
 			else {
 				Toast.makeText(getActivity(), "Could not load artist", Toast.LENGTH_LONG).show();
@@ -132,6 +170,28 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 
 	@Override
 	public void onLoaderReset(Loader<Artist> loader){
+	}
+
+	/**
+	 * Update the bookmark and notification menu status icons
+	 */
+	private void updateMenus(){
+		if (bookmarkMenu != null && notificationMenu != null){
+			bookmarkMenu.setVisible(true);
+			notificationMenu.setVisible(true);
+			if (artist.getResponse().isBookmarked()){
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
+			}
+			else {
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_off);
+			}
+			if (artist.getResponse().hasNotificationsEnabled()){
+				notificationMenu.setIcon(R.drawable.ic_eye_on);
+			}
+			else {
+				notificationMenu.setIcon(R.drawable.ic_eye_off);
+			}
+		}
 	}
 
 	/**
@@ -151,5 +211,93 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 			artist.getResponse().getRequests());
 		torrentList.setAdapter(adapter);
 		torrentList.setOnChildClickListener(adapter);
+	}
+
+	/**
+	 * Async task to toggle the artists bookmark status
+	 */
+	private class ToggleBookmarkTask extends AsyncTask<Artist, Void, Boolean> {
+		private Artist artist;
+
+		@Override
+		protected Boolean doInBackground(Artist... params){
+			artist = params[0];
+			if (artist.getResponse().isBookmarked()){
+				return artist.removeBookmark();
+			}
+			return artist.addBookmark();
+		}
+
+		@Override
+		protected void onPreExecute(){
+			bookmarkMenu.setVisible(false);
+			if (isAdded()){
+				getActivity().setProgressBarIndeterminate(true);
+				getActivity().setProgressBarIndeterminateVisibility(true);
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status){
+			if (isAdded()){
+				getActivity().setProgressBarIndeterminate(false);
+				getActivity().setProgressBarIndeterminateVisibility(false);
+			}
+			if (!status){
+				if (artist.getResponse().isBookmarked()){
+					Toast.makeText(getActivity(), "Could not remove bookmark", Toast.LENGTH_LONG).show();
+				}
+				else {
+					Toast.makeText(getActivity(), "Could not add bookmark", Toast.LENGTH_LONG).show();
+				}
+			}
+			else {
+				updateMenus();
+			}
+		}
+	}
+
+	/**
+	 * Async task to toggle the artist's notification status
+	 */
+	private class ToggleNotificationsTask extends AsyncTask<Artist, Void, Boolean> {
+		private Artist artist;
+
+		@Override
+		protected Boolean doInBackground(Artist... params){
+			artist = params[0];
+			if (artist.getResponse().hasNotificationsEnabled()){
+				return artist.disableNotifications();
+			}
+			return artist.enableNotifications();
+		}
+
+		@Override
+		protected void onPreExecute(){
+			notificationMenu.setVisible(false);
+			if (isAdded()){
+				getActivity().setProgressBarIndeterminate(true);
+				getActivity().setProgressBarIndeterminateVisibility(true);
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status){
+			if (isAdded()){
+				getActivity().setProgressBarIndeterminate(false);
+				getActivity().setProgressBarIndeterminateVisibility(false);
+			}
+			if (!status){
+				if (artist.getResponse().hasNotificationsEnabled()){
+					Toast.makeText(getActivity(), "Could not remove notifications", Toast.LENGTH_LONG).show();
+				}
+				else {
+					Toast.makeText(getActivity(), "Could not enable notifications", Toast.LENGTH_LONG).show();
+				}
+			}
+			else {
+				updateMenus();
+			}
+		}
 	}
 }
