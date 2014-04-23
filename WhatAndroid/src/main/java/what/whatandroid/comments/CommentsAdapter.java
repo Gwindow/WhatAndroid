@@ -85,6 +85,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 		}
 		holder.commentText.setMovementMethod(LinkMovementMethod.getInstance());
 
+		holder.image.setOnClickListener(holder.userClickListener);
 		String imgUrl = comment.getAvatar();
 		if (SettingsActivity.imagesEnabled(getContext()) && imgUrl != null && !imgUrl.isEmpty()){
 			ImageLoader.getInstance().displayImage(imgUrl, holder.image, holder.listener);
