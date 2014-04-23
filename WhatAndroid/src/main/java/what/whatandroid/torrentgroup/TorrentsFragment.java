@@ -86,13 +86,12 @@ public class TorrentsFragment extends Fragment implements LoadingListener<Torren
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-		//should we not inflate if torrent group is null?
 		inflater.inflate(R.menu.torrent_file, menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
-		if (item.getItemId() == R.id.download && torrentGroup != null){
+		if (item.getItemId() == R.id.action_download && torrentGroup != null){
 			Torrents t = torrentGroup.getResponse().getTorrents().get(viewPager.getCurrentItem());
 			DownloadDialog dialog = DownloadDialog.newInstance(torrentGroup.getResponse().getGroup().getName(), t);
 			dialog.show(getChildFragmentManager(), "download_dialog");
