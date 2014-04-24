@@ -45,7 +45,7 @@ public class RequestDetailFragment extends Fragment implements View.OnClickListe
 	private TextView title, created, recordLabel, catalogueNumber, releaseType, filled, filledBy,
 		acceptBitrates, acceptFormats, acceptMedia, votes, bounty, tags;
 	private View recordLabelText, catalogueNumberText, releaseTypeText, filledText, filledByText,
-		bitratesContainer, formatsContainer, mediaContainer, addVote;
+		bitratesContainer, formatsContainer, mediaContainer, addVote, artContainer;
 	/**
 	 * The list shows the artists & top contributors
 	 */
@@ -91,6 +91,7 @@ public class RequestDetailFragment extends Fragment implements View.OnClickListe
 
 		image = (ImageView)header.findViewById(R.id.image);
 		spinner = (ProgressBar)header.findViewById(R.id.loading_indicator);
+		artContainer = header.findViewById(R.id.art_container);
 		title = (TextView)header.findViewById(R.id.title);
 		created = (TextView)header.findViewById(R.id.created);
 		recordLabelText = header.findViewById(R.id.record_label_text);
@@ -161,11 +162,10 @@ public class RequestDetailFragment extends Fragment implements View.OnClickListe
 		//Requests may be missing any of these fields
 		String imgUrl = response.getImage();
 		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner));
+			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner, artContainer));
 		}
 		else {
-			image.setVisibility(View.GONE);
-			spinner.setVisibility(View.GONE);
+			artContainer.setVisibility(View.GONE);
 		}
 		if (response.isFilled()){
 			addVote.setVisibility(View.GONE);

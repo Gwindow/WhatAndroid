@@ -37,6 +37,7 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 	 */
 	private ImageView art;
 	private ProgressBar spinner;
+	private View artContainer;
 	private TextView albumName, artistName;
 
 	/**
@@ -69,6 +70,7 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 		View view = inflater.inflate(R.layout.fragment_recent_torrent, container, false);
 		art = (ImageView)view.findViewById(R.id.art);
 		spinner = (ProgressBar)view.findViewById(R.id.loading_indicator);
+		artContainer = view.findViewById(R.id.art_container);
 		albumName = (TextView)view.findViewById(R.id.album_name);
 		artistName = (TextView)view.findViewById(R.id.artist_name);
 		if (torrent != null){
@@ -107,11 +109,10 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 		if (artistName != null){
 			String imgUrl = torrent.getWikiImage();
 			if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
-				ImageLoader.getInstance().displayImage(torrent.getWikiImage(), art, new ImageLoadingListener(spinner));
+				ImageLoader.getInstance().displayImage(torrent.getWikiImage(), art, new ImageLoadingListener(spinner, artContainer));
 			}
 			else {
-				art.setVisibility(View.GONE);
-				spinner.setVisibility(View.GONE);
+				artContainer.setVisibility(View.GONE);
 			}
 			albumName.setText(torrent.getName());
 			//For 3+ artists show Various Artists, for 2 show A & B for 1 just show the artist name

@@ -54,7 +54,8 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 			holder = new ViewHolder();
 			holder.art = (ImageView)convertView.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
-			holder.listener = new ImageLoadingListener(holder.spinner);
+			holder.artContainer = convertView.findViewById(R.id.art_container);
+			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer);
 			holder.artistName = (TextView)convertView.findViewById(R.id.artist_name);
 			holder.albumName = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.year);
@@ -93,8 +94,7 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 			ImageLoader.getInstance().displayImage(imgUrl, holder.art, holder.listener);
 		}
 		else {
-			holder.art.setVisibility(View.GONE);
-			holder.spinner.setVisibility(View.GONE);
+			holder.artContainer.setVisibility(View.GONE);
 		}
 		if (r.getYear().intValue() != 0){
 			holder.year.setText(r.getYear().toString());
@@ -116,6 +116,7 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 	private class ViewHolder {
 		public ImageView art;
 		public ProgressBar spinner;
+		public View artContainer;
 		public ImageLoadingListener listener;
 		public TextView artistName, albumName, year, votes, bounty, created;
 	}

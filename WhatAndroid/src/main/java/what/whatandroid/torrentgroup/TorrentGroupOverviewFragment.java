@@ -44,6 +44,7 @@ public class TorrentGroupOverviewFragment extends Fragment implements View.OnCli
 	 * on the album. If there's 3+ we show various artists in A and show the listing of artists
 	 */
 	private ImageView image;
+	private View artContainer;
 	private TextView artistA, artistB;
 	private ProgressBar spinner;
 	private TextView albumTitle;
@@ -74,6 +75,7 @@ public class TorrentGroupOverviewFragment extends Fragment implements View.OnCli
 		image = (ImageView)imageHeader.findViewById(R.id.image);
 		spinner = (ProgressBar)imageHeader.findViewById(R.id.loading_indicator);
 		image.setOnClickListener(this);
+		artContainer = imageHeader.findViewById(R.id.art_container);
 
 		View titleHeader = inflater.inflate(R.layout.header_album_title, null);
 		artistA = (TextView)titleHeader.findViewById(R.id.artist_a);
@@ -116,11 +118,10 @@ public class TorrentGroupOverviewFragment extends Fragment implements View.OnCli
 
 		String imgUrl = group.getResponse().getGroup().getWikiImage();
 		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner));
+			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner, artContainer));
 		}
 		else {
-			image.setVisibility(View.GONE);
-			spinner.setVisibility(View.GONE);
+			artContainer.setVisibility(View.GONE);
 		}
 		albumTitle.setText(group.getResponse().getGroup().getName());
 

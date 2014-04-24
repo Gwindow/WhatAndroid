@@ -108,7 +108,8 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 			holder = new TorrentViewHolder();
 			holder.art = (ImageView)convert.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convert.findViewById(R.id.loading_indicator);
-			holder.listener = new ImageLoadingListener(holder.spinner);
+			holder.artContainer = convert.findViewById(R.id.art_container);
+			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer);
 			holder.albumName = (TextView)convert.findViewById(R.id.album_name);
 			holder.year = (TextView)convert.findViewById(R.id.album_year);
 			holder.tags = (TextView)convert.findViewById(R.id.album_tags);
@@ -120,8 +121,7 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 			ImageLoader.getInstance().displayImage(holder.torrentGroup.getWikiImage(), holder.art, holder.listener);
 		}
 		else {
-			holder.art.setVisibility(View.GONE);
-			holder.spinner.setVisibility(View.GONE);
+			holder.artContainer.setVisibility(View.GONE);
 		}
 		holder.albumName.setText(holder.torrentGroup.getGroupName());
 		holder.year.setText(holder.torrentGroup.getGroupYear().toString());
@@ -253,6 +253,7 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 		public TorrentGroup torrentGroup;
 		public ImageView art;
 		public ProgressBar spinner;
+		public View artContainer;
 		public ImageLoadingListener listener;
 		public TextView albumName, year, tags;
 	}

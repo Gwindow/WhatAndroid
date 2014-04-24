@@ -49,6 +49,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 	 */
 	private ImageView avatar;
 	private ProgressBar spinner;
+	private View artContainer;
 	/**
 	 * The user's stats being shown
 	 */
@@ -130,6 +131,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 		View view = inflater.inflate(R.layout.fragment_profile, container, false);
 		avatar = (ImageView)view.findViewById(R.id.avatar);
 		spinner = (ProgressBar)view.findViewById(R.id.loading_indicator);
+		artContainer = view.findViewById(R.id.art_container);
 		username = (TextView)view.findViewById(R.id.username);
 		userClass = (TextView)view.findViewById(R.id.user_class);
 		joined = (TextView)view.findViewById(R.id.joined);
@@ -245,11 +247,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 		//We need to check all the paranoia cases that may cause a field to be missing and hide the views for it
 		String avatarUrl = profile.getAvatar();
 		if (SettingsActivity.imagesEnabled(getActivity()) && avatarUrl != null && !avatarUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar, new ImageLoadingListener(spinner));
+			ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar, new ImageLoadingListener(spinner, artContainer));
 		}
 		else {
-			spinner.setVisibility(View.GONE);
-			avatar.setVisibility(View.GONE);
+			artContainer.setVisibility(View.GONE);
 		}
 		if (profile.getPersonal().getParanoia().intValue() > 0 && userID != MySoup.getUserId()){
 			paranoiaText.setVisibility(View.VISIBLE);

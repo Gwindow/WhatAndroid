@@ -50,7 +50,8 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 			holder = new ViewHolder();
 			holder.art = (ImageView)convertView.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
-			holder.listener = new ImageLoadingListener(holder.spinner);
+			holder.artContainer = convertView.findViewById(R.id.art_container);
+			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer);
 			holder.artist = (TextView)convertView.findViewById(R.id.artist_name);
 			holder.title = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.album_year);
@@ -63,8 +64,7 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 			ImageLoader.getInstance().displayImage(coverUrl, holder.art, holder.listener);
 		}
 		else {
-			holder.art.setVisibility(View.GONE);
-			holder.spinner.setVisibility(View.GONE);
+			holder.artContainer.setVisibility(View.GONE);
 		}
 		if (group.getArtist() != null){
 			holder.artist.setText(group.getArtist());
@@ -102,6 +102,7 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 	private static class ViewHolder {
 		public ImageView art;
 		public ProgressBar spinner;
+		public View artContainer;
 		public ImageLoadingListener listener;
 		public TextView artist, title, year, tags;
 	}

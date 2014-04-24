@@ -38,6 +38,7 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	 */
 	private ImageView image;
 	private ProgressBar spinner;
+	private View artContainer;
 	private ExpandableListView torrentList;
 	/**
 	 * Menu items for toggling bookmarks/notifications status
@@ -49,7 +50,7 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	 * the artist with the id
 	 *
 	 * @param id        artist id to load
-	 * @param name        artist name to load
+	 * @param name      artist name to load
 	 * @param useSearch true if the artist information was loaded by the ArtistSearch fragment
 	 *                  and we should get it from there
 	 * @return Artist Fragment displaying the artist's info
@@ -94,6 +95,7 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 		image = (ImageView)header.findViewById(R.id.image);
 		image.setOnClickListener(this);
 		spinner = (ProgressBar)header.findViewById(R.id.loading_indicator);
+		artContainer = header.findViewById(R.id.art_container);
 		if (artist != null){
 			populateViews();
 		}
@@ -201,11 +203,10 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 		callbacks.setTitle(artist.getResponse().getName());
 		String imgUrl = artist.getResponse().getImage();
 		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner));
+			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner, artContainer));
 		}
 		else {
-			image.setVisibility(View.GONE);
-			spinner.setVisibility(View.GONE);
+			artContainer.setVisibility(View.GONE);
 		}
 		ArtistTorrentAdapter adapter = new ArtistTorrentAdapter(getActivity(), artist.getReleases().flatten(),
 			artist.getResponse().getRequests());

@@ -65,7 +65,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 			holder.commentText = (TextView)convertView.findViewById(R.id.comment_text);
 			holder.image = (ImageView)convertView.findViewById(R.id.image);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
-			holder.listener = new ImageLoadingListener(holder.spinner);
+			holder.listener = new ImageLoadingListener(holder.spinner, null);
 			holder.userClickListener = new UserClickListener();
 			View header = convertView.findViewById(R.id.user_header);
 			header.setOnClickListener(holder.userClickListener);
