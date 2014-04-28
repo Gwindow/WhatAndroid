@@ -87,8 +87,13 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 
 		holder.image.setOnClickListener(holder.userClickListener);
 		String imgUrl = comment.getAvatar();
-		if (SettingsActivity.imagesEnabled(getContext()) && imgUrl != null && !imgUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(imgUrl, holder.image, holder.listener);
+		if (SettingsActivity.imagesEnabled(getContext())){
+			if (imgUrl != null && !imgUrl.isEmpty()){
+				ImageLoader.getInstance().displayImage(imgUrl, holder.image, holder.listener);
+			}
+			else {
+				ImageLoader.getInstance().displayImage("drawable://" + R.drawable.no_avatar, holder.image, holder.listener);
+			}
 		}
 		else {
 			holder.image.setVisibility(View.GONE);
