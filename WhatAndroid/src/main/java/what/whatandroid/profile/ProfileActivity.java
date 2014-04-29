@@ -13,6 +13,7 @@ import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.barcode.BarcodeActivity;
+import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.search.SearchActivity;
@@ -163,6 +164,10 @@ public class ProfileActivity extends LoggedInActivity
 					.commit();
 				profileFragment.onLoggedIn();
 			}
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.bookmarks))){
+			Intent intent = new Intent(this, BookmarksActivity.class);
+			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
 			Intent intent = new Intent(this, AnnouncementsActivity.class);

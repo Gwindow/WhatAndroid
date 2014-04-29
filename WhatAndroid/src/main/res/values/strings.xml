@@ -66,6 +66,8 @@
     <string name="delete_all">Clear All</string>
     <string name="preferences">Preferences</string>
     <string name="bookmark">Bookmark</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="remove_bookmark">Remove Bookmark</string>
     <string name="toggle_nofications">Toggle Notifications</string>
     <string name="pref_img_on_wifi_only">Load Images on Wifi Only</string>
     <string name="key_pref_img_wifi">pref_img_wifi_only</string>

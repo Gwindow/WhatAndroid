@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:descendantFocusability="blocksDescendants">
+
+    <ImageButton
+            android:id="@+id/remove_bookmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_bookmark_on"
+            android:contentDescription="@string/remove_bookmark"/>
+
+    <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/remove_bookmark"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/primary_text_dark"/>
+
+    <TextView
+            android:id="@+id/year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:textSize="18sp"
+            android:textColor="@android:color/secondary_text_dark"/>
+
+    <TextView
+            android:id="@+id/tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/year"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textStyle="italic"
+            android:textSize="14sp"
+            android:textColor="@android:color/secondary_text_dark"/>
+
+</RelativeLayout>
