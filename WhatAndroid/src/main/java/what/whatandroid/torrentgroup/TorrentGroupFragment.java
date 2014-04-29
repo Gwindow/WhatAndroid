@@ -45,9 +45,9 @@ public class TorrentGroupFragment extends android.support.v4.app.Fragment implem
 		int groupId = getArguments().getInt(TorrentGroupActivity.GROUP_ID);
 		View view = inflater.inflate(R.layout.fragment_view_pager_tabs, container, false);
 		ViewPager viewPager = (ViewPager)view.findViewById(R.id.pager);
+		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip)view.findViewById(R.id.tabs);
 		torrentGroupPagerAdapter = new TorrentGroupPagerAdapter(getChildFragmentManager(), groupId);
 		viewPager.setAdapter(torrentGroupPagerAdapter);
-		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip)view.findViewById(R.id.tabs);
 		tabs.setViewPager(viewPager);
 		return view;
 	}

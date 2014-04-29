@@ -28,7 +28,7 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 	 * calling viewSearch
 	 */
 	public TorrentSearchAdapter(Context context){
-		super(context, R.layout.list_artist_torrent);
+		super(context, R.layout.list_torrent_search);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
 		try {
