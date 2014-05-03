@@ -34,7 +34,6 @@ public class HTMLListTagHandler implements Html.TagHandler {
 
 	@Override
 	public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader){
-		System.out.println("Handling tag: " + tag);
 		if (tag.equalsIgnoreCase("ul")){
 			if (opening){
 				lists.push(tag);
@@ -84,10 +83,7 @@ public class HTMLListTagHandler implements Html.TagHandler {
 						}
 					}
 					BulletSpan newBullet = new BulletSpan(bulletMargin);
-					end(output,
-						Ul.class,
-						new LeadingMarginSpan.Standard(listItemIndent * (lists.size() - 1)),
-						newBullet);
+					end(output, Ul.class, new LeadingMarginSpan.Standard(listItemIndent * (lists.size() - 1)), newBullet);
 				}
 				else if (lists.peek().equalsIgnoreCase("ol")){
 					if (output.charAt(output.length() - 1) != '\n'){
@@ -98,9 +94,7 @@ public class HTMLListTagHandler implements Html.TagHandler {
 						// Same as in ordered lists: counter the effect of nested Spans
 						numberMargin -= (lists.size() - 2) * listItemIndent;
 					}
-					end(output,
-						Ol.class,
-						new LeadingMarginSpan.Standard(numberMargin));
+					end(output, Ol.class, new LeadingMarginSpan.Standard(numberMargin));
 				}
 			}
 		}
