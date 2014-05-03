@@ -153,24 +153,34 @@ public class BarcodeAdapter extends ArrayAdapter<Barcode> {
 		 * Barcode to load terms for
 		 */
 		private Barcode barcode;
+		private LoadTermsTask loadTermsTask;
 
 		public LoadTermsListener(ViewHolder holder){
 			this.holder = holder;
 		}
 
 		public void setBarcode(Barcode barcode){
+			if (loadTermsTask != null){
+				holder.loadTerms.setVisibility(View.VISIBLE);
+				holder.loadingSpinner.setVisibility(View.GONE);
+				loadTermsTask.cancel(true);
+			}
 			this.barcode = barcode;
 		}
 
 		@Override
 		public void onClick(View v){
-			new LoadTermsTask().execute(barcode);
+			loadTermsTask = new LoadTermsTask();
+			loadTermsTask.execute(barcode);
 		}
 
 		private class LoadTermsTask extends AsyncTask<Barcode, Void, String> {
+			private Barcode b;
+
 			@Override
 			protected String doInBackground(Barcode... params){
-				return CrossReference.termsFromUpc(barcode.getUpc());
+				b = params[0];
+				return CrossReference.termsFromUpc(b.getUpc());
 			}
 
 			@Override
@@ -182,12 +192,12 @@ public class BarcodeAdapter extends ArrayAdapter<Barcode> {
 			@Override
 			protected void onPostExecute(String s){
 				if (s != null && !s.isEmpty()){
-					barcode.setSearchTerms(s);
+					b.setSearchTerms(s);
 					holder.barcodeTitle.setText(s);
-					holder.barcodeSecondary.setText(barcode.getUpc());
+					holder.barcodeSecondary.setText(b.getUpc());
 					holder.searchRequests.setVisibility(View.VISIBLE);
 					holder.searchTorrents.setVisibility(View.VISIBLE);
-					new UpdateBarcodeTask(getContext()).execute(barcode);
+					new UpdateBarcodeTask(getContext()).execute(b);
 				}
 				else {
 					holder.barcodeSecondary.setText("No terms found");
