@@ -81,7 +81,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 			holder.commentText.setText(WhatBBParser.parsebb(comment.getBBbody()));
 		}
 		else {
-			holder.commentText.setText(Html.fromHtml(comment.getBody(), imageGetter, null));
+			holder.commentText.setText(Html.fromHtml(comment.getBody(), imageGetter, new HTMLListTagHandler()));
 		}
 		holder.commentText.setMovementMethod(LinkMovementMethod.getInstance());
 

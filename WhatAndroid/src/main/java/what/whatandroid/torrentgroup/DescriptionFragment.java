@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
+import what.whatandroid.comments.HTMLListTagHandler;
 import what.whatandroid.imgloader.HtmlImageHider;
 
 /**
@@ -29,7 +30,7 @@ public class DescriptionFragment extends Fragment implements LoadingListener<Str
 		descriptionView = (TextView)view.findViewById(R.id.description);
 		descriptionView.setMovementMethod(LinkMovementMethod.getInstance());
 		if (description != null){
-			descriptionView.setText(Html.fromHtml(description, new HtmlImageHider(getActivity()), null));
+			descriptionView.setText(Html.fromHtml(description, new HtmlImageHider(getActivity()), new HTMLListTagHandler()));
 		}
 		return view;
 	}
@@ -38,7 +39,7 @@ public class DescriptionFragment extends Fragment implements LoadingListener<Str
 	public void onLoadingComplete(String data){
 		description = data;
 		if (isAdded()){
-			descriptionView.setText(Html.fromHtml(description, new HtmlImageHider(getActivity()), null));
+			descriptionView.setText(Html.fromHtml(description, new HtmlImageHider(getActivity()), new HTMLListTagHandler()));
 		}
 	}
 }
