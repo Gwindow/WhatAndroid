@@ -8,6 +8,7 @@ import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.barcode.BarcodeActivity;
+import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.ViewRequestCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
@@ -142,6 +143,10 @@ public class SearchActivity extends LoggedInActivity
 			//Launch profile view activity
 			Intent intent = new Intent(this, ProfileActivity.class);
 			intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.bookmarks))){
+			Intent intent = new Intent(this, BookmarksActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.torrents)) && type != TORRENT){

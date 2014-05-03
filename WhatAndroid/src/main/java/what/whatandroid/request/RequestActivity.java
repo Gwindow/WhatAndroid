@@ -12,6 +12,7 @@ import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.artist.ArtistActivity;
 import what.whatandroid.barcode.BarcodeActivity;
+import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.ViewArtistCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.callbacks.ViewUserCallbacks;
@@ -105,6 +106,10 @@ public class RequestActivity extends LoggedInActivity
 		else if (selection.equalsIgnoreCase(getString(R.string.profile))){
 			Intent intent = new Intent(this, ProfileActivity.class);
 			intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.bookmarks))){
+			Intent intent = new Intent(this, BookmarksActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog))){

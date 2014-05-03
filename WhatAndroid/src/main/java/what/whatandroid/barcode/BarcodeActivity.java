@@ -25,6 +25,7 @@ import api.soup.MySoup;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
+import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.ViewSearchCallbacks;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
@@ -64,7 +65,7 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 
 		//Setup our Semantics3 fallback API info
 		ProductSearch.setCredentials("",
-			"", true);
+			"", false);
 	}
 
 	public void restoreActionBar(){
@@ -193,6 +194,10 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 			//We may not be logged in at this point, so pass -1 which will indicate to the fragment
 			//to get the id from mysoup
 			intent.putExtra(ProfileActivity.USER_ID, -1);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.bookmarks))){
+			Intent intent = new Intent(this, BookmarksActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
