@@ -16,10 +16,12 @@ import what.whatandroid.callbacks.ViewTorrentCallbacks;
 public class TorrentBookmarkAdapter extends ArrayAdapter<TorrentGroup> implements AdapterView.OnItemClickListener {
 	private final LayoutInflater inflater;
 	private ViewTorrentCallbacks viewTorrent;
+	private BookmarksChangedListener listener;
 
-	public TorrentBookmarkAdapter(Context context){
+	public TorrentBookmarkAdapter(Context context, BookmarksChangedListener listener){
 		super(context, R.layout.list_torrent_bookmark);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.listener = listener;
 		try {
 			viewTorrent = (ViewTorrentCallbacks)context;
 		}
@@ -46,12 +48,13 @@ public class TorrentBookmarkAdapter extends ArrayAdapter<TorrentGroup> implement
 		final TorrentGroup group = getItem(position);
 		holder.title.setText(group.getName());
 		holder.year.setText(group.getYear().toString());
-		holder.tags.setText(group.getTagList());
+		holder.tags.setText(group.getTagList().replace('_', '.').replace(" ", ", "));
 		holder.removeBookmark.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v){
 				new RemoveBookmarkTask().execute(group);
 				remove(group);
+				listener.bookmarksChanged();
 			}
 		});
 		return convertView;

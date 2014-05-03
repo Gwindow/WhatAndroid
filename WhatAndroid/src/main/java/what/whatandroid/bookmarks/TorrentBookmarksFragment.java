@@ -18,9 +18,24 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
 /**
  * Displays a list of the user's bookmarked torrents
  */
-public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCallback, LoaderManager.LoaderCallbacks<Bookmarks> {
+public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCallback, LoaderManager.LoaderCallbacks<Bookmarks>,
+	BookmarksChangedListener {
+	private static final String BOOKMARKS_CHANGED = "what.whatandroid.BOOKMARKS_CHANGED";
+	private boolean bookmarksChanged;
 	private TorrentBookmarkAdapter adapter;
 	private Bookmarks bookmarks;
+
+	public TorrentBookmarksFragment(){
+		//Required empty ctor
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null){
+			bookmarksChanged = savedInstanceState.getBoolean(BOOKMARKS_CHANGED, false);
+		}
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -28,7 +43,7 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 		ListView list = (ListView)view.findViewById(R.id.list);
 		TextView noBookmarks = (TextView)view.findViewById(R.id.no_content_notice);
 		noBookmarks.setText("No Bookmarks");
-		adapter = new TorrentBookmarkAdapter(getActivity());
+		adapter = new TorrentBookmarkAdapter(getActivity(), this);
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(adapter);
 		if (bookmarks != null){
@@ -41,11 +56,23 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(BOOKMARKS_CHANGED, bookmarksChanged);
+	}
+
+	@Override
 	public void onLoggedIn(){
 		if (isAdded()){
 			Bundle args = new Bundle();
 			args.putInt(BookmarksAsyncLoader.BOOKMARK_TYPE, BookmarksAsyncLoader.TORRENTS);
-			getLoaderManager().initLoader(0, args, this);
+			if (!bookmarksChanged){
+				getLoaderManager().initLoader(0, args, this);
+			}
+			else {
+				bookmarksChanged = false;
+				getLoaderManager().restartLoader(0, args, this);
+			}
 		}
 	}
 
@@ -71,5 +98,10 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 
 	@Override
 	public void onLoaderReset(Loader<Bookmarks> loader){
+	}
+
+	@Override
+	public void bookmarksChanged(){
+		bookmarksChanged = true;
 	}
 }
