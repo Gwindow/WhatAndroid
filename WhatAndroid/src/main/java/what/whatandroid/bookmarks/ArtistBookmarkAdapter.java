@@ -17,11 +17,13 @@ public class ArtistBookmarkAdapter extends ArrayAdapter<Artist> implements Adapt
 	private final LayoutInflater inflater;
 	private ViewArtistCallbacks viewArtist;
 	private BookmarksChangedListener listener;
+	private TextView noBookmarks;
 
-	public ArtistBookmarkAdapter(Context context, BookmarksChangedListener listener){
+	public ArtistBookmarkAdapter(Context context, BookmarksChangedListener listener, TextView noBookmarks){
 		super(context, R.layout.list_torrent_bookmark);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.listener = listener;
+		this.noBookmarks = noBookmarks;
 		try {
 			viewArtist = (ViewArtistCallbacks)context;
 		}
@@ -55,6 +57,9 @@ public class ArtistBookmarkAdapter extends ArrayAdapter<Artist> implements Adapt
 			public void onClick(View v){
 				new RemoveBookmarkTask().execute(artist);
 				remove(artist);
+				if (getCount() == 0){
+					noBookmarks.setVisibility(View.VISIBLE);
+				}
 				listener.bookmarksChanged();
 			}
 		});

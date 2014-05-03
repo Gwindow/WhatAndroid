@@ -17,11 +17,13 @@ public class TorrentBookmarkAdapter extends ArrayAdapter<TorrentGroup> implement
 	private final LayoutInflater inflater;
 	private ViewTorrentCallbacks viewTorrent;
 	private BookmarksChangedListener listener;
+	private TextView noBookmarks;
 
-	public TorrentBookmarkAdapter(Context context, BookmarksChangedListener listener){
+	public TorrentBookmarkAdapter(Context context, BookmarksChangedListener listener, TextView noBookmarks){
 		super(context, R.layout.list_torrent_bookmark);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.listener = listener;
+		this.noBookmarks = noBookmarks;
 		try {
 			viewTorrent = (ViewTorrentCallbacks)context;
 		}
@@ -54,6 +56,9 @@ public class TorrentBookmarkAdapter extends ArrayAdapter<TorrentGroup> implement
 			public void onClick(View v){
 				new RemoveBookmarkTask().execute(group);
 				remove(group);
+				if (getCount() == 0){
+					noBookmarks.setVisibility(View.VISIBLE);
+				}
 				listener.bookmarksChanged();
 			}
 		});

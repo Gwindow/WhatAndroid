@@ -24,6 +24,7 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 	private boolean reloadBookmarks;
 	private TorrentBookmarkAdapter adapter;
 	private Bookmarks bookmarks;
+	private TextView noBookmarks;
 
 	public TorrentBookmarksFragment(){
 		//Required empty ctor
@@ -41,13 +42,18 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		ListView list = (ListView)view.findViewById(R.id.list);
-		TextView noBookmarks = (TextView)view.findViewById(R.id.no_content_notice);
+		noBookmarks = (TextView)view.findViewById(R.id.no_content_notice);
 		noBookmarks.setText("No Bookmarks");
-		adapter = new TorrentBookmarkAdapter(getActivity(), this);
+		adapter = new TorrentBookmarkAdapter(getActivity(), this, noBookmarks);
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(adapter);
 		if (bookmarks != null){
-			adapter.addAll(bookmarks.getResponse().getTorrents());
+			if (bookmarks.getResponse().getTorrents().isEmpty()){
+				noBookmarks.setVisibility(View.VISIBLE);
+			}
+			else {
+				adapter.addAll(bookmarks.getResponse().getTorrents());
+			}
 		}
 		else if (MySoup.isLoggedIn()){
 			onLoggedIn();
@@ -92,7 +98,13 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 		}
 		else if (adapter != null){
 			adapter.clear();
-			adapter.addAll(bookmarks.getResponse().getTorrents());
+			if (bookmarks.getResponse().getTorrents().isEmpty()){
+				noBookmarks.setVisibility(View.VISIBLE);
+			}
+			else {
+				noBookmarks.setVisibility(View.GONE);
+				adapter.addAll(bookmarks.getResponse().getTorrents());
+			}
 		}
 	}
 

@@ -23,6 +23,7 @@ public class ArtistBookmarksFragment extends Fragment implements OnLoggedInCallb
 	private boolean reloadBookmarks;
 	private ArtistBookmarkAdapter adapter;
 	private Bookmarks bookmarks;
+	private TextView noBookmarks;
 
 	public ArtistBookmarksFragment(){
 		//Required empty ctor
@@ -40,13 +41,18 @@ public class ArtistBookmarksFragment extends Fragment implements OnLoggedInCallb
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		ListView list = (ListView)view.findViewById(R.id.list);
-		TextView noBookmarks = (TextView)view.findViewById(R.id.no_content_notice);
+		noBookmarks = (TextView)view.findViewById(R.id.no_content_notice);
 		noBookmarks.setText("No Bookmarks");
-		adapter = new ArtistBookmarkAdapter(getActivity(), this);
+		adapter = new ArtistBookmarkAdapter(getActivity(), this, noBookmarks);
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(adapter);
 		if (bookmarks != null){
-			adapter.addAll(bookmarks.getResponse().getArtists());
+			if (bookmarks.getResponse().getArtists().isEmpty()){
+				noBookmarks.setVisibility(View.VISIBLE);
+			}
+			else {
+				adapter.addAll(bookmarks.getResponse().getArtists());
+			}
 		}
 		else if (MySoup.isLoggedIn()){
 			onLoggedIn();
@@ -91,7 +97,13 @@ public class ArtistBookmarksFragment extends Fragment implements OnLoggedInCallb
 		}
 		else if (adapter != null){
 			adapter.clear();
-			adapter.addAll(bookmarks.getResponse().getArtists());
+			if (bookmarks.getResponse().getArtists().isEmpty()){
+				noBookmarks.setVisibility(View.VISIBLE);
+			}
+			else {
+				noBookmarks.setVisibility(View.GONE);
+				adapter.addAll(bookmarks.getResponse().getArtists());
+			}
 		}
 	}
 
