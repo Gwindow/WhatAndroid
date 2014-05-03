@@ -20,8 +20,8 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
  */
 public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCallback, LoaderManager.LoaderCallbacks<Bookmarks>,
 	BookmarksChangedListener {
-	private static final String BOOKMARKS_CHANGED = "what.whatandroid.BOOKMARKS_CHANGED";
-	private boolean bookmarksChanged;
+	public static final String BOOKMARKS_CHANGED = "what.whatandroid.BOOKMARKS_CHANGED";
+	private boolean reloadBookmarks;
 	private TorrentBookmarkAdapter adapter;
 	private Bookmarks bookmarks;
 
@@ -33,7 +33,7 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		if (savedInstanceState != null){
-			bookmarksChanged = savedInstanceState.getBoolean(BOOKMARKS_CHANGED, false);
+			reloadBookmarks = savedInstanceState.getBoolean(BOOKMARKS_CHANGED, false);
 		}
 	}
 
@@ -49,7 +49,7 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 		if (bookmarks != null){
 			adapter.addAll(bookmarks.getResponse().getTorrents());
 		}
-		if (MySoup.isLoggedIn()){
+		else if (MySoup.isLoggedIn()){
 			onLoggedIn();
 		}
 		return view;
@@ -58,7 +58,7 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 	@Override
 	public void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
-		outState.putBoolean(BOOKMARKS_CHANGED, bookmarksChanged);
+		outState.putBoolean(BOOKMARKS_CHANGED, reloadBookmarks);
 	}
 
 	@Override
@@ -66,11 +66,11 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 		if (isAdded()){
 			Bundle args = new Bundle();
 			args.putInt(BookmarksAsyncLoader.BOOKMARK_TYPE, BookmarksAsyncLoader.TORRENTS);
-			if (!bookmarksChanged){
+			if (!reloadBookmarks){
 				getLoaderManager().initLoader(0, args, this);
 			}
 			else {
-				bookmarksChanged = false;
+				reloadBookmarks = false;
 				getLoaderManager().restartLoader(0, args, this);
 			}
 		}
@@ -78,8 +78,8 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 
 	@Override
 	public Loader<Bookmarks> onCreateLoader(int id, Bundle args){
-		getActivity().setProgressBarIndeterminate(false);
-		getActivity().setProgressBarIndeterminateVisibility(false);
+		getActivity().setProgressBarIndeterminate(true);
+		getActivity().setProgressBarIndeterminateVisibility(true);
 		return new BookmarksAsyncLoader(getActivity(), args);
 	}
 
@@ -102,6 +102,6 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 
 	@Override
 	public void bookmarksChanged(){
-		bookmarksChanged = true;
+		reloadBookmarks = true;
 	}
 }
