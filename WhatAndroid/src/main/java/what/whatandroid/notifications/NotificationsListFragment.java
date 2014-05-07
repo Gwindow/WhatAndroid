@@ -69,7 +69,7 @@ public class NotificationsListFragment extends Fragment implements OnLoggedInCal
 		if (data == null || !data.getStatus()){
 			Toast.makeText(getActivity(), "Could not load notifications", Toast.LENGTH_LONG).show();
 		}
-		else {
+		else if (adapter.isEmpty()){
 			adapter.addAll(data.getResponse().getResults());
 			adapter.notifyDataSetChanged();
 			if (listener != null){
