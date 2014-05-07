@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import api.cli.Utils;
 import api.notifications.Torrent;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
@@ -37,7 +38,7 @@ public class NotificationsListAdapter extends ArrayAdapter<Torrent> implements A
 			holder = (ViewHolder)convertView.getTag();
 		}
 		else {
-			convertView = inflater.inflate(R.layout.list_torrent_search, parent, false);
+			convertView = inflater.inflate(R.layout.list_torrent_notification, parent, false);
 			holder = new ViewHolder();
 			holder.art = (ImageView)convertView.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
@@ -47,6 +48,10 @@ public class NotificationsListAdapter extends ArrayAdapter<Torrent> implements A
 			holder.title = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.album_year);
 			holder.tags = (TextView)convertView.findViewById(R.id.album_tags);
+			holder.size = (TextView)convertView.findViewById(R.id.size);
+			holder.snatches = (TextView)convertView.findViewById(R.id.snatches);
+			holder.seeders = (TextView)convertView.findViewById(R.id.seeders);
+			holder.leechers = (TextView)convertView.findViewById(R.id.leechers);
 			convertView.setTag(holder);
 		}
 		Torrent t = getItem(position);
@@ -61,6 +66,10 @@ public class NotificationsListAdapter extends ArrayAdapter<Torrent> implements A
 		holder.title.setText(t.getMediaFormatEncoding());
 		holder.year.setText(t.getEdition());
 		holder.tags.setText(t.getTorrentTags().replace(" ", ", ").replace('_', '.'));
+		holder.size.setText(Utils.toHumanReadableSize(t.getSize().longValue()));
+		holder.snatches.setText(t.getSnatched().toString());
+		holder.seeders.setText(t.getSeeders().toString());
+		holder.leechers.setText(t.getLeechers().toString());
 		return convertView;
 	}
 
@@ -77,6 +86,6 @@ public class NotificationsListAdapter extends ArrayAdapter<Torrent> implements A
 		public ProgressBar spinner;
 		public View artContainer;
 		public ImageLoadingListener listener;
-		public TextView artist, title, year, tags;
+		public TextView artist, title, year, tags, size, snatches, seeders, leechers;
 	}
 }
