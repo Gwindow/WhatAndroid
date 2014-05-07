@@ -14,8 +14,6 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
  */
 public class NotificationsPagerAdapter extends FragmentStatePagerAdapter implements OnLoggedInCallback, LoadingListener<Notifications> {
 	private SparseArray<NotificationsListFragment> fragments;
-	//TODO: Need a way for the first fragment to tell us how many pages there are. Perhaps in
-	//instantiate item we pass it some interface?
 	private int pages;
 	private boolean loggedIn;
 
