@@ -173,7 +173,7 @@ public class RequestDetailFragment extends Fragment implements View.OnClickListe
 			filled.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v){
-					viewTorrent.viewTorrentGroup(request.getResponse().getTorrentId().intValue());
+					viewTorrent.viewTorrent(-1, request.getResponse().getTorrentId().intValue());
 				}
 			});
 			filledBy.setText(response.getFillerName());

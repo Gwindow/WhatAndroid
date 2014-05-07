@@ -30,7 +30,6 @@ public class RequestActivity extends LoggedInActivity
 	 * Param to pass the request id to be shown
 	 */
 	public final static String REQUEST_ID = "what.whatandroid.REQUEST_ID";
-	private final static String REQUEST = "what.whatandroid.REQUEST";
 	private RequestFragment fragment;
 
 	@Override
@@ -74,12 +73,16 @@ public class RequestActivity extends LoggedInActivity
 	@Override
 	public void viewTorrentGroup(int id){
 		Intent intent = new Intent(this, TorrentGroupActivity.class);
-		intent.putExtra(TorrentGroupActivity.TORRENT_ID, id);
+		intent.putExtra(TorrentGroupActivity.GROUP_ID, id);
 		startActivity(intent);
 	}
 
 	@Override
 	public void viewTorrent(int group, int torrent){
+		Intent intent = new Intent(this, TorrentGroupActivity.class);
+		intent.putExtra(TorrentGroupActivity.GROUP_ID, group);
+		intent.putExtra(TorrentGroupActivity.TORRENT_ID, torrent);
+		startActivity(intent);
 	}
 
 	@Override

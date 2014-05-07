@@ -38,7 +38,6 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 	private TextView editionTitle, format, size,
 		snatches, leechers, seeders, uploadDate, uploader, description, folderTitle;
 	private View freeleech, reported;
-	private ListView fileList;
 	private TorrentFilesAdapter adapter;
 
 	public static TorrentDetailFragment newInstance(Torrents torrent){
@@ -65,7 +64,7 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
-		fileList = (ListView)view.findViewById(R.id.list);
+		ListView fileList = (ListView)view.findViewById(R.id.list);
 		View header = inflater.inflate(R.layout.header_torrent_detail, null);
 		fileList.addHeaderView(header);
 		adapter = new TorrentFilesAdapter(getActivity());
