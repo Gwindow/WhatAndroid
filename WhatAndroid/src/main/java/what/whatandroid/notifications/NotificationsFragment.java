@@ -1,11 +1,12 @@
 package what.whatandroid.notifications;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
+import android.widget.Toast;
+import api.notifications.Notifications;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
@@ -24,6 +25,7 @@ public class NotificationsFragment extends Fragment implements OnLoggedInCallbac
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		pages = 1;
 		if (savedInstanceState != null){
 			pages = savedInstanceState.getInt("PAGES");
@@ -49,7 +51,45 @@ public class NotificationsFragment extends Fragment implements OnLoggedInCallbac
 	}
 
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		inflater.inflate(R.menu.notifications, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		if (item.getItemId() == R.id.clear){
+			pagerAdapter.clearNotifications();
+			new ClearNotificationsTask().execute();
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public void onLoggedIn(){
 		pagerAdapter.onLoggedIn();
+	}
+
+	private class ClearNotificationsTask extends AsyncTask<Void, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(Void... params){
+			return Notifications.clearNotifications();
+		}
+
+		@Override
+		protected void onPreExecute(){
+			getActivity().setProgressBarIndeterminate(true);
+			getActivity().setProgressBarIndeterminateVisibility(true);
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status){
+			if (isAdded()){
+				getActivity().setProgressBarIndeterminateVisibility(false);
+				if (!status){
+					Toast.makeText(getActivity(), "Could not clear notifications", Toast.LENGTH_LONG).show();
+				}
+			}
+		}
 	}
 }

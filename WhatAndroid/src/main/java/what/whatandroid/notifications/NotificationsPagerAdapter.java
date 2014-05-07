@@ -62,7 +62,18 @@ public class NotificationsPagerAdapter extends FragmentStatePagerAdapter impleme
 	@Override
 	public void onLoadingComplete(Notifications data){
 		pages = data.getResponse().getPages().intValue();
+		if (pages == 0){
+			pages++;
+		}
 		notifyDataSetChanged();
+	}
+
+	public void clearNotifications(){
+		pages = 1;
+		notifyDataSetChanged();
+		for (int i = 0; i < fragments.size(); ++i){
+			fragments.valueAt(i).clearNotifications();
+		}
 	}
 
 	@Override
