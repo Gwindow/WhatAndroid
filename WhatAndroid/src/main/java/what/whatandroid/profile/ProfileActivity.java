@@ -9,13 +9,13 @@ import android.view.Window;
 import android.widget.Toast;
 import api.search.user.UserSearch;
 import api.soup.MySoup;
-import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.login.LoggedInActivity;
+import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.search.UserSearchAsyncLoader;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
@@ -25,8 +25,7 @@ import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ProfileActivity extends LoggedInActivity
-	implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewTorrentCallbacks, LoaderManager.LoaderCallbacks<UserSearch> {
+public class ProfileActivity extends LoggedInActivity implements ViewTorrentCallbacks, LoaderManager.LoaderCallbacks<UserSearch> {
 	/**
 	 * Param to pass the user id to display to the activity
 	 */
@@ -167,6 +166,10 @@ public class ProfileActivity extends LoggedInActivity
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.bookmarks))){
 			Intent intent = new Intent(this, BookmarksActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.notifications))){
+			Intent intent = new Intent(this, NotificationsActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog))){

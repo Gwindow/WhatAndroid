@@ -89,7 +89,7 @@ public class NavigationDrawerFragment extends Fragment {
 			getString(R.string.profile),
 			getString(R.string.bookmarks),
 			//getString(R.string.inbox),
-			//getString(R.string.notifications),
+			getString(R.string.notifications),
 			//getString(R.string.subscriptions),
 			//getString(R.string.forums),
 			getString(R.string.torrents),

@@ -1,11 +1,11 @@
-package what.whatandroid.search;
+package what.whatandroid.notifications;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import api.search.torrents.TorrentGroup;
+import api.notifications.Torrent;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
@@ -13,20 +13,13 @@ import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
 /**
- * Adapter for viewing list of torrent search results
+ * Displays a list of the user's torrent notifications
  */
-public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements AdapterView.OnItemClickListener {
+public class NotificationsListAdapter extends ArrayAdapter<Torrent> implements AdapterView.OnItemClickListener {
 	private final LayoutInflater inflater;
-	/**
-	 * Callbacks to view the selected torrent group
-	 */
-	private ViewTorrentCallbacks viewTorrent;
+	private final ViewTorrentCallbacks viewTorrent;
 
-	/**
-	 * Construct the empty adapter. A new search can be set to be viewed in the adapter by
-	 * calling viewSearch
-	 */
-	public TorrentSearchAdapter(Context context){
+	public NotificationsListAdapter(Context context){
 		super(context, R.layout.list_torrent_search);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		try {
@@ -56,42 +49,24 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 			holder.tags = (TextView)convertView.findViewById(R.id.album_tags);
 			convertView.setTag(holder);
 		}
-		TorrentGroup group = getItem(position);
-		String coverUrl = group.getCover();
+		Torrent t = getItem(position);
+		String coverUrl = t.getWikiImage();
 		if (SettingsActivity.imagesEnabled(getContext()) && coverUrl != null && !coverUrl.isEmpty()){
 			ImageLoader.getInstance().displayImage(coverUrl, holder.art, holder.listener);
 		}
 		else {
 			holder.artContainer.setVisibility(View.GONE);
 		}
-		if (group.getArtist() != null){
-			holder.artist.setText(group.getArtist());
-			holder.title.setVisibility(View.VISIBLE);
-			holder.title.setText(group.getGroupName());
-		}
-		else {
-			holder.artist.setText(group.getGroupName());
-			holder.title.setVisibility(View.GONE);
-		}
-		if (group.getReleaseType() != null && group.getGroupYear() != null){
-			holder.year.setText(group.getReleaseType() + " [" + group.getGroupYear() + "]");
-		}
-		else {
-			holder.year.setVisibility(View.GONE);
-		}
-		String tagString = group.getTags().toString();
-		//Remove the brackets from the tag string
-		tagString = tagString.substring(tagString.indexOf('[') + 1, tagString.lastIndexOf(']'));
-		holder.tags.setText(tagString);
+		holder.artist.setText(t.getGroupName());
+		holder.title.setText(t.getMediaFormatEncoding());
+		holder.year.setText(t.getEdition());
+		holder.tags.setText(t.getTorrentTags().replace(" ", ", ").replace('_', '.'));
 		return convertView;
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-		//Clicking the footer gives us an out of bounds click event so subtract 1 to account for this
-		if (position - 1 < getCount()){
-			viewTorrent.viewTorrentGroup(getItem(position - 1).getGroupId().intValue());
-		}
+		viewTorrent.viewTorrent(-1, getItem(position).getTorrentId().intValue());
 	}
 
 	/**
