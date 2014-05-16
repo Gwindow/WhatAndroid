@@ -95,7 +95,8 @@ public class ErrorLogger implements Thread.UncaughtExceptionHandler {
 			ex.printStackTrace(printWriter);
 			report.append("\n\nStack Trace:\n")
 				.append(writer.toString())
-				.append("\n\nException Cause:\n");
+				.append("\n\nPlease describe where this occurred and what")
+				.append("may have provoked the crash to help debug:\n");
 
 			for (Throwable cause = ex.getCause(); cause != null; cause = cause.getCause()){
 				cause.printStackTrace(printWriter);
