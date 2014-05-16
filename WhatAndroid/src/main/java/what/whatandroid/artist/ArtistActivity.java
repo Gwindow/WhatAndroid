@@ -11,6 +11,7 @@ import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.ViewRequestCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.login.LoggedInActivity;
+import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.request.RequestActivity;
 import what.whatandroid.search.SearchActivity;
@@ -132,6 +133,10 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.bookmarks))){
 			Intent intent = new Intent(this, BookmarksActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.notifications)) || selection.equalsIgnoreCase(getString(R.string.new_notifications))){
+			Intent intent = new Intent(this, NotificationsActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){

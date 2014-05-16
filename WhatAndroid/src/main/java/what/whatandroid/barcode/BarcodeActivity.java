@@ -27,6 +27,7 @@ import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.ViewSearchCallbacks;
+import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.settings.SettingsActivity;
@@ -199,6 +200,10 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.bookmarks))){
 			Intent intent = new Intent(this, BookmarksActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.notifications)) || selection.equalsIgnoreCase(getString(R.string.new_notifications))){
+			Intent intent = new Intent(this, NotificationsActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
