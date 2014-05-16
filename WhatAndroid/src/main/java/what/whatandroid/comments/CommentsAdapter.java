@@ -63,9 +63,10 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 			holder.username = (TextView)convertView.findViewById(R.id.username);
 			holder.postDate = (TextView)convertView.findViewById(R.id.post_date);
 			holder.commentText = (TextView)convertView.findViewById(R.id.comment_text);
+			holder.artContainer = convertView.findViewById(R.id.art_container);
 			holder.image = (ImageView)convertView.findViewById(R.id.image);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
-			holder.listener = new ImageLoadingListener(holder.spinner, null);
+			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer);
 			holder.userClickListener = new UserClickListener();
 			View header = convertView.findViewById(R.id.user_header);
 			header.setOnClickListener(holder.userClickListener);
@@ -104,6 +105,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 
 	private static class ViewHolder {
 		public TextView username, postDate, commentText;
+		public View artContainer;
 		public ImageView image;
 		public ProgressBar spinner;
 		public ImageLoadingListener listener;
