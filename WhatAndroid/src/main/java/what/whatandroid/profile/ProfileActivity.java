@@ -2,17 +2,20 @@ package what.whatandroid.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.Window;
 import android.widget.Toast;
+import api.index.Index;
 import api.search.user.UserSearch;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.bookmarks.BookmarksActivity;
+import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
@@ -25,7 +28,8 @@ import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ProfileActivity extends LoggedInActivity implements ViewTorrentCallbacks, LoaderManager.LoaderCallbacks<UserSearch> {
+public class ProfileActivity extends LoggedInActivity implements ViewTorrentCallbacks,
+	LoaderManager.LoaderCallbacks<UserSearch>, LoadingListener<Index> {
 	/**
 	 * Param to pass the user id to display to the activity
 	 */
@@ -126,6 +130,11 @@ public class ProfileActivity extends LoggedInActivity implements ViewTorrentCall
 	}
 
 	@Override
+	public void onLoadingComplete(Index data){
+		navDrawer.updateNotifications(PreferenceManager.getDefaultSharedPreferences(this));
+	}
+
+	@Override
 	public void onLoaderReset(Loader<UserSearch> loader){
 	}
 
@@ -168,7 +177,7 @@ public class ProfileActivity extends LoggedInActivity implements ViewTorrentCall
 			Intent intent = new Intent(this, BookmarksActivity.class);
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.notifications))){
+		else if (selection.equalsIgnoreCase(getString(R.string.notifications)) || selection.equalsIgnoreCase(getString(R.string.new_notifications))){
 			Intent intent = new Intent(this, NotificationsActivity.class);
 			startActivity(intent);
 		}

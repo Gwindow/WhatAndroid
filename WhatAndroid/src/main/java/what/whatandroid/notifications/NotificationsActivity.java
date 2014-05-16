@@ -1,7 +1,9 @@
 package what.whatandroid.notifications;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
 import api.soup.MySoup;
@@ -37,6 +39,12 @@ public class NotificationsActivity extends LoggedInActivity implements ViewTorre
 			fragment = new NotificationsFragment();
 			fm.beginTransaction().add(R.id.container, fragment).commit();
 		}
+		//Since we're viewing the notifications unset the new notifications flag
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		preferences.edit()
+			.putBoolean(getString(R.string.key_pref_new_notifications), false)
+			.commit();
+		navDrawer.updateNotifications(preferences);
 	}
 
 	@Override

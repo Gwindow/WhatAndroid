@@ -16,6 +16,7 @@ import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import api.soup.MySoup;
 import what.whatandroid.settings.SettingsActivity;
 
 import java.util.ArrayList;
@@ -105,6 +106,36 @@ public class NavigationDrawerFragment extends Fragment {
 		listView.setAdapter(adapter);
 		listView.setItemChecked(selectedPos, true);
 		return listView;
+	}
+
+	public void updateNotifications(SharedPreferences preferences){
+		if (MySoup.isNotificationsEnabled()){
+			boolean newNotifications = preferences.getBoolean(getString(R.string.key_pref_new_notifications), false);
+			if (newNotifications){
+				int i = adapter.getPosition(getString(R.string.new_notifications));
+				//If we're not already showing the new notifications message
+				if (i == -1){
+					i = adapter.getPosition(getString(R.string.notifications));
+					adapter.remove(getString(R.string.notifications));
+					adapter.insert(getString(R.string.new_notifications), i);
+					adapter.notifyDataSetChanged();
+				}
+			}
+			else {
+				int i = adapter.getPosition(getString(R.string.notifications));
+				//If we're not already showing the notifications message
+				if (i == -1){
+					i = adapter.getPosition(getString(R.string.new_notifications));
+					adapter.remove(getString(R.string.new_notifications));
+					adapter.insert(getString(R.string.notifications), i);
+					adapter.notifyDataSetChanged();
+				}
+			}
+		}
+		else {
+			adapter.remove(getString(R.string.notifications));
+			adapter.notifyDataSetChanged();
+		}
 	}
 
 	public boolean isDrawerOpen(){

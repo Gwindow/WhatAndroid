@@ -13,12 +13,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.cli.Utils;
+import api.index.Index;
 import api.soup.MySoup;
 import api.user.Profile;
 import api.user.UserProfile;
 import api.user.recent.UserRecents;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.imgloader.ImageLoadingListener;
@@ -44,6 +46,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 	 * Callbacks to the activity so we can go set the title
 	 */
 	private SetTitleCallback setTitle;
+	private LoadingListener<Index> indexLoadingListener;
 	/**
 	 * Various content views displaying the user's information
 	 */
@@ -112,6 +115,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 		super.onAttach(activity);
 		try {
 			setTitle = (SetTitleCallback)activity;
+			indexLoadingListener = (LoadingListener<Index>)activity;
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(activity.toString() + " must implement ViewTorrent & SetTitle Callbacks");
@@ -202,6 +206,9 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 			getActivity().setProgressBarIndeterminateVisibility(false);
 			if (userProfile.getStatus()){
 				populateViews();
+				if (indexLoadingListener != null){
+					indexLoadingListener.onLoadingComplete(MySoup.getIndex());
+				}
 			}
 			else {
 				Toast.makeText(getActivity(), "Could not load profile", Toast.LENGTH_LONG).show();

@@ -53,6 +53,7 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 		navDrawer = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 		navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.drawer_layout));
 		title = getTitle();
+		navDrawer.updateNotifications(PreferenceManager.getDefaultSharedPreferences(this));
 
 		if (savedInstanceState == null){
 			fragment = new BarcodeFragment();

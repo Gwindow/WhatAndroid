@@ -8,6 +8,7 @@
     <string name="profile">Profile</string>
     <string name="inbox">Inbox</string>
     <string name="notifications">Notifications</string>
+    <string name="new_notifications">New Notifications!</string>
     <string name="subscriptions">Subscriptions</string>
     <string name="forums">Forums</string>
     <string name="artist">Artist</string>
@@ -83,6 +84,7 @@
     <string name="key_pref_pywhat_port">pref_pywhat_port</string>
     <string name="key_pref_pywhat_password">pref_pywhat_password</string>
     <string name="key_pref_version_name">pref_verion_name</string>
+    <string name="key_pref_new_notifications">key_pref_new_notification</string>
     <string name="fontawesome_font">fontawesome-webfont.ttf</string>
     <string name="roboto_black">Roboto-Black.ttf</string>
 
