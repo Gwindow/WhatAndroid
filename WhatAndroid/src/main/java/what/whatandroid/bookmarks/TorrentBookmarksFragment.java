@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import api.bookmarks.Bookmarks;
@@ -24,6 +25,7 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 	private boolean reloadBookmarks;
 	private TorrentBookmarkAdapter adapter;
 	private Bookmarks bookmarks;
+	private ProgressBar loadingIndicator;
 	private TextView noBookmarks;
 
 	public TorrentBookmarksFragment(){
@@ -42,6 +44,7 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		ListView list = (ListView)view.findViewById(R.id.list);
+		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
 		noBookmarks = (TextView)view.findViewById(R.id.no_content_notice);
 		noBookmarks.setText("No Bookmarks");
 		adapter = new TorrentBookmarkAdapter(getActivity(), this, noBookmarks);
@@ -84,14 +87,13 @@ public class TorrentBookmarksFragment extends Fragment implements OnLoggedInCall
 
 	@Override
 	public Loader<Bookmarks> onCreateLoader(int id, Bundle args){
-		getActivity().setProgressBarIndeterminate(true);
-		getActivity().setProgressBarIndeterminateVisibility(true);
+		loadingIndicator.setVisibility(View.VISIBLE);
 		return new BookmarksAsyncLoader(getActivity(), args);
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Bookmarks> loader, Bookmarks data){
-		getActivity().setProgressBarIndeterminateVisibility(false);
+		loadingIndicator.setVisibility(View.GONE);
 		bookmarks = data;
 		if (bookmarks == null || !bookmarks.getStatus()){
 			Toast.makeText(getActivity(), "Could not load torrent bookmarks", Toast.LENGTH_LONG).show();
