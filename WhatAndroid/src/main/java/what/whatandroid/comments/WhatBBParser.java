@@ -161,7 +161,10 @@ public class WhatBBParser {
 					else {
 						end = end - groupStart;
 					}
-					styled.setSpan(s, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+					//TODO: This is a temp fix until we put in a proper parser
+					if (end > start && start >= 0){
+						styled.setSpan(s, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+					}
 				}
 			}
 			ssb.replace(m.start(), m.end(), styled);
