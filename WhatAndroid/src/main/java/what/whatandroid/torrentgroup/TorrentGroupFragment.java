@@ -72,7 +72,7 @@ public class TorrentGroupFragment extends android.support.v4.app.Fragment implem
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		if (item.getItemId() == R.id.action_bookmark){
-			new ToggleBookmarkTask().execute(group);
+			new ToggleBookmarkTask().execute();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -96,12 +96,10 @@ public class TorrentGroupFragment extends android.support.v4.app.Fragment implem
 	/**
 	 * Async task to toggle the torrent group's bookmark status
 	 */
-	private class ToggleBookmarkTask extends AsyncTask<TorrentGroup, Void, Boolean> {
-		private TorrentGroup group;
+	private class ToggleBookmarkTask extends AsyncTask<Void, Void, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(TorrentGroup... params){
-			group = params[0];
+		protected Boolean doInBackground(Void... params){
 			if (group.getResponse().getGroup().isBookmarked()){
 				return group.removeBookmark();
 			}
@@ -110,7 +108,13 @@ public class TorrentGroupFragment extends android.support.v4.app.Fragment implem
 
 		@Override
 		protected void onPreExecute(){
-			bookmarkMenu.setVisible(false);
+			//Be optimistic that the change will succeed and show updated icon
+			if (group.getResponse().getGroup().isBookmarked()){
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_off);
+			}
+			else {
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
+			}
 			if (isAdded()){
 				getActivity().setProgressBarIndeterminate(true);
 				getActivity().setProgressBarIndeterminateVisibility(true);
@@ -131,7 +135,7 @@ public class TorrentGroupFragment extends android.support.v4.app.Fragment implem
 					Toast.makeText(getActivity(), "Could not add bookmark", Toast.LENGTH_LONG).show();
 				}
 			}
-			else if (bookmarkMenu != null){
+			if (bookmarkMenu != null){
 				bookmarkMenu.setVisible(true);
 				if (group.getResponse().getGroup().isBookmarked()){
 					bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);

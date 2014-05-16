@@ -120,10 +120,10 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch (item.getItemId()){
 			case R.id.action_bookmark:
-				new ToggleBookmarkTask().execute(artist);
+				new ToggleBookmarkTask().execute();
 				return true;
 			case R.id.action_notifications:
-				new ToggleNotificationsTask().execute(artist);
+				new ToggleNotificationsTask().execute();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -217,12 +217,10 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	/**
 	 * Async task to toggle the artists bookmark status
 	 */
-	private class ToggleBookmarkTask extends AsyncTask<Artist, Void, Boolean> {
-		private Artist artist;
+	private class ToggleBookmarkTask extends AsyncTask<Void, Void, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(Artist... params){
-			artist = params[0];
+		protected Boolean doInBackground(Void... params){
 			if (artist.getResponse().isBookmarked()){
 				return artist.removeBookmark();
 			}
@@ -231,7 +229,13 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 
 		@Override
 		protected void onPreExecute(){
-			bookmarkMenu.setVisible(false);
+			//Display action as successful as we load
+			if (artist.getResponse().isBookmarked()){
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_off);
+			}
+			else {
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
+			}
 			if (isAdded()){
 				getActivity().setProgressBarIndeterminate(true);
 				getActivity().setProgressBarIndeterminateVisibility(true);
@@ -252,21 +256,17 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 					Toast.makeText(getActivity(), "Could not add bookmark", Toast.LENGTH_LONG).show();
 				}
 			}
-			else {
-				updateMenus();
-			}
+			updateMenus();
 		}
 	}
 
 	/**
 	 * Async task to toggle the artist's notification status
 	 */
-	private class ToggleNotificationsTask extends AsyncTask<Artist, Void, Boolean> {
-		private Artist artist;
+	private class ToggleNotificationsTask extends AsyncTask<Void, Void, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(Artist... params){
-			artist = params[0];
+		protected Boolean doInBackground(Void... params){
 			if (artist.getResponse().hasNotificationsEnabled()){
 				return artist.disableNotifications();
 			}
@@ -275,7 +275,13 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 
 		@Override
 		protected void onPreExecute(){
-			notificationMenu.setVisible(false);
+			//Display action as successful while we load
+			if (artist.getResponse().hasNotificationsEnabled()){
+				notificationMenu.setIcon(R.drawable.ic_eye_off);
+			}
+			else {
+				notificationMenu.setIcon(R.drawable.ic_eye_on);
+			}
 			if (isAdded()){
 				getActivity().setProgressBarIndeterminate(true);
 				getActivity().setProgressBarIndeterminateVisibility(true);
@@ -296,9 +302,7 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 					Toast.makeText(getActivity(), "Could not enable notifications", Toast.LENGTH_LONG).show();
 				}
 			}
-			else {
-				updateMenus();
-			}
+			updateMenus();
 		}
 	}
 }
