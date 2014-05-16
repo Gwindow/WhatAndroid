@@ -115,9 +115,8 @@ public class NavigationDrawerFragment extends Fragment {
 				int i = adapter.getPosition(getString(R.string.new_notifications));
 				//If we're not already showing the new notifications message
 				if (i == -1){
-					i = adapter.getPosition(getString(R.string.notifications));
 					adapter.remove(getString(R.string.notifications));
-					adapter.insert(getString(R.string.new_notifications), i);
+					adapter.insert(getString(R.string.new_notifications), 2);
 					adapter.notifyDataSetChanged();
 				}
 			}
@@ -125,9 +124,8 @@ public class NavigationDrawerFragment extends Fragment {
 				int i = adapter.getPosition(getString(R.string.notifications));
 				//If we're not already showing the notifications message
 				if (i == -1){
-					i = adapter.getPosition(getString(R.string.new_notifications));
 					adapter.remove(getString(R.string.new_notifications));
-					adapter.insert(getString(R.string.notifications), i);
+					adapter.insert(getString(R.string.notifications), 2);
 					adapter.notifyDataSetChanged();
 				}
 			}
