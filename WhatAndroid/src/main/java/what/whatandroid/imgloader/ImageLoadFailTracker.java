@@ -6,10 +6,10 @@ import java.util.HashSet;
  * Tracks art that has failed loading so that we can skip trying to reload it
  * when viewing lists of albums or similar
  */
-public class LoadFailTracker {
+public class ImageLoadFailTracker {
 	private HashSet<String> failedImages;
 
-	public LoadFailTracker(){
+	public ImageLoadFailTracker(){
 		failedImages = new HashSet<String>();
 	}
 

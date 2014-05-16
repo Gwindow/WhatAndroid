@@ -16,6 +16,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.imgloader.HtmlImageHider;
+import what.whatandroid.imgloader.ImageLoadFailTracker;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
@@ -29,11 +30,15 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 	private final LayoutInflater inflater;
 	private final HtmlImageHider imageGetter;
 	private ViewUserCallbacks viewUser;
+	private ImageLoadFailTracker imageFailTracker;
+	private boolean imagesEnabled;
 
 	public CommentsAdapter(Context context){
 		super(context, R.layout.list_user_comment);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		imageGetter = new HtmlImageHider(context);
+		imagesEnabled = SettingsActivity.imagesEnabled(context);
+		imageFailTracker = new ImageLoadFailTracker();
 		try {
 			viewUser = (ViewUserCallbacks)context;
 		}
@@ -66,7 +71,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 			holder.artContainer = convertView.findViewById(R.id.art_container);
 			holder.image = (ImageView)convertView.findViewById(R.id.image);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
-			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer, null);
+			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer, imageFailTracker);
 			holder.userClickListener = new UserClickListener();
 			View header = convertView.findViewById(R.id.user_header);
 			header.setOnClickListener(holder.userClickListener);
@@ -88,8 +93,8 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 
 		holder.image.setOnClickListener(holder.userClickListener);
 		String imgUrl = comment.getAvatar();
-		if (SettingsActivity.imagesEnabled(getContext())){
-			if (imgUrl != null && !imgUrl.isEmpty()){
+		if (imagesEnabled){
+			if (imgUrl != null && !imgUrl.isEmpty() && !imageFailTracker.failed(imgUrl)){
 				ImageLoader.getInstance().displayImage(imgUrl, holder.image, holder.listener);
 			}
 			else {

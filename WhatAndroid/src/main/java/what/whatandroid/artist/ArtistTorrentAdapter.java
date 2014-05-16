@@ -15,8 +15,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewRequestCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.imgloader.ImageLoadFailTracker;
 import what.whatandroid.imgloader.ImageLoadingListener;
-import what.whatandroid.imgloader.LoadFailTracker;
 import what.whatandroid.settings.SettingsActivity;
 
 import java.util.*;
@@ -35,7 +35,7 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 	/**
 	 * Art loading fail tracker so we can skip reloading images that failed to load
 	 */
-	private LoadFailTracker imageFailTracker;
+	private ImageLoadFailTracker imageFailTracker;
 	/**
 	 * Cache if images are enabled
 	 */
@@ -59,7 +59,7 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 	public ArtistTorrentAdapter(Context context, SortedMap<ReleaseType, ArrayList<TorrentGroup>> objects, List<Requests> requests){
 		super();
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		imageFailTracker = new LoadFailTracker();
+		imageFailTracker = new ImageLoadFailTracker();
 		imagesEnabled = SettingsActivity.imagesEnabled(context);
 		try {
 			viewTorrent = (ViewTorrentCallbacks)context;

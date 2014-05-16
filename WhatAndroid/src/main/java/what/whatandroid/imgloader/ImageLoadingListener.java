@@ -13,7 +13,7 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 public class ImageLoadingListener extends SimpleImageLoadingListener {
 	private final ProgressBar spinner;
 	private final View container;
-	private final LoadFailTracker failTracker;
+	private final ImageLoadFailTracker failTracker;
 
 	/**
 	 * Create the loading listener to update the desired spinner and image container
@@ -22,7 +22,7 @@ public class ImageLoadingListener extends SimpleImageLoadingListener {
 	 * @param container   optional container to show/hide depending on loading status (can be null)
 	 * @param failTracker load fail tracker to add this image url to if we fail loading (can be null)
 	 */
-	public ImageLoadingListener(ProgressBar spinner, View container, LoadFailTracker failTracker){
+	public ImageLoadingListener(ProgressBar spinner, View container, ImageLoadFailTracker failTracker){
 		super();
 		this.spinner = spinner;
 		this.container = container;

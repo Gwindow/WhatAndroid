@@ -9,6 +9,7 @@ import api.search.torrents.TorrentGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.imgloader.ImageLoadFailTracker;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
@@ -21,6 +22,8 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 	 * Callbacks to view the selected torrent group
 	 */
 	private ViewTorrentCallbacks viewTorrent;
+	private ImageLoadFailTracker imageFailTracker;
+	private boolean imagesEnabled;
 
 	/**
 	 * Construct the empty adapter. A new search can be set to be viewed in the adapter by
@@ -29,6 +32,8 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 	public TorrentSearchAdapter(Context context){
 		super(context, R.layout.list_torrent_search);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		imagesEnabled = SettingsActivity.imagesEnabled(context);
+		imageFailTracker = new ImageLoadFailTracker();
 		try {
 			viewTorrent = (ViewTorrentCallbacks)context;
 		}
@@ -49,7 +54,7 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 			holder.art = (ImageView)convertView.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
 			holder.artContainer = convertView.findViewById(R.id.art_container);
-			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer, null);
+			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer, imageFailTracker);
 			holder.artist = (TextView)convertView.findViewById(R.id.artist_name);
 			holder.title = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.album_year);
@@ -58,7 +63,7 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 		}
 		TorrentGroup group = getItem(position);
 		String coverUrl = group.getCover();
-		if (SettingsActivity.imagesEnabled(getContext()) && coverUrl != null && !coverUrl.isEmpty()){
+		if (imagesEnabled && coverUrl != null && !coverUrl.isEmpty() && !imageFailTracker.failed(coverUrl)){
 			ImageLoader.getInstance().displayImage(coverUrl, holder.art, holder.listener);
 		}
 		else {

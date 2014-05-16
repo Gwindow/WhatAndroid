@@ -12,6 +12,7 @@ import api.soup.MySoup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewRequestCallbacks;
+import what.whatandroid.imgloader.ImageLoadFailTracker;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
@@ -21,12 +22,13 @@ import java.util.Date;
  * Adapter to display request search results
  */
 public class RequestSearchAdapter extends ArrayAdapter<Request> implements AdapterView.OnItemClickListener {
-	private final Context context;
 	private final LayoutInflater inflater;
 	/**
 	 * Callbacks to view the selected request
 	 */
 	private ViewRequestCallbacks callbacks;
+	private ImageLoadFailTracker imageFailTracker;
+	private boolean imagesEnabled;
 
 	/**
 	 * Construct the empty adapter. A new search can be set to be displayed via viewSearch
@@ -34,7 +36,8 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 	public RequestSearchAdapter(Context context, View footer){
 		super(context, R.layout.list_request);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.context = context;
+		imagesEnabled = SettingsActivity.imagesEnabled(context);
+		imageFailTracker = new ImageLoadFailTracker();
 		try {
 			callbacks = (ViewRequestCallbacks)context;
 		}
@@ -55,7 +58,7 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 			holder.art = (ImageView)convertView.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
 			holder.artContainer = convertView.findViewById(R.id.art_container);
-			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer, null);
+			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer, imageFailTracker);
 			holder.artistName = (TextView)convertView.findViewById(R.id.artist_name);
 			holder.albumName = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.year);
@@ -90,7 +93,7 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 		}
 
 		String imgUrl = r.getImage();
-		if (SettingsActivity.imagesEnabled(context) && imgUrl != null && !imgUrl.isEmpty()){
+		if (imagesEnabled && imgUrl != null && !imgUrl.isEmpty() && !imageFailTracker.failed(imgUrl)){
 			ImageLoader.getInstance().displayImage(imgUrl, holder.art, holder.listener);
 		}
 		else {
