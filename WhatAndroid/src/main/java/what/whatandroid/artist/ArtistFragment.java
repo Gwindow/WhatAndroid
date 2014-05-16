@@ -203,7 +203,7 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 		callbacks.setTitle(artist.getResponse().getName());
 		String imgUrl = artist.getResponse().getImage();
 		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner, artContainer, null));
+			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner, artContainer));
 		}
 		else {
 			artContainer.setVisibility(View.GONE);

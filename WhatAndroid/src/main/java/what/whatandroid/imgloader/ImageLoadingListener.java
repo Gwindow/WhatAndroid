@@ -2,6 +2,7 @@ package what.whatandroid.imgloader;
 
 import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
@@ -14,19 +15,62 @@ public class ImageLoadingListener extends SimpleImageLoadingListener {
 	private final ProgressBar spinner;
 	private final View container;
 	private final ImageLoadFailTracker failTracker;
+	private final Integer failImage;
 
 	/**
-	 * Create the loading listener to update the desired spinner and image container
+	 * Create an image loading listener to hide the spinner when loading finishes
+	 */
+	public ImageLoadingListener(ProgressBar spinner){
+		super();
+		this.spinner = spinner;
+		this.container = null;
+		this.failTracker = null;
+		this.failImage = null;
+	}
+
+	/**
+	 * Create an image loading listener to update the spinner and art container when
+	 * loading has finished
+	 */
+	public ImageLoadingListener(ProgressBar spinner, View container){
+		super();
+		this.spinner = spinner;
+		this.container = container;
+		this.failTracker = null;
+		this.failImage = null;
+	}
+
+	/**
+	 * Create the loading listener to update the desired spinner and image container and record
+	 * images that failed to load
 	 *
 	 * @param spinner     spinner to show/hide for loading
-	 * @param container   optional container to show/hide depending on loading status (can be null)
-	 * @param failTracker load fail tracker to add this image url to if we fail loading (can be null)
+	 * @param container   optional container to show/hide depending on loading status
+	 * @param failTracker load fail tracker to add this image url to if we fail loading
 	 */
 	public ImageLoadingListener(ProgressBar spinner, View container, ImageLoadFailTracker failTracker){
 		super();
 		this.spinner = spinner;
 		this.container = container;
 		this.failTracker = failTracker;
+		this.failImage = null;
+	}
+
+	/**
+	 * Create the loading listener to update the desired spinner and image container and record
+	 * images that failed to load. Will also display the fail image when loading has failed
+	 *
+	 * @param spinner     spinner to show/hide for loading
+	 * @param container   optional container to show/hide depending on loading status
+	 * @param failTracker load fail tracker to add this image url to if we fail loading
+	 * @param failImage   image to display when loading fails
+	 */
+	public ImageLoadingListener(ProgressBar spinner, View container, ImageLoadFailTracker failTracker, Integer failImage){
+		super();
+		this.spinner = spinner;
+		this.container = container;
+		this.failTracker = failTracker;
+		this.failImage = failImage;
 	}
 
 	@Override
@@ -40,14 +84,23 @@ public class ImageLoadingListener extends SimpleImageLoadingListener {
 
 	@Override
 	public void onLoadingFailed(String imageUri, View view, FailReason failReason){
-		if (container != null){
-			container.setVisibility(View.GONE);
-		}
+		spinner.setVisibility(View.GONE);
 		if (failTracker != null){
 			failTracker.addFailed(imageUri);
 		}
-		spinner.setVisibility(View.GONE);
-		view.setVisibility(View.GONE);
+		if (failImage != null){
+			((ImageView)view).setImageResource(failImage);
+			view.setVisibility(View.VISIBLE);
+			if (container != null){
+				container.setVisibility(View.VISIBLE);
+			}
+		}
+		else {
+			view.setVisibility(View.GONE);
+			if (container != null){
+				container.setVisibility(View.GONE);
+			}
+		}
 	}
 
 	@Override

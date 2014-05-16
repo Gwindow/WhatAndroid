@@ -255,7 +255,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 		String avatarUrl = profile.getAvatar();
 		if (SettingsActivity.imagesEnabled(getActivity()) && avatarUrl != null && !avatarUrl.isEmpty()){
 			ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar,
-				new ImageLoadingListener(spinner, artContainer, null));
+				new ImageLoadingListener(spinner, artContainer));
 		}
 		else {
 			artContainer.setVisibility(View.GONE);

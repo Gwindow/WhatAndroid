@@ -118,7 +118,7 @@ public class TorrentGroupOverviewFragment extends Fragment implements View.OnCli
 
 		String imgUrl = group.getResponse().getGroup().getWikiImage();
 		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner, artContainer, null));
+			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner, artContainer));
 		}
 		else {
 			artContainer.setVisibility(View.GONE);

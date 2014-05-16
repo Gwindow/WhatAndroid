@@ -48,7 +48,7 @@ public class ImageDialog extends DialogFragment implements View.OnClickListener 
 		View view = inflater.inflate(R.layout.dialog_image, null);
 		ImageView imageView = (ImageView)view.findViewById(R.id.image);
 		ProgressBar spinner = (ProgressBar)view.findViewById(R.id.loading_indicator);
-		ImageLoader.getInstance().displayImage(imageUrl, imageView, new ImageLoadingListener(spinner, null, null));
+		ImageLoader.getInstance().displayImage(imageUrl, imageView, new ImageLoadingListener(spinner));
 		imageView.setOnClickListener(this);
 		return view;
 	}
