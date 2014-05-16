@@ -126,10 +126,12 @@ public class TorrentGroupOverviewFragment extends Fragment implements View.OnCli
 		albumTitle.setText(group.getResponse().getGroup().getName());
 
 		//Choose the names for ArtistA and ArtistB or hide entirely depending on the number of artists
-		TorrentGroupAdapter adapter;
+		TorrentGroupAdapter adapter = null;
 		MusicInfo musicInfo = group.getResponse().getGroup().getMusicInfo();
 		if (musicInfo == null || musicInfo.getArtists().size() > 2 || musicInfo.getArtists().isEmpty()){
-			adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(), musicInfo, editions);
+			if (torrentList.getAdapter() == null){
+				adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(), musicInfo, editions);
+			}
 			//Don't show artist name at all if there's no artist
 			if (musicInfo == null || musicInfo.getArtists().isEmpty()){
 				artistA.setVisibility(View.GONE);
@@ -149,18 +151,24 @@ public class TorrentGroupOverviewFragment extends Fragment implements View.OnCli
 			if (musicInfo.getArtists().size() == 2){
 				artistA.setText(musicInfo.getArtists().get(0).getName());
 				artistB.setText(musicInfo.getArtists().get(1).getName());
-				adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(),
-					artists.subList(2, artists.size()), editions);
+				if (torrentList.getAdapter() == null){
+					adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(),
+						artists.subList(2, artists.size()), editions);
+				}
 			}
 			else {
 				artistA.setText(musicInfo.getArtists().get(0).getName());
 				artistB.setVisibility(View.GONE);
-				adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(),
-					artists.subList(1, artists.size()), editions);
+				if (torrentList.getAdapter() == null){
+					adapter = new TorrentGroupAdapter(getActivity(), getChildFragmentManager(),
+						artists.subList(1, artists.size()), editions);
+				}
 			}
 		}
-		torrentList.setAdapter(adapter);
-		torrentList.setOnChildClickListener(adapter);
+		if (adapter != null){
+			torrentList.setAdapter(adapter);
+			torrentList.setOnChildClickListener(adapter);
+		}
 	}
 
 	@Override
