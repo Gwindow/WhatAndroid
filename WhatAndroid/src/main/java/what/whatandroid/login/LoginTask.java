@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import api.son.MySon;
 import api.soup.MySoup;
+import what.whatandroid.R;
 import what.whatandroid.settings.SettingsFragment;
 
 import java.net.HttpCookie;
@@ -50,6 +51,12 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 				.putString(SettingsFragment.USER_NAME, params[0])
 				.putString(SettingsFragment.USER_PASSWORD, params[1])
 				.commit();
+			if (MySoup.isNotificationsEnabled()){
+				preferences.edit()
+					.putBoolean(context.getString(R.string.key_pref_new_notifications),
+						MySoup.getIndex().getResponse().getNotifications().hasNewNotifications())
+					.commit();
+			}
 			return true;
 		}
 		catch (Exception e){
