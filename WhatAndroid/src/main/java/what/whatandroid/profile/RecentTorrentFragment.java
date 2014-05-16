@@ -109,7 +109,8 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 		if (artistName != null){
 			String imgUrl = torrent.getWikiImage();
 			if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
-				ImageLoader.getInstance().displayImage(torrent.getWikiImage(), art, new ImageLoadingListener(spinner, artContainer));
+				ImageLoader.getInstance().displayImage(torrent.getWikiImage(), art,
+					new ImageLoadingListener(spinner, artContainer, null));
 			}
 			else {
 				artContainer.setVisibility(View.GONE);

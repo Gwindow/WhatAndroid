@@ -49,7 +49,7 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 			holder.art = (ImageView)convertView.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
 			holder.artContainer = convertView.findViewById(R.id.art_container);
-			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer);
+			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer, null);
 			holder.artist = (TextView)convertView.findViewById(R.id.artist_name);
 			holder.title = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.album_year);

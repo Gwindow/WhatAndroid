@@ -55,7 +55,7 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 			holder.art = (ImageView)convertView.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
 			holder.artContainer = convertView.findViewById(R.id.art_container);
-			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer);
+			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer, null);
 			holder.artistName = (TextView)convertView.findViewById(R.id.artist_name);
 			holder.albumName = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.year);

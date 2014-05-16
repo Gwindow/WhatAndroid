@@ -70,7 +70,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 	 * Use this factory method to create a new instance of the fragment displaying the
 	 * desired user's profile
 	 *
-	 * @param id The user id to display the profile of
+	 * @param id        The user id to display the profile of
 	 * @param deferLoad True if the fragment should wait to load the profile until the user id is updated
 	 */
 	public static ProfileFragment newInstance(int id, boolean deferLoad){
@@ -247,7 +247,8 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 		//We need to check all the paranoia cases that may cause a field to be missing and hide the views for it
 		String avatarUrl = profile.getAvatar();
 		if (SettingsActivity.imagesEnabled(getActivity()) && avatarUrl != null && !avatarUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar, new ImageLoadingListener(spinner, artContainer));
+			ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar,
+				new ImageLoadingListener(spinner, artContainer, null));
 		}
 		else {
 			artContainer.setVisibility(View.GONE);

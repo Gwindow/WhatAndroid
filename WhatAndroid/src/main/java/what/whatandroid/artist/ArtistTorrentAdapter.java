@@ -16,6 +16,7 @@ import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewRequestCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.imgloader.ImageLoadingListener;
+import what.whatandroid.imgloader.LoadFailTracker;
 import what.whatandroid.settings.SettingsActivity;
 
 import java.util.*;
@@ -24,7 +25,6 @@ import java.util.*;
  * Displays the list of the Artist's torrent groups for selection
  */
 public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements ExpandableListView.OnChildClickListener {
-	private final Context context;
 	private final LayoutInflater inflater;
 	/**
 	 * Callbacks to the Artist Activity so we can launch a new intent to view
@@ -32,6 +32,14 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 	 */
 	private ViewTorrentCallbacks viewTorrent;
 	private ViewRequestCallbacks viewRequest;
+	/**
+	 * Art loading fail tracker so we can skip reloading images that failed to load
+	 */
+	private LoadFailTracker imageFailTracker;
+	/**
+	 * Cache if images are enabled
+	 */
+	private boolean imagesEnabled;
 	/**
 	 * The full list of releases being viewed, grouped by release type and the artists requests
 	 */
@@ -51,7 +59,8 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 	public ArtistTorrentAdapter(Context context, SortedMap<ReleaseType, ArrayList<TorrentGroup>> objects, List<Requests> requests){
 		super();
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.context = context;
+		imageFailTracker = new LoadFailTracker();
+		imagesEnabled = SettingsActivity.imagesEnabled(context);
 		try {
 			viewTorrent = (ViewTorrentCallbacks)context;
 			viewRequest = (ViewRequestCallbacks)context;
@@ -109,7 +118,7 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 			holder.art = (ImageView)convert.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convert.findViewById(R.id.loading_indicator);
 			holder.artContainer = convert.findViewById(R.id.art_container);
-			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer);
+			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer, imageFailTracker);
 			holder.albumName = (TextView)convert.findViewById(R.id.album_name);
 			holder.year = (TextView)convert.findViewById(R.id.album_year);
 			holder.tags = (TextView)convert.findViewById(R.id.album_tags);
@@ -117,7 +126,7 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 		}
 		holder.torrentGroup = (TorrentGroup)getChild(groupPos, childPos);
 		String img = holder.torrentGroup.getWikiImage();
-		if (SettingsActivity.imagesEnabled(context) && img != null && !img.isEmpty()){
+		if (imagesEnabled && img != null && !img.isEmpty() && !imageFailTracker.failed(img)){
 			ImageLoader.getInstance().displayImage(holder.torrentGroup.getWikiImage(), holder.art, holder.listener);
 		}
 		else {

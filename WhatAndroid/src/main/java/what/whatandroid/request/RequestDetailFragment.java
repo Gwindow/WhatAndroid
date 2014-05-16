@@ -162,7 +162,7 @@ public class RequestDetailFragment extends Fragment implements View.OnClickListe
 		//Requests may be missing any of these fields
 		String imgUrl = response.getImage();
 		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner, artContainer));
+			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner, artContainer, null));
 		}
 		else {
 			artContainer.setVisibility(View.GONE);
