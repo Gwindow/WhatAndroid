@@ -14,7 +14,7 @@ public class QuoteTagStyle implements TagStyle {
 	@Override
 	public Spannable getStyle(CharSequence param, CharSequence text){
 		SpannableStringBuilder ssb = new SpannableStringBuilder();
-		String user = param.toString();
+		String user = param == null ? null : param.toString();
 		if (user != null){
 			int nameEnd = user.indexOf('|');
 			if (nameEnd != -1){

@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  */
 public class WhatBBParser {
 	private static final Map<String, TagStyle> tagStyles;
-	private static final Pattern TAG_OPEN = Pattern.compile("\\[([^\\]/]+)\\]"),
+	private static final Pattern TAG_OPEN = Pattern.compile("\\[([^\\]/]+[^\\]]*)\\]"),
 		TAG_CLOSE = Pattern.compile("\\[/([^\\]/]+)\\]");
 
 	static{
@@ -30,9 +30,22 @@ public class WhatBBParser {
 		tagStyles.put("i", new ItalicTagStyle());
 		tagStyles.put("u", new UnderlineTagStyle());
 		tagStyles.put("s", new StrikethroughTagStyle());
+		tagStyles.put("important", new ImportantTagStyle());
+		TagStyle t = new CodeTagStyle();
+		tagStyles.put("code", t);
+		tagStyles.put("pre", t);
 		tagStyles.put("align", new AlignTagStyle());
 		tagStyles.put("color", new ColorTagStyle());
 		tagStyles.put("size", new SizeTagStyle());
+		tagStyles.put("url", new URLTagStyle());
+		tagStyles.put("img", new ImageTagStyle());
+		tagStyles.put("quote", new QuoteTagStyle());
+		t = new HiddenTagStyle();
+		tagStyles.put("hide", t);
+		tagStyles.put("mature", t);
+		tagStyles.put("artist", new ArtistTagStyle());
+		tagStyles.put("user", new UserTagStyle());
+		tagStyles.put("torrent", new TorrentTagStyle());
 	}
 
 	/**
@@ -50,7 +63,6 @@ public class WhatBBParser {
 		for (int s = indexOf(builder, "["), e = indexOf(builder, "]"); s != -1;
 		     s = indexOf(builder, "[", s + 1), e = indexOf(builder, "]", s)){
 			CharSequence block = builder.subSequence(s, e + 1);
-			System.out.println("Inspecting " + block);
 			Matcher open = TAG_OPEN.matcher(block);
 			//It's an opener
 			if (open.find()){
@@ -63,13 +75,11 @@ public class WhatBBParser {
 				Matcher close = TAG_CLOSE.matcher(block);
 				//If it's a closer
 				if (close.find() && tagStyles.containsKey(close.group(1))){
-					System.out.println("Closing tag " + block + ", tag name " + close.group(1));
 					builder.delete(s, e + 1);
 					//Pop-off and close all tags closed by this closer
 					s = closeTags(builder, tags, close.group(1), s);
 				}
 			}
-			System.out.println("---------");
 		}
 		//Clean up any tags that are being closed by the end of the text
 		closeAllTags(builder, tags);
@@ -84,17 +94,14 @@ public class WhatBBParser {
 	 * @return the position to resume parsing from, required in the case of hidden tags
 	 */
 	private static int openTag(SpannableStringBuilder builder, Stack<Tag> tags, Tag tag){
-		System.out.println("Opening tag");
 		//Hidden tags have their content hidden so we extract it into the tag and don't waste time parsing
 		//that content, since it'll only be shown if the hidden tag is clicked
 		if (tag.tag.equalsIgnoreCase("hide")){
-			System.out.println("Parsing hidden tag");
 			return parseHiddenTag(builder, tag);
 		}
 		//If it's a self-closing image tag (the only type of tag that can self-close) handle the special case
 		if (tag.tag.equalsIgnoreCase("img") && tag.param != null){
 			tag.end = tag.start + tag.tagLength;
-			System.out.println("Self closing image tag " + tag);
 			builder.replace(tag.start, tag.end, tagStyles.get(tag.tag).getStyle(tag.param, null));
 		}
 		else {
@@ -111,17 +118,22 @@ public class WhatBBParser {
 	 * @return location to resume parsing
 	 */
 	private static int closeTags(SpannableStringBuilder builder, Stack<Tag> tags, String tag, int start){
+		if (tags.empty()){
+			return start;
+		}
 		Tag t;
 		do {
 			t = tags.pop();
 			t.end = start;
-			System.out.println("Popping and closing " + t);
 			Spannable styled = tagStyles.get(t.tag).getStyle(t.param, builder.subSequence(t.start + t.tagLength, t.end));
-			System.out.println("Styled replacement " + styled);
 			builder.replace(t.start, t.end, styled);
 			//Account for differences in the length of the previous text and its styled replacement
 			start += getOffset(t, styled);
-			System.out.println("Styled " + builder);
+			//We seem to need this extra offset when closing multiple tags.
+			//TODO find a proper fix for this instead of the patch below, unless that's the best we can do?
+			if (!t.tag.equalsIgnoreCase(tag)){
+				++start;
+			}
 		}
 		while (!tags.empty() && !t.tag.equalsIgnoreCase(tag));
 		return start;
@@ -135,11 +147,8 @@ public class WhatBBParser {
 		while (!tags.empty()){
 			Tag t = tags.pop();
 			t.end = builder.length();
-			System.out.println("Popping and closing end closed " + t);
 			Spannable styled = tagStyles.get(t.tag).getStyle(t.param, builder.subSequence(t.start + t.tagLength, t.end));
-			System.out.println("Styled replacement " + styled);
 			builder.replace(t.start, t.end, styled);
-			System.out.println("Styled " + builder);
 		}
 	}
 
@@ -159,11 +168,9 @@ public class WhatBBParser {
 		}
 		t.end = s;
 		Spannable styled = tagStyles.get(t.tag).getStyle(t.param, builder.subSequence(t.start + t.tagLength, t.end));
-		System.out.println("Styled replacement " + styled);
 		builder.replace(t.start, t.end, styled);
 		//Account for differences in the length of the previous text and its styled replacement
 		s += getOffset(t, styled);
-		System.out.println("Styled " + builder);
 		return s;
 	}
 

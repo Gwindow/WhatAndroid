@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * accounts for the opening/closing brackets
  */
 public class Tag {
-	public static final Pattern TAG_PARAM = Pattern.compile("([^\\]/=]+)=([^\\]/=]+)");
+	public static final Pattern TAG_PARAM = Pattern.compile("([^\\]/=]+)=([^\\]]+)");
 	public int start, end, tagLength;
 	public String tag, param;
 

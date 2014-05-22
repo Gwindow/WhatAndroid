@@ -12,11 +12,11 @@ import android.text.style.URLSpan;
 public class TorrentTagStyle implements TagStyle {
 	@Override
 	public Spannable getStyle(CharSequence param, CharSequence text){
-		SpannableString styled = new SpannableString(param);
+		SpannableString styled = new SpannableString(text);
 		//The torrent tags can be the full url or just the group id
-		String p = param.toString();
+		String p = text.toString();
 		if (!p.contains("what.cd")){
-			styled.setSpan(new URLSpan("https://what.cd/torrents.php?id=" + param), 0, styled.length(),
+			styled.setSpan(new URLSpan("https://what.cd/torrents.php?id=" + text), 0, styled.length(),
 				Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		else {

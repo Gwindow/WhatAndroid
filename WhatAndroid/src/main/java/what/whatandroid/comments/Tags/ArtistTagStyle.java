@@ -14,10 +14,10 @@ import java.net.URLEncoder;
 public class ArtistTagStyle implements TagStyle {
 	@Override
 	public Spannable getStyle(CharSequence param, CharSequence text){
-		SpannableString styled = new SpannableString(param);
+		SpannableString styled = new SpannableString(text);
 		try {
 			styled.setSpan(new URLSpan("https://what.cd/artist.php?artistname=" +
-				URLEncoder.encode(param.toString(), "UTF-8")), 0,
+				URLEncoder.encode(text.toString(), "UTF-8")), 0,
 				styled.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		catch (UnsupportedEncodingException e){
