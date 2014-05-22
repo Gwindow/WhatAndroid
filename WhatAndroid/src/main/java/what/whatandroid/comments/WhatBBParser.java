@@ -1,13 +1,16 @@
 package what.whatandroid.comments;
 
-import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.style.*;
-import what.whatandroid.imgloader.SmileyProcessor;
+import android.text.style.BulletSpan;
+import android.text.style.CharacterStyle;
+import what.whatandroid.comments.tags.*;
 
+import java.util.Map;
+import java.util.Stack;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,25 +20,20 @@ import java.util.regex.Pattern;
  * that's really used on the site so it's probably fine.
  */
 public class WhatBBParser {
-	/**
-	 * Tags for opening and closing a bold section of text
-	 */
-	private static final Pattern BOLD = Pattern.compile("\\[[bB]\\](.+?)(?:\\[\\/[bB]\\]|$)", Pattern.DOTALL),
-		ITALIC = Pattern.compile("\\[[iI]\\](.+?)(?:\\[\\/[iI]\\]|$)", Pattern.DOTALL),
-		UNDERLINE = Pattern.compile("\\[[uU]\\](.+?)(?:\\[\\/[uU]\\]|$)", Pattern.DOTALL),
-		STRIKETHROUGH = Pattern.compile("\\[[sS]\\](.+?)(?:\\[\\/[sS]\\]|$)", Pattern.DOTALL),
-		IMPORTANT = Pattern.compile("\\[(?:important|IMPORTANT)\\](.+?)(?:\\[\\/(?:important|IMPORTANT)\\]|$)", Pattern.DOTALL),
-		CODE = Pattern.compile("\\[(?:code|CODE|pre|PRE)\\](.+?)(?:\\[\\/(?:code|CODE|pre|PRE)\\]|$)", Pattern.DOTALL),
-		COLOR = Pattern.compile("\\[(?:color|COLOR)=([^\\]]+)\\](.+?)(?:\\[\\/(?:color|COLOR)\\]|$)"),
-		ALIGN = Pattern.compile("\\[(?:align|ALIGN)=(\\w+)\\](.+?)(?:\\[\\/(?:align|ALIGN)\\]|$)", Pattern.DOTALL),
-		SIZE = Pattern.compile("\\[(?:size|SIZE)=(\\d+)\\](.+?)(?:\\[\\/(?:size|SIZE)\\]|$)"),
-		URL = Pattern.compile("\\[(?:url|URL)=?([^\\]]+)?\\](.+?)\\[\\/(?:url|URL)\\]"),
-		IMG = Pattern.compile("\\[(?:img|IMG)=?([^\\]]+)?\\](?:(.+?)\\[\\/(?:img|IMG)\\])?"),
-		QUOTE = Pattern.compile("\\[(?:quote|QUOTE)=?([^\\]]+)?\\](.+?)(?:\\[\\/(?:quote|QUOTE)\\]|$)", Pattern.DOTALL),
-		HIDDEN = Pattern.compile("\\[(?:hide|HIDE|mature|MATURE)=?([^\\]]+)?\\](.+?)(?:\\[\\/(?:hide|HIDE|mature|MATURE)\\]|$)", Pattern.DOTALL),
-		ARTIST = Pattern.compile("\\[(?:artist|ARTIST)\\](.+?)\\[\\/(?:artist|ARTIST)\\]", Pattern.DOTALL),
-		USER = Pattern.compile("\\[(?:user|USER)\\](.+?)\\[\\/(?:user|USER)\\]", Pattern.DOTALL),
-		TORRENT = Pattern.compile("\\[(?:torrent|TORRENT)\\](.+?)\\[\\/(?:torrent|TORRENT)\\]", Pattern.DOTALL);
+	private static final Map<String, TagStyle> tagStyles;
+	private static final Pattern TAG_OPEN = Pattern.compile("\\[([^\\]/]+)\\]"),
+		TAG_CLOSE = Pattern.compile("\\[/([^\\]/]+)\\]");
+
+	static{
+		tagStyles = new TreeMap<String, TagStyle>(String.CASE_INSENSITIVE_ORDER);
+		tagStyles.put("b", new BoldTagStyle());
+		tagStyles.put("i", new ItalicTagStyle());
+		tagStyles.put("u", new UnderlineTagStyle());
+		tagStyles.put("s", new StrikethroughTagStyle());
+		tagStyles.put("align", new AlignTagStyle());
+		tagStyles.put("color", new ColorTagStyle());
+		tagStyles.put("size", new SizeTagStyle());
+	}
 
 	/**
 	 * Tags for bulleted lists and a pattern to match numbered lists. The pattern is used so that
@@ -45,28 +43,174 @@ public class WhatBBParser {
 	private static final Pattern NUM_LIST = Pattern.compile("\\[#\\][ ]*(.*)($|\r\n)");
 
 	public static CharSequence parsebb(String bbText){
-		SpannableStringBuilder ssb = new SpannableStringBuilder(bbText);
-		StringBuilder text = new StringBuilder(bbText);
-		SmileyProcessor.bbSmileytoEmoji(ssb, text);
-		parseParameterizedTag(ssb, text, HIDDEN, new HiddenTag());
-		parseSimpleTag(ssb, text, BOLD, new StyleSpan(Typeface.BOLD));
-		parseSimpleTag(ssb, text, ITALIC, new StyleSpan(Typeface.ITALIC));
-		parseSimpleTag(ssb, text, UNDERLINE, new UnderlineSpan());
-		parseSimpleTag(ssb, text, STRIKETHROUGH, new StrikethroughSpan());
-		parseSimpleTag(ssb, text, IMPORTANT, new ForegroundColorSpan(0xffff4444));
-		parseSimpleTag(ssb, text, CODE, new TypefaceSpan("monospace"));
-		parseParameterizedTag(ssb, text, ALIGN, new AlignTag());
-		parseParameterizedTag(ssb, text, COLOR, new ColorTag());
-		parseParameterizedTag(ssb, text, SIZE, new SizeTag());
-		parseParameterizedTag(ssb, text, URL, new URLTag());
-		parseParameterizedTag(ssb, text, ARTIST, new ArtistTag());
-		parseParameterizedTag(ssb, text, TORRENT, new TorrentTag());
-		parseParameterizedTag(ssb, text, QUOTE, new QuoteTag());
-		parseParameterizedTag(ssb, text, IMG, new ImageTag());
-		parseParameterizedTag(ssb, text, USER, new UserTag());
-		parseBulletLists(ssb, text);
-		parseNumberedList(ssb, text);
-		return ssb;
+		SpannableStringBuilder builder = new SpannableStringBuilder(bbText);
+		//SmileyProcessor.bbSmileytoEmoji(ssb, text);
+		Stack<Tag> tags = new Stack<Tag>();
+
+		for (int s = indexOf(builder, "["), e = indexOf(builder, "]"); s != -1;
+		     s = indexOf(builder, "[", s + 1), e = indexOf(builder, "]", s)){
+			CharSequence block = builder.subSequence(s, e + 1);
+			System.out.println("Inspecting " + block);
+			Matcher open = TAG_OPEN.matcher(block);
+			//It's an opener
+			if (open.find()){
+				Tag t = new Tag(s, open.group(1));
+				if (tagStyles.containsKey(t.tag)){
+					s = openTag(builder, tags, t);
+				}
+			}
+			else {
+				Matcher close = TAG_CLOSE.matcher(block);
+				//If it's a closer
+				if (close.find() && tagStyles.containsKey(close.group(1))){
+					System.out.println("Closing tag " + block + ", tag name " + close.group(1));
+					builder.delete(s, e + 1);
+					//Pop-off and close all tags closed by this closer
+					s = closeTags(builder, tags, close.group(1), s);
+				}
+			}
+			System.out.println("---------");
+		}
+		//Clean up any tags that are being closed by the end of the text
+		closeAllTags(builder, tags);
+		return builder;
+	}
+
+	/**
+	 * Open a tag and handle any potential special cases
+	 *
+	 * @param tags tag stack to push the tag onto
+	 * @param tag  the tag being opened
+	 * @return the position to resume parsing from, required in the case of hidden tags
+	 */
+	private static int openTag(SpannableStringBuilder builder, Stack<Tag> tags, Tag tag){
+		System.out.println("Opening tag");
+		//Hidden tags have their content hidden so we extract it into the tag and don't waste time parsing
+		//that content, since it'll only be shown if the hidden tag is clicked
+		if (tag.tag.equalsIgnoreCase("hide")){
+			System.out.println("Parsing hidden tag");
+			return parseHiddenTag(builder, tag);
+		}
+		//If it's a self-closing image tag (the only type of tag that can self-close) handle the special case
+		if (tag.tag.equalsIgnoreCase("img") && tag.param != null){
+			tag.end = tag.start + tag.tagLength;
+			System.out.println("Self closing image tag " + tag);
+			builder.replace(tag.start, tag.end, tagStyles.get(tag.tag).getStyle(tag.param, null));
+		}
+		else {
+			tags.push(tag);
+		}
+		return tag.start;
+	}
+
+	/**
+	 * Close all tags up to and including tag in the stack of tags
+	 *
+	 * @param tag   tag name to close
+	 * @param start the start of the closing tag
+	 * @return location to resume parsing
+	 */
+	private static int closeTags(SpannableStringBuilder builder, Stack<Tag> tags, String tag, int start){
+		Tag t;
+		do {
+			t = tags.pop();
+			t.end = start;
+			System.out.println("Popping and closing " + t);
+			Spannable styled = tagStyles.get(t.tag).getStyle(t.param, builder.subSequence(t.start + t.tagLength, t.end));
+			System.out.println("Styled replacement " + styled);
+			builder.replace(t.start, t.end, styled);
+			//Account for differences in the length of the previous text and its styled replacement
+			start += getOffset(t, styled);
+			System.out.println("Styled " + builder);
+		}
+		while (!tags.empty() && !t.tag.equalsIgnoreCase(tag));
+		return start;
+	}
+
+	/**
+	 * Close all tags in the stack and end them at the end of the builder. Used to close any remaining open
+	 * tags at the end of parsing, since these tags should run to the end of the text
+	 */
+	private static void closeAllTags(SpannableStringBuilder builder, Stack<Tag> tags){
+		while (!tags.empty()){
+			Tag t = tags.pop();
+			t.end = builder.length();
+			System.out.println("Popping and closing end closed " + t);
+			Spannable styled = tagStyles.get(t.tag).getStyle(t.param, builder.subSequence(t.start + t.tagLength, t.end));
+			System.out.println("Styled replacement " + styled);
+			builder.replace(t.start, t.end, styled);
+			System.out.println("Styled " + builder);
+		}
+	}
+
+	/**
+	 * Parse and conceal a hidden tag starting at some location
+	 *
+	 * @return the point after the end of the hidden text to resume parsing at
+	 */
+	private static int parseHiddenTag(SpannableStringBuilder builder, Tag t){
+		String closer = "[/" + t.tag + "]";
+		int s = indexOf(builder, closer, t.start);
+		if (s == -1){
+			s = builder.length();
+		}
+		else {
+			builder.delete(s, s + closer.length());
+		}
+		t.end = s;
+		Spannable styled = tagStyles.get(t.tag).getStyle(t.param, builder.subSequence(t.start + t.tagLength, t.end));
+		System.out.println("Styled replacement " + styled);
+		builder.replace(t.start, t.end, styled);
+		//Account for differences in the length of the previous text and its styled replacement
+		s += getOffset(t, styled);
+		System.out.println("Styled " + builder);
+		return s;
+	}
+
+	/**
+	 * Get the offset to add to the position after the tag when it's replaced by
+	 * its styled text
+	 *
+	 * @param t      tag being replaced
+	 * @param styled styled text replacing it
+	 * @return offset to subtract from a position after the tag sequence replaced by the styled
+	 * text to move it to the new ending position
+	 */
+	private static int getOffset(Tag t, CharSequence styled){
+		return -(t.end - t.start - styled.length() + 1);
+	}
+
+	/**
+	 * Find the index of the first occurrence of str after start in the spannable string builder
+	 * -1 is returned if not found. SpannableStringBuilder lacks indexOf so we need to do it
+	 * ourselves :(
+	 */
+	private static int indexOf(SpannableStringBuilder ssb, String str, int start){
+		if (start > ssb.length()){
+			return -1;
+		}
+		if (start < 0){
+			start = 0;
+		}
+		for (int i = start; i < ssb.length(); ++i){
+			if (ssb.charAt(i) == str.charAt(0)){
+				int j = 1;
+				for (int k = i + 1; j < str.length() && k < ssb.length(); ++j, ++k){
+					if (ssb.charAt(k) != str.charAt(j)){
+						i = k;
+						break;
+					}
+				}
+				if (j == str.length()){
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+
+	private static int indexOf(SpannableStringBuilder ssb, String str){
+		return indexOf(ssb, str, 0);
 	}
 
 	/**
@@ -125,7 +269,7 @@ public class WhatBBParser {
 	 * @param tag     tag[0] is the opening tag, tag[1] is the closing tag
 	 * @param handler handler to return the appropriate tag for the parameters
 	 */
-	private static void parseParameterizedTag(SpannableStringBuilder ssb, StringBuilder text, Pattern tag, ParameterizedTag handler){
+	private static void parseParameterizedTag(SpannableStringBuilder ssb, StringBuilder text, Pattern tag, TagStyle handler){
 		//Unfortunately because we're changing the text we need to reset each time. If this is too slow then maybe we
 		//could just store the indices and do the replacement after finding all matches
 		for (Matcher m = tag.matcher(text); m.find(); m.reset(text)){

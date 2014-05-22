@@ -1,4 +1,4 @@
-package what.whatandroid.comments;
+package what.whatandroid.comments.spans;
 
 import android.text.style.ClickableSpan;
 import android.util.Log;
@@ -11,9 +11,9 @@ import what.whatandroid.callbacks.ShowHiddenTagListener;
  * warning will be logged
  */
 public class ShowImageSpan extends ClickableSpan {
-	String url;
+	private String url;
 
-	ShowImageSpan(String url){
+	public ShowImageSpan(String url){
 		super();
 		this.url = url;
 	}

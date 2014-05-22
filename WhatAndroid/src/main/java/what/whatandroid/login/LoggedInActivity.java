@@ -26,7 +26,7 @@ import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.callbacks.ShowHiddenTagListener;
-import what.whatandroid.comments.HiddenTextDialog;
+import what.whatandroid.comments.dialogs.HiddenTextDialog;
 import what.whatandroid.errors.ErrorLogger;
 import what.whatandroid.errors.ErrorReporterService;
 import what.whatandroid.settings.SettingsActivity;

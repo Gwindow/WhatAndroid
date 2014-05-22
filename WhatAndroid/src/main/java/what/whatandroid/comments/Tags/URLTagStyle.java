@@ -1,4 +1,4 @@
-package what.whatandroid.comments;
+package what.whatandroid.comments.tags;
 
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -9,16 +9,16 @@ import api.soup.MySoup;
 /**
  * Returns the appropriate URLSpan for the url tag
  */
-public class URLTag implements ParameterizedTag {
+public class URLTagStyle implements TagStyle {
 	@Override
-	public Spannable getStyle(String param, String text){
+	public Spannable getStyle(CharSequence param, CharSequence text){
 		SpannableString styled = new SpannableString(text);
 		String url;
-		if (param != null && !param.isEmpty()){
-			url = param;
+		if (param != null && param.length() != 0){
+			url = param.toString();
 		}
 		else {
-			url = text;
+			url = text.toString();
 		}
 		//TODO: Is it safe to assume all urls without the http bit will be site urls?
 		if (!url.startsWith("http")){

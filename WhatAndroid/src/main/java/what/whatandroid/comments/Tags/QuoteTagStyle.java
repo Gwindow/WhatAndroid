@@ -1,4 +1,4 @@
-package what.whatandroid.comments;
+package what.whatandroid.comments.tags;
 
 import android.graphics.Typeface;
 import android.text.Spannable;
@@ -10,11 +10,11 @@ import android.text.style.StyleSpan;
 /**
  * Handles site quote tags
  */
-public class QuoteTag implements ParameterizedTag {
+public class QuoteTagStyle implements TagStyle {
 	@Override
-	public Spannable getStyle(String param, String text){
+	public Spannable getStyle(CharSequence param, CharSequence text){
 		SpannableStringBuilder ssb = new SpannableStringBuilder();
-		String user = param;
+		String user = param.toString();
 		if (user != null){
 			int nameEnd = user.indexOf('|');
 			if (nameEnd != -1){

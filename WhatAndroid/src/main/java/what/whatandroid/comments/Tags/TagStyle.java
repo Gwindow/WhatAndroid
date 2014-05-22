@@ -1,4 +1,4 @@
-package what.whatandroid.comments;
+package what.whatandroid.comments.tags;
 
 
 import android.text.Spannable;
@@ -7,7 +7,7 @@ import android.text.Spannable;
  * An interface for creating various types of parameterized tags. The object returned
  * must be some kind of Character or Paragraph style
  */
-public interface ParameterizedTag {
+public interface TagStyle {
 	/**
 	 * Parse the parameters for the tag and effected text and return the styled text
 	 * for the tag
@@ -16,5 +16,5 @@ public interface ParameterizedTag {
 	 * @param text  text effected by the tag
 	 * @return styled text resulting from applying the tag
 	 */
-	Spannable getStyle(String param, String text);
+	public Spannable getStyle(CharSequence param, CharSequence text);
 }

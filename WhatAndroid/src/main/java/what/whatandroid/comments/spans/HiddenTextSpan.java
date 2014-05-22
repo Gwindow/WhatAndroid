@@ -1,4 +1,4 @@
-package what.whatandroid.comments;
+package what.whatandroid.comments.spans;
 
 import android.text.style.ClickableSpan;
 import android.util.Log;
@@ -11,8 +11,9 @@ import what.whatandroid.callbacks.ShowHiddenTagListener;
  * to display the hidden text
  */
 public class HiddenTextSpan extends ClickableSpan {
-	String title, text;
+	private String title, text;
 
+	//TODO: maybe change these to be charsequences as well?
 	public HiddenTextSpan(String title, String text){
 		super();
 		this.title = title;

@@ -1,4 +1,4 @@
-package what.whatandroid.comments;
+package what.whatandroid.comments.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import what.whatandroid.R;
+import what.whatandroid.comments.WhatBBParser;
 
 /**
  * Displays hidden text
