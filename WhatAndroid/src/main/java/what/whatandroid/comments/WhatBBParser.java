@@ -60,24 +60,25 @@ public class WhatBBParser {
 		//SmileyProcessor.bbSmileytoEmoji(ssb, text);
 		Stack<Tag> tags = new Stack<Tag>();
 
-		for (int s = indexOf(builder, "["), e = indexOf(builder, "]"); s != -1;
-		     s = indexOf(builder, "[", s + 1), e = indexOf(builder, "]", s)){
-			CharSequence block = builder.subSequence(s, e + 1);
+		for (int start = indexOf(builder, "["), end = indexOf(builder, "]"); start != -1;
+		     start = indexOf(builder, "[", start + 1), end = indexOf(builder, "]", start))
+		{
+			CharSequence block = builder.subSequence(start, end + 1);
 			Matcher open = TAG_OPEN.matcher(block);
 			//It's an opener
 			if (open.find()){
-				Tag t = new Tag(s, open.group(1));
+				Tag t = new Tag(start, open.group(1));
 				if (tagStyles.containsKey(t.tag)){
-					s = openTag(builder, tags, t);
+					start = openTag(builder, tags, t);
 				}
 			}
 			else {
 				Matcher close = TAG_CLOSE.matcher(block);
 				//If it's a closer
 				if (close.find() && tagStyles.containsKey(close.group(1))){
-					builder.delete(s, e + 1);
+					builder.delete(start, end + 1);
 					//Pop-off and close all tags closed by this closer
-					s = closeTags(builder, tags, close.group(1), s);
+					start = closeTags(builder, tags, close.group(1), start);
 				}
 			}
 		}
@@ -121,9 +122,8 @@ public class WhatBBParser {
 		if (tags.empty()){
 			return start;
 		}
-		Tag t;
 		do {
-			t = tags.pop();
+			Tag t = tags.pop();
 			t.end = start;
 			Spannable styled = tagStyles.get(t.tag).getStyle(t.param, builder.subSequence(t.start + t.tagLength, t.end));
 			builder.replace(t.start, t.end, styled);
@@ -134,8 +134,11 @@ public class WhatBBParser {
 			if (!t.tag.equalsIgnoreCase(tag)){
 				++start;
 			}
+			else {
+				break;
+			}
 		}
-		while (!tags.empty() && !t.tag.equalsIgnoreCase(tag));
+		while (!tags.empty());
 		return start;
 	}
 
