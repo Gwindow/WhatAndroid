@@ -1,11 +1,8 @@
 package what.whatandroid.comments;
 
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.style.BulletSpan;
-import android.text.style.CharacterStyle;
 import what.whatandroid.comments.tags.*;
 
 import java.util.Map;
@@ -55,8 +52,10 @@ public class WhatBBParser {
 	private static final String BULLET = "[*]";
 	private static final Pattern NUM_LIST = Pattern.compile("\\[#\\][ ]*(.*)($|\r\n)");
 
-	public static CharSequence parsebb(String bbText){
-		SpannableStringBuilder builder = new SpannableStringBuilder(bbText);
+	private SpannableStringBuilder builder;
+
+	public CharSequence parsebb(String bbText){
+		builder = new SpannableStringBuilder(bbText);
 		//SmileyProcessor.bbSmileytoEmoji(ssb, text);
 		Stack<Tag> tags = new Stack<Tag>();
 
@@ -69,7 +68,7 @@ public class WhatBBParser {
 			if (open.find()){
 				Tag t = new Tag(start, open.group(1));
 				if (tagStyles.containsKey(t.tag)){
-					start = openTag(builder, tags, t);
+					start = openTag(tags, t);
 				}
 			}
 			else {
@@ -78,12 +77,12 @@ public class WhatBBParser {
 				if (close.find() && tagStyles.containsKey(close.group(1))){
 					builder.delete(start, end + 1);
 					//Pop-off and close all tags closed by this closer
-					start = closeTags(builder, tags, close.group(1), start);
+					start = closeTags(tags, close.group(1), start);
 				}
 			}
 		}
 		//Clean up any tags that are being closed by the end of the text
-		closeAllTags(builder, tags);
+		closeAllTags(tags);
 		return builder;
 	}
 
@@ -94,11 +93,11 @@ public class WhatBBParser {
 	 * @param tag  the tag being opened
 	 * @return the position to resume parsing from, required in the case of hidden tags
 	 */
-	private static int openTag(SpannableStringBuilder builder, Stack<Tag> tags, Tag tag){
+	private int openTag(Stack<Tag> tags, Tag tag){
 		//Hidden tags have their content hidden so we extract it into the tag and don't waste time parsing
 		//that content, since it'll only be shown if the hidden tag is clicked
 		if (tag.tag.equalsIgnoreCase("hide")){
-			return parseHiddenTag(builder, tag);
+			return parseHiddenTag(tag);
 		}
 		//If it's a self-closing image tag (the only type of tag that can self-close) handle the special case
 		if (tag.tag.equalsIgnoreCase("img") && tag.param != null){
@@ -118,7 +117,7 @@ public class WhatBBParser {
 	 * @param start the start of the closing tag
 	 * @return location to resume parsing
 	 */
-	private static int closeTags(SpannableStringBuilder builder, Stack<Tag> tags, String tag, int start){
+	private int closeTags(Stack<Tag> tags, String tag, int start){
 		if (tags.empty()){
 			return start;
 		}
@@ -146,7 +145,7 @@ public class WhatBBParser {
 	 * Close all tags in the stack and end them at the end of the builder. Used to close any remaining open
 	 * tags at the end of parsing, since these tags should run to the end of the text
 	 */
-	private static void closeAllTags(SpannableStringBuilder builder, Stack<Tag> tags){
+	private void closeAllTags(Stack<Tag> tags){
 		while (!tags.empty()){
 			Tag t = tags.pop();
 			t.end = builder.length();
@@ -160,7 +159,7 @@ public class WhatBBParser {
 	 *
 	 * @return the point after the end of the hidden text to resume parsing at
 	 */
-	private static int parseHiddenTag(SpannableStringBuilder builder, Tag t){
+	private int parseHiddenTag(Tag t){
 		String closer = "[/" + t.tag + "]";
 		int s = indexOf(builder, closer, t.start);
 		if (s == -1){
@@ -221,109 +220,6 @@ public class WhatBBParser {
 
 	private static int indexOf(SpannableStringBuilder ssb, String str){
 		return indexOf(ssb, str, 0);
-	}
-
-	/**
-	 * Parse a simple tag passed and apply the styling desired. A simple tag is bold, italic, underline or similar
-	 * where no extra information from the tag is required to decide the formatting.
-	 *
-	 * @param ssb  spannable string builder to apply the styling in
-	 * @param text a mirror of the text in the spannable string builder, used to look up tag positions and tags will be
-	 *             removed in here and in the ssb to keep them matching
-	 * @param tag  tag[0] is the opening tag, tag[1] is the closing tag
-	 * @param cs   character style to apply to the text in the tag
-	 */
-	private static void parseSimpleTag(SpannableStringBuilder ssb, StringBuilder text, Pattern tag, CharacterStyle cs){
-		//Unfortunately because we're changing the text we need to reset each time. If this is too slow then maybe we
-		//could just store the indices and do the replacement after finding all matches
-		for (Matcher m = tag.matcher(text); m.find(); m.reset(text)){
-			SpannableString styled = new SpannableString(m.group(1));
-			styled.setSpan(CharacterStyle.wrap(cs), 0, styled.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			//Get any existing spans in the range and apply them to the text so they'll be preserved if
-			//we replace the entire section they span
-			Object spans[] = ssb.getSpans(m.start(), m.end(), Object.class);
-			if (spans != null){
-				for (Object s : spans){
-					//Figure out what range in the replacement to apply the span to
-					int start = ssb.getSpanStart(s);
-					int end = ssb.getSpanEnd(s);
-					if (start <= m.start(1)){
-						start = 0;
-					}
-					else {
-						start -= m.start(1);
-					}
-					if (end >= m.end(1)){
-						end = styled.length();
-					}
-					else {
-						end = end - m.start(1);
-					}
-					styled.setSpan(s, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-				}
-			}
-			ssb.replace(m.start(), m.end(), styled);
-			text.replace(m.start(), m.end(), m.group(1));
-		}
-	}
-
-	/**
-	 * Parse parameterized tags in the text and apply the style returned by the ParameterizedTag handler
-	 * Tag openers should be of the form '[tag=' to make finding the parameter simple, or if the parameter is
-	 * optional the tag should be '[tag' so that the case of no parameter can be found as well. Even if the
-	 * parameter is only passed through the text the tag should still be '[tag' for it to be found correctly
-	 *
-	 * @param ssb     spannable string builder to apply the styling in
-	 * @param text    a mirror of the text in the spannable string builder, used to look up tag positions and tags will be
-	 *                removed in here and in the ssb to keep them matching
-	 * @param tag     tag[0] is the opening tag, tag[1] is the closing tag
-	 * @param handler handler to return the appropriate tag for the parameters
-	 */
-	private static void parseParameterizedTag(SpannableStringBuilder ssb, StringBuilder text, Pattern tag, TagStyle handler){
-		//Unfortunately because we're changing the text we need to reset each time. If this is too slow then maybe we
-		//could just store the indices and do the replacement after finding all matches
-		for (Matcher m = tag.matcher(text); m.find(); m.reset(text)){
-			Spannable styled;
-			int groupStart, groupEnd;
-			if (m.groupCount() == 2){
-				styled = handler.getStyle(m.group(1), m.group(2));
-				groupStart = m.start(2);
-				groupEnd = m.end(2);
-			}
-			else {
-				styled = handler.getStyle(m.group(1), null);
-				groupStart = m.start(1);
-				groupEnd = m.end(1);
-			}
-			//Get any existing spans in the range and apply them to the text so they'll be preserved if
-			//we replace the entire section they span
-			Object spans[] = ssb.getSpans(m.start(), m.end(), Object.class);
-			if (spans != null){
-				for (Object s : spans){
-					//Figure out what range in the replacement to apply the span to
-					int start = ssb.getSpanStart(s);
-					int end = ssb.getSpanEnd(s);
-					if (start <= groupStart){
-						start = 0;
-					}
-					else {
-						start -= groupStart;
-					}
-					if (end >= groupEnd){
-						end = styled.length();
-					}
-					else {
-						end = end - groupStart;
-					}
-					//TODO: This is a temp fix until we put in a proper parser
-					if (end > start && start >= 0){
-						styled.setSpan(s, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-					}
-				}
-			}
-			ssb.replace(m.start(), m.end(), styled);
-			text.replace(m.start(), m.end(), styled.toString());
-		}
 	}
 
 	/**

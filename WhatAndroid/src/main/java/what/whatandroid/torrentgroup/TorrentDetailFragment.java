@@ -123,7 +123,7 @@ public class TorrentDetailFragment extends Fragment implements LoadingListener<T
 			reported.setVisibility(View.GONE);
 		}
 		if (!torrent.getDescription().isEmpty()){
-			description.setText(WhatBBParser.parsebb(torrent.getDescription()));
+			description.setText(new WhatBBParser().parsebb(torrent.getDescription()));
 		}
 		else {
 			description.setVisibility(View.GONE);

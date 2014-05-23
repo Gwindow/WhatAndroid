@@ -32,6 +32,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 	private ViewUserCallbacks viewUser;
 	private ImageLoadFailTracker imageFailTracker;
 	private boolean imagesEnabled;
+	private WhatBBParser whatBBParser;
 
 	public CommentsAdapter(Context context){
 		super(context, R.layout.list_user_comment);
@@ -39,6 +40,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 		imageGetter = new HtmlImageHider(context);
 		imagesEnabled = SettingsActivity.imagesEnabled(context);
 		imageFailTracker = new ImageLoadFailTracker();
+		whatBBParser = new WhatBBParser();
 		try {
 			viewUser = (ViewUserCallbacks)context;
 		}
@@ -85,7 +87,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
 		//The RequestComments don't have the bbBody field
 		if (comment.getBBbody() != null){
-			holder.commentText.setText(WhatBBParser.parsebb(comment.getBBbody()));
+			holder.commentText.setText(whatBBParser.parsebb(comment.getBBbody()));
 		}
 		else {
 			holder.commentText.setText(Html.fromHtml(comment.getBody(), imageGetter, new HTMLListTagHandler()));
