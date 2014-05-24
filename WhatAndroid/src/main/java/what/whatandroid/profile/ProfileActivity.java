@@ -17,6 +17,7 @@ import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.forums.ForumActivity;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.search.SearchActivity;
@@ -162,6 +163,11 @@ public class ProfileActivity extends LoggedInActivity implements ViewTorrentCall
 			intent.putExtra(AnnouncementsActivity.SHOW, AnnouncementsActivity.ANNOUNCEMENTS);
 			startActivity(intent);
 		}
+		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
+			Intent intent = new Intent(this, AnnouncementsActivity.class);
+			intent.putExtra(AnnouncementsActivity.SHOW, AnnouncementsActivity.BLOGS);
+			startActivity(intent);
+		}
 		else if (selection.equalsIgnoreCase(getString(R.string.profile))){
 			//If we're not viewing our own profile go to it
 			if (profileFragment.getUserID() != MySoup.getUserId()){
@@ -181,9 +187,8 @@ public class ProfileActivity extends LoggedInActivity implements ViewTorrentCall
 			Intent intent = new Intent(this, NotificationsActivity.class);
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
-			Intent intent = new Intent(this, AnnouncementsActivity.class);
-			intent.putExtra(AnnouncementsActivity.SHOW, AnnouncementsActivity.BLOGS);
+		else if (selection.equalsIgnoreCase(getString(R.string.forums))){
+			Intent intent = new Intent(this, ForumActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){
