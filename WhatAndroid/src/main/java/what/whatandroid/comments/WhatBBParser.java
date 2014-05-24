@@ -19,8 +19,21 @@ import java.util.regex.Pattern;
  */
 public class WhatBBParser {
 	private static final Map<String, TagStyle> tagStyles;
+
+	/**
+	 * Patterns to validate opening and closing tags
+	 */
 	private static final Pattern TAG_OPEN = Pattern.compile("\\[([^\\]/]+[^\\]]*)\\]"),
 		TAG_CLOSE = Pattern.compile("\\[/([^\\]/]+)\\]");
+
+	/**
+	 * Tags for bulleted lists and a pattern to match numbered lists. The pattern is used so that
+	 * we can figure out when to reset the counter. The site uses \r\n for line endings
+	 */
+	private static final String BULLET_LIST = "[*]";
+	private static final String NUM_LIST = "[#]";
+
+	private SpannableStringBuilder builder;
 
 	static{
 		tagStyles = new TreeMap<String, TagStyle>(String.CASE_INSENSITIVE_ORDER);
@@ -47,15 +60,6 @@ public class WhatBBParser {
 	}
 
 	/**
-	 * Tags for bulleted lists and a pattern to match numbered lists. The pattern is used so that
-	 * we can figure out when to reset the counter. The site uses \r\n for line endings
-	 */
-	private static final String BULLET = "[*]";
-	private static final Pattern NUM_LIST = Pattern.compile("\\[#\\][ ]*(.*)($|\r\n)");
-
-	private SpannableStringBuilder builder;
-
-	/**
 	 * Parse and apply styling to the bb text
 	 *
 	 * @return A Spannable containing the styled text
@@ -64,6 +68,7 @@ public class WhatBBParser {
 		builder = new SpannableStringBuilder(bbText);
 		SmileyProcessor.bbSmileytoEmoji(builder);
 		parseBulletLists();
+		parseNumberedList();
 		Stack<Tag> tags = new Stack<Tag>();
 		//Run through the text and examine potential tags, parsing tags as we encounter them
 		for (int start = indexOf(builder, "["), end = indexOf(builder, "]"); start != -1;
@@ -233,40 +238,42 @@ public class WhatBBParser {
 	 * Parse any bulleted lists in the text and apply a bulleted list formatting to the list items
 	 */
 	private void parseBulletLists(){
-		for (int start = indexOf(builder, BULLET), end = indexOf(builder, "\n", start); start != -1;
-			 start = indexOf(builder, BULLET, end), end = indexOf(builder, "\n", start)){
+		for (int start = indexOf(builder, BULLET_LIST), end = indexOf(builder, "\n", start); start != -1;
+			 start = indexOf(builder, BULLET_LIST, end), end = indexOf(builder, "\n", start)){
 			//If the last thing in the text is a list item then go to the end
 			if (end == -1){
 				end = builder.length() - 1;
 			}
-			builder.setSpan(new BulletSpan(BulletSpan.STANDARD_GAP_WIDTH), start + BULLET.length(), end,
+			builder.setSpan(new BulletSpan(BulletSpan.STANDARD_GAP_WIDTH), start + BULLET_LIST.length(), end,
 				Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			builder.delete(start, start + BULLET.length());
+			builder.delete(start, start + BULLET_LIST.length());
 			//Account for the shorter length of the text with the tag removed
-			end -= BULLET.length();
+			end -= BULLET_LIST.length();
 		}
 	}
 
 	/**
 	 * Parse any numbered lists in the text and apply a numbered list formatting to the list items
 	 */
-	private void parseNumberedList(SpannableStringBuilder ssb, StringBuilder text){
+	private void parseNumberedList(){
 		int id = 1, prev = -1;
-		//Because we're changing the text as we match over it we need to reset the matcher each iteration
-		for (Matcher m = NUM_LIST.matcher(text); m.find(); m.reset(text)){
-			if (prev == m.start()){
+		for (int start = indexOf(builder, NUM_LIST), end = indexOf(builder, "\n", start); start != -1;
+			 start = indexOf(builder, NUM_LIST, end), end = indexOf(builder, "\n", start)){
+			//If the last thing in the text is a list item then go to the end
+			if (end == -1){
+				end = builder.length() - 1;
+			}
+			if (prev == start){
 				++id;
 			}
 			else {
 				id = 1;
 			}
-			ssb.delete(m.start(), m.start(1));
-			text.delete(m.start(), m.start(1));
-			//Insert the number for the list item and update the previous index to reflect the changes to the string
 			String num = Integer.toString(id) + ". ";
-			ssb.insert(m.start(), num);
-			text.insert(m.start(), num);
-			prev = m.end() - m.start(1) + m.start() + num.length();
+			builder.replace(start, start + NUM_LIST.length(), num);
+			//Account for the shorter length of the text with the tag removed
+			prev = end - NUM_LIST.length() + num.length() + 1;
+			end = prev;
 		}
 	}
 }
