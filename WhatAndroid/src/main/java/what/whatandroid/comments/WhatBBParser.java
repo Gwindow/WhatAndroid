@@ -54,11 +54,16 @@ public class WhatBBParser {
 
 	private SpannableStringBuilder builder;
 
+	/**
+	 * Parse and apply styling to the bb text
+	 *
+	 * @return A Spannable containing the styled text
+	 */
 	public CharSequence parsebb(String bbText){
 		builder = new SpannableStringBuilder(bbText);
-		//SmileyProcessor.bbSmileytoEmoji(ssb, text);
+		SmileyProcessor.bbSmileytoEmoji(builder);
 		Stack<Tag> tags = new Stack<Tag>();
-
+		//Run through the text and examine potential tags, parsing tags as we encounter them
 		for (int start = indexOf(builder, "["), end = indexOf(builder, "]"); start != -1;
 		     start = indexOf(builder, "[", start + 1), end = indexOf(builder, "]", start))
 		{
@@ -194,7 +199,7 @@ public class WhatBBParser {
 	 * -1 is returned if not found. SpannableStringBuilder lacks indexOf so we need to do it
 	 * ourselves :(
 	 */
-	private static int indexOf(SpannableStringBuilder ssb, String str, int start){
+	public static int indexOf(SpannableStringBuilder ssb, String str, int start){
 		if (start > ssb.length()){
 			return -1;
 		}
@@ -218,7 +223,7 @@ public class WhatBBParser {
 		return -1;
 	}
 
-	private static int indexOf(SpannableStringBuilder ssb, String str){
+	public static int indexOf(SpannableStringBuilder ssb, String str){
 		return indexOf(ssb, str, 0);
 	}
 

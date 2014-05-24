@@ -7,7 +7,7 @@ import api.comments.SimpleComment;
 import api.index.Index;
 import api.requests.Request;
 import api.soup.MySoup;
-import what.whatandroid.imgloader.SmileyProcessor;
+import what.whatandroid.comments.SmileyProcessor;
 
 import java.util.Collections;
 
