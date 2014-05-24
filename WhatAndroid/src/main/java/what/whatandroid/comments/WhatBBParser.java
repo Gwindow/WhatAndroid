@@ -2,6 +2,7 @@ package what.whatandroid.comments;
 
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.BulletSpan;
 import what.whatandroid.comments.tags.*;
 
@@ -62,6 +63,7 @@ public class WhatBBParser {
 	public CharSequence parsebb(String bbText){
 		builder = new SpannableStringBuilder(bbText);
 		SmileyProcessor.bbSmileytoEmoji(builder);
+		parseBulletLists();
 		Stack<Tag> tags = new Stack<Tag>();
 		//Run through the text and examine potential tags, parsing tags as we encounter them
 		for (int start = indexOf(builder, "["), end = indexOf(builder, "]"); start != -1;
@@ -229,32 +231,26 @@ public class WhatBBParser {
 
 	/**
 	 * Parse any bulleted lists in the text and apply a bulleted list formatting to the list items
-	 *
-	 * @param ssb  spannable string builder to apply the styling in
-	 * @param text a mirror of the text in the spannable string builder, used to look up tag positions and tags will be
-	 *             removed in here and in the ssb to keep them matching
 	 */
-	private static void parseBulletLists(SpannableStringBuilder ssb, StringBuilder text){
-		for (int s = text.indexOf(BULLET), e = text.indexOf("\n", s); s != -1; s = text.indexOf(BULLET, e), e = text.indexOf("\n", s)){
+	private void parseBulletLists(){
+		for (int start = indexOf(builder, BULLET), end = indexOf(builder, "\n", start); start != -1;
+			 start = indexOf(builder, BULLET, end), end = indexOf(builder, "\n", start)){
 			//If the last thing in the text is a list item then go to the end
-			if (e == -1){
-				e = text.length() - 1;
+			if (end == -1){
+				end = builder.length() - 1;
 			}
-			ssb.setSpan(new BulletSpan(BulletSpan.STANDARD_GAP_WIDTH), s + BULLET.length(), e, 0);
-			ssb.delete(s, s + BULLET.length());
-			text.delete(s, s + BULLET.length());
-			e -= BULLET.length();
+			builder.setSpan(new BulletSpan(BulletSpan.STANDARD_GAP_WIDTH), start + BULLET.length(), end,
+				Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			builder.delete(start, start + BULLET.length());
+			//Account for the shorter length of the text with the tag removed
+			end -= BULLET.length();
 		}
 	}
 
 	/**
 	 * Parse any numbered lists in the text and apply a numbered list formatting to the list items
-	 *
-	 * @param ssb  spannable string builder to apply the styling in
-	 * @param text a mirror of the text in the spannable string builder, used to look up tag positions and tags will be
-	 *             removed in here and in the ssb to keep them matching
 	 */
-	private static void parseNumberedList(SpannableStringBuilder ssb, StringBuilder text){
+	private void parseNumberedList(SpannableStringBuilder ssb, StringBuilder text){
 		int id = 1, prev = -1;
 		//Because we're changing the text as we match over it we need to reset the matcher each iteration
 		for (Matcher m = NUM_LIST.matcher(text); m.find(); m.reset(text)){
