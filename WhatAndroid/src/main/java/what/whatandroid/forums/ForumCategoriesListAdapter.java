@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import api.forum.categories.Category;
+import api.forum.categories.Forum;
 import api.util.Tuple;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewForumCallbacks;
@@ -25,7 +26,7 @@ public class ForumCategoriesListAdapter extends BaseAdapter implements AdapterVi
 	/**
 	 * List of categories and forums being shown
 	 */
-	List<Category> categories;
+	private List<Category> categories;
 
 	/**
 	 * Callbacks to open a specific forum to view
@@ -46,29 +47,44 @@ public class ForumCategoriesListAdapter extends BaseAdapter implements AdapterVi
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent){
-		ViewHolder holder;
+		switch (getItemViewType(position)){
+			case VIEW_HEADER:
+				return getCategoryView(position, convertView, parent);
+			default:
+				return getForumView(position, convertView, parent);
+		}
+	}
+
+	private View getCategoryView(int position, View convertView, ViewGroup parent){
+		CategoryViewHolder holder;
 		if (convertView != null){
-			holder = (ViewHolder)convertView.getTag();
+			holder = (CategoryViewHolder)convertView.getTag();
 		}
 		else {
-			convertView = inflater.inflate(R.layout.list_torrent_file, parent, false);
-			holder = new ViewHolder();
-			holder.name = (TextView)convertView.findViewById(R.id.name);
-			holder.size = (TextView)convertView.findViewById(R.id.size);
+			convertView = inflater.inflate(R.layout.list_forum_category, parent, false);
+			holder = new CategoryViewHolder();
+			holder.name = (TextView)convertView.findViewById(R.id.category);
 			convertView.setTag(holder);
 		}
 		Tuple<Integer, Integer> indices = getIndices(position);
+		holder.name.setText(getItem(indices.getA()).getCategoryName());
+		return convertView;
+	}
 
-		Category category = getItem(indices.getA());
-		if (getItemViewType(position) == VIEW_HEADER){
-			holder.name.setText(category.getCategoryName());
-			holder.size.setText(indices.getA() + ", " + VIEW_HEADER);
+	private View getForumView(int position, View convertView, ViewGroup parent){
+		CategoryViewHolder holder;
+		if (convertView != null){
+			holder = (CategoryViewHolder)convertView.getTag();
 		}
 		else {
-			holder.name.setText(category.getCategoryName() + " - "
-				+ category.getForums().get(indices.getB()).getForumName());
-			holder.size.setText(indices.getA() + ", " + indices.getB() + " - " + VIEW_ITEM);
+			convertView = inflater.inflate(R.layout.list_forum, parent, false);
+			holder = new CategoryViewHolder();
+			holder.name = (TextView)convertView.findViewById(R.id.forum_name);
+			convertView.setTag(holder);
 		}
+		Tuple<Integer, Integer> indices = getIndices(position);
+		Forum forum = getItem(indices.getA()).getForums().get(indices.getB());
+		holder.name.setText(forum.getForumName());
 		return convertView;
 	}
 
@@ -104,10 +120,19 @@ public class ForumCategoriesListAdapter extends BaseAdapter implements AdapterVi
 	@Override
 	public int getItemViewType(int position){
 		for (int i = 0; position > 0; ++i){
-			Category c = getItem(i);
-			position -= 1 + c.getForums().size();
+			position -= 1 + getItem(i).getForums().size();
 		}
 		return position == 0 ? VIEW_HEADER : VIEW_ITEM;
+	}
+
+	@Override
+	public boolean areAllItemsEnabled(){
+		return false;
+	}
+
+	@Override
+	public boolean isEnabled(int position){
+		return getItemViewType(position) == VIEW_ITEM;
 	}
 
 	/**
@@ -121,6 +146,8 @@ public class ForumCategoriesListAdapter extends BaseAdapter implements AdapterVi
 		while (true){
 			Category c = getItem(i);
 			position -= 1 + c.getForums().size();
+			// < -1 means we're a forum in the previous category so don't increment
+			//otherwise we're the next category (== 0), or a forum/category in it or beyond
 			if (position > -1){
 				++i;
 			}
@@ -141,7 +168,11 @@ public class ForumCategoriesListAdapter extends BaseAdapter implements AdapterVi
 		System.out.println("Position " + position + " clicked");
 	}
 
-	private static class ViewHolder {
-		public TextView name, size;
+	private static class CategoryViewHolder {
+		public TextView name;
+	}
+
+	private static class ForumViewHolder {
+		public TextView name;
 	}
 }
