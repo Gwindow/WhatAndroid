@@ -1,4 +1,4 @@
-package what.whatandroid.forums;
+package what.whatandroid.forums.categories;
 
 import android.content.Context;
 import android.os.Bundle;

@@ -13,6 +13,8 @@ import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.ViewForumCallbacks;
 import what.whatandroid.callbacks.ViewUserCallbacks;
+import what.whatandroid.forums.categories.ForumCategoriesFragment;
+import what.whatandroid.forums.forum.ForumFragment;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
@@ -22,12 +24,13 @@ import what.whatandroid.search.SearchActivity;
  * Activity for viewing the forums
  */
 public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks, ViewForumCallbacks {
-
+	public static final String FORUM_ID = "what.whatandroid.forums.FORUM_ID",
+		PAGE = "what.whatandroid.forums.PAGE";
 	/**
 	 * Logged in callback to the fragment being shown so we can let it know
 	 * when to start loading
 	 */
-	private OnLoggedInCallback fragment;
+	private OnLoggedInCallback loginListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -40,19 +43,31 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 		FragmentManager fm = getSupportFragmentManager();
 		if (savedInstanceState != null){
 			Fragment f = fm.findFragmentById(R.id.container);
-			fragment = (OnLoggedInCallback)f;
+			loginListener = (OnLoggedInCallback)f;
 		}
 		else {
 			//Later parse intent and show what we want
 			Fragment f = new ForumCategoriesFragment();
-			fragment = (OnLoggedInCallback)f;
+			loginListener = (OnLoggedInCallback)f;
 			fm.beginTransaction().add(R.id.container, f).commit();
 		}
 	}
 
 	@Override
+	public void onBackPressed(){
+		FragmentManager fm = getSupportFragmentManager();
+		if (fm.getBackStackEntryCount() > 0){
+			fm.popBackStackImmediate();
+			loginListener = (OnLoggedInCallback)fm.findFragmentById(R.id.container);
+		}
+		else {
+			super.onBackPressed();
+		}
+	}
+
+	@Override
 	public void onLoggedIn(){
-		fragment.onLoggedIn();
+		loginListener.onLoggedIn();
 	}
 
 	@Override
@@ -64,7 +79,12 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 
 	@Override
 	public void viewForum(int id){
-		//Open up a new forum fragment for this forum
+		ForumFragment f = ForumFragment.newInstance(id, 1);
+		loginListener = f;
+		getSupportFragmentManager().beginTransaction()
+			.replace(R.id.container, f)
+			.addToBackStack(null)
+			.commit();
 	}
 
 	@Override

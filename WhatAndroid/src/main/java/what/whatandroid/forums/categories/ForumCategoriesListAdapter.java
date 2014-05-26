@@ -1,4 +1,4 @@
-package what.whatandroid.forums;
+package what.whatandroid.forums.categories;
 
 import android.content.Context;
 import android.text.format.DateUtils;
@@ -180,7 +180,9 @@ public class ForumCategoriesListAdapter extends BaseAdapter implements AdapterVi
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-		System.out.println("Position " + position + " clicked");
+		Tuple<Integer, Integer> indices = getIndices(position);
+		int forumId = categories.get(indices.getA()).getForums().get(indices.getB()).getForumId().intValue();
+		viewForum.viewForum(forumId);
 	}
 
 	private static class CategoryViewHolder {

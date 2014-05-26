@@ -63,7 +63,7 @@ public class NotificationsPagerAdapter extends FragmentStatePagerAdapter impleme
 	public void onLoadingComplete(Notifications data){
 		pages = data.getResponse().getPages().intValue();
 		if (pages == 0){
-			pages++;
+			++pages;
 		}
 		notifyDataSetChanged();
 	}
