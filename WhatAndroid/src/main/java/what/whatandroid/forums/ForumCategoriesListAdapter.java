@@ -1,6 +1,7 @@
 package what.whatandroid.forums;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import api.forum.categories.Category;
 import api.forum.categories.Forum;
+import api.soup.MySoup;
 import api.util.Tuple;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewForumCallbacks;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -72,19 +75,31 @@ public class ForumCategoriesListAdapter extends BaseAdapter implements AdapterVi
 	}
 
 	private View getForumView(int position, View convertView, ViewGroup parent){
-		CategoryViewHolder holder;
+		ForumViewHolder holder;
 		if (convertView != null){
-			holder = (CategoryViewHolder)convertView.getTag();
+			holder = (ForumViewHolder)convertView.getTag();
 		}
 		else {
 			convertView = inflater.inflate(R.layout.list_forum, parent, false);
-			holder = new CategoryViewHolder();
+			holder = new ForumViewHolder();
 			holder.name = (TextView)convertView.findViewById(R.id.forum_name);
+			holder.posts = (TextView)convertView.findViewById(R.id.posts);
+			holder.topics = (TextView)convertView.findViewById(R.id.topics);
+			holder.lastThreadName = (TextView)convertView.findViewById(R.id.last_post_thread);
+			holder.lastAuthorName = (TextView)convertView.findViewById(R.id.last_post_username);
+			holder.lastPostTime = (TextView)convertView.findViewById(R.id.last_post_time);
 			convertView.setTag(holder);
 		}
 		Tuple<Integer, Integer> indices = getIndices(position);
 		Forum forum = getItem(indices.getA()).getForums().get(indices.getB());
 		holder.name.setText(forum.getForumName());
+		holder.posts.setText(forum.getNumPosts().toString());
+		holder.topics.setText(forum.getNumTopics().toString());
+		holder.lastThreadName.setText(forum.getLastTopic());
+		holder.lastAuthorName.setText(forum.getLastPostAuthorName());
+		Date lastPost = MySoup.parseDate(forum.getLastTime());
+		holder.lastPostTime.setText(DateUtils.getRelativeTimeSpanString(lastPost.getTime(),
+			new Date().getTime(), 0, DateUtils.FORMAT_ABBREV_ALL));
 		return convertView;
 	}
 
@@ -173,6 +188,7 @@ public class ForumCategoriesListAdapter extends BaseAdapter implements AdapterVi
 	}
 
 	private static class ForumViewHolder {
-		public TextView name;
+		public TextView name, topics, posts, lastThreadName, lastAuthorName,
+			lastPostTime;
 	}
 }
