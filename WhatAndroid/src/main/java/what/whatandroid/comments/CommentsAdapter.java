@@ -84,7 +84,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 		holder.userClickListener.userId = comment.getAuthorId();
 		holder.username.setText(comment.getAuthor());
 		holder.postDate.setText(DateUtils.getRelativeTimeSpanString(comment.getTimePosted().getTime(),
-			new Date().getTime(), DateUtils.WEEK_IN_MILLIS));
+			new Date().getTime(), 0, DateUtils.FORMAT_ABBREV_ALL));
 		//The RequestComments don't have the bbBody field
 		if (comment.getBBbody() != null){
 			holder.commentText.setText(whatBBParser.parsebb(comment.getBBbody()));
