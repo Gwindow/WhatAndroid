@@ -1,4 +1,4 @@
-package what.whatandroid.forums.forum;
+package what.whatandroid.forums.thread;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import api.forum.forum.Forum;
+import api.forum.thread.ForumThread;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
@@ -16,34 +16,34 @@ import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.forums.ForumActivity;
 
 /**
- * Displays a paged view of the posts in some forum
+ * Displays a paged view of posts in a thread
  */
-public class ForumFragment extends Fragment implements OnLoggedInCallback, LoadingListener<Forum> {
-	private static final String FORUM_NAME = "what.whatandroid.forums.FORUM_NAME",
+public class ThreadFragment extends Fragment implements OnLoggedInCallback, LoadingListener<ForumThread> {
+	private static final String THREAD_NAME = "what.whatandroid.forums.THREAD_NAME",
 		PAGES = "what.whatandroid.forums.PAGES";
 
 	private SetTitleCallback setTitle;
-	private ForumPagerAdapter pagerAdapter;
-	private int pages, forum;
-	private String forumName;
+	private ThreadPagerAdapter pagerAdapter;
+	private int pages, thread;
+	private String threadName;
 
 	/**
-	 * Create a new forum fragment displaying the forum at some page
+	 * Create a new thread fragment showing the thread at some page
 	 *
-	 * @param forum forum id to display
-	 * @param page  page to show
+	 * @param thread thread id to view
+	 * @param page   page to view
 	 */
-	public static ForumFragment newInstance(int forum, int page){
-		ForumFragment f = new ForumFragment();
+	public static ThreadFragment newInstance(int thread, int page){
+		ThreadFragment f = new ThreadFragment();
 		Bundle args = new Bundle();
-		args.putInt(ForumActivity.FORUM_ID, forum);
-		//Ignored for now, but will we need this? skipping to forum pages and such
+		args.putInt(ForumActivity.THREAD_ID, thread);
+		//Ignored for now but we should jump to this page
 		args.putInt(ForumActivity.PAGE, page);
 		f.setArguments(args);
 		return f;
 	}
 
-	public ForumFragment(){
+	public ThreadFragment(){
 		//Required empty ctor
 	}
 
@@ -62,18 +62,18 @@ public class ForumFragment extends Fragment implements OnLoggedInCallback, Loadi
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		pages = 1;
-		forum = getArguments().getInt(ForumActivity.FORUM_ID);
+		thread = getArguments().getInt(ForumActivity.THREAD_ID);
 		if (savedInstanceState != null){
 			pages = savedInstanceState.getInt(PAGES);
-			forumName = savedInstanceState.getString(FORUM_NAME);
+			threadName = savedInstanceState.getString(THREAD_NAME);
 		}
 	}
 
 	@Override
 	public void onResume(){
 		super.onResume();
-		if (forumName != null){
-			setTitle.setTitle(forumName);
+		if (threadName != null){
+			setTitle.setTitle(threadName);
 		}
 	}
 
@@ -81,7 +81,7 @@ public class ForumFragment extends Fragment implements OnLoggedInCallback, Loadi
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_view_pager_strip, container, false);
 		ViewPager viewPager = (ViewPager)view.findViewById(R.id.pager);
-		pagerAdapter = new ForumPagerAdapter(getChildFragmentManager(), pages, forum);
+		pagerAdapter = new ThreadPagerAdapter(getChildFragmentManager(), pages, thread);
 		viewPager.setAdapter(pagerAdapter);
 		pagerAdapter.setLoadingListener(this);
 		if (MySoup.isLoggedIn()){
@@ -94,11 +94,11 @@ public class ForumFragment extends Fragment implements OnLoggedInCallback, Loadi
 	public void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
 		outState.putInt(PAGES, pages);
-		if (forumName != null){
-			outState.putString(FORUM_NAME, forumName);
+		if (threadName != null){
+			outState.putString(THREAD_NAME, threadName);
 		}
 		else {
-			outState.putString(FORUM_NAME, "Forums");
+			outState.putString(THREAD_NAME, "Thread");
 		}
 	}
 
@@ -108,9 +108,9 @@ public class ForumFragment extends Fragment implements OnLoggedInCallback, Loadi
 	}
 
 	@Override
-	public void onLoadingComplete(Forum data){
-		forumName = data.getForumName();
-		pages = pagerAdapter.getCount();
-		setTitle.setTitle(forumName);
+	public void onLoadingComplete(ForumThread data){
+		threadName = data.getResponse().getThreadTitle();
+		pages = data.getPages();
+		setTitle.setTitle(threadName);
 	}
 }

@@ -15,6 +15,7 @@ import what.whatandroid.callbacks.ViewForumCallbacks;
 import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.forums.categories.ForumCategoriesFragment;
 import what.whatandroid.forums.forum.ForumFragment;
+import what.whatandroid.forums.thread.ThreadFragment;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
@@ -25,6 +26,7 @@ import what.whatandroid.search.SearchActivity;
  */
 public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks, ViewForumCallbacks {
 	public static final String FORUM_ID = "what.whatandroid.forums.FORUM_ID",
+		THREAD_ID = "what.whatandroid.forums.THREAD_ID",
 		PAGE = "what.whatandroid.forums.PAGE";
 	/**
 	 * Logged in callback to the fragment being shown so we can let it know
@@ -89,7 +91,12 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 
 	@Override
 	public void viewThread(int id){
-		//Open up a new thread fragment for this thread
+		ThreadFragment f = ThreadFragment.newInstance(id, 1);
+		loginListener = f;
+		getSupportFragmentManager().beginTransaction()
+			.replace(R.id.container, f)
+			.addToBackStack(null)
+			.commit();
 	}
 
 	@Override

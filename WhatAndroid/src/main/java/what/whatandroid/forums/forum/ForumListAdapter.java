@@ -79,7 +79,7 @@ public class ForumListAdapter extends ArrayAdapter<ForumThread> implements Adapt
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-		System.out.println("Position " + position + " clicked");
+		viewForum.viewThread(getItem(position).getTopicId().intValue());
 	}
 
 	private static class ViewHolder {
