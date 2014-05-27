@@ -57,6 +57,13 @@ public class ForumListAdapter extends ArrayAdapter<ForumThread> implements Adapt
 		holder.lastPostTime.setText(DateUtils.getRelativeTimeSpanString(lastPost.getTime(),
 			new Date().getTime(), 0, DateUtils.FORMAT_ABBREV_ALL));
 
+		if (thread.isRead()){
+			holder.name.setTextColor(getContext().getResources().getColor(android.R.color.secondary_text_dark));
+		}
+		else {
+			holder.name.setTextColor(getContext().getResources().getColor(android.R.color.primary_text_dark));
+		}
+
 		int replies = thread.getPostCount().intValue();
 		if (replies == 0){
 			holder.replies.setText("No replies");
