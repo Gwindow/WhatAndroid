@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+
+    <TextView
+            android:id="@+id/thread_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="22sp"/>
+
+    <TextView
+            android:id="@+id/author_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/thread_name"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="18sp"
+            android:text="@string/author"/>
+
+    <TextView
+            android:id="@+id/author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/author_name_text"
+            android:layout_toRightOf="@id/author_name_text"
+            android:paddingLeft="4dp"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="18sp"/>
+
+    <TextView
+            android:id="@+id/replies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/author_name_text"
+            android:textColor="@android:color/secondary_text_dark"/>
+
+    <TextView
+            android:id="@+id/last_post_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/replies"
+            android:text="@string/last_post_by"
+            android:textColor="@android:color/secondary_text_dark"/>
+
+    <!-- TODO: clickable to jump to profile? -->
+    <TextView
+            android:id="@+id/last_post_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/last_post_text"
+            android:layout_alignBaseline="@id/last_post_text"
+            android:paddingLeft="4dp"
+            android:textColor="@android:color/secondary_text_dark"/>
+
+    <TextView
+            android:id="@+id/last_post_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/last_post_username"
+            android:layout_toRightOf="@id/last_post_username"
+            android:paddingLeft="4dp"
+            android:textColor="@android:color/secondary_text_dark"/>
+
+</RelativeLayout>

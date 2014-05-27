@@ -74,6 +74,8 @@
     <string name="posts">Posts</string>
     <string name="topics">Topics</string>
     <string name="last_post">Last Post:</string>
+    <string name="last_post_by">Last post by</string>
+    <string name="author">Author:</string>
     <string name="pref_img_on_wifi_only">Load Images on Wifi Only</string>
     <string name="key_pref_img_wifi">pref_img_wifi_only</string>
     <string name="pref_disable_updater">Disable Periodic Update Checking</string>
