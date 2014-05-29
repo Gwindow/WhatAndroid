@@ -24,21 +24,33 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 
 	private SetTitleCallback setTitle;
 	private ThreadPagerAdapter pagerAdapter;
-	private int pages, thread;
+	private int pages, thread, postId;
 	private String threadName;
 
 	/**
-	 * Create a new thread fragment showing the thread at some page
+	 * Create a new thread fragment showing the first page of the thread
 	 *
 	 * @param thread thread id to view
-	 * @param page   page to view
 	 */
-	public static ThreadFragment newInstance(int thread, int page){
+	public static ThreadFragment newInstance(int thread){
 		ThreadFragment f = new ThreadFragment();
 		Bundle args = new Bundle();
 		args.putInt(ForumActivity.THREAD_ID, thread);
-		//Ignored for now but we should jump to this page
-		args.putInt(ForumActivity.PAGE, page);
+		f.setArguments(args);
+		return f;
+	}
+
+	/**
+	 * Create a new thread fragment showing the thread at some post
+	 *
+	 * @param thread thread id to view
+	 * @param post   post to jump to
+	 */
+	public static ThreadFragment newInstance(int thread, int post){
+		ThreadFragment f = new ThreadFragment();
+		Bundle args = new Bundle();
+		args.putInt(ForumActivity.THREAD_ID, thread);
+		args.putInt(ForumActivity.POST_ID, post);
 		f.setArguments(args);
 		return f;
 	}
@@ -66,6 +78,11 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 		if (savedInstanceState != null){
 			pages = savedInstanceState.getInt(PAGES);
 			threadName = savedInstanceState.getString(THREAD_NAME);
+			//Ignore post id passed as argument since we're probably viewing some other post
+			postId = -1;
+		}
+		else {
+			postId = getArguments().getInt(ForumActivity.POST_ID, -1);
 		}
 	}
 
@@ -81,7 +98,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_view_pager_strip, container, false);
 		ViewPager viewPager = (ViewPager)view.findViewById(R.id.pager);
-		pagerAdapter = new ThreadPagerAdapter(getChildFragmentManager(), pages, thread);
+		pagerAdapter = new ThreadPagerAdapter(getChildFragmentManager(), pages, thread, postId);
 		viewPager.setAdapter(pagerAdapter);
 		pagerAdapter.setLoadingListener(this);
 		if (MySoup.isLoggedIn()){

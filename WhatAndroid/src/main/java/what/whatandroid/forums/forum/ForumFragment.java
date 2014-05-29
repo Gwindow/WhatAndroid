@@ -31,14 +31,11 @@ public class ForumFragment extends Fragment implements OnLoggedInCallback, Loadi
 	 * Create a new forum fragment displaying the forum at some page
 	 *
 	 * @param forum forum id to display
-	 * @param page  page to show
 	 */
-	public static ForumFragment newInstance(int forum, int page){
+	public static ForumFragment newInstance(int forum){
 		ForumFragment f = new ForumFragment();
 		Bundle args = new Bundle();
 		args.putInt(ForumActivity.FORUM_ID, forum);
-		//Ignored for now, but will we need this? skipping to forum pages and such
-		args.putInt(ForumActivity.PAGE, page);
 		f.setArguments(args);
 		return f;
 	}

@@ -14,7 +14,15 @@ public interface ViewForumCallbacks {
 	/**
 	 * Request to open a view of some thread
 	 *
-	 * @param id thread if to view
+	 * @param id thread id to view
 	 */
 	public void viewThread(int id);
+
+	/**
+	 * Request to view the thread at the page containing some post
+	 *
+	 * @param id     thread id to view
+	 * @param postId post id to jump to
+	 */
+	public void viewThread(int id, int postId);
 }

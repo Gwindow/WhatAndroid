@@ -41,6 +41,21 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 		return f;
 	}
 
+	/**
+	 * Get a gragment displaying the list of posts on the page with postId on it
+	 *
+	 * @param thread thread id to view
+	 * @param postId post id to load the page of
+	 */
+	public static ThreadListFragment newInstancePost(int thread, int postId){
+		ThreadListFragment f = new ThreadListFragment();
+		Bundle args = new Bundle();
+		args.putInt(ForumActivity.THREAD_ID, thread);
+		args.putInt(ForumActivity.POST_ID, postId);
+		f.setArguments(args);
+		return f;
+	}
+
 	public ThreadListFragment(){
 		//Required empty ctor
 	}

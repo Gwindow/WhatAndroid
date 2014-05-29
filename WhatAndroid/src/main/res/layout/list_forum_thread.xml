@@ -8,7 +8,8 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:paddingBottom="8dp"
+                android:descendantFocusability="blocksDescendants">
 
     <TextView
             android:id="@+id/thread_name"
@@ -67,5 +68,14 @@
             android:layout_toRightOf="@id/last_post_username"
             android:paddingLeft="4dp"
             android:textColor="@android:color/secondary_text_dark"/>
+
+    <ImageButton
+            android:id="@+id/go_to_last_read"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:contentDescription="@string/go_to_last_read"
+            android:background="@drawable/ic_action_forward"/>
 
 </RelativeLayout>

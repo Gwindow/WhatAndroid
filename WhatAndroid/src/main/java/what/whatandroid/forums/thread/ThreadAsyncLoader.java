@@ -11,19 +11,25 @@ import what.whatandroid.forums.ForumActivity;
  */
 public class ThreadAsyncLoader extends AsyncTaskLoader<ForumThread> {
 	private ForumThread thread;
-	private int page, threadId;
+	private int threadId, page, postId;
 
 	public ThreadAsyncLoader(Context context, Bundle args){
 		super(context);
-		page = args.getInt(ForumActivity.PAGE);
 		threadId = args.getInt(ForumActivity.THREAD_ID);
+		page = args.getInt(ForumActivity.PAGE, -1);
+		postId = args.getInt(ForumActivity.POST_ID, -1);
 	}
 
 	@Override
 	public ForumThread loadInBackground(){
 		if (thread == null){
 			while (true){
-				thread = ForumThread.thread(threadId, page);
+				if (page != -1){
+					thread = ForumThread.thread(threadId, page);
+				}
+				else {
+					thread = ForumThread.threadAtPost(threadId, postId);
+				}
 				//If we get rate limited wait and retry. It's very unlikely the user has used all 5 of our
 				//requests per 10s so don't wait the whole time initially
 				if (thread != null && !thread.getStatus() && thread.getError() != null

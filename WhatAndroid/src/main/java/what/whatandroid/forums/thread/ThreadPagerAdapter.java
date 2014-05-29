@@ -16,7 +16,7 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
 public class ThreadPagerAdapter extends FragmentStatePagerAdapter implements OnLoggedInCallback, LoadingListener<ForumThread> {
 	private LoadingListener<ForumThread> listener;
 	private SparseArray<ThreadListFragment> fragments;
-	private int pages, thread;
+	private int pages, thread, postId;
 
 	/**
 	 * Create a fragment pager view displaying the paged lists of posts in the thread
@@ -24,17 +24,22 @@ public class ThreadPagerAdapter extends FragmentStatePagerAdapter implements OnL
 	 * @param pages  number of pages to display initially. Will be updated to the total
 	 *               amount after loading the first page
 	 * @param thread thread id to display
+	 * @param postId post id to jump to, or -1 to ignore
 	 */
-	public ThreadPagerAdapter(FragmentManager fm, int pages, int thread){
+	public ThreadPagerAdapter(FragmentManager fm, int pages, int thread, int postId){
 		super(fm);
 		fragments = new SparseArray<ThreadListFragment>();
 		this.pages = pages;
 		this.thread = thread;
+		this.postId = postId;
 	}
 
 	@Override
 	public Fragment getItem(int position){
 		//Page numbers start at 1 but positions are 0-indexed
+		if (position == 0 && postId != -1){
+			return ThreadListFragment.newInstancePost(thread, postId);
+		}
 		return ThreadListFragment.newInstance(thread, position + 1);
 	}
 

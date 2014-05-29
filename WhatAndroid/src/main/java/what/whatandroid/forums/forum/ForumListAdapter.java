@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import api.forum.forum.ForumThread;
 import api.soup.MySoup;
@@ -18,7 +19,9 @@ import java.util.Date;
 /**
  * Adapter for showing a listing of forum threads
  */
-public class ForumListAdapter extends ArrayAdapter<ForumThread> implements AdapterView.OnItemClickListener {
+public class ForumListAdapter extends ArrayAdapter<ForumThread> implements AdapterView.OnItemClickListener,
+	View.OnClickListener {
+
 	private final LayoutInflater inflater;
 	private ViewForumCallbacks viewForum;
 
@@ -47,6 +50,7 @@ public class ForumListAdapter extends ArrayAdapter<ForumThread> implements Adapt
 			holder.author = (TextView)convertView.findViewById(R.id.author_name);
 			holder.lastPostAuthor = (TextView)convertView.findViewById(R.id.last_post_username);
 			holder.lastPostTime = (TextView)convertView.findViewById(R.id.last_post_time);
+			holder.jumpToLastRead = (ImageButton)convertView.findViewById(R.id.go_to_last_read);
 			convertView.setTag(holder);
 		}
 		ForumThread thread = getItem(position);
@@ -56,6 +60,9 @@ public class ForumListAdapter extends ArrayAdapter<ForumThread> implements Adapt
 		Date lastPost = MySoup.parseDate(thread.getLastTime());
 		holder.lastPostTime.setText(DateUtils.getRelativeTimeSpanString(lastPost.getTime(),
 			new Date().getTime(), 0, DateUtils.FORMAT_ABBREV_ALL));
+
+		holder.jumpToLastRead.setTag(position);
+		holder.jumpToLastRead.setOnClickListener(this);
 
 		if (thread.isRead()){
 			holder.name.setTextColor(getContext().getResources().getColor(android.R.color.secondary_text_dark));
@@ -82,7 +89,18 @@ public class ForumListAdapter extends ArrayAdapter<ForumThread> implements Adapt
 		viewForum.viewThread(getItem(position).getTopicId().intValue());
 	}
 
+	/**
+	 * This listener handles clicks on the image buttons to jump to the last read post
+	 */
+	@Override
+	public void onClick(View v){
+		Integer position = (Integer)v.getTag();
+		ForumThread thread = getItem(position);
+		viewForum.viewThread(thread.getTopicId().intValue(), thread.getLastReadPostId().intValue());
+	}
+
 	private static class ViewHolder {
 		public TextView name, replies, author, lastPostAuthor, lastPostTime;
+		public ImageButton jumpToLastRead;
 	}
 }

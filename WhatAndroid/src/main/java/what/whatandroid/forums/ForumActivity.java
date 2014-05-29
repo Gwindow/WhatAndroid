@@ -27,7 +27,9 @@ import what.whatandroid.search.SearchActivity;
 public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks, ViewForumCallbacks {
 	public static final String FORUM_ID = "what.whatandroid.forums.FORUM_ID",
 		THREAD_ID = "what.whatandroid.forums.THREAD_ID",
-		PAGE = "what.whatandroid.forums.PAGE";
+		PAGE = "what.whatandroid.forums.PAGE",
+		POST_ID = "what.whatandroid.forums.POST_ID";
+
 	/**
 	 * Logged in callback to the fragment being shown so we can let it know
 	 * when to start loading
@@ -81,7 +83,7 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 
 	@Override
 	public void viewForum(int id){
-		ForumFragment f = ForumFragment.newInstance(id, 1);
+		ForumFragment f = ForumFragment.newInstance(id);
 		loginListener = f;
 		getSupportFragmentManager().beginTransaction()
 			.replace(R.id.container, f)
@@ -91,7 +93,17 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 
 	@Override
 	public void viewThread(int id){
-		ThreadFragment f = ThreadFragment.newInstance(id, 1);
+		ThreadFragment f = ThreadFragment.newInstance(id);
+		loginListener = f;
+		getSupportFragmentManager().beginTransaction()
+			.replace(R.id.container, f)
+			.addToBackStack(null)
+			.commit();
+	}
+
+	@Override
+	public void viewThread(int id, int postId){
+		ThreadFragment f = ThreadFragment.newInstance(id, postId);
 		loginListener = f;
 		getSupportFragmentManager().beginTransaction()
 			.replace(R.id.container, f)
