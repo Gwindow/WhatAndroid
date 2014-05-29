@@ -23,6 +23,7 @@ import what.whatandroid.forums.ForumActivity;
  */
 public class ThreadListFragment extends Fragment implements OnLoggedInCallback, LoaderManager.LoaderCallbacks<ForumThread> {
 	private LoadingListener<ForumThread> listener;
+	private ListView list;
 	private ProgressBar loadingIndicator;
 	private CommentsAdapter adapter;
 
@@ -63,7 +64,7 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
-		ListView list = (ListView)view.findViewById(R.id.list);
+		list = (ListView)view.findViewById(R.id.list);
 		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
 		adapter = new CommentsAdapter(getActivity());
 		list.setAdapter(adapter);
@@ -105,6 +106,14 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 				adapter.notifyDataSetChanged();
 				if (listener != null){
 					listener.onLoadingComplete(data);
+				}
+				//If we're supposed to jump to a post find it and set it as selected
+				int postId = getArguments().getInt(ForumActivity.POST_ID, -1);
+				if (postId != -1){
+					int select;
+					for (select = 0; adapter.getItem(select).getPostId() != postId && select < adapter.getCount(); ++select)
+						;
+					list.setSelection(select);
 				}
 			}
 		}
