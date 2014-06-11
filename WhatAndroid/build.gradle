@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
+        classpath 'com.android.tools.build:gradle:0.11.+'
     }
 }
 
@@ -15,7 +15,7 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    buildToolsVersion "19.1.0"
 
     defaultConfig {
         minSdkVersion 15
@@ -25,9 +25,9 @@ android {
     signingConfigs {
         release {
             storeFile file("${System.properties['user.home']}/.android/whatandroid_release.keystore")
-            storePassword "Ask Twinklebear"
+            storePassword ""
             keyAlias "whatandroid_release"
-            keyPassword "Ask Twinklebear"
+            keyPassword ""
         }
     }
 
