@@ -107,7 +107,7 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 	 */
 	public void dismissDialog(){
 		if (dialog.isShowing()){
-			dialog.dismiss();
+			dialog.cancel();
 		}
 	}
 }
