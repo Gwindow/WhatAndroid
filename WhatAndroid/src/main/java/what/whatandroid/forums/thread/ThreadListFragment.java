@@ -26,6 +26,7 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 	private ListView list;
 	private ProgressBar loadingIndicator;
 	private CommentsAdapter adapter;
+	private int postId;
 
 	/**
 	 * Get a fragment displaying the list of posts in a thread
@@ -59,6 +60,18 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 
 	public ThreadListFragment(){
 		//Required empty ctor
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		//If we're coming back from a saved state they're probably looking at some other post now
+		if (savedInstanceState != null){
+			postId = -1;
+		}
+		else {
+			postId = getArguments().getInt(ForumActivity.POST_ID, -1);
+		}
 	}
 
 	@Override
@@ -108,9 +121,11 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 					listener.onLoadingComplete(data);
 				}
 				//If we're supposed to jump to a post find it and set it as selected
-				int postId = getArguments().getInt(ForumActivity.POST_ID, -1);
-				if (postId != -1){
+				//if it's in the range of posts for this page
+				if (postId != -1 && postId >= adapter.getItem(0).getPostId()
+					&& postId <= adapter.getItem(adapter.getCount() - 1).getPostId()){
 					int select;
+					//TODO: Is this behaving properly? It seems we always jump to the last post on the page
 					for (select = 0; adapter.getItem(select).getPostId() != postId && select < adapter.getCount(); ++select)
 						;
 					list.setSelection(select);

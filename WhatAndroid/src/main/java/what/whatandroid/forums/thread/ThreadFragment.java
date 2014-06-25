@@ -24,6 +24,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 
 	private SetTitleCallback setTitle;
 	private ThreadPagerAdapter pagerAdapter;
+	private ViewPager viewPager;
 	private int pages, thread, postId;
 	private String threadName;
 
@@ -73,7 +74,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		pages = 1;
+		pages = 0;
 		thread = getArguments().getInt(ForumActivity.THREAD_ID);
 		if (savedInstanceState != null){
 			pages = savedInstanceState.getInt(PAGES);
@@ -97,7 +98,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_view_pager_strip, container, false);
-		ViewPager viewPager = (ViewPager)view.findViewById(R.id.pager);
+		viewPager = (ViewPager)view.findViewById(R.id.pager);
 		pagerAdapter = new ThreadPagerAdapter(getChildFragmentManager(), pages, thread, postId);
 		viewPager.setAdapter(pagerAdapter);
 		pagerAdapter.setLoadingListener(this);

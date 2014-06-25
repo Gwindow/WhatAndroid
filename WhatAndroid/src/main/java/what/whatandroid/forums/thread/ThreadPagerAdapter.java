@@ -2,21 +2,25 @@ package what.whatandroid.forums.thread;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 import api.forum.thread.ForumThread;
 import api.soup.MySoup;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.OnLoggedInCallback;
+import what.whatandroid.views.MovableFragmentStatePagerAdapter;
 
 /**
  * Adapter for swiping through the pages of a thread
  */
-public class ThreadPagerAdapter extends FragmentStatePagerAdapter implements OnLoggedInCallback, LoadingListener<ForumThread> {
+public class ThreadPagerAdapter extends MovableFragmentStatePagerAdapter implements OnLoggedInCallback, LoadingListener<ForumThread> {
 	private LoadingListener<ForumThread> listener;
-	private SparseArray<ThreadListFragment> fragments;
-	private int pages, thread, postId;
+	private SparseArray<ThreadListFragment> fragments = new SparseArray<ThreadListFragment>();
+	/**
+	 * The number of pages in the thread, the thread being viewed,
+	 * the post id to jump to (if any) and the page that post is on
+	 */
+	private int pages, thread, postId, postPage;
 
 	/**
 	 * Create a fragment pager view displaying the paged lists of posts in the thread
@@ -28,10 +32,10 @@ public class ThreadPagerAdapter extends FragmentStatePagerAdapter implements OnL
 	 */
 	public ThreadPagerAdapter(FragmentManager fm, int pages, int thread, int postId){
 		super(fm);
-		fragments = new SparseArray<ThreadListFragment>();
 		this.pages = pages;
 		this.thread = thread;
 		this.postId = postId;
+		this.postPage = -1;
 	}
 
 	@Override
@@ -45,12 +49,12 @@ public class ThreadPagerAdapter extends FragmentStatePagerAdapter implements OnL
 
 	@Override
 	public CharSequence getPageTitle(int position){
-		return "page " + (position + 1) + " of " + pages;
+		return pages == 0 ? "Loading" : "page " + (position + 1) + " of " + pages;
 	}
 
 	@Override
 	public int getCount(){
-		return pages;
+		return pages == 0 ? 1 : pages;
 	}
 
 	@Override
@@ -60,7 +64,7 @@ public class ThreadPagerAdapter extends FragmentStatePagerAdapter implements OnL
 			f.onLoggedIn();
 		}
 		//We need to load a page to figure out how many pages there are in total, so listen to the first one
-		if (position == 0){
+		if (pages == 0){
 			f.setListener(this);
 		}
 		fragments.put(position, f);
@@ -84,6 +88,25 @@ public class ThreadPagerAdapter extends FragmentStatePagerAdapter implements OnL
 		this.listener = listener;
 	}
 
+	@Override
+	public int getItemPosition(Object object){
+		if (hasMovedPages() && object == fragments.get(0)){
+			fragments.put(postPage, fragments.get(0));
+			return postPage;
+		}
+		return POSITION_UNCHANGED;
+	}
+
+	@Override
+	public boolean hasMovedPages(){
+		return postPage != -1;
+	}
+
+	@Override
+	public void onPagesMoved(){
+		postPage = -1;
+	}
+
 	/**
 	 * Update the view pager to show all pages in the thread, now that we know how many
 	 * there are
@@ -93,6 +116,11 @@ public class ThreadPagerAdapter extends FragmentStatePagerAdapter implements OnL
 	@Override
 	public void onLoadingComplete(ForumThread data){
 		pages = data.getPages();
+		//If we're jumping to a post get the page that it's on so we can jump to it
+		if (postId != -1){
+			postPage = data.getPage() - 1;
+			postId = -1;
+		}
 		notifyDataSetChanged();
 		listener.onLoadingComplete(data);
 	}
