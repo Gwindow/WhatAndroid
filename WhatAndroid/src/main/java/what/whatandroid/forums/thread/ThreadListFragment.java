@@ -1,6 +1,7 @@
 package what.whatandroid.forums.thread;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -22,11 +23,15 @@ import what.whatandroid.forums.ForumActivity;
  * Fragment to display a list of the posts in some forum thread
  */
 public class ThreadListFragment extends Fragment implements OnLoggedInCallback, LoaderManager.LoaderCallbacks<ForumThread> {
+	//Used to save/restore the scroll position of the list view so we can return to the post we were viewing
+	private static final String SCROLL_STATE = "what.whatandroid.threadlistfragment.SCROLL_STATE";
+
 	private LoadingListener<ForumThread> listener;
 	private ListView list;
 	private ProgressBar loadingIndicator;
 	private CommentsAdapter adapter;
-	private int postId;
+	private int postId = -1;
+	private Parcelable scrollState;
 
 	/**
 	 * Get a fragment displaying the list of posts in a thread
@@ -67,7 +72,7 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 		super.onCreate(savedInstanceState);
 		//If we're coming back from a saved state they're probably looking at some other post now
 		if (savedInstanceState != null){
-			postId = -1;
+			scrollState = savedInstanceState.getParcelable(SCROLL_STATE);
 		}
 		else {
 			postId = getArguments().getInt(ForumActivity.POST_ID, -1);
@@ -85,6 +90,13 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 			getLoaderManager().initLoader(0, getArguments(), this);
 		}
 		return view;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		//If we were looking at some posts save the position of the one we're looking at so we can jump back to it
+		outState.putParcelable(SCROLL_STATE, list.onSaveInstanceState());
 	}
 
 	/**
@@ -120,13 +132,17 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 				if (listener != null){
 					listener.onLoadingComplete(data);
 				}
-				//If we're supposed to jump to a post find it and set it as selected
-				//if it's in the range of posts for this page
-				if (postId != -1 && postId >= adapter.getItem(0).getPostId()
-					&& postId <= adapter.getItem(adapter.getCount() - 1).getPostId()){
-					int select;
-					//TODO: Is this behaving properly? It seems we always jump to the last post on the page
-					for (select = 0; adapter.getItem(select).getPostId() != postId && select < adapter.getCount(); ++select)
+				//If we're coming back to this page and were previously viewing some post index, select it
+				if (scrollState != null){
+					list.onRestoreInstanceState(scrollState);
+				}
+				//If we're jumping to a post id and it's in the range of posts for this page find it and select it
+				else if (postId != -1 && postId >= adapter.getItem(0).getPostId()
+					&& postId <= adapter.getItem(adapter.getCount() - 1).getPostId())
+				{
+					int select = 0;
+					//Run through the posts and find the index corresponding to the post we want to view
+					for (; postId != adapter.getItem(select).getPostId() && select < adapter.getCount(); ++select)
 						;
 					list.setSelection(select);
 				}
