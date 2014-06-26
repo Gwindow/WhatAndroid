@@ -1,6 +1,7 @@
 package what.whatandroid.comments;
 
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.BulletSpan;
@@ -53,10 +54,12 @@ public class WhatBBParser {
 		tagStyles.put("quote", new QuoteTagStyle());
 		t = new HiddenTagStyle();
 		tagStyles.put("hide", t);
+		tagStyles.put("spoiler", t);
 		tagStyles.put("mature", t);
 		tagStyles.put("artist", new ArtistTagStyle());
 		tagStyles.put("user", new UserTagStyle());
 		tagStyles.put("torrent", new TorrentTagStyle());
+		tagStyles.put("plain", null);
 	}
 
 	/**
@@ -70,6 +73,9 @@ public class WhatBBParser {
 		parseBulletLists();
 		parseNumberedList();
 		Stack<Tag> tags = new Stack<Tag>();
+		//Plain tags cause other tag styles to not be applied, use this to track if we're in a
+		//plain block or not
+		boolean plain = false;
 		//Run through the text and examine potential tags, parsing tags as we encounter them
 		for (int start = indexOf(builder, "["), end = indexOf(builder, "]"); start != -1;
 		     start = indexOf(builder, "[", start + 1), end = indexOf(builder, "]", start))
@@ -78,12 +84,16 @@ public class WhatBBParser {
 			Matcher open = TAG_OPEN.matcher(block);
 			//It's an opener
 			if (open.find()){
-				Tag t = new Tag(start, open.group(1));
-				if (tagStyles.containsKey(t.tag)){
-					start = openTag(tags, t);
+				if (!plain){
+					Tag t = new Tag(start, open.group(1));
+					if (tagStyles.containsKey(t.tag)){
+						start = openTag(tags, t);
+					}
+					plain = t.tag.equalsIgnoreCase("plain");
 				}
 			}
 			else {
+				plain = false;
 				Matcher close = TAG_CLOSE.matcher(block);
 				//If it's a closer
 				if (close.find() && tagStyles.containsKey(close.group(1))){
@@ -136,7 +146,15 @@ public class WhatBBParser {
 		do {
 			Tag t = tags.pop();
 			t.end = start;
-			Spannable styled = tagStyles.get(t.tag).getStyle(t.param, builder.subSequence(t.start + t.tagLength, t.end));
+			//plain tags give a null style, ie. just remove the tags but apply no formatting
+			TagStyle style = tagStyles.get(t.tag);
+			Spannable styled;
+			if (style != null){
+				styled = style.getStyle(t.param, builder.subSequence(t.start + t.tagLength, t.end));
+			}
+			else {
+				styled = new SpannableString(builder.subSequence(t.start + t.tagLength, t.end));
+			}
 			builder.replace(t.start, t.end, styled);
 			//Account for differences in the length of the previous text and its styled replacement
 			start += getOffset(t, styled);
