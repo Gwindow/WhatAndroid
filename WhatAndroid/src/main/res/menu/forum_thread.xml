@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".WhatAndroid">
+
+    <item
+            android:id="@+id/action_subscription"
+            android:icon="@drawable/ic_eye_off"
+            android:title="@string/toggle_subscription"
+            android:orderInCategory="0"
+            app:showAsAction="always"/>
+
+    <!-- There aren't a lot of poll threads so we hide this initially and show if there is a poll -->
+    <item
+            android:id="@+id/action_view_poll"
+            android:icon="@drawable/ic_action_view_poll"
+            android:title="@string/view_poll"
+            android:orderInCategory="10"
+            android:visible="false"
+            app:showAsAction="always"/>
+
+</menu>

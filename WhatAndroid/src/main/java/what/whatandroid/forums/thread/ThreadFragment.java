@@ -1,12 +1,12 @@
 package what.whatandroid.forums.thread;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
+import android.widget.Toast;
 import api.forum.thread.ForumThread;
 import api.soup.MySoup;
 import what.whatandroid.R;
@@ -24,9 +24,10 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 
 	private SetTitleCallback setTitle;
 	private ThreadPagerAdapter pagerAdapter;
-	private ViewPager viewPager;
-	private int pages, thread, postId;
+	private int thread, pages = 0, postId = -1;
 	private String threadName;
+	private boolean hasPoll = false, subscribed = false;
+	private MenuItem viewPoll, toggleSubscription;
 
 	/**
 	 * Create a new thread fragment showing the first page of the thread
@@ -74,13 +75,11 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		pages = 0;
+		setHasOptionsMenu(true);
 		thread = getArguments().getInt(ForumActivity.THREAD_ID);
 		if (savedInstanceState != null){
 			pages = savedInstanceState.getInt(PAGES);
 			threadName = savedInstanceState.getString(THREAD_NAME);
-			//Ignore post id passed as argument since we're probably viewing some other post
-			postId = -1;
 		}
 		else {
 			postId = getArguments().getInt(ForumActivity.POST_ID, -1);
@@ -98,7 +97,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_view_pager_strip, container, false);
-		viewPager = (ViewPager)view.findViewById(R.id.pager);
+		ViewPager viewPager = (ViewPager)view.findViewById(R.id.pager);
 		pagerAdapter = new ThreadPagerAdapter(getChildFragmentManager(), pages, thread, postId);
 		viewPager.setAdapter(pagerAdapter);
 		pagerAdapter.setLoadingListener(this);
@@ -130,5 +129,88 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 		threadName = data.getResponse().getThreadTitle();
 		pages = data.getPages();
 		setTitle.setTitle(threadName);
+		hasPoll = data.getResponse().hasPoll();
+		subscribed = data.getResponse().isSubscribed();
+		updateMenus();
+	}
+
+	private void updateMenus(){
+		if (viewPoll != null && toggleSubscription != null){
+			viewPoll.setVisible(hasPoll);
+			if (subscribed){
+				toggleSubscription.setIcon(R.drawable.ic_eye_on);
+			}
+			else {
+				toggleSubscription.setIcon(R.drawable.ic_eye_off);
+			}
+		}
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		inflater.inflate(R.menu.forum_thread, menu);
+		viewPoll = menu.findItem(R.id.action_view_poll);
+		toggleSubscription = menu.findItem(R.id.action_subscription);
+		updateMenus();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		if (item.getItemId() == R.id.action_view_poll){
+			System.out.println("Gonna view the poll!");
+		}
+		else if (item.getItemId() == R.id.action_subscription){
+			new ToggleSubscriptionsTask().execute();
+		}
+		return false;
+	}
+
+	/**
+	 * Async task to toggle the artist's notification status
+	 */
+	private class ToggleSubscriptionsTask extends AsyncTask<Void, Void, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(Void... params){
+			if (subscribed){
+				return ForumThread.unsubscribe(thread);
+			}
+			return ForumThread.subscribe(thread);
+		}
+
+		@Override
+		protected void onPreExecute(){
+			//Display action as successful while we load
+			if (subscribed){
+				toggleSubscription.setIcon(R.drawable.ic_eye_off);
+			}
+			else {
+				toggleSubscription.setIcon(R.drawable.ic_eye_on);
+			}
+			if (isAdded()){
+				getActivity().setProgressBarIndeterminate(true);
+				getActivity().setProgressBarIndeterminateVisibility(true);
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status){
+			if (isAdded()){
+				getActivity().setProgressBarIndeterminate(false);
+				getActivity().setProgressBarIndeterminateVisibility(false);
+			}
+			if (!status){
+				if (subscribed){
+					Toast.makeText(getActivity(), "Could not remove notifications", Toast.LENGTH_LONG).show();
+				}
+				else {
+					Toast.makeText(getActivity(), "Could not enable notifications", Toast.LENGTH_LONG).show();
+				}
+			}
+			else {
+				subscribed = !subscribed;
+			}
+			updateMenus();
+		}
 	}
 }
