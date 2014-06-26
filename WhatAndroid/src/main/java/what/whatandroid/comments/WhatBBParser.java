@@ -5,6 +5,8 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.BulletSpan;
+import android.text.style.URLSpan;
+import android.util.Patterns;
 import what.whatandroid.comments.tags.*;
 
 import java.util.Map;
@@ -106,6 +108,8 @@ public class WhatBBParser {
 		}
 		//Clean up any tags that are being closed by the end of the text
 		closeAllTags(tags);
+		//Do a final pass to parse any plain urls in the text
+		parsePlainUrls();
 		return builder;
 	}
 
@@ -251,6 +255,16 @@ public class WhatBBParser {
 
 	public static int indexOf(SpannableStringBuilder ssb, String str){
 		return indexOf(ssb, str, 0);
+	}
+
+	/**
+	 * Parse any plain urls in the text and apply URL styling to them
+	 */
+	private void parsePlainUrls(){
+		Matcher urls = Patterns.WEB_URL.matcher(builder);
+		while (urls.find()){
+			builder.setSpan(new URLSpan(urls.group()), urls.start(), urls.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
 	}
 
 	/**
