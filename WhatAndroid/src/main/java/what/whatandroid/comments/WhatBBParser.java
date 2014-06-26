@@ -60,6 +60,7 @@ public class WhatBBParser {
 		tagStyles.put("user", new UserTagStyle());
 		tagStyles.put("torrent", new TorrentTagStyle());
 		tagStyles.put("plain", null);
+		tagStyles.putAll(ModeratorTagStyle.moderatorTags);
 	}
 
 	/**
