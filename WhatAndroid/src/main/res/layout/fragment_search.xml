@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This is a new idea for how to layout the torrent/request/user searches. Instead of scrolling away
+     from the header we'll just collapse it down so you don't need to scroll all the way back up to change
+     the search terms -->
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#222">
+
+    <RelativeLayout
+            android:id="@+id/search_header"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@drawable/search_border_line">
+
+        <EditText
+                android:id="@+id/search_terms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:inputType="text"
+                android:hint="@string/search_terms"/>
+
+        <EditText
+                android:id="@+id/search_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/search_terms"
+                android:layout_marginTop="8dp"
+                android:inputType="text"
+                android:hint="@string/search_tags"/>
+
+        <Button
+                android:id="@+id/search_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/search_tags"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="8dp"
+                android:text="@string/search"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <ListView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:dividerHeight="2dp"
+                android:divider="#333"/>
+
+        <!-- The no content notice will only be shown if there's no content -->
+        <TextView
+                android:id="@+id/no_content_notice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/list"
+                android:paddingTop="16dp"
+                android:layout_centerHorizontal="true"
+                android:textColor="@android:color/secondary_text_dark"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+                android:visibility="gone"/>
+
+        <ProgressBar
+                android:id="@+id/loading_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
