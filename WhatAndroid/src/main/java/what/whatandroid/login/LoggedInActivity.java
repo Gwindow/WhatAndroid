@@ -1,5 +1,6 @@
 package what.whatandroid.login;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -10,17 +11,18 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import api.soup.MySoup;
+
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import api.soup.MySoup;
 import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
@@ -40,7 +42,7 @@ import what.whatandroid.views.ImageDialog;
  * enters a LoggedInActivity it will try to load their saved cookie, or if no
  * cookie is found will kick them to the login activity.
  */
-public abstract class LoggedInActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+public abstract class LoggedInActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
 	SetTitleCallback, OnLoggedInCallback, ShowHiddenTagListener {
 
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
@@ -197,14 +199,14 @@ public abstract class LoggedInActivity extends ActionBarActivity implements Navi
 	@Override
 	public void setTitle(String t){
 		title = t;
-		ActionBar actionBar = getSupportActionBar();
+		ActionBar actionBar = getActionBar();
 		if (actionBar != null){
 			actionBar.setTitle(title);
 		}
 	}
 
 	public void restoreActionBar(){
-		ActionBar actionBar = getSupportActionBar();
+		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(title);
@@ -308,7 +310,7 @@ public abstract class LoggedInActivity extends ActionBarActivity implements Navi
 				.remove(SettingsFragment.USER_COOKIE)
 				.remove(SettingsFragment.USER_NAME)
 				.remove(SettingsFragment.USER_PASSWORD)
-				.commit();
+				.apply();
 
 			Intent intent = new Intent(Intent.ACTION_MAIN);
 			intent.addCategory(Intent.CATEGORY_HOME);

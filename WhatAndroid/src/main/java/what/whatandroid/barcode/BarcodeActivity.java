@@ -1,5 +1,6 @@
 package what.whatandroid.barcode;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -11,14 +12,16 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Toast;
+
+import java.util.Date;
+
 import api.barcode.Barcode;
 import api.products.ProductSearch;
 import api.soup.MySoup;
@@ -33,13 +36,11 @@ import what.whatandroid.search.SearchActivity;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.settings.SettingsFragment;
 
-import java.util.Date;
-
 /**
  * Activity for receiving intents for loading barcodes, viewing scanned barcodes
  * and launching searches with the terms
  */
-public class BarcodeActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+public class BarcodeActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
 	ScannerDialog.ScannerDialogListener, ViewSearchCallbacks {
 
 	private NavigationDrawerFragment navDrawer;
@@ -71,7 +72,7 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 	}
 
 	public void restoreActionBar(){
-		ActionBar actionBar = getSupportActionBar();
+		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(title);
@@ -260,7 +261,7 @@ public class BarcodeActivity extends ActionBarActivity implements NavigationDraw
 				.remove(SettingsFragment.USER_COOKIE)
 				.remove(SettingsFragment.USER_NAME)
 				.remove(SettingsFragment.USER_PASSWORD)
-				.commit();
+				.apply();
 
 			Intent intent = new Intent(Intent.ACTION_MAIN);
 			intent.addCategory(Intent.CATEGORY_HOME);

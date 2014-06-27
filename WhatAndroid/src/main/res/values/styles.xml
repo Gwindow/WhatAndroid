@@ -1,8 +1,8 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="android:Theme.Holo">
+        <item name="android:actionBarStyle">@style/ActionBar</item>
     </style>
 
     <style name="ImageDialog" parent="android:Theme.Holo.Dialog">
@@ -16,6 +16,12 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAllCaps">true</item>
+    </style>
+    
+    <style name="ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:titleTextStyle">@android:style/TextAppearance.Holo</item>
+        <item name="android:actionBarTabTextStyle">@android:style/Widget.Holo.ActionBar</item>
+        <item name="android:actionMenuTextColor">@android:style/Widget.Holo.ActionBar</item>
     </style>
 
 </resources>

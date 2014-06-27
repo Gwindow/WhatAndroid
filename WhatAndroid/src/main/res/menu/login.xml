@@ -2,7 +2,6 @@
 
 <menu
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         tools:context=".WhatAndroid">
 
@@ -10,18 +9,18 @@
             android:id="@+id/action_barcodes"
             android:title="@string/barcode_lookup"
             android:orderInCategory="10"
-            app:showAsAction="never"/>
+            android:showAsAction="never"/>
 
     <item
             android:id="@+id/action_feedback"
             android:title="@string/action_send_feedback"
             android:orderInCategory="90"
-            app:showAsAction="never"/>
+            android:showAsAction="never"/>
 
     <item
             android:id="@+id/action_settings"
             android:title="@string/action_settings"
             android:orderInCategory="100"
-            app:showAsAction="never"/>
+            android:showAsAction="never"/>
 
 </menu>

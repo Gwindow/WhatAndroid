@@ -5,12 +5,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+
+import java.net.HttpCookie;
+
 import api.son.MySon;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.settings.SettingsFragment;
-
-import java.net.HttpCookie;
 
 /**
  * LoginTask that takes care of logging in the user using either an existing cookie
@@ -41,7 +42,7 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 				}
 				//If the cookie is expired or invalid then remove it and login normally
 				else {
-					preferences.edit().remove(SettingsFragment.USER_COOKIE).commit();
+					preferences.edit().remove(SettingsFragment.USER_COOKIE).apply();
 				}
 			}
 			MySoup.login("login.php", params[0], params[1], true);
@@ -50,12 +51,12 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 				.putString(SettingsFragment.USER_COOKIE, cookieJson)
 				.putString(SettingsFragment.USER_NAME, params[0])
 				.putString(SettingsFragment.USER_PASSWORD, params[1])
-				.commit();
+				.apply();
 			if (MySoup.isNotificationsEnabled()){
 				preferences.edit()
 					.putBoolean(context.getString(R.string.key_pref_new_notifications),
 						MySoup.getIndex().getResponse().getNotifications().hasNewNotifications())
-					.commit();
+					.apply();
 			}
 			return true;
 		}

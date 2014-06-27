@@ -11,7 +11,12 @@ import android.text.TextWatcher;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+
 import api.cli.Utils;
 import api.requests.Request;
 import api.soup.MySoup;
@@ -85,7 +90,7 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 		taxPercent = getArguments().getFloat(REQUEST_TAX);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(),
-			android.R.style.Theme_Holo_Light_Dialog));
+			android.R.style.Theme_Holo_Dialog));
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_request_vote, null);
 		size = (EditText)view.findViewById(R.id.size);

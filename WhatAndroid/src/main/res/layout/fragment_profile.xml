@@ -48,6 +48,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/art_container"
                     android:textSize="22sp"
+                    android:textColor="@android:color/primary_text_light"
                     app:font="@string/roboto_black"/>
 
 
@@ -58,6 +59,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/username"
                     android:textSize="14sp"
+                    android:textColor="@android:color/secondary_text_light"
                     android:textAllCaps="true"/>
 
             <TextView
@@ -66,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/user_class"
+                    android:textColor="@android:color/secondary_text_light"
                     android:textSize="12sp"/>
 
             <LinearLayout

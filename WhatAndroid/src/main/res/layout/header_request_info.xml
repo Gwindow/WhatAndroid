@@ -189,8 +189,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_below="@id/bounty_text"
                     android:layout_marginTop="4dp"
-                    android:text="@string/vote"
-                    android:textColor="@android:color/primary_text_dark"/>
+                    android:text="@string/vote"/>
 
             <TextView
                     android:id="@+id/filled_torrent_text"

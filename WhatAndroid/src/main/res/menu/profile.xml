@@ -2,7 +2,6 @@
 
 <menu
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         tools:context=".WhatAndroid">
 
@@ -11,6 +10,6 @@
             android:icon="@drawable/ic_action_refresh"
             android:title="@string/refresh"
             android:orderInCategory="10"
-            app:showAsAction="always"/>
+            android:showAsAction="always"/>
 
 </menu>
