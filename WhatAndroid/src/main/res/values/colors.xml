@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- X11 Colors, from http://stackoverflow.com/a/7323234/1413807 -->
 <resources>
+    <color name="HoloBlueDarkTransparent">#990099CC</color>
     <color name="White">#FFFFFF</color>
     <color name="Ivory">#FFFFF0</color>
     <color name="LightYellow">#FFFFE0</color>

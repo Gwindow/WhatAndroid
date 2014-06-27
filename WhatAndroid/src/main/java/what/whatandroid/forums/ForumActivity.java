@@ -15,6 +15,7 @@ import what.whatandroid.callbacks.ViewForumCallbacks;
 import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.forums.categories.ForumCategoriesFragment;
 import what.whatandroid.forums.forum.ForumFragment;
+import what.whatandroid.forums.poll.PollDialog;
 import what.whatandroid.forums.thread.ThreadFragment;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
@@ -24,7 +25,7 @@ import what.whatandroid.search.SearchActivity;
 /**
  * Activity for viewing the forums
  */
-public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks, ViewForumCallbacks {
+public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks, ViewForumCallbacks, PollDialog.PollDialogListener {
 	public static final String FORUM_ID = "what.whatandroid.forums.FORUM_ID",
 		THREAD_ID = "what.whatandroid.forums.THREAD_ID",
 		PAGE = "what.whatandroid.forums.PAGE",
@@ -109,6 +110,11 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 			.replace(R.id.container, f)
 			.addToBackStack(null)
 			.commit();
+	}
+
+	@Override
+	public void makeVote(int thread, int vote){
+		System.out.println("Making vote on thread " + thread + " on answer " + vote);
 	}
 
 	@Override

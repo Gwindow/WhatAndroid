@@ -14,6 +14,7 @@ import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.forums.ForumActivity;
+import what.whatandroid.forums.poll.PollDialog;
 
 /**
  * Displays a paged view of posts in a thread
@@ -28,6 +29,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	private String threadName;
 	private boolean hasPoll = false, subscribed = false;
 	private MenuItem viewPoll, toggleSubscription;
+	private ForumThread forumThread;
 
 	/**
 	 * Create a new thread fragment showing the first page of the thread
@@ -126,6 +128,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 
 	@Override
 	public void onLoadingComplete(ForumThread data){
+		forumThread = data;
 		threadName = data.getResponse().getThreadTitle();
 		pages = data.getPages();
 		setTitle.setTitle(threadName);
@@ -157,7 +160,8 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		if (item.getItemId() == R.id.action_view_poll){
-			System.out.println("Gonna view the poll!");
+			PollDialog pollDialog = PollDialog.newInstance(forumThread.getResponse().getPoll(), thread);
+			pollDialog.show(getFragmentManager(), "dialog");
 		}
 		else if (item.getItemId() == R.id.action_subscription){
 			new ToggleSubscriptionsTask().execute();
