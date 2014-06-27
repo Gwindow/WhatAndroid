@@ -76,7 +76,7 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 			if (cookie != null && !cookie.hasExpired()){
 				MySoup.addCookie(cookie);
 				MySoup.loadIndex();
-				return true;
+				return MySoup.getIndex() != null;
 			}
 		}
 		catch (Exception e){
