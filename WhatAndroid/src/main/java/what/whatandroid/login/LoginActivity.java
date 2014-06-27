@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import what.whatandroid.R;
 import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.profile.ProfileActivity;
@@ -89,7 +90,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 					.remove(SettingsFragment.USER_NAME)
 					.remove(SettingsFragment.USER_PASSWORD)
 					.remove(SettingsFragment.USER_COOKIE)
-					.commit();
+					.apply();
 			}
 			loginTask = new Login();
 			loginTask.execute(username.getText().toString(), password.getText().toString());
@@ -112,7 +113,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 						.remove(SettingsFragment.USER_NAME)
 						.remove(SettingsFragment.USER_PASSWORD)
 						.remove(SettingsFragment.USER_COOKIE)
-						.commit();
+						.apply();
 				}
 				loginTask = new Login();
 				loginTask.execute(username.getText().toString(), password.getText().toString());

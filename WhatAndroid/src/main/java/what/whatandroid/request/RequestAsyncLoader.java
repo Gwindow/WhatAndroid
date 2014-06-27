@@ -3,13 +3,15 @@ package what.whatandroid.request;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
+
+import java.util.Collections;
+
 import api.comments.SimpleComment;
 import api.index.Index;
 import api.requests.Request;
 import api.soup.MySoup;
+import api.util.CouldNotLoadException;
 import what.whatandroid.comments.SmileyProcessor;
-
-import java.util.Collections;
 
 /**
  * AsyncLoader to load a request from id and a specific page of request comments if desired.
@@ -67,7 +69,12 @@ public class RequestAsyncLoader extends AsyncTaskLoader<Request> {
 	private boolean refreshIndex(){
 		//Also handle the case where we've been rate limited
 		while (true){
-			MySoup.loadIndex();
+			try {
+				MySoup.loadIndex();
+			}
+			catch (CouldNotLoadException e){
+				return false;
+			}
 			Index index = MySoup.getIndex();
 			if (index != null && !index.getStatus() && index.getError() != null && index.getError().equalsIgnoreCase("rate limit exceeded")){
 				try {

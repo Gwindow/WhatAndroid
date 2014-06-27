@@ -5,9 +5,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
+
 import api.index.Index;
 import api.soup.MySoup;
 import api.user.UserProfile;
+import api.util.CouldNotLoadException;
 import what.whatandroid.R;
 
 /**
@@ -61,7 +63,12 @@ public class ProfileAsyncLoader extends AsyncTaskLoader<UserProfile> {
 	private boolean refreshIndex(){
 		//Also handle the case where we've been rate limited
 		while (true){
-			MySoup.loadIndex();
+			try {
+				MySoup.loadIndex();
+			}
+			catch (CouldNotLoadException e){
+				return false;
+			}
 			Index index = MySoup.getIndex();
 			if (index != null && !index.getStatus() && index.getError() != null && index.getError().equalsIgnoreCase("rate limit exceeded")){
 				try {
