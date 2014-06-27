@@ -17,4 +17,10 @@
             android:textSize="18sp"
             android:textColor="@android:color/primary_text_dark"/>
 
+    <ProgressBar
+            android:id="@+id/vote_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.Holo.ProgressBar.Horizontal"/>
+
 </LinearLayout>

@@ -1,10 +1,14 @@
 package what.whatandroid.forums;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
+import android.widget.Toast;
+
+import api.forum.thread.Poll;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
@@ -114,7 +118,7 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 
 	@Override
 	public void makeVote(int thread, int vote){
-		System.out.println("Making vote on thread " + thread + " on answer " + vote);
+		new PollVoteTask().execute(thread, vote);
 	}
 
 	@Override
@@ -174,6 +178,23 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 		else if (selection.equalsIgnoreCase(getString(R.string.barcode_lookup))){
 			Intent intent = new Intent(this, BarcodeActivity.class);
 			startActivity(intent);
+		}
+	}
+
+	/**
+	 * Makes a vote on a poll in the background, params should be { thread, vote }
+	 */
+	private class PollVoteTask extends AsyncTask<Integer, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(Integer... params) {
+			return Poll.vote(params[0], params[1]);
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status) {
+			if (!status){
+				Toast.makeText(ForumActivity.this, "Could not vote on poll", Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 }
