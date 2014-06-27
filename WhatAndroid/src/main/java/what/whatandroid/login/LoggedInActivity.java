@@ -45,7 +45,7 @@ public abstract class LoggedInActivity extends ActionBarActivity implements Navi
 
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-	public static final String SITE = "192.168.1.4:8080/";
+	public static final String SITE = "192.168.1.100:8080/";
 	protected NavigationDrawerFragment navDrawer;
 	/**
 	 * Used to store the last screen title, for use in restoreActionBar
@@ -246,13 +246,13 @@ public abstract class LoggedInActivity extends ActionBarActivity implements Navi
 	@Override
 	public void showText(String title, String text){
 		HiddenTextDialog dialog = HiddenTextDialog.newInstance(title, text);
-		dialog.show(getSupportFragmentManager(), "hidden_text");
+		dialog.show(getSupportFragmentManager(), "dialog");
 	}
 
 	@Override
 	public void showImage(String url){
 		ImageDialog dialog = ImageDialog.newInstance(url);
-		dialog.show(getSupportFragmentManager(), "image_dialog");
+		dialog.show(getSupportFragmentManager(), "dialog");
 	}
 
 	/**

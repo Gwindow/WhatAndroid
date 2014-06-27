@@ -84,7 +84,8 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 		requestId = getArguments().getInt(RequestActivity.REQUEST_ID);
 		taxPercent = getArguments().getFloat(REQUEST_TAX);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo_Light_Dialog));
+		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(),
+			android.R.style.Theme_Holo_Light_Dialog));
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_request_vote, null);
 		size = (EditText)view.findViewById(R.id.size);
@@ -115,7 +116,7 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 			.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which){
-					VoteDialog.this.getDialog().cancel();
+					dialog.cancel();
 				}
 			});
 		dialog = builder.create();
