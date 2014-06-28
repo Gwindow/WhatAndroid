@@ -5,14 +5,17 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+
 import what.whatandroid.R;
 import what.whatandroid.updater.UpdateBroadcastReceiver;
 import what.whatandroid.updater.UpdateService;
+import what.whatandroid.updater.VersionNumber;
 
 /**
  * Fragment containing the user's settings & preferences
@@ -33,6 +36,15 @@ public class SettingsFragment extends PreferenceFragment {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
+		try {
+			Preference version = getPreferenceScreen().findPreference(getString(R.string.key_pref_version_name));
+			String versionName = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
+			VersionNumber versionNumber = new VersionNumber(versionName);
+			version.setTitle(versionNumber.toString());
+		}
+		catch (PackageManager.NameNotFoundException e){
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -49,7 +61,7 @@ public class SettingsFragment extends PreferenceFragment {
 				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 				Intent updater = new Intent(getActivity(), UpdateBroadcastReceiver.class);
 				PendingIntent pending = PendingIntent.getBroadcast(getActivity(), 2, updater, PendingIntent.FLAG_NO_CREATE);
-				AlarmManager alarmMgr = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+				AlarmManager alarmMgr = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 				boolean checkerDisabled = preferences.getBoolean(getActivity().getString(R.string.key_pref_disable_updater), false);
 				//Cancel the alarm if we're disabling the checker
 				if (pending != null && checkerDisabled){

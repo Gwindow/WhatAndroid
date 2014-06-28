@@ -42,9 +42,8 @@
     <PreferenceCategory
             android:title="WhatAndroid Version"
             android:key="pref_version">
-        <!-- This is a pretty hacky way of displaying the app version, can we do better? -->
         <Preference
-                android:title="@string/app_version"
+                android:title="@string/app_version_unknown"
                 android:key="@string/key_pref_version_name"
                 android:defaultValue=""/>
     </PreferenceCategory>
