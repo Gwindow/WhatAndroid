@@ -113,6 +113,13 @@ public class NavigationDrawerFragment extends Fragment {
 		return listView;
 	}
 
+	@Override
+	public void onResume(){
+		super.onResume();
+		//Also update the notifications information we're showing
+		updateNotifications(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+	}
+
 	public void updateNotifications(SharedPreferences preferences){
 		if (MySoup.isNotificationsEnabled()){
 			boolean newNotifications = preferences.getBoolean(getString(R.string.key_pref_new_notifications), false);

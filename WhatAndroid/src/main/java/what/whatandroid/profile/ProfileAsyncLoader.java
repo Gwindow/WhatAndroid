@@ -37,7 +37,7 @@ public class ProfileAsyncLoader extends AsyncTaskLoader<UserProfile> {
 					preferences.edit()
 						.putBoolean(context.getString(R.string.key_pref_new_notifications),
 							MySoup.getIndex().getResponse().getNotifications().hasNewNotifications())
-						.commit();
+						.apply();
 				}
 			}
 			while (true){

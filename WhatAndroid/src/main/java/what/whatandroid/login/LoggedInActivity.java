@@ -110,7 +110,7 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 			PendingIntent pending = PendingIntent.getBroadcast(context, 2, updater, PendingIntent.FLAG_NO_CREATE);
 			if (pending == null){
 				pending = PendingIntent.getBroadcast(context, 2, updater, 0);
-				AlarmManager alarmMgr = (AlarmManager)context.getSystemService(ALARM_SERVICE);
+				AlarmManager alarmMgr = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 				alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, AlarmManager.INTERVAL_DAY,
 					AlarmManager.INTERVAL_DAY, pending);
 			}
@@ -132,10 +132,9 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 	 * Setup the nav drawer and title, should be called after setting content view
 	 */
 	protected void setupNavDrawer(){
-		navDrawer = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-		navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.drawer_layout));
+		navDrawer = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+		navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 		title = getTitle();
-		navDrawer.updateNotifications(PreferenceManager.getDefaultSharedPreferences(this));
 	}
 
 	/**

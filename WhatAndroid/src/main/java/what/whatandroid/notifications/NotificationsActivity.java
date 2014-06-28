@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
+
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
@@ -43,8 +44,7 @@ public class NotificationsActivity extends LoggedInActivity implements ViewTorre
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		preferences.edit()
 			.putBoolean(getString(R.string.key_pref_new_notifications), false)
-			.commit();
-		navDrawer.updateNotifications(preferences);
+			.apply();
 	}
 
 	@Override
