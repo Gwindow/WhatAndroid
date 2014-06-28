@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import api.forum.thread.Poll;
 import api.son.MySon;
@@ -23,7 +24,7 @@ import what.whatandroid.forums.ForumActivity;
  * view the results of
  */
 public class PollDialog extends DialogFragment implements AdapterView.OnItemClickListener {
-	private static final String POLL = "what.whatandroid.polldialog.POLL";
+	public static final String POLL = "what.whatandroid.polldialog.POLL";
 	/**
 	 * Listener to alert when we make a vote
 	 */
@@ -40,6 +41,10 @@ public class PollDialog extends DialogFragment implements AdapterView.OnItemClic
 	 * List displaying the poll responses, used to find which response is selected
 	 */
 	private ListView answers;
+	/**
+	 * Displays the total number of votes in the poll, shown if user has voted
+	 */
+	private TextView totalVotes;
 	/**
 	 * Adapter displaying the votes to notify once we make a vote to update
 	 */
@@ -87,7 +92,12 @@ public class PollDialog extends DialogFragment implements AdapterView.OnItemClic
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo);
-		poll = (Poll) MySon.toObjectFromString(getArguments().getString(POLL), Poll.class);
+		if (savedInstanceState != null) {
+			poll = (Poll) MySon.toObjectFromString(savedInstanceState.getString(POLL), Poll.class);
+		}
+		else {
+			poll = (Poll) MySon.toObjectFromString(getArguments().getString(POLL), Poll.class);
+		}
 		thread = getArguments().getInt(ForumActivity.THREAD_ID);
 	}
 
@@ -97,24 +107,25 @@ public class PollDialog extends DialogFragment implements AdapterView.OnItemClic
 			android.R.style.Theme_Holo_Dialog));
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_poll, null);
-		answers = (ListView) view.findViewById(R.id.poll_answers);
+		answers = (ListView)view.findViewById(R.id.poll_answers);
+		totalVotes = (TextView)view.findViewById(R.id.total_votes);
 		adapter = new AnswerAdapter(getActivity(), poll);
 		answers.setAdapter(adapter);
 		answers.setOnItemClickListener(this);
-		if (poll.hasVoted()) {
+
+		if (poll.hasVoted()){
 			answers.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
+			totalVotes.setText("Votes: " + poll.getTotalVotes());
+			totalVotes.setVisibility(View.VISIBLE);
 		}
 		builder.setView(view)
 			.setTitle(poll.getQuestion())
 			.setPositiveButton("Blank, show results", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					int vote = answers.getCheckedItemPosition();
-					vote = vote == -1 ? 0 : vote + 1;
-					System.out.println("Voting on item: " + vote);
-					listener.makeVote(thread, vote);
-					((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.GONE);
-					adapter.updateVotes(answers.getCheckedItemPosition());
+					//We don't do anything here since we override it later to make clicking vote
+					//not close the poll, however we do need to create a positive button to have
+					//one show up in the dialog
 				}
 			})
 			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -130,15 +141,38 @@ public class PollDialog extends DialogFragment implements AdapterView.OnItemClic
 	@Override
 	public void onStart() {
 		super.onStart();
-		System.out.println("PollDialog start");
 		if (poll.hasVoted()) {
 			dialog.getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.GONE);
+		}
+		else {
+			if (answers.getCheckedItemCount() > 0){
+				dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText("Vote");
+			}
+			dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//Notify the listener we voted and update the shown items in the adapter, updating the poll
+					int vote = answers.getCheckedItemPosition();
+					vote = vote == -1 ? 0 : vote + 1;
+					listener.makeVote(thread, vote);
+					adapter.updateVotes(vote);
+					answers.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
+					dialog.getButton(DialogInterface.BUTTON_POSITIVE).setVisibility(View.GONE);
+					totalVotes.setText("Votes: " + poll.getTotalVotes());
+					totalVotes.setVisibility(View.VISIBLE);
+				}
+			});
 		}
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(POLL, MySon.toJson(poll, Poll.class));
+	}
+
+	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		System.out.println("Position " + position + " was selected");
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText("Vote");
 	}
 }

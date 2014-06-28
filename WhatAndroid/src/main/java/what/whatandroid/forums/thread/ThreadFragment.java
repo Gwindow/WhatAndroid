@@ -5,9 +5,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
+
 import api.forum.thread.ForumThread;
+import api.forum.thread.Poll;
+import api.son.MySon;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
@@ -27,9 +35,13 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	private ThreadPagerAdapter pagerAdapter;
 	private int thread, pages = 0, postId = -1;
 	private String threadName;
-	private boolean hasPoll = false, subscribed = false;
+	private boolean subscribed = false;
 	private MenuItem viewPoll, toggleSubscription;
-	private ForumThread forumThread;
+	/**
+	 * We track the poll separately from the rest of the thread so we can update
+	 * it without having to reload the page
+	 */
+	private Poll poll;
 
 	/**
 	 * Create a new thread fragment showing the first page of the thread
@@ -82,6 +94,9 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 		if (savedInstanceState != null){
 			pages = savedInstanceState.getInt(PAGES);
 			threadName = savedInstanceState.getString(THREAD_NAME);
+			if (savedInstanceState.containsKey(PollDialog.POLL)){
+				poll = (Poll)MySon.toObjectFromString(savedInstanceState.getString(PollDialog.POLL), Poll.class);
+			}
 		}
 		else {
 			postId = getArguments().getInt(ForumActivity.POST_ID, -1);
@@ -94,6 +109,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 		if (threadName != null){
 			setTitle.setTitle(threadName);
 		}
+		updateMenus();
 	}
 
 	@Override
@@ -115,6 +131,9 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 		outState.putInt(PAGES, pages);
 		if (threadName != null){
 			outState.putString(THREAD_NAME, threadName);
+			if (poll != null){
+				outState.putString(PollDialog.POLL, MySon.toJson(poll, Poll.class));
+			}
 		}
 		else {
 			outState.putString(THREAD_NAME, "Thread");
@@ -128,24 +147,36 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 
 	@Override
 	public void onLoadingComplete(ForumThread data){
-		forumThread = data;
+		if (poll == null) {
+			poll = data.getResponse().getPoll();
+		}
 		threadName = data.getResponse().getThreadTitle();
 		pages = data.getPages();
 		setTitle.setTitle(threadName);
-		hasPoll = data.getResponse().hasPoll();
 		subscribed = data.getResponse().isSubscribed();
 		updateMenus();
 	}
 
 	private void updateMenus(){
 		if (viewPoll != null && toggleSubscription != null){
-			viewPoll.setVisible(hasPoll);
+			if (poll != null) {
+				viewPoll.setVisible(true);
+			}
 			if (subscribed){
 				toggleSubscription.setIcon(R.drawable.ic_eye_on);
 			}
 			else {
 				toggleSubscription.setIcon(R.drawable.ic_eye_off);
 			}
+		}
+	}
+
+	/**
+	 * Update the cached poll for the thread
+	 */
+	public void updatePoll(int vote) {
+		if (poll != null) {
+			poll.applyVote(vote);
 		}
 	}
 
@@ -160,7 +191,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		if (item.getItemId() == R.id.action_view_poll){
-			PollDialog pollDialog = PollDialog.newInstance(forumThread.getResponse().getPoll(), thread);
+			PollDialog pollDialog = PollDialog.newInstance(poll, thread);
 			pollDialog.show(getFragmentManager(), "dialog");
 		}
 		else if (item.getItemId() == R.id.action_subscription){

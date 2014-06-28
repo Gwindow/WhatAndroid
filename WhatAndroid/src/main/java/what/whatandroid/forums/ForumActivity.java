@@ -119,6 +119,11 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 	@Override
 	public void makeVote(int thread, int vote){
 		new PollVoteTask().execute(thread, vote);
+		//Also notify the thread fragment showing that it should update the poll it's caching
+		ThreadFragment fragment = (ThreadFragment)getSupportFragmentManager().findFragmentById(R.id.container);
+		if (fragment != null){
+			fragment.updatePoll(vote);
+		}
 	}
 
 	@Override
