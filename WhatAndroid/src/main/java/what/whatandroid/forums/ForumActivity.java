@@ -55,8 +55,25 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 			loginListener = (OnLoggedInCallback)f;
 		}
 		else {
-			//Later parse intent and show what we want
-			Fragment f = new ForumCategoriesFragment();
+			//Determine what part of the forums we want to view, eg. jump to a post, thread or forum
+			Fragment f;
+			Intent intent = getIntent();
+			//Jumping to a post in some thread
+			if (intent.hasExtra(THREAD_ID) && intent.hasExtra(POST_ID)){
+				f = ThreadFragment.newInstance(intent.getIntExtra(THREAD_ID, 0), intent.getIntExtra(POST_ID, 0));
+			}
+			//Jumping to a thread
+			else if (intent.hasExtra(THREAD_ID)){
+				f = ThreadFragment.newInstance(intent.getIntExtra(THREAD_ID, 0));
+			}
+			//Jumping to a forum
+			else if (intent.hasExtra(FORUM_ID)){
+				f = ForumFragment.newInstance(intent.getIntExtra(FORUM_ID, 0));
+			}
+			//Not jumping anywhere, just going to the regular categories view
+			else {
+				f = new ForumCategoriesFragment();
+			}
 			loginListener = (OnLoggedInCallback)f;
 			fm.beginTransaction().add(R.id.container, f).commit();
 		}
