@@ -76,7 +76,9 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 	@Override
 	public void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
-		outState.putParcelable(SCROLL_STATE, list.onSaveInstanceState());
+		if (list != null){
+			outState.putParcelable(SCROLL_STATE, list.onSaveInstanceState());
+		}
 	}
 
 	/**

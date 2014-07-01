@@ -8,13 +8,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.Date;
+
 import api.forum.forum.ForumThread;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewForumCallbacks;
-
-import java.util.Date;
 
 /**
  * Adapter for showing a listing of forum threads
@@ -51,6 +53,8 @@ public class ForumListAdapter extends ArrayAdapter<ForumThread> implements Adapt
 			holder.lastPostAuthor = (TextView)convertView.findViewById(R.id.last_post_username);
 			holder.lastPostTime = (TextView)convertView.findViewById(R.id.last_post_time);
 			holder.jumpToLastRead = (ImageButton)convertView.findViewById(R.id.go_to_last_read);
+			holder.sticky = (ImageView) convertView.findViewById(R.id.sticky_thread);
+			holder.locked = (ImageView) convertView.findViewById(R.id.locked_thread);
 			convertView.setTag(holder);
 		}
 		ForumThread thread = getItem(position);
@@ -81,6 +85,18 @@ public class ForumListAdapter extends ArrayAdapter<ForumThread> implements Adapt
 		else {
 			holder.replies.setText(replies + " replies");
 		}
+		if (thread.isSticky()){
+			holder.sticky.setVisibility(View.VISIBLE);
+		}
+		else {
+			holder.sticky.setVisibility(View.GONE);
+		}
+		if (thread.isLocked()){
+			holder.locked.setVisibility(View.VISIBLE);
+		}
+		else {
+			holder.locked.setVisibility(View.GONE);
+		}
 		return convertView;
 	}
 
@@ -101,6 +117,7 @@ public class ForumListAdapter extends ArrayAdapter<ForumThread> implements Adapt
 
 	private static class ViewHolder {
 		public TextView name, replies, author, lastPostAuthor, lastPostTime;
+		public ImageView sticky, locked;
 		public ImageButton jumpToLastRead;
 	}
 }

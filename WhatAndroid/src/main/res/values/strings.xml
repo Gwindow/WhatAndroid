@@ -80,6 +80,8 @@
     <string name="author">Author:</string>
     <string name="go_to_last_read">Go to last read</string>
     <string name="view_poll">View poll</string>
+    <string name="sticky_thread">Sticky Thread</string>
+    <string name="locked_thread">Locked Thread</string>
     <string name="toggle_subscription">Toggle subscription</string>
     <string name="pref_img_on_wifi_only">Load Images on Wifi Only</string>
     <string name="key_pref_img_wifi">pref_img_wifi_only</string>
