@@ -51,8 +51,7 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 
 		FragmentManager fm = getSupportFragmentManager();
 		if (savedInstanceState != null){
-			Fragment f = fm.findFragmentById(R.id.container);
-			loginListener = (OnLoggedInCallback)f;
+			loginListener = (OnLoggedInCallback) fm.findFragmentById(R.id.container);
 		}
 		else {
 			//Determine what part of the forums we want to view, eg. jump to a post, thread or forum
@@ -173,7 +172,7 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 			Intent intent = new Intent(this, BookmarksActivity.class);
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.notifications)) || selection.equalsIgnoreCase(getString(R.string.new_notifications))){
+		else if (selection.contains(getString(R.string.notifications))){
 			Intent intent = new Intent(this, NotificationsActivity.class);
 			startActivity(intent);
 		}

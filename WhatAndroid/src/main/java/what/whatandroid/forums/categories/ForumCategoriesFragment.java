@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import api.forum.categories.ForumCategories;
 import api.soup.MySoup;
 import what.whatandroid.R;
@@ -23,7 +24,7 @@ public class ForumCategoriesFragment extends Fragment implements OnLoggedInCallb
 	/**
 	 * List adapter displaying all the forum information
 	 */
-	private ForumCategoriesListAdapter listAdapter;
+	private ForumCategoriesListAdapter adapter;
 	private ProgressBar loadingIndicator;
 
 	public ForumCategoriesFragment(){
@@ -35,13 +36,13 @@ public class ForumCategoriesFragment extends Fragment implements OnLoggedInCallb
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		ListView list = (ListView)view.findViewById(R.id.list);
 		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
-		listAdapter = new ForumCategoriesListAdapter(getActivity());
-		list.setAdapter(listAdapter);
-		list.setOnItemClickListener(listAdapter);
+		adapter = new ForumCategoriesListAdapter(getActivity());
+		list.setAdapter(adapter);
+		list.setOnItemClickListener(adapter);
 		loadingIndicator.setVisibility(View.VISIBLE);
 
 		if (MySoup.isLoggedIn()){
-			getLoaderManager().initLoader(0, null, this);
+			onLoggedIn();
 		}
 		return view;
 	}
@@ -64,9 +65,9 @@ public class ForumCategoriesFragment extends Fragment implements OnLoggedInCallb
 		if (data == null || !data.getStatus()){
 			Toast.makeText(getActivity(), "Could not load forum categories", Toast.LENGTH_LONG).show();
 		}
-		else if (listAdapter.isEmpty()){
-			listAdapter.addAll(data.getCategories());
-			listAdapter.notifyDataSetChanged();
+		else if (adapter.isEmpty()){
+			adapter.addAll(data.getCategories());
+			adapter.notifyDataSetChanged();
 		}
 	}
 
