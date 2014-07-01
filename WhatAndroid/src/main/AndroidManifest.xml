@@ -119,6 +119,9 @@
         <activity
                 android:name=".forums.ForumActivity"
                 android:label="@string/forums"/>
+        <activity
+                android:name=".subscriptions.SubscriptionsActivity"
+                android:label="@string/subscriptions"/>
 
         <service
                 android:name=".errors.ErrorReporterService"

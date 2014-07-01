@@ -36,7 +36,7 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 			String cookieJson = preferences.getString(SettingsFragment.USER_COOKIE, null);
 			if (cookieJson != null){
-				HttpCookie cookie = (HttpCookie)MySon.toObjectFromString(cookieJson, HttpCookie.class);
+				HttpCookie cookie = (HttpCookie) MySon.toObjectFromString(cookieJson, HttpCookie.class);
 				if (loginWithCookie(cookie)){
 					return true;
 				}
@@ -55,9 +55,13 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 			if (MySoup.isNotificationsEnabled()){
 				preferences.edit()
 					.putBoolean(context.getString(R.string.key_pref_new_notifications),
-						MySoup.getIndex().getResponse().getNotifications().hasNewNotifications())
+						MySoup.getIndex().getResponse().getNotifications().hasTorrentNotifications())
 					.apply();
 			}
+			preferences.edit()
+				.putBoolean(context.getString(R.string.key_pref_new_subscriptions),
+					MySoup.getIndex().getResponse().getNotifications().hasNewSubscriptions())
+				.apply();
 			return true;
 		}
 		catch (Exception e){

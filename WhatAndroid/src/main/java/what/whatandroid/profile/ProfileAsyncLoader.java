@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
 
 import api.index.Index;
+import api.index.Notifications;
 import api.soup.MySoup;
 import api.user.UserProfile;
 import api.util.CouldNotLoadException;
@@ -32,11 +33,15 @@ public class ProfileAsyncLoader extends AsyncTaskLoader<UserProfile> {
 					return null;
 				}
 				else {
+					//Update our cached torrent notifications and subscriptions notifications
 					Context context = getContext();
+					Notifications notifications = MySoup.getIndex().getResponse().getNotifications();
 					SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 					preferences.edit()
 						.putBoolean(context.getString(R.string.key_pref_new_notifications),
-							MySoup.getIndex().getResponse().getNotifications().hasNewNotifications())
+							notifications.hasTorrentNotifications())
+						.putBoolean(context.getString(R.string.key_pref_new_subscriptions),
+							notifications.hasNewSubscriptions())
 						.apply();
 				}
 			}

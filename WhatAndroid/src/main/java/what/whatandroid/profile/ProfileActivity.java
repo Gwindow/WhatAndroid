@@ -8,6 +8,12 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.Window;
 import android.widget.Toast;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import api.index.Index;
 import api.search.user.UserSearch;
 import api.soup.MySoup;
@@ -22,12 +28,8 @@ import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.search.UserSearchAsyncLoader;
+import what.whatandroid.subscriptions.SubscriptionsActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ProfileActivity extends LoggedInActivity implements ViewTorrentCallbacks,
 	LoaderManager.LoaderCallbacks<UserSearch>, LoadingListener<Index> {
@@ -50,7 +52,7 @@ public class ProfileActivity extends LoggedInActivity implements ViewTorrentCall
 		int id = intent.getIntExtra(USER_ID, MySoup.getUserId());
 		//If we're loading from a saved state then recover the fragment
 		if (savedInstanceState != null){
-			profileFragment = (ProfileFragment)getSupportFragmentManager().findFragmentById(R.id.container);
+			profileFragment = (ProfileFragment) getSupportFragmentManager().findFragmentById(R.id.container);
 		}
 		else {
 			String terms = null;
@@ -144,7 +146,7 @@ public class ProfileActivity extends LoggedInActivity implements ViewTorrentCall
 		FragmentManager fm = getSupportFragmentManager();
 		if (fm.getBackStackEntryCount() > 0){
 			fm.popBackStackImmediate();
-			profileFragment = (ProfileFragment)fm.findFragmentById(R.id.container);
+			profileFragment = (ProfileFragment) fm.findFragmentById(R.id.container);
 			profileFragment.onLoggedIn();
 		}
 		else {
@@ -183,8 +185,12 @@ public class ProfileActivity extends LoggedInActivity implements ViewTorrentCall
 			Intent intent = new Intent(this, BookmarksActivity.class);
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.notifications)) || selection.equalsIgnoreCase(getString(R.string.new_notifications))){
+		else if (selection.contains(getString(R.string.notifications))){
 			Intent intent = new Intent(this, NotificationsActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.contains(getString(R.string.subscriptions))){
+			Intent intent = new Intent(this, SubscriptionsActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.forums))){

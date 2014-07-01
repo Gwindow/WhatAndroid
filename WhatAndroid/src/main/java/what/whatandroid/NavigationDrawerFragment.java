@@ -82,7 +82,7 @@ public class NavigationDrawerFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		listView = (ListView)inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+		listView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
@@ -96,7 +96,7 @@ public class NavigationDrawerFragment extends Fragment {
 			getString(R.string.bookmarks),
 			//getString(R.string.inbox),
 			getString(R.string.notifications),
-			//getString(R.string.subscriptions),
+			getString(R.string.subscriptions),
 			getString(R.string.forums),
 			getString(R.string.torrents),
 			getString(R.string.artists),
@@ -120,7 +120,24 @@ public class NavigationDrawerFragment extends Fragment {
 		updateNotifications(PreferenceManager.getDefaultSharedPreferences(getActivity()));
 	}
 
+	/**
+	 * Update the user's various notification nav items to reflect the status of any
+	 * new notifications. This updates the torrent notifications, subscriptions and
+	 * inbox nav items to alert the user if they have new notifications in the
+	 * corresponding sections
+	 *
+	 * @param preferences Preferences to read the saved notifications state from
+	 */
 	public void updateNotifications(SharedPreferences preferences){
+		updateTorrentNotifications(preferences);
+		updateSubscriptions(preferences);
+	}
+
+	/**
+	 * Update the user's torrent notifications nav item to show whether or not
+	 * there are new notifications, or hide the item if they don't have notifications
+	 */
+	private void updateTorrentNotifications(SharedPreferences preferences){
 		if (MySoup.isNotificationsEnabled()){
 			boolean newNotifications = preferences.getBoolean(getString(R.string.key_pref_new_notifications), false);
 			if (newNotifications){
@@ -145,6 +162,32 @@ public class NavigationDrawerFragment extends Fragment {
 		else {
 			adapter.remove(getString(R.string.notifications));
 			adapter.notifyDataSetChanged();
+		}
+	}
+
+	/**
+	 * Update the user's subscriptions nav item to show whether or not there
+	 * are new subscriptions
+	 */
+	private void updateSubscriptions(SharedPreferences preferences){
+		boolean newSubscriptions = preferences.getBoolean(getString(R.string.key_pref_new_subscriptions), false);
+		if (newSubscriptions){
+			int i = adapter.getPosition(getString(R.string.new_subscriptions));
+			//If we're not already showing the new subscriptions message show it
+			if (i == -1){
+				adapter.remove(getString(R.string.subscriptions));
+				adapter.insert(getString(R.string.new_subscriptions), 2);
+				adapter.notifyDataSetChanged();
+			}
+		}
+		else {
+			int i = adapter.getPosition(getString(R.string.subscriptions));
+			//If we're not already showing the notifications message show it
+			if (i == -1){
+				adapter.remove(getString(R.string.new_subscriptions));
+				adapter.insert(getString(R.string.subscriptions), 2);
+				adapter.notifyDataSetChanged();
+			}
 		}
 	}
 
@@ -239,7 +282,7 @@ public class NavigationDrawerFragment extends Fragment {
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			drawerCallbacks = (NavigationDrawerCallbacks)activity;
+			drawerCallbacks = (NavigationDrawerCallbacks) activity;
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
