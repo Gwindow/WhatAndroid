@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
+
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
@@ -94,7 +95,7 @@ public class BookmarksActivity extends LoggedInActivity implements ViewTorrentCa
 			intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.notifications)) || selection.equalsIgnoreCase(getString(R.string.new_notifications))){
+		else if (selection.contains(getString(R.string.notifications))){
 			Intent intent = new Intent(this, NotificationsActivity.class);
 			startActivity(intent);
 		}

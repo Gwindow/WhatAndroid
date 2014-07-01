@@ -25,11 +25,11 @@ import java.util.Date;
 import api.barcode.Barcode;
 import api.products.ProductSearch;
 import api.soup.MySoup;
-import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.ViewSearchCallbacks;
+import what.whatandroid.navdrawer.NavigationDrawerFragment;
 import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
@@ -55,7 +55,6 @@ public class BarcodeActivity extends FragmentActivity implements NavigationDrawe
 		navDrawer = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 		navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.drawer_layout));
 		title = getTitle();
-		navDrawer.updateNotifications(PreferenceManager.getDefaultSharedPreferences(this));
 
 		if (savedInstanceState == null){
 			fragment = new BarcodeFragment();
@@ -203,7 +202,7 @@ public class BarcodeActivity extends FragmentActivity implements NavigationDrawe
 			Intent intent = new Intent(this, BookmarksActivity.class);
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.notifications)) || selection.equalsIgnoreCase(getString(R.string.new_notifications))){
+		else if (selection.contains(getString(R.string.notifications))){
 			Intent intent = new Intent(this, NotificationsActivity.class);
 			startActivity(intent);
 		}

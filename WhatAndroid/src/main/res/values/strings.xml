@@ -7,8 +7,7 @@
     <string name="blog">Blog</string>
     <string name="profile">Profile</string>
     <string name="inbox">Inbox</string>
-    <string name="notifications">Notifications</string>
-    <string name="new_notifications">New Notifications!</string>
+    <string name="notifications">Torrent Notifications</string>
     <string name="subscriptions">Subscriptions</string>
     <string name="new_subscriptions">New Subscriptions!</string>
     <string name="show_all">Show All</string>

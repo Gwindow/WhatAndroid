@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
 import android.widget.Toast;
+
 import api.requests.Request;
 import api.soup.MySoup;
 import what.whatandroid.R;
@@ -116,7 +117,7 @@ public class RequestActivity extends LoggedInActivity
 			Intent intent = new Intent(this, BookmarksActivity.class);
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.notifications)) || selection.equalsIgnoreCase(getString(R.string.new_notifications))){
+		else if (selection.contains(getString(R.string.notifications))){
 			Intent intent = new Intent(this, NotificationsActivity.class);
 			startActivity(intent);
 		}

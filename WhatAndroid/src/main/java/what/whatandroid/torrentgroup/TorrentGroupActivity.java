@@ -13,6 +13,10 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.Window;
 import android.widget.Toast;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import api.soup.MySoup;
 import api.torrents.torrents.TorrentGroup;
 import what.whatandroid.R;
@@ -29,9 +33,6 @@ import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.settings.SettingsActivity;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * View information about a torrent group and the torrents in it. Must pass in the intent at least one
@@ -255,7 +256,7 @@ public class TorrentGroupActivity extends LoggedInActivity
 			Intent intent = new Intent(this, BookmarksActivity.class);
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.notifications)) || selection.equalsIgnoreCase(getString(R.string.new_notifications))){
+		else if (selection.contains(getString(R.string.notifications))){
 			Intent intent = new Intent(this, NotificationsActivity.class);
 			startActivity(intent);
 		}

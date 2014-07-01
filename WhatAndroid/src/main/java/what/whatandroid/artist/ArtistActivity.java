@@ -3,6 +3,12 @@ package what.whatandroid.artist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
@@ -16,11 +22,6 @@ import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.request.RequestActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * View information about the artist and a list of their torrent groups
@@ -135,7 +136,7 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 			Intent intent = new Intent(this, BookmarksActivity.class);
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.notifications)) || selection.equalsIgnoreCase(getString(R.string.new_notifications))){
+		else if (selection.contains(getString(R.string.notifications))){
 			Intent intent = new Intent(this, NotificationsActivity.class);
 			startActivity(intent);
 		}
