@@ -43,7 +43,7 @@ public class NotificationsActivity extends LoggedInActivity implements ViewTorre
 		//Since we're viewing the notifications unset the new notifications flag
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		preferences.edit()
-			.putBoolean(getString(R.string.key_pref_new_notifications), false)
+			.putInt(getString(R.string.key_pref_num_notifications), 0)
 			.apply();
 	}
 

@@ -1,4 +1,4 @@
-package what.whatandroid;
+package what.whatandroid.navdrawer;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -18,13 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import api.soup.MySoup;
+import what.whatandroid.R;
 import what.whatandroid.settings.SettingsActivity;
 
 /**
@@ -57,7 +57,7 @@ public class NavigationDrawerFragment extends Fragment {
 	private DrawerLayout drawerLayout;
 	private ListView listView;
 	private View fragmentContainerview;
-	private ArrayAdapter<String> adapter;
+	private NavDrawerAdapter adapter;
 
 	private int selectedPos = 0;
 	private boolean fromSavedState;
@@ -105,7 +105,7 @@ public class NavigationDrawerFragment extends Fragment {
 			getString(R.string.barcode_lookup)
 		};
 		ArrayList<String> navElems = new ArrayList<String>(Arrays.asList(navs));
-		adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,
+		adapter = new NavDrawerAdapter(getActivity(), android.R.layout.simple_list_item_1,
 			android.R.id.text1, navElems);
 
 		listView.setAdapter(adapter);
@@ -139,30 +139,19 @@ public class NavigationDrawerFragment extends Fragment {
 	 */
 	private void updateTorrentNotifications(SharedPreferences preferences){
 		if (MySoup.isNotificationsEnabled()){
-			boolean newNotifications = preferences.getBoolean(getString(R.string.key_pref_new_notifications), false);
-			if (newNotifications){
-				int i = adapter.getPosition(getString(R.string.new_notifications));
-				//If we're not already showing the new notifications message
-				if (i == -1){
-					adapter.remove(getString(R.string.notifications));
-					adapter.insert(getString(R.string.new_notifications), 3);
-					adapter.notifyDataSetChanged();
-				}
+			int newNotifications = preferences.getInt(getString(R.string.key_pref_num_notifications), 0);
+			if (newNotifications > 0){
+				adapter.fuzzyUpdate(getString(R.string.notifications),
+					Integer.toString(newNotifications) + " " + getString(R.string.notifications));
 			}
 			else {
-				int i = adapter.getPosition(getString(R.string.notifications));
-				//If we're not already showing the notifications message
-				if (i == -1){
-					adapter.remove(getString(R.string.new_notifications));
-					adapter.insert(getString(R.string.notifications), 3);
-					adapter.notifyDataSetChanged();
-				}
+				adapter.fuzzyUpdate(getString(R.string.notifications), getString(R.string.notifications));
 			}
 		}
 		else {
 			adapter.remove(getString(R.string.notifications));
-			adapter.notifyDataSetChanged();
 		}
+		adapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -172,23 +161,12 @@ public class NavigationDrawerFragment extends Fragment {
 	private void updateSubscriptions(SharedPreferences preferences){
 		boolean newSubscriptions = preferences.getBoolean(getString(R.string.key_pref_new_subscriptions), false);
 		if (newSubscriptions){
-			int i = adapter.getPosition(getString(R.string.new_subscriptions));
-			//If we're not already showing the new subscriptions message show it
-			if (i == -1){
-				adapter.remove(getString(R.string.subscriptions));
-				adapter.insert(getString(R.string.new_subscriptions), 2);
-				adapter.notifyDataSetChanged();
-			}
+			adapter.fuzzyUpdate(getString(R.string.subscriptions), getString(R.string.new_subscriptions));
 		}
 		else {
-			int i = adapter.getPosition(getString(R.string.subscriptions));
-			//If we're not already showing the notifications message show it
-			if (i == -1){
-				adapter.remove(getString(R.string.new_subscriptions));
-				adapter.insert(getString(R.string.subscriptions), 2);
-				adapter.notifyDataSetChanged();
-			}
+			adapter.fuzzyUpdate(getString(R.string.subscriptions), getString(R.string.subscriptions));
 		}
+		adapter.notifyDataSetChanged();
 	}
 
 	public boolean isDrawerOpen(){

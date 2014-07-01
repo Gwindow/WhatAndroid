@@ -54,8 +54,8 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 				.apply();
 			if (MySoup.isNotificationsEnabled()){
 				preferences.edit()
-					.putBoolean(context.getString(R.string.key_pref_new_notifications),
-						MySoup.getIndex().getResponse().getNotifications().hasTorrentNotifications())
+					.putInt(context.getString(R.string.key_pref_num_notifications),
+						MySoup.getIndex().getResponse().getNotifications().getTorrentNotifications().intValue())
 					.apply();
 			}
 			preferences.edit()
