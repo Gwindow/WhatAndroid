@@ -1,12 +1,15 @@
 package what.whatandroid.subscriptions;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +18,7 @@ import java.util.TreeMap;
 
 import api.subscriptions.ForumThread;
 import api.subscriptions.Subscriptions;
+import api.util.Tuple;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewForumCallbacks;
 
@@ -22,7 +26,7 @@ import what.whatandroid.callbacks.ViewForumCallbacks;
  * Adapter for displaying the list of subscriptions,
  * grouped by forum category
  */
-public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
+public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnItemClickListener, View.OnClickListener {
 	private final int VIEW_HEADER = 0, VIEW_ITEM = 1;
 
 	/**
@@ -38,10 +42,18 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 	 */
 	private final ViewForumCallbacks viewForum;
 	private final LayoutInflater inflater;
+	private final Context context;
+	/**
+	 * We also need the no content notice to show it if all the items are
+	 * removed from the list
+	 */
+	private final TextView noContent;
 
-	public SubscriptionsAdapter(Context context){
+	public SubscriptionsAdapter(Context context, TextView noContent){
 		threads = new TreeMap<String, List<ForumThread>>();
 		categories = new ArrayList<String>();
+		this.context = context;
+		this.noContent = noContent;
 		inflater = LayoutInflater.from(context);
 		try {
 			viewForum = (ViewForumCallbacks) context;
@@ -56,11 +68,13 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 	 */
 	public void addSubscriptions(Subscriptions subscriptions){
 		Map<String, List<ForumThread>> groups = subscriptions.groupThreadsBySection();
-		threads.putAll(groups);
 		//Update the category listing
 		categories.clear();
-		for (Map.Entry<String, List<ForumThread>> e : threads.entrySet()){
-			categories.add(e.getKey());
+		for (Map.Entry<String, List<ForumThread>> e : groups.entrySet()){
+			if (!e.getValue().isEmpty()){
+				categories.add(e.getKey());
+				threads.put(e.getKey(), e.getValue());
+			}
 		}
 	}
 
@@ -96,34 +110,24 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 			holder = (ItemViewHolder) convertView.getTag();
 		}
 		else {
-			convertView = inflater.inflate(R.layout.list_forum_category, parent, false);
+			convertView = inflater.inflate(R.layout.list_subscription, parent, false);
 			holder = new ItemViewHolder();
-			holder.name = (TextView) convertView.findViewById(R.id.category);
+			holder.name = (TextView) convertView.findViewById(R.id.title);
+			holder.unsubscribe = (ImageButton) convertView.findViewById(R.id.unsubscribe);
 			convertView.setTag(holder);
 		}
 		ForumThread thread = (ForumThread) getItem(position);
 		holder.name.setText(thread.getThreadTitle());
-		holder.name.setTextColor(0xffff4444);
+		holder.unsubscribe.setOnClickListener(this);
+		holder.unsubscribe.setTag(position);
 		return convertView;
 	}
 
 	@Override
 	public Object getItem(int position){
-		int category = 0, thread, p = position;
-		while (true){
-			int listLen = threads.get(categories.get(category)).size();
-			//If we're in the block for the current category
-			if (p - 1 - listLen < 0){
-				thread = p - 1;
-				break;
-			}
-			else {
-				++category;
-				p -= 1 + listLen;
-			}
-		}
-		return p == 0 ? categories.get(category)
-			: threads.get(categories.get(category)).get(thread);
+		Tuple<Integer, Integer> indices = getIndices(position);
+		return indices.getB() == null ? categories.get(indices.getA())
+			: threads.get(categories.get(indices.getA())).get(indices.getB());
 	}
 
 	@Override
@@ -180,11 +184,72 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 		viewForum.viewThread(thread.getThreadId().intValue(), thread.getPostId().intValue());
 	}
 
+	@Override
+	public void onClick(View v){
+		Integer position = (Integer) v.getTag();
+		new UnsubscribeTask().execute((ForumThread) getItem(position));
+		//Also remove the item from the displayed data
+		Tuple<Integer, Integer> indices = getIndices(position);
+		List<ForumThread> t = threads.get(categories.get(indices.getA()));
+		t.remove(indices.getB().intValue());
+		//If that was the only item in the category then also remove the category
+		if (t.isEmpty()){
+			threads.remove(categories.get(indices.getA()));
+			categories.remove(indices.getA().intValue());
+		}
+		notifyDataSetChanged();
+		if (getCount() == 0){
+			noContent.setVisibility(View.VISIBLE);
+		}
+	}
+
+	/**
+	 * Get the category and thread indices for the element at some position,
+	 * if the element is a header then the thread index will be null
+	 *
+	 * @return { category index, thread index }
+	 */
+	private Tuple<Integer, Integer> getIndices(int position){
+		int category = 0, thread, p = position;
+		while (true){
+			int listLen = threads.get(categories.get(category)).size();
+			//If we're in the block for the current category
+			if (p - 1 - listLen < 0){
+				thread = p - 1;
+				break;
+			}
+			else {
+				++category;
+				p -= 1 + listLen;
+			}
+		}
+		return p == 0 ? new Tuple<Integer, Integer>(category, null)
+			: new Tuple<Integer, Integer>(category, thread);
+	}
+
 	private static class HeaderViewHolder {
 		public TextView name;
 	}
 
 	private static class ItemViewHolder {
 		public TextView name;
+		public ImageButton unsubscribe;
+	}
+
+	/**
+	 * Task used to launch an async request to unsubscribe from some forum thread
+	 */
+	private class UnsubscribeTask extends AsyncTask<ForumThread, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(ForumThread... params){
+			return api.forum.thread.ForumThread.unsubscribe(params[0].getThreadId().intValue());
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status){
+			if (!status){
+				Toast.makeText(context, "Could not unsubscribe from thread", Toast.LENGTH_LONG).show();
+			}
+		}
 	}
 }

@@ -64,7 +64,7 @@ public class SubscriptionsFragment extends Fragment implements OnLoggedInCallbac
 		ListView list = (ListView) view.findViewById(R.id.list);
 		loadingIndicator = (ProgressBar) view.findViewById(R.id.loading_indicator);
 		noContent = (TextView) view.findViewById(R.id.no_content_notice);
-		adapter = new SubscriptionsAdapter(getActivity());
+		adapter = new SubscriptionsAdapter(getActivity(), noContent);
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(adapter);
 		noContent.setText("No subscriptions");

@@ -1,7 +1,9 @@
 package what.whatandroid.subscriptions;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 
 import api.soup.MySoup;
@@ -44,6 +46,10 @@ public class SubscriptionsActivity extends LoggedInActivity implements ViewForum
 			loginListener = f;
 			fm.beginTransaction().add(R.id.container, f).commit();
 		}
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		preferences.edit()
+			.putBoolean(getString(R.string.key_pref_new_subscriptions), false)
+			.apply();
 	}
 
 	@Override
