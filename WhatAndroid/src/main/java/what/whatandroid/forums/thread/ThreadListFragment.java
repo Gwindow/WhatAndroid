@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import api.forum.thread.ForumThread;
 import api.soup.MySoup;
 import what.whatandroid.R;
@@ -96,7 +97,9 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 	public void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
 		//If we were looking at some posts save the position of the one we're looking at so we can jump back to it
-		outState.putParcelable(SCROLL_STATE, list.onSaveInstanceState());
+		if (list != null){
+			outState.putParcelable(SCROLL_STATE, list.onSaveInstanceState());
+		}
 	}
 
 	/**
