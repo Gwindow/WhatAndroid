@@ -1,6 +1,7 @@
 package what.whatandroid.notifications;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import api.notifications.Notifications;
 import api.soup.MySoup;
 import what.whatandroid.R;
@@ -21,7 +23,10 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
  * Displays some page of the users notifications
  */
 public class NotificationsListFragment extends Fragment implements OnLoggedInCallback, LoaderManager.LoaderCallbacks<Notifications> {
-	public static final String PAGE = "what.whatandroid.NOTIFICATIONS_PAGE";
+	public static final String PAGE = "what.whatandroid.NOTIFICATIONS_PAGE",
+		SCROLL_STATE = "what.whatandroid.notificationslistfragment.SCROLL_STATE";
+	private ListView list;
+	private Parcelable scrollState;
 	private NotificationsListAdapter adapter;
 	private ProgressBar loadingIndicator;
 	private TextView noContent;
@@ -40,9 +45,17 @@ public class NotificationsListFragment extends Fragment implements OnLoggedInCal
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null){
+			scrollState = savedInstanceState.getParcelable(SCROLL_STATE);
+		}
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
-		ListView list = (ListView)view.findViewById(R.id.list);
+		list = (ListView) view.findViewById(R.id.list);
 		noContent = (TextView)view.findViewById(R.id.no_content_notice);
 		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
 		adapter = new NotificationsListAdapter(getActivity());
@@ -53,6 +66,14 @@ public class NotificationsListFragment extends Fragment implements OnLoggedInCal
 			getLoaderManager().initLoader(0, getArguments(), this);
 		}
 		return view;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		if (list != null){
+			outState.putParcelable(SCROLL_STATE, list.onSaveInstanceState());
+		}
 	}
 
 	public void setLoadingListener(LoadingListener<Notifications> listener){
@@ -87,6 +108,9 @@ public class NotificationsListFragment extends Fragment implements OnLoggedInCal
 			adapter.notifyDataSetChanged();
 			if (data.getResponse().getResults().isEmpty()){
 				noContent.setVisibility(View.VISIBLE);
+			}
+			else if (scrollState != null){
+				list.onRestoreInstanceState(scrollState);
 			}
 			if (listener != null){
 				listener.onLoadingComplete(data);
