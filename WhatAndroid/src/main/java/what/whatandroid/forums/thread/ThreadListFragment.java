@@ -26,12 +26,13 @@ import what.whatandroid.forums.ForumActivity;
 public class ThreadListFragment extends Fragment implements OnLoggedInCallback, LoaderManager.LoaderCallbacks<ForumThread> {
 	//Used to save/restore the scroll position of the list view so we can return to the post we were viewing
 	private static final String SCROLL_STATE = "what.whatandroid.threadlistfragment.SCROLL_STATE";
+	private static final int LAST_POST = -2, NO_POST = -1;
 
 	private LoadingListener<ForumThread> listener;
 	private ListView list;
 	private ProgressBar loadingIndicator;
 	private CommentsAdapter adapter;
-	private int postId = -1;
+	private int postId = NO_POST;
 	private Parcelable scrollState;
 
 	/**
@@ -76,7 +77,7 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 			scrollState = savedInstanceState.getParcelable(SCROLL_STATE);
 		}
 		else {
-			postId = getArguments().getInt(ForumActivity.POST_ID, -1);
+			postId = getArguments().getInt(ForumActivity.POST_ID, NO_POST);
 		}
 	}
 
@@ -109,6 +110,15 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 		this.listener = listener;
 	}
 
+	/**
+	 * Tell the fragment that it should reload the list of posts being shown
+	 */
+	public void reloadPosts(){
+		postId = LAST_POST;
+		getLoaderManager().destroyLoader(0);
+		getLoaderManager().initLoader(0, getArguments(), this);
+	}
+
 	@Override
 	public void onLoggedIn(){
 		if (isAdded()){
@@ -139,8 +149,13 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 				if (scrollState != null){
 					list.onRestoreInstanceState(scrollState);
 				}
+				//If we're jumping to the last post
+				if (postId == LAST_POST){
+					list.setSelection(list.getCount() - 1);
+					postId = NO_POST;
+				}
 				//If we're jumping to a post id and it's in the range of posts for this page find it and select it
-				else if (postId != -1 && postId >= adapter.getItem(0).getPostId()
+				else if (postId != NO_POST && postId >= adapter.getItem(0).getPostId()
 					&& postId <= adapter.getItem(adapter.getCount() - 1).getPostId())
 				{
 					int select = 0;

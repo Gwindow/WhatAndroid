@@ -3,6 +3,7 @@ package what.whatandroid.forums.thread;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
+
 import api.forum.thread.ForumThread;
 import what.whatandroid.forums.ForumActivity;
 
@@ -57,5 +58,11 @@ public class ThreadAsyncLoader extends AsyncTaskLoader<ForumThread> {
 		else {
 			forceLoad();
 		}
+	}
+
+	@Override
+	protected void onReset(){
+		super.onReset();
+		thread = null;
 	}
 }

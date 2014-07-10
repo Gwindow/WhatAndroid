@@ -35,6 +35,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 
 	private SetTitleCallback setTitle;
 	private ThreadPagerAdapter pagerAdapter;
+	private ViewPager viewPager;
 	private int thread, pages = 0, postId = -1;
 	private String threadName;
 	private boolean subscribed = false;
@@ -122,7 +123,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_view_pager_strip, container, false);
-		ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
+		viewPager = (ViewPager) view.findViewById(R.id.pager);
 		pagerAdapter = new ThreadPagerAdapter(getChildFragmentManager(), pages, thread, postId);
 		viewPager.setAdapter(pagerAdapter);
 		pagerAdapter.setLoadingListener(this);
@@ -194,19 +195,14 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 		if (requestCode == 0){
 			switch (resultCode){
 				case ReplyDialogFragment.DISCARD:
-					System.out.println("Discard draft");
 					replyDraft = null;
 					break;
 				case ReplyDialogFragment.SAVE_DRAFT:
-					System.out.println("Save draft");
 					replyDraft = data.getStringExtra(ReplyDialogFragment.DRAFT);
-					System.out.println("Saving draft " + replyDraft);
 					break;
 				case ReplyDialogFragment.POST_REPLY:
-					System.out.println("Post reply");
 					replyDraft = null;
 					String reply = data.getStringExtra(ReplyDialogFragment.DRAFT);
-					System.out.println("Posting reply " + reply);
 					new PostReplyTask().execute(reply);
 					break;
 				default:
@@ -320,7 +316,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 				Toast.makeText(getActivity(), "Could not post reply", Toast.LENGTH_LONG).show();
 			}
 			else {
-				//Go to and load the last page of the adapter?
+				pagerAdapter.getNewPosts(viewPager);
 			}
 		}
 	}
