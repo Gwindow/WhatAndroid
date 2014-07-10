@@ -116,8 +116,10 @@ public class NavigationDrawerFragment extends Fragment {
 	@Override
 	public void onResume(){
 		super.onResume();
-		//Also update the notifications information we're showing
-		updateNotifications(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+		//Also update the notifications information we're showing if we're logged in
+		if (MySoup.isLoggedIn()){
+			updateNotifications(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+		}
 	}
 
 	/**

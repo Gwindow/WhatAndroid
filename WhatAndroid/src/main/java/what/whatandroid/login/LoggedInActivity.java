@@ -23,7 +23,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import api.soup.MySoup;
-import what.whatandroid.NavigationDrawerFragment;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
@@ -31,6 +30,7 @@ import what.whatandroid.callbacks.ShowHiddenTagListener;
 import what.whatandroid.comments.dialogs.HiddenTextDialog;
 import what.whatandroid.errors.ErrorLogger;
 import what.whatandroid.errors.ErrorReporterService;
+import what.whatandroid.navdrawer.NavigationDrawerFragment;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.settings.SettingsFragment;
 import what.whatandroid.updater.UpdateBroadcastReceiver;
@@ -165,6 +165,7 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 		else if (!calledLogin){
 			calledLogin = true;
 			onLoggedIn();
+			navDrawer.updateNotifications(PreferenceManager.getDefaultSharedPreferences(this));
 		}
 	}
 
