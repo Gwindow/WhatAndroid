@@ -6,11 +6,18 @@
         tools:context=".WhatAndroid">
 
     <item
+            android:id="@+id/action_reply"
+            android:icon="@drawable/ic_action_reply"
+            android:title="@string/reply"
+            android:orderInCategory="0"
+            android:showAsAction="ifRoom"/>
+
+    <item
             android:id="@+id/action_subscription"
             android:icon="@drawable/ic_eye_off"
             android:title="@string/toggle_subscription"
-            android:orderInCategory="0"
-            android:showAsAction="always"/>
+            android:orderInCategory="5"
+            android:showAsAction="ifRoom"/>
 
     <!-- There aren't a lot of poll threads so we hide this initially and show if there is a poll -->
     <item
@@ -19,6 +26,6 @@
             android:title="@string/view_poll"
             android:orderInCategory="10"
             android:visible="false"
-            android:showAsAction="always"/>
+            android:showAsAction="ifRoom"/>
 
 </menu>

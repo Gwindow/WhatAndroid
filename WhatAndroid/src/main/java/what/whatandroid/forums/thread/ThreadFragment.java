@@ -1,9 +1,11 @@
 package what.whatandroid.forums.thread;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,6 +44,10 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	 * it without having to reload the page
 	 */
 	private Poll poll;
+	/**
+	 * The current draft of the reply we might be writing for this thread
+	 */
+	private String replyDraft;
 
 	/**
 	 * Create a new thread fragment showing the first page of the thread
@@ -79,7 +85,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			setTitle = (SetTitleCallback)activity;
+			setTitle = (SetTitleCallback) activity;
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(activity.toString() + " must implement SetTitleCallback");
@@ -94,8 +100,9 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 		if (savedInstanceState != null){
 			pages = savedInstanceState.getInt(PAGES);
 			threadName = savedInstanceState.getString(THREAD_NAME);
+			replyDraft = savedInstanceState.getString(ReplyDialogFragment.DRAFT);
 			if (savedInstanceState.containsKey(PollDialog.POLL)){
-				poll = (Poll)MySon.toObjectFromString(savedInstanceState.getString(PollDialog.POLL), Poll.class);
+				poll = (Poll) MySon.toObjectFromString(savedInstanceState.getString(PollDialog.POLL), Poll.class);
 			}
 		}
 		else {
@@ -115,7 +122,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_view_pager_strip, container, false);
-		ViewPager viewPager = (ViewPager)view.findViewById(R.id.pager);
+		ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
 		pagerAdapter = new ThreadPagerAdapter(getChildFragmentManager(), pages, thread, postId);
 		viewPager.setAdapter(pagerAdapter);
 		pagerAdapter.setLoadingListener(this);
@@ -129,6 +136,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	public void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
 		outState.putInt(PAGES, pages);
+		outState.putString(ReplyDialogFragment.DRAFT, replyDraft);
 		if (threadName != null){
 			outState.putString(THREAD_NAME, threadName);
 			if (poll != null){
@@ -147,7 +155,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 
 	@Override
 	public void onLoadingComplete(ForumThread data){
-		if (poll == null) {
+		if (poll == null){
 			poll = data.getResponse().getPoll();
 		}
 		threadName = data.getResponse().getThreadTitle();
@@ -159,7 +167,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 
 	private void updateMenus(){
 		if (viewPoll != null && toggleSubscription != null){
-			if (poll != null) {
+			if (poll != null){
 				viewPoll.setVisible(true);
 			}
 			if (subscribed){
@@ -174,9 +182,36 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	/**
 	 * Update the cached poll for the thread
 	 */
-	public void updatePoll(int vote) {
-		if (poll != null) {
+	public void updatePoll(int vote){
+		if (poll != null){
 			poll.applyVote(vote);
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 0){
+			switch (resultCode){
+				case ReplyDialogFragment.DISCARD:
+					System.out.println("Discard draft");
+					replyDraft = null;
+					break;
+				case ReplyDialogFragment.SAVE_DRAFT:
+					System.out.println("Save draft");
+					replyDraft = data.getStringExtra(ReplyDialogFragment.DRAFT);
+					System.out.println("Saving draft " + replyDraft);
+					break;
+				case ReplyDialogFragment.POST_REPLY:
+					System.out.println("Post reply");
+					replyDraft = null;
+					String reply = data.getStringExtra(ReplyDialogFragment.DRAFT);
+					System.out.println("Posting reply " + reply);
+					new PostReplyTask().execute(reply);
+					break;
+				default:
+					break;
+			}
 		}
 	}
 
@@ -190,14 +225,38 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
-		if (item.getItemId() == R.id.action_view_poll){
-			PollDialog pollDialog = PollDialog.newInstance(poll, thread);
-			pollDialog.show(getFragmentManager(), "dialog");
-		}
-		else if (item.getItemId() == R.id.action_subscription){
-			new ToggleSubscriptionsTask().execute();
+		switch (item.getItemId()){
+			//Show the reply dialog so the user can write their post
+			case R.id.action_reply:
+				showReplyDialog();
+				break;
+			//Show the poll dialog to either vote or view results
+			case R.id.action_view_poll:
+				PollDialog pollDialog = PollDialog.newInstance(poll, thread);
+				pollDialog.show(getFragmentManager(), "dialog");
+				break;
+			case R.id.action_subscription:
+				new ToggleSubscriptionsTask().execute();
+				break;
+			default:
+				break;
 		}
 		return false;
+	}
+
+	/**
+	 * Display the compose reply dialog so the user can write their response
+	 */
+	private void showReplyDialog(){
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+		if (prev != null){
+			ft.remove(prev);
+		}
+		ft.addToBackStack(null);
+		ReplyDialogFragment reply = ReplyDialogFragment.newInstance(replyDraft);
+		reply.setTargetFragment(this, 0);
+		reply.show(ft, "dialog");
 	}
 
 	/**
@@ -246,6 +305,23 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 				subscribed = !subscribed;
 			}
 			updateMenus();
+		}
+	}
+
+	private class PostReplyTask extends AsyncTask<String, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(String... params){
+			return ForumThread.postReply(thread, params[0], false);
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status){
+			if (!status){
+				Toast.makeText(getActivity(), "Could not post reply", Toast.LENGTH_LONG).show();
+			}
+			else {
+				//Go to and load the last page of the adapter?
+			}
 		}
 	}
 }
