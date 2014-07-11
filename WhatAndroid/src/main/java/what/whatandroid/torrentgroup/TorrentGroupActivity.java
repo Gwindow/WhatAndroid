@@ -2,6 +2,7 @@ package what.whatandroid.torrentgroup;
 
 import android.app.DownloadManager;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -215,16 +216,13 @@ public class TorrentGroupActivity extends LoggedInActivity
 	}
 
 	@Override
-	public void downloadToPhone(String link){
-		//TODO We need a BroadcastReceiver for DownloadManager.ACTION_DOWNLOAD_COMPLETE to push
-		//a notification that when clicked will open the downloaded file
+	public void downloadToPhone(String link, String title){
+		//Register our listener for downloading torrents to the phone
+		getApplicationContext().registerReceiver(new DownloadCompleteReceiver(), new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 		DownloadManager dm = (DownloadManager)getSystemService(DOWNLOAD_SERVICE);
 		DownloadManager.Request request = new DownloadManager.Request(Uri.parse(link));
+		request.setTitle(title);
 		dm.enqueue(request);
-		/*
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-		startActivity(intent);
-		*/
 	}
 
 	@Override
