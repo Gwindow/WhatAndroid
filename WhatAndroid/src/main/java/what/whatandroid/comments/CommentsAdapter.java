@@ -1,21 +1,23 @@
 package what.whatandroid.comments;
 
 import android.content.Context;
-import android.os.Parcelable;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import api.comments.SimpleComment;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.Date;
+
+import api.comments.SimpleComment;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.AddQuoteCallback;
 import what.whatandroid.callbacks.ViewUserCallbacks;
@@ -24,13 +26,10 @@ import what.whatandroid.imgloader.ImageLoadFailTracker;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
-import java.util.Date;
-import java.util.List;
-
 /**
  * Adapter for displaying a list of user comments
  */
-public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements AdapterView.OnItemClickListener {
+public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements View.OnClickListener {
 	private final LayoutInflater inflater;
 	/**
 	 * Used to hide HTML images by simply returning transparent drawables
@@ -96,6 +95,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements Adap
 			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer,
 				imageFailTracker, R.drawable.no_avatar);
 			holder.userClickListener = new UserClickListener();
+			holder.quote = (ImageButton) convertView.findViewById(R.id.reply_quote);
 			View header = convertView.findViewById(R.id.user_header);
 			header.setOnClickListener(holder.userClickListener);
 			convertView.setTag(holder);
@@ -128,13 +128,18 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements Adap
 			holder.image.setVisibility(View.GONE);
 			holder.spinner.setVisibility(View.GONE);
 		}
+		if (addQuote != null){
+			holder.quote.setVisibility(View.VISIBLE);
+			holder.quote.setTag(position);
+			holder.quote.setOnClickListener(this);
+		}
 		return convertView;
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-		if (addQuote != null){
-			addQuote.quote(getItem(position).getQuote());
+	public void onClick(View v){
+		if (v.getId() == R.id.reply_quote && addQuote != null){
+			addQuote.quote(getItem((Integer) v.getTag()).getQuote());
 		}
 	}
 
@@ -145,6 +150,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements Adap
 		public ProgressBar spinner;
 		public ImageLoadingListener listener;
 		public UserClickListener userClickListener;
+		public ImageButton quote;
 	}
 
 	private class UserClickListener implements View.OnClickListener {

@@ -79,7 +79,6 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 			Intent intent = new Intent();
 			intent.putExtra(DRAFT, postText.getText().toString());
 			getTargetFragment().onActivityResult(0, SAVE_DRAFT, intent);
-			System.out.println("Draft saved (dialog)");
 			Toast.makeText(getActivity(), "Draft saved", Toast.LENGTH_SHORT).show();
 		}
 	}

@@ -84,11 +84,10 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
-		list = (ListView)view.findViewById(R.id.list);
-		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
+		list = (ListView) view.findViewById(R.id.list);
+		loadingIndicator = (ProgressBar) view.findViewById(R.id.loading_indicator);
 		adapter = new CommentsAdapter(getActivity());
 		list.setAdapter(adapter);
-		list.setOnItemClickListener(adapter);
 		if (MySoup.isLoggedIn()){
 			getLoaderManager().initLoader(0, getArguments(), this);
 		}
@@ -157,12 +156,12 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 				}
 				//If we're jumping to a post id and it's in the range of posts for this page find it and select it
 				else if (postId != NO_POST && postId >= adapter.getItem(0).getPostId()
-					&& postId <= adapter.getItem(adapter.getCount() - 1).getPostId())
-				{
+					&& postId <= adapter.getItem(adapter.getCount() - 1).getPostId()){
 					int select = 0;
 					//Run through the posts and find the index corresponding to the post we want to view
-					for (; postId != adapter.getItem(select).getPostId() && select < adapter.getCount(); ++select)
+					for (; postId != adapter.getItem(select).getPostId() && select < adapter.getCount(); ++select){
 						;
+					}
 					list.setSelection(select);
 				}
 			}
