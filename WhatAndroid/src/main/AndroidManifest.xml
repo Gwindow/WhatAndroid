@@ -118,7 +118,24 @@
                 android:label="@string/notifications"/>
         <activity
                 android:name=".forums.ForumActivity"
-                android:label="@string/forums"/>
+                android:label="@string/forums">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                        android:scheme="http"
+                        android:host="what.cd"
+                        android:pathPrefix="/forums"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                        android:scheme="https"
+                        android:host="what.cd"
+                        android:pathPrefix="/forums"/>
+            </intent-filter>
+        </activity>
         <activity
                 android:name=".subscriptions.SubscriptionsActivity"
                 android:label="@string/subscriptions"/>

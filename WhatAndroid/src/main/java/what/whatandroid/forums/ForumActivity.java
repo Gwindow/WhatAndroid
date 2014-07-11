@@ -8,6 +8,9 @@ import android.support.v4.app.FragmentManager;
 import android.view.Window;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import api.forum.thread.Poll;
 import api.soup.MySoup;
 import what.whatandroid.R;
@@ -37,6 +40,13 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 		THREAD_ID = "what.whatandroid.forums.THREAD_ID",
 		PAGE = "what.whatandroid.forums.PAGE",
 		POST_ID = "what.whatandroid.forums.POST_ID";
+	/**
+	 * Matchers to match against forum url links
+	 */
+	private static final Pattern forumId = Pattern.compile(".*forumid=(\\d+).*"),
+		threadId = Pattern.compile(".*threadid=(\\d+).*"),
+		page = Pattern.compile(".*page=(\\d+).*"),
+		postId = Pattern.compile(".*postid=(\\d+).*");
 
 	/**
 	 * Logged in callback to the fragment being shown so we can let it know
@@ -60,8 +70,12 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 			//Determine what part of the forums we want to view, eg. jump to a post, thread or forum
 			Fragment f;
 			Intent intent = getIntent();
+			//If we're coming from some link to the forums parse it and return the corresponding fragment
+			if (intent.getScheme() != null && intent.getDataString() != null && intent.getDataString().contains("what.cd")){
+				f = parseLink(intent.getDataString());
+			}
 			//Jumping to a post in some thread
-			if (intent.hasExtra(THREAD_ID) && intent.hasExtra(POST_ID)){
+			else if (intent.hasExtra(THREAD_ID) && intent.hasExtra(POST_ID)){
 				f = ThreadFragment.newInstance(intent.getIntExtra(THREAD_ID, 0), intent.getIntExtra(POST_ID, 0));
 			}
 			//Jumping to a thread
@@ -79,6 +93,31 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 			loginListener = (OnLoggedInCallback)f;
 			fm.beginTransaction().add(R.id.container, f).commit();
 		}
+	}
+
+	/**
+	 * Parse the forum link url for the appropriate forum fragment to display and return it
+	 * Will return the categories view if we can't parse where to go or don't support
+	 * it (eg. forum search)
+	 */
+	private Fragment parseLink(String url){
+		//Handle forum links
+		Matcher m = forumId.matcher(url);
+		if (m.find()){
+			return ForumFragment.newInstance(Integer.parseInt(m.group(1)));
+		}
+		//Handle thread links
+		m = threadId.matcher(url);
+		if (m.find()){
+			int thread = Integer.parseInt(m.group(1));
+			m = postId.matcher(url);
+			//If we're also linking to a post within the thread
+			if (m.find()){
+				return ThreadFragment.newInstance(thread, Integer.parseInt(m.group(1)));
+			}
+			return ThreadFragment.newInstance(thread);
+		}
+		return new ForumCategoriesFragment();
 	}
 
 	@Override
