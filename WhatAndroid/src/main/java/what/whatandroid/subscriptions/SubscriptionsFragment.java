@@ -133,6 +133,7 @@ public class SubscriptionsFragment extends Fragment implements OnLoggedInCallbac
 			showAll = !showAll;
 			Bundle args = new Bundle();
 			args.putBoolean(SHOW_ALL, showAll);
+			noContent.setVisibility(View.GONE);
 			adapter.clear();
 			getLoaderManager().restartLoader(0, args, this);
 			updateMenu();
