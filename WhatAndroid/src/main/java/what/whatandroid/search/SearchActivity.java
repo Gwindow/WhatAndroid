@@ -18,6 +18,7 @@ import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.request.RequestActivity;
+import what.whatandroid.subscriptions.SubscriptionsActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 /**
@@ -153,6 +154,10 @@ public class SearchActivity extends LoggedInActivity
 		}
 		else if (selection.contains(getString(R.string.notifications))){
 			Intent intent = new Intent(this, NotificationsActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.contains(getString(R.string.subscriptions))){
+			Intent intent = new Intent(this, SubscriptionsActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.torrents)) && type != TORRENT){

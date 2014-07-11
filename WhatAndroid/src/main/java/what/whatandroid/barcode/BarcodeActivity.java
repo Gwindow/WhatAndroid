@@ -35,6 +35,7 @@ import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.settings.SettingsFragment;
+import what.whatandroid.subscriptions.SubscriptionsActivity;
 
 /**
  * Activity for receiving intents for loading barcodes, viewing scanned barcodes
@@ -204,6 +205,10 @@ public class BarcodeActivity extends FragmentActivity implements NavigationDrawe
 		}
 		else if (selection.contains(getString(R.string.notifications))){
 			Intent intent = new Intent(this, NotificationsActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.contains(getString(R.string.subscriptions))){
+			Intent intent = new Intent(this, SubscriptionsActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
