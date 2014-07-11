@@ -88,6 +88,7 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
 		adapter = new CommentsAdapter(getActivity());
 		list.setAdapter(adapter);
+		list.setOnItemClickListener(adapter);
 		if (MySoup.isLoggedIn()){
 			getLoaderManager().initLoader(0, getArguments(), this);
 		}

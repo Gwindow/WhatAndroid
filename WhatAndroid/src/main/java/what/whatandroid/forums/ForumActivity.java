@@ -14,6 +14,7 @@ import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.bookmarks.BookmarksActivity;
+import what.whatandroid.callbacks.AddQuoteCallback;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.ViewForumCallbacks;
 import what.whatandroid.callbacks.ViewUserCallbacks;
@@ -29,7 +30,8 @@ import what.whatandroid.search.SearchActivity;
 /**
  * Activity for viewing the forums
  */
-public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks, ViewForumCallbacks, PollDialog.PollDialogListener {
+public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks,
+	ViewForumCallbacks, PollDialog.PollDialogListener, AddQuoteCallback {
 	public static final String FORUM_ID = "what.whatandroid.forums.FORUM_ID",
 		THREAD_ID = "what.whatandroid.forums.THREAD_ID",
 		PAGE = "what.whatandroid.forums.PAGE",
@@ -139,6 +141,15 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 		ThreadFragment fragment = (ThreadFragment)getSupportFragmentManager().findFragmentById(R.id.container);
 		if (fragment != null){
 			fragment.updatePoll(vote);
+		}
+	}
+
+	@Override
+	public void quote(String quote){
+		//Notify the thread fragment about the quote so it can be added to the draft
+		ThreadFragment fragment = (ThreadFragment)getSupportFragmentManager().findFragmentById(R.id.container);
+		if (fragment != null){
+			fragment.quote(quote);
 		}
 	}
 

@@ -2,7 +2,9 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:descendantFocusability="blocksDescendants"
+                android:paddingBottom="8dp">
 
     <LinearLayout
             android:id="@+id/user_header"
@@ -33,8 +35,8 @@
 
     <RelativeLayout
             android:id="@+id/art_container"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
             android:layout_below="@id/user_header"
             android:layout_alignParentLeft="true"
             android:padding="8dp">

@@ -20,6 +20,7 @@ import api.forum.thread.Poll;
 import api.son.MySon;
 import api.soup.MySoup;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.AddQuoteCallback;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
@@ -29,7 +30,9 @@ import what.whatandroid.forums.poll.PollDialog;
 /**
  * Displays a paged view of posts in a thread
  */
-public class ThreadFragment extends Fragment implements OnLoggedInCallback, LoadingListener<ForumThread> {
+public class ThreadFragment extends Fragment implements OnLoggedInCallback,
+	LoadingListener<ForumThread>, AddQuoteCallback {
+
 	private static final String THREAD_NAME = "what.whatandroid.forums.THREAD_NAME",
 		PAGES = "what.whatandroid.forums.PAGES";
 
@@ -48,7 +51,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	/**
 	 * The current draft of the reply we might be writing for this thread
 	 */
-	private String replyDraft;
+	private String replyDraft = "";
 
 	/**
 	 * Create a new thread fragment showing the first page of the thread
@@ -101,7 +104,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 		if (savedInstanceState != null){
 			pages = savedInstanceState.getInt(PAGES);
 			threadName = savedInstanceState.getString(THREAD_NAME);
-			replyDraft = savedInstanceState.getString(ReplyDialogFragment.DRAFT);
+			replyDraft = savedInstanceState.getString(ReplyDialogFragment.DRAFT, "");
 			if (savedInstanceState.containsKey(PollDialog.POLL)){
 				poll = (Poll) MySon.toObjectFromString(savedInstanceState.getString(PollDialog.POLL), Poll.class);
 			}
@@ -190,18 +193,24 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback, Load
 	}
 
 	@Override
+	public void quote(String quote){
+		replyDraft += quote;
+		showReplyDialog();
+	}
+
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == 0){
 			switch (resultCode){
 				case ReplyDialogFragment.DISCARD:
-					replyDraft = null;
+					replyDraft = "";
 					break;
 				case ReplyDialogFragment.SAVE_DRAFT:
 					replyDraft = data.getStringExtra(ReplyDialogFragment.DRAFT);
 					break;
 				case ReplyDialogFragment.POST_REPLY:
-					replyDraft = null;
+					replyDraft = "";
 					String reply = data.getStringExtra(ReplyDialogFragment.DRAFT);
 					new PostReplyTask().execute(reply);
 					break;

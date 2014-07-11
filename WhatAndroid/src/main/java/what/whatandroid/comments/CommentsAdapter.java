@@ -1,19 +1,23 @@
 package what.whatandroid.comments;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import api.comments.SimpleComment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.callbacks.AddQuoteCallback;
 import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.imgloader.HtmlImageHider;
 import what.whatandroid.imgloader.ImageLoadFailTracker;
@@ -26,20 +30,38 @@ import java.util.List;
 /**
  * Adapter for displaying a list of user comments
  */
-public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
+public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements AdapterView.OnItemClickListener {
 	private final LayoutInflater inflater;
+	/**
+	 * Used to hide HTML images by simply returning transparent drawables
+	 */
 	private final HtmlImageHider imageGetter;
-	private ViewUserCallbacks viewUser;
+	/**
+	 * Tracks which images failed to load so that we can skip trying to reload
+	 * them and just display the no-avatar icon
+	 */
 	private ImageLoadFailTracker imageFailTracker;
 	private boolean imagesEnabled;
+	/**
+	 * Callbacks to view a user when avatar/header is clicked
+	 */
+	private ViewUserCallbacks viewUser;
+	/**
+	 * Callback to notify that the user wants to quote some text
+	 * This is optional until posting is added to the other areas we show comments
+	 */
+	private AddQuoteCallback addQuote;
+	/**
+	 * Instance of the comment BBcode parser and formatter
+	 */
 	private WhatBBParser whatBBParser;
 
 	public CommentsAdapter(Context context){
 		super(context, R.layout.list_user_comment);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		imageGetter = new HtmlImageHider(context);
-		imagesEnabled = SettingsActivity.imagesEnabled(context);
 		imageFailTracker = new ImageLoadFailTracker();
+		imagesEnabled = SettingsActivity.imagesEnabled(context);
 		whatBBParser = new WhatBBParser();
 		try {
 			viewUser = (ViewUserCallbacks)context;
@@ -47,15 +69,13 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 		catch (ClassCastException e){
 			throw new ClassCastException(context.toString() + " must implement ViewUserCallbacks");
 		}
-	}
-
-	public CommentsAdapter(Context context, List<? extends SimpleComment> comments){
-		super(context, R.layout.list_user_comment);
-		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		imageGetter = new HtmlImageHider(context);
-		//Constructor doesn't take a ? extends type but add all does
-		addAll(comments);
-		notifyDataSetChanged();
+		//TODO: No error for now as replying and quoting is only in the forums at the moment
+		try {
+			addQuote = (AddQuoteCallback) context;
+		}
+		catch (ClassCastException e){
+			//Not an error at the moment
+		}
 	}
 
 	@Override
@@ -109,6 +129,13 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> {
 			holder.spinner.setVisibility(View.GONE);
 		}
 		return convertView;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+		if (addQuote != null){
+			addQuote.quote(getItem(position).getQuote());
+		}
 	}
 
 	private static class ViewHolder {

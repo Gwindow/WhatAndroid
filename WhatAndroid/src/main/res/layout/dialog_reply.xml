@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:inputType="textMultiLine"
+            android:inputType="text|textMultiLine|textCapSentences"
             android:scrollbars="vertical"
             android:scrollHorizontally="false"
             android:hint="@string/compose_hint"/>
