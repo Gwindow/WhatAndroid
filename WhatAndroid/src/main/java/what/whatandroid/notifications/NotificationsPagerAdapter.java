@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
+
 import api.notifications.Notifications;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.OnLoggedInCallback;
@@ -70,10 +71,10 @@ public class NotificationsPagerAdapter extends FragmentStatePagerAdapter impleme
 
 	public void clearNotifications(){
 		pages = 1;
-		notifyDataSetChanged();
 		for (int i = 0; i < fragments.size(); ++i){
 			fragments.valueAt(i).clearNotifications();
 		}
+		notifyDataSetChanged();
 	}
 
 	@Override

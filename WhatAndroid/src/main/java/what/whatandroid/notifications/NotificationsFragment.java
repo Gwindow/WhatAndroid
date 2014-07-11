@@ -4,8 +4,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
+
 import api.notifications.Notifications;
 import api.soup.MySoup;
 import what.whatandroid.R;
@@ -16,6 +22,7 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
  */
 public class NotificationsFragment extends Fragment implements OnLoggedInCallback {
 	private NotificationsPagerAdapter pagerAdapter;
+	private ViewPager viewPager;
 	private int pages;
 
 	public NotificationsFragment(){
@@ -35,7 +42,7 @@ public class NotificationsFragment extends Fragment implements OnLoggedInCallbac
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_view_pager_strip, container, false);
-		ViewPager viewPager = (ViewPager)view.findViewById(R.id.pager);
+		viewPager = (ViewPager)view.findViewById(R.id.pager);
 		pagerAdapter = new NotificationsPagerAdapter(getChildFragmentManager(), pages);
 		viewPager.setAdapter(pagerAdapter);
 		if (MySoup.isLoggedIn()){
@@ -58,6 +65,7 @@ public class NotificationsFragment extends Fragment implements OnLoggedInCallbac
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		if (item.getItemId() == R.id.clear){
+			viewPager.setCurrentItem(0);
 			pagerAdapter.clearNotifications();
 			new ClearNotificationsTask().execute();
 			return true;
