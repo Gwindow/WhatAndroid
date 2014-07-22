@@ -24,6 +24,7 @@ import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.forums.ForumActivity;
+import what.whatandroid.inbox.InboxActivity;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.search.SearchActivity;
@@ -52,7 +53,7 @@ public class ProfileActivity extends LoggedInActivity implements ViewTorrentCall
 		int id = intent.getIntExtra(USER_ID, MySoup.getUserId());
 		//If we're loading from a saved state then recover the fragment
 		if (savedInstanceState != null){
-			profileFragment = (ProfileFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+			profileFragment = (ProfileFragment)getSupportFragmentManager().findFragmentById(R.id.container);
 		}
 		else {
 			String terms = null;
@@ -146,7 +147,7 @@ public class ProfileActivity extends LoggedInActivity implements ViewTorrentCall
 		FragmentManager fm = getSupportFragmentManager();
 		if (fm.getBackStackEntryCount() > 0){
 			fm.popBackStackImmediate();
-			profileFragment = (ProfileFragment) fm.findFragmentById(R.id.container);
+			profileFragment = (ProfileFragment)fm.findFragmentById(R.id.container);
 			profileFragment.onLoggedIn();
 		}
 		else {
@@ -183,6 +184,10 @@ public class ProfileActivity extends LoggedInActivity implements ViewTorrentCall
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.bookmarks))){
 			Intent intent = new Intent(this, BookmarksActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.contains(getString(R.string.messages))){
+			Intent intent = new Intent(this, InboxActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.contains(getString(R.string.notifications))){

@@ -139,6 +139,9 @@
         <activity
                 android:name=".subscriptions.SubscriptionsActivity"
                 android:label="@string/subscriptions"/>
+        <activity
+                android:name=".inbox.InboxActivity"
+                android:label="@string/inbox"/>
 
         <service
                 android:name=".errors.ErrorReporterService"

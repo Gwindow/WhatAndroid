@@ -82,7 +82,7 @@ public class NavigationDrawerFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		listView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+		listView = (ListView)inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
@@ -94,9 +94,9 @@ public class NavigationDrawerFragment extends Fragment {
 			//getString(R.string.blog),
 			getString(R.string.profile),
 			getString(R.string.bookmarks),
-			//getString(R.string.inbox),
-			getString(R.string.notifications),
+			getString(R.string.messages),
 			getString(R.string.subscriptions),
+			getString(R.string.notifications),
 			getString(R.string.forums),
 			getString(R.string.torrents),
 			getString(R.string.artists),
@@ -262,7 +262,7 @@ public class NavigationDrawerFragment extends Fragment {
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try {
-			drawerCallbacks = (NavigationDrawerCallbacks) activity;
+			drawerCallbacks = (NavigationDrawerCallbacks)activity;
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
