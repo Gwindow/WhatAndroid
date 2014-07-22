@@ -11,7 +11,9 @@ import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.ViewConversationCallbacks;
+import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.forums.ForumActivity;
+import what.whatandroid.inbox.conversation.ConversationFragment;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
@@ -21,7 +23,7 @@ import what.whatandroid.subscriptions.SubscriptionsActivity;
 /**
  * Activity for viewing the user's inbox and conversations
  */
-public class InboxActivity extends LoggedInActivity implements ViewConversationCallbacks {
+public class InboxActivity extends LoggedInActivity implements ViewConversationCallbacks, ViewUserCallbacks {
 	private OnLoggedInCallback loginListener;
 
 	@Override
@@ -60,8 +62,20 @@ public class InboxActivity extends LoggedInActivity implements ViewConversationC
 	}
 
 	@Override
-	public void viewConversation(int id){
+	public void viewUser(int id){
+		Intent intent = new Intent(this, ProfileActivity.class);
+		intent.putExtra(ProfileActivity.USER_ID, id);
+		startActivity(intent);
+	}
 
+	@Override
+	public void viewConversation(int id){
+		ConversationFragment f = ConversationFragment.newInstance(id);
+		loginListener = f;
+		getSupportFragmentManager().beginTransaction()
+			.replace(R.id.container, f)
+			.addToBackStack(null)
+			.commit();
 	}
 
 	@Override
