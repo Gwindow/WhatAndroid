@@ -8,6 +8,7 @@ import java.util.Collections;
 
 import api.comments.SimpleComment;
 import api.index.Index;
+import api.requests.Comment;
 import api.requests.Request;
 import api.soup.MySoup;
 import api.util.CouldNotLoadException;
@@ -58,7 +59,7 @@ public class RequestAsyncLoader extends AsyncTaskLoader<Request> {
 				//Sort the comments to have newest ones at the top
 				Collections.sort(request.getResponse().getComments(),
 					Collections.reverseOrder(new SimpleComment.DateComparator()));
-				for (SimpleComment c : request.getResponse().getComments()){
+				for (Comment c : request.getResponse().getComments()){
 					c.setBody(SmileyProcessor.smileyToEmoji(c.getBody()));
 				}
 			}
