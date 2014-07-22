@@ -9,6 +9,7 @@ import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.bookmarks.BookmarksActivity;
+import what.whatandroid.callbacks.AddQuoteCallback;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.ViewConversationCallbacks;
 import what.whatandroid.callbacks.ViewUserCallbacks;
@@ -23,7 +24,9 @@ import what.whatandroid.subscriptions.SubscriptionsActivity;
 /**
  * Activity for viewing the user's inbox and conversations
  */
-public class InboxActivity extends LoggedInActivity implements ViewConversationCallbacks, ViewUserCallbacks {
+public class InboxActivity extends LoggedInActivity implements ViewConversationCallbacks,
+	ViewUserCallbacks, AddQuoteCallback {
+
 	private OnLoggedInCallback loginListener;
 
 	@Override
@@ -76,6 +79,15 @@ public class InboxActivity extends LoggedInActivity implements ViewConversationC
 			.replace(R.id.container, f)
 			.addToBackStack(null)
 			.commit();
+	}
+
+	@Override
+	public void quote(String quote){
+		//Notify the conversation fragment about the quote
+		ConversationFragment f = (ConversationFragment)getSupportFragmentManager().findFragmentById(R.id.container);
+		if (f != null){
+			f.quote(quote);
+		}
 	}
 
 	@Override
