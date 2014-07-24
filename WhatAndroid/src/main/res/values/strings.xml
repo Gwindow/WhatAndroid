@@ -82,6 +82,8 @@
     <string name="last_post_by">Last post by</string>
     <string name="author">Author:</string>
     <string name="go_to_last_read">Go to last read</string>
+    <string name="last_page">Last Page</string>
+    <string name="select_page">Select Page</string>
     <string name="view_poll">View poll</string>
     <string name="sticky_thread">Sticky Thread</string>
     <string name="locked_thread">Locked Thread</string>

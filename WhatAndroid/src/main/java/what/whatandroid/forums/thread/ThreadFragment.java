@@ -25,13 +25,14 @@ import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.forums.ForumActivity;
+import what.whatandroid.forums.NumberPickerDialog;
 import what.whatandroid.forums.poll.PollDialog;
 
 /**
  * Displays a paged view of posts in a thread
  */
 public class ThreadFragment extends Fragment implements OnLoggedInCallback,
-	LoadingListener<ForumThread>, AddQuoteCallback {
+	LoadingListener<ForumThread>, AddQuoteCallback, NumberPickerDialog.NumberPickerListener {
 
 	private static final String THREAD_NAME = "what.whatandroid.forums.THREAD_NAME",
 		PAGES = "what.whatandroid.forums.PAGES";
@@ -199,6 +200,11 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 	}
 
 	@Override
+	public void pickNumber(int number){
+		viewPager.setCurrentItem(number - 1);
+	}
+
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == 0){
@@ -234,15 +240,23 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 			//Show the reply dialog so the user can write their post
 			case R.id.action_reply:
 				showReplyDialog();
-				break;
+				return true;
 			//Show the poll dialog to either vote or view results
 			case R.id.action_view_poll:
 				PollDialog pollDialog = PollDialog.newInstance(poll, thread);
 				pollDialog.show(getFragmentManager(), "dialog");
-				break;
+				return true;
 			case R.id.action_subscription:
 				new ToggleSubscriptionsTask().execute();
-				break;
+				return true;
+			case R.id.action_pick_page:
+				NumberPickerDialog dialog = NumberPickerDialog.newInstance("Select Page", 1, pages);
+				dialog.setTargetFragment(this, 0);
+				dialog.show(getFragmentManager(), "dialog");
+				return true;
+			case R.id.action_pick_last_page:
+				viewPager.setCurrentItem(pages - 1);
+				return true;
 			default:
 				break;
 		}

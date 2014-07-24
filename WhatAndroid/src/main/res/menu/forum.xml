@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/action_pick_last_page"
+            android:title="@string/last_page"
+            android:orderInCategory="15"
+            android:showAsAction="never"/>
+
+    <item
+            android:id="@+id/action_pick_page"
+            android:title="@string/select_page"
+            android:orderInCategory="20"
+            android:showAsAction="never"/>
+
+</menu>

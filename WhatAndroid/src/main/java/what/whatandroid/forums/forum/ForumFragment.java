@@ -5,8 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
 import api.forum.forum.Forum;
 import api.soup.MySoup;
 import what.whatandroid.R;
@@ -14,15 +18,19 @@ import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.forums.ForumActivity;
+import what.whatandroid.forums.NumberPickerDialog;
 
 /**
  * Displays a paged view of the posts in some forum
  */
-public class ForumFragment extends Fragment implements OnLoggedInCallback, LoadingListener<Forum> {
+public class ForumFragment extends Fragment implements OnLoggedInCallback, LoadingListener<Forum>,
+	NumberPickerDialog.NumberPickerListener {
+
 	private static final String FORUM_NAME = "what.whatandroid.forums.FORUM_NAME",
 		PAGES = "what.whatandroid.forums.PAGES";
 
 	private SetTitleCallback setTitle;
+	private ViewPager viewPager;
 	private ForumPagerAdapter pagerAdapter;
 	private int pages, forum;
 	private String forumName;
@@ -58,6 +66,7 @@ public class ForumFragment extends Fragment implements OnLoggedInCallback, Loadi
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		pages = 1;
 		forum = getArguments().getInt(ForumActivity.FORUM_ID);
 		if (savedInstanceState != null){
@@ -77,7 +86,7 @@ public class ForumFragment extends Fragment implements OnLoggedInCallback, Loadi
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_view_pager_strip, container, false);
-		ViewPager viewPager = (ViewPager)view.findViewById(R.id.pager);
+		viewPager = (ViewPager)view.findViewById(R.id.pager);
 		pagerAdapter = new ForumPagerAdapter(getChildFragmentManager(), pages, forum);
 		viewPager.setAdapter(pagerAdapter);
 		pagerAdapter.setLoadingListener(this);
@@ -97,6 +106,33 @@ public class ForumFragment extends Fragment implements OnLoggedInCallback, Loadi
 		else {
 			outState.putString(FORUM_NAME, "Forums");
 		}
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		inflater.inflate(R.menu.forum, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch (item.getItemId()){
+			case R.id.action_pick_page:
+				NumberPickerDialog dialog = NumberPickerDialog.newInstance("Select Page", 1, pages);
+				dialog.setTargetFragment(this, 0);
+				dialog.show(getFragmentManager(), "dialog");
+				return true;
+			case R.id.action_pick_last_page:
+				viewPager.setCurrentItem(pages - 1);
+				return true;
+			default:
+				break;
+		}
+		return false;
+	}
+
+	@Override
+	public void pickNumber(int number){
+		viewPager.setCurrentItem(number - 1);
 	}
 
 	@Override
