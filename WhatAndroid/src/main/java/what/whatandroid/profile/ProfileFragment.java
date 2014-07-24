@@ -1,7 +1,6 @@
 package what.whatandroid.profile;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -43,7 +42,9 @@ import what.whatandroid.settings.SettingsActivity;
 /**
  * Fragment to display a user's profile
  */
-public class ProfileFragment extends Fragment implements OnLoggedInCallback, LoaderManager.LoaderCallbacks<UserProfile> {
+public class ProfileFragment extends Fragment implements OnLoggedInCallback,
+	LoaderManager.LoaderCallbacks<UserProfile>, ReplyDialogFragment.ReplyDialogListener {
+
 	public static final String DEFER_LOADING = "what.whatandroid.DEFER_LOADING";
 	/**
 	 * The user's profile information
@@ -277,29 +278,22 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == 0){
-			switch (resultCode){
-				case ReplyDialogFragment.DISCARD:
-					messageDraft = "";
-					messageSubject = "";
-					break;
-				case ReplyDialogFragment.SAVE_DRAFT:
-					messageDraft = data.getStringExtra(ReplyDialogFragment.DRAFT);
-					messageSubject = data.getStringExtra(ReplyDialogFragment.SUBJECT);
-					break;
-				case ReplyDialogFragment.POST_REPLY:
-					messageDraft = "";
-					messageSubject = "";
-					String reply = data.getStringExtra(ReplyDialogFragment.DRAFT);
-					String subject = data.getStringExtra(ReplyDialogFragment.SUBJECT);
-					new SendMessageTask().execute(subject, reply);
-					break;
-				default:
-					break;
-			}
-		}
+	public void post(String message, String subject){
+		messageDraft = "";
+		messageSubject = "";
+		new SendMessageTask().execute(subject, message);
+	}
+
+	@Override
+	public void saveDraft(String message, String subject){
+		messageDraft = message;
+		messageSubject = subject;
+	}
+
+	@Override
+	public void discard(){
+		messageDraft = "";
+		messageSubject = "";
 	}
 
 	/**

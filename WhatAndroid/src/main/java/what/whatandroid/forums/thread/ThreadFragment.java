@@ -1,7 +1,6 @@
 package what.whatandroid.forums.thread;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -32,7 +31,8 @@ import what.whatandroid.forums.poll.PollDialog;
  * Displays a paged view of posts in a thread
  */
 public class ThreadFragment extends Fragment implements OnLoggedInCallback,
-	LoadingListener<ForumThread>, AddQuoteCallback, NumberPickerDialog.NumberPickerListener {
+	LoadingListener<ForumThread>, AddQuoteCallback, NumberPickerDialog.NumberPickerListener,
+	ReplyDialogFragment.ReplyDialogListener {
 
 	private static final String THREAD_NAME = "what.whatandroid.forums.THREAD_NAME",
 		PAGES = "what.whatandroid.forums.PAGES";
@@ -205,25 +205,19 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == 0){
-			switch (resultCode){
-				case ReplyDialogFragment.DISCARD:
-					replyDraft = "";
-					break;
-				case ReplyDialogFragment.SAVE_DRAFT:
-					replyDraft = data.getStringExtra(ReplyDialogFragment.DRAFT);
-					break;
-				case ReplyDialogFragment.POST_REPLY:
-					replyDraft = "";
-					String reply = data.getStringExtra(ReplyDialogFragment.DRAFT);
-					new PostReplyTask().execute(reply);
-					break;
-				default:
-					break;
-			}
-		}
+	public void post(String message, String subject){
+		replyDraft = "";
+		new PostReplyTask().execute(message);
+	}
+
+	@Override
+	public void saveDraft(String message, String subject){
+		replyDraft = message;
+	}
+
+	@Override
+	public void discard(){
+		replyDraft = "";
 	}
 
 	@Override

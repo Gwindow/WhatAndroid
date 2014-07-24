@@ -1,6 +1,5 @@
 package what.whatandroid.forums.thread;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -21,10 +20,37 @@ import what.whatandroid.comments.WhatBBParser;
  * text should be posted to the site.
  */
 public class ReplyDialogFragment extends DialogFragment implements View.OnClickListener {
+	/**
+	 * Listener to receive the users composed message and decisions
+	 * about whether to save the draft, post it or discard it
+	 */
+	public interface ReplyDialogListener {
+		/**
+		 * Called if we want to post the composed message
+		 *
+		 * @param message message text to send
+		 * @param subject optional subject
+		 */
+		public void post(String message, String subject);
+
+		/**
+		 * Called if the user wants to save the draft of the message
+		 *
+		 * @param message message draft to save
+		 * @param subject optional subject draft to save
+		 */
+		public void saveDraft(String message, String subject);
+
+		/**
+		 * Called if the user wants to discard any saved message
+		 * and subject drafts
+		 */
+		public void discard();
+	}
+
 	public static final String DRAFT = "what.whatandroid.replydialogfragment.DRAFT",
 		SUBJECT = "what.whatandroid.replydialogfragment.SUBJECT",
 		PREVIEWING = "what.whatandroid.replydialogfragment.PREVIEWING";
-	public static final int DISCARD = -1, SAVE_DRAFT = 0, POST_REPLY = 1;
 
 	/**
 	 * The input box for the user to enter their post
@@ -42,6 +68,10 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 	 * discarding or posting the draft
 	 */
 	private boolean saveDraft = true;
+	/**
+	 * Listener to alert about changes made to the draft
+	 */
+	private ReplyDialogListener listener;
 
 	/**
 	 * Create a new reply dialog fragment displaying the
@@ -81,6 +111,13 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme);
+
+		try {
+			listener = (ReplyDialogListener)getTargetFragment();
+		}
+		catch (ClassCastException e){
+			throw new ClassCastException(getTargetFragment().toString() + " must implement ReplyDialogListener");
+		}
 	}
 
 	@Override
@@ -123,7 +160,7 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 	@Override
 	public void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
-		outState.putBoolean(PREVIEWING, preview.getVisibility() == View.VISIBLE);
+		outState.putBoolean(PREVIEWING, preview.isShown());
 		outState.putString(DRAFT, postText.getText().toString());
 		if (postSubject.isShown()){
 			outState.putString(SUBJECT, postSubject.getText().toString());
@@ -135,12 +172,7 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 		super.onPause();
 		String draft = postText.getText().toString();
 		if (saveDraft && !draft.isEmpty()){
-			Intent intent = new Intent();
-			intent.putExtra(DRAFT, draft);
-			if (postSubject.getText().length() > 0){
-				intent.putExtra(SUBJECT, postSubject.getText().toString());
-			}
-			getTargetFragment().onActivityResult(0, SAVE_DRAFT, intent);
+			listener.saveDraft(draft, postSubject.getText().toString());
 			Toast.makeText(getActivity(), "Draft saved", Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -155,17 +187,12 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 				break;
 			case R.id.discard:
 				saveDraft = false;
-				getTargetFragment().onActivityResult(0, DISCARD, null);
+				listener.discard();
 				getDialog().dismiss();
 				break;
 			case R.id.reply:
 				saveDraft = false;
-				Intent intent = new Intent();
-				intent.putExtra(DRAFT, postText.getText().toString());
-				if (postSubject.getText().length() > 0){
-					intent.putExtra(SUBJECT, postSubject.getText().toString());
-				}
-				getTargetFragment().onActivityResult(0, POST_REPLY, intent);
+				listener.post(postText.getText().toString(), postSubject.getText().toString());
 				getDialog().dismiss();
 				break;
 			//We want to toggle the preview state here, eg. show preview if we aren't
