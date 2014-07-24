@@ -1,7 +1,9 @@
 package what.whatandroid.inbox;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 
 import api.soup.MySoup;
@@ -45,6 +47,11 @@ public class InboxActivity extends LoggedInActivity implements ViewConversationC
 			loginListener = f;
 			fm.beginTransaction().add(R.id.container, f).commit();
 		}
+		//Since we're viewing the notifications unset the new notifications flag
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		preferences.edit()
+			.putInt(getString(R.string.key_pref_new_messages), 0)
+			.apply();
 	}
 
 	@Override

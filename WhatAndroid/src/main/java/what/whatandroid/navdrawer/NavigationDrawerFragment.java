@@ -133,6 +133,7 @@ public class NavigationDrawerFragment extends Fragment {
 	public void updateNotifications(SharedPreferences preferences){
 		updateTorrentNotifications(preferences);
 		updateSubscriptions(preferences);
+		updateMessages(preferences);
 	}
 
 	/**
@@ -167,6 +168,18 @@ public class NavigationDrawerFragment extends Fragment {
 		}
 		else {
 			adapter.fuzzyUpdate(getString(R.string.subscriptions), getString(R.string.subscriptions));
+		}
+		adapter.notifyDataSetChanged();
+	}
+
+	private void updateMessages(SharedPreferences preferences){
+		int newMessages = preferences.getInt(getString(R.string.key_pref_new_messages), 0);
+		if (newMessages > 0){
+			adapter.fuzzyUpdate(getString(R.string.messages),
+				Integer.toString(newMessages) + " " + getString(R.string.messages));
+		}
+		else {
+			adapter.fuzzyUpdate(getString(R.string.messages), getString(R.string.messages));
 		}
 		adapter.notifyDataSetChanged();
 	}

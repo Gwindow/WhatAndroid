@@ -42,6 +42,8 @@ public class ProfileAsyncLoader extends AsyncTaskLoader<UserProfile> {
 							notifications.getTorrentNotifications().intValue())
 						.putBoolean(context.getString(R.string.key_pref_new_subscriptions),
 							notifications.hasNewSubscriptions())
+						.putInt(context.getString(R.string.key_pref_new_messages),
+							notifications.getMessages().intValue())
 						.apply();
 				}
 			}
