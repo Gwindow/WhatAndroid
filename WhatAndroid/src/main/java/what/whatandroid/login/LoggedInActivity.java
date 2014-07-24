@@ -268,14 +268,20 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 		}
 
 		@Override
-		protected void onPostExecute(Boolean status){
+		protected void onPostExecute(Status status){
 			super.onPostExecute(status);
-			if (status && !calledLogin){
+			if (status == Status.OK && !calledLogin){
 				calledLogin = true;
 				onLoggedIn();
 			}
-			else if (!status){
-				Toast.makeText(LoggedInActivity.this, "Login failed, check username and password", Toast.LENGTH_LONG).show();
+			else if (status == Status.COOKIE_EXPIRED){
+				Toast.makeText(LoggedInActivity.this, "Cookie expired, please login", Toast.LENGTH_LONG).show();
+				Intent intent = new Intent(LoggedInActivity.this, LoginActivity.class);
+				intent.putExtra(LoginActivity.LOGIN_REQUEST, true);
+				startActivityForResult(intent, 0);
+			}
+			else {
+				Toast.makeText(LoggedInActivity.this, "Could not login", Toast.LENGTH_LONG).show();
 				Intent intent = new Intent(LoggedInActivity.this, LoginActivity.class);
 				intent.putExtra(LoginActivity.LOGIN_REQUEST, true);
 				startActivityForResult(intent, 0);

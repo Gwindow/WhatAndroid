@@ -17,9 +17,13 @@ import what.whatandroid.settings.SettingsFragment;
  * LoginTask that takes care of logging in the user using either an existing cookie
  * or the passed username and password. Params to execute should be: username, password
  */
-public class LoginTask extends AsyncTask<String, Void, Boolean> {
+public class LoginTask extends AsyncTask<String, Void, LoginTask.Status> {
 	private ProgressDialog dialog;
 	private Context context;
+
+	public static enum Status {
+		OK, COOKIE_EXPIRED, FAILED
+	}
 
 	/**
 	 * Construct the login task giving it the context to load the default shared preferences from
@@ -31,26 +35,30 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 	}
 
 	@Override
-	protected Boolean doInBackground(String... params){
+	protected Status doInBackground(String... params){
 		try {
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 			String cookieJson = preferences.getString(SettingsFragment.USER_COOKIE, null);
 			if (cookieJson != null){
 				HttpCookie cookie = (HttpCookie) MySon.toObjectFromString(cookieJson, HttpCookie.class);
 				if (loginWithCookie(cookie)){
-					return true;
+					return Status.OK;
 				}
 				//If the cookie is expired or invalid then remove it and login normally
 				else {
 					preferences.edit().remove(SettingsFragment.USER_COOKIE).apply();
 				}
 			}
+			//If the cookie expired and we don't have a password to login, bail out
+			//and tell them the cookie is dead
+			if (params[1].isEmpty()){
+				return Status.COOKIE_EXPIRED;
+			}
 			MySoup.login("login.php", params[0], params[1], true);
 			cookieJson = MySon.toJson(MySoup.getSessionCookie(), HttpCookie.class);
 			preferences.edit()
 				.putString(SettingsFragment.USER_COOKIE, cookieJson)
 				.putString(SettingsFragment.USER_NAME, params[0])
-				.putString(SettingsFragment.USER_PASSWORD, params[1])
 				.apply();
 			if (MySoup.isNotificationsEnabled()){
 				preferences.edit()
@@ -61,13 +69,15 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 			preferences.edit()
 				.putBoolean(context.getString(R.string.key_pref_new_subscriptions),
 					MySoup.getIndex().getResponse().getNotifications().hasNewSubscriptions())
+				.putInt(context.getString(R.string.key_pref_new_messages),
+					MySoup.getIndex().getResponse().getNotifications().getMessages().intValue())
 				.apply();
-			return true;
+			return Status.OK;
 		}
 		catch (Exception e){
 			e.printStackTrace();
 		}
-		return false;
+		return Status.FAILED;
 	}
 
 	/**
@@ -98,12 +108,12 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
 	}
 
 	@Override
-	protected void onPostExecute(Boolean status){
+	protected void onPostExecute(Status status){
 		dismissDialog();
 	}
 
 	@Override
-	protected void onCancelled(Boolean aBoolean){
+	protected void onCancelled(Status status){
 		dismissDialog();
 	}
 

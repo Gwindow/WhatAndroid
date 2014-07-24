@@ -53,12 +53,14 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 		//Setup saved user name and password if we've got them
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		String savedUserName = preferences.getString(SettingsFragment.USER_NAME, "");
-		String savedUserPass = preferences.getString(SettingsFragment.USER_PASSWORD, "");
 		username.setText(savedUserName);
-		password.setText(savedUserPass);
 		password.setOnEditorActionListener(this);
 
 		loginRequest = getIntent().getBooleanExtra(LOGIN_REQUEST, false);
+		//Remove the saved user password from the settings, it's not secure
+		preferences.edit()
+			.remove(SettingsFragment.USER_PASSWORD)
+			.apply();
 	}
 
 	@Override
@@ -88,7 +90,6 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 			if (!username.getText().toString().equalsIgnoreCase(savedUserName)){
 				preferences.edit()
 					.remove(SettingsFragment.USER_NAME)
-					.remove(SettingsFragment.USER_PASSWORD)
 					.remove(SettingsFragment.USER_COOKIE)
 					.apply();
 			}
@@ -111,7 +112,6 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 				if (!username.getText().toString().equalsIgnoreCase(savedUserName)){
 					preferences.edit()
 						.remove(SettingsFragment.USER_NAME)
-						.remove(SettingsFragment.USER_PASSWORD)
 						.remove(SettingsFragment.USER_COOKIE)
 						.apply();
 				}
@@ -178,9 +178,9 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 		}
 
 		@Override
-		protected void onPostExecute(Boolean status){
+		protected void onPostExecute(Status status){
 			super.onPostExecute(status);
-			if (status){
+			if (status == Status.OK){
 				if (loginRequest){
 					Intent result = new Intent();
 					setResult(Activity.RESULT_OK, result);
@@ -192,8 +192,11 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 					startActivity(intent);
 				}
 			}
+			else if (status == Status.COOKIE_EXPIRED){
+				Toast.makeText(LoginActivity.this, "Cookie expired, please login", Toast.LENGTH_LONG).show();
+			}
 			else {
-				Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_LONG).show();
+				Toast.makeText(LoginActivity.this, "Could not login", Toast.LENGTH_LONG).show();
 			}
 		}
 	}
