@@ -13,6 +13,7 @@ import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.inbox.InboxActivity;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
@@ -96,6 +97,10 @@ public class NotificationsActivity extends LoggedInActivity implements ViewTorre
 		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){
 			Intent intent = new Intent(this, SearchActivity.class);
 			intent.putExtra(SearchActivity.SEARCH, SearchActivity.TORRENT);
+			startActivity(intent);
+		}
+		else if (selection.contains(getString(R.string.messages))){
+			Intent intent = new Intent(this, InboxActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.contains(getString(R.string.subscriptions))){

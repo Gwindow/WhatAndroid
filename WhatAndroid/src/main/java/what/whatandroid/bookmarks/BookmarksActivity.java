@@ -12,6 +12,7 @@ import what.whatandroid.artist.ArtistActivity;
 import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.callbacks.ViewArtistCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
+import what.whatandroid.inbox.InboxActivity;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
@@ -94,6 +95,10 @@ public class BookmarksActivity extends LoggedInActivity implements ViewTorrentCa
 			//Launch profile view activity
 			Intent intent = new Intent(this, ProfileActivity.class);
 			intent.putExtra(ProfileActivity.USER_ID, MySoup.getUserId());
+			startActivity(intent);
+		}
+		else if (selection.contains(getString(R.string.messages))){
+			Intent intent = new Intent(this, InboxActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.contains(getString(R.string.notifications))){

@@ -14,6 +14,7 @@ import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.ViewForumCallbacks;
 import what.whatandroid.forums.ForumActivity;
+import what.whatandroid.inbox.InboxActivity;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
@@ -39,7 +40,7 @@ public class SubscriptionsActivity extends LoggedInActivity implements ViewForum
 
 		FragmentManager fm = getSupportFragmentManager();
 		if (savedInstanceState != null){
-			loginListener = (OnLoggedInCallback) fm.findFragmentById(R.id.container);
+			loginListener = (OnLoggedInCallback)fm.findFragmentById(R.id.container);
 		}
 		else {
 			SubscriptionsFragment f = new SubscriptionsFragment();
@@ -107,6 +108,10 @@ public class SubscriptionsActivity extends LoggedInActivity implements ViewForum
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.bookmarks))){
 			Intent intent = new Intent(this, BookmarksActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.contains(getString(R.string.messages))){
+			Intent intent = new Intent(this, InboxActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.contains(getString(R.string.notifications))){

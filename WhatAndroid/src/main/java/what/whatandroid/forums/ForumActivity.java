@@ -25,6 +25,7 @@ import what.whatandroid.forums.categories.ForumCategoriesFragment;
 import what.whatandroid.forums.forum.ForumFragment;
 import what.whatandroid.forums.poll.PollDialog;
 import what.whatandroid.forums.thread.ThreadFragment;
+import what.whatandroid.inbox.InboxActivity;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
@@ -64,7 +65,7 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 
 		FragmentManager fm = getSupportFragmentManager();
 		if (savedInstanceState != null){
-			loginListener = (OnLoggedInCallback) fm.findFragmentById(R.id.container);
+			loginListener = (OnLoggedInCallback)fm.findFragmentById(R.id.container);
 		}
 		else {
 			//Determine what part of the forums we want to view, eg. jump to a post, thread or forum
@@ -223,6 +224,10 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 			Intent intent = new Intent(this, BookmarksActivity.class);
 			startActivity(intent);
 		}
+		else if (selection.contains(getString(R.string.messages))){
+			Intent intent = new Intent(this, InboxActivity.class);
+			startActivity(intent);
+		}
 		else if (selection.contains(getString(R.string.notifications))){
 			Intent intent = new Intent(this, NotificationsActivity.class);
 			startActivity(intent);
@@ -262,12 +267,12 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 	 */
 	private class PollVoteTask extends AsyncTask<Integer, Void, Boolean> {
 		@Override
-		protected Boolean doInBackground(Integer... params) {
+		protected Boolean doInBackground(Integer... params){
 			return Poll.vote(params[0], params[1]);
 		}
 
 		@Override
-		protected void onPostExecute(Boolean status) {
+		protected void onPostExecute(Boolean status){
 			if (!status){
 				Toast.makeText(ForumActivity.this, "Could not vote on poll", Toast.LENGTH_LONG).show();
 			}
