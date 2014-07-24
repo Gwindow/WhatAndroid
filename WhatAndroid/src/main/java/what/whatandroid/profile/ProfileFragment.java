@@ -240,7 +240,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 				if (indexLoadingListener != null){
 					indexLoadingListener.onLoadingComplete(MySoup.getIndex());
 				}
-				if (userID != MySoup.getUserId()){
+				if (userID != MySoup.getUserId() && sendMessage != null){
 					sendMessage.setVisible(true);
 				}
 			}
