@@ -22,13 +22,14 @@ import what.whatandroid.comments.WhatBBParser;
  */
 public class ReplyDialogFragment extends DialogFragment implements View.OnClickListener {
 	public static final String DRAFT = "what.whatandroid.replydialogfragment.DRAFT",
+		SUBJECT = "what.whatandroid.replydialogfragment.SUBJECT",
 		PREVIEWING = "what.whatandroid.replydialogfragment.PREVIEWING";
 	public static final int DISCARD = -1, SAVE_DRAFT = 0, POST_REPLY = 1;
 
 	/**
 	 * The input box for the user to enter their post
 	 */
-	private EditText postText;
+	private EditText postText, postSubject;
 	/**
 	 * Preview rendering textview and parser to apply styling
 	 */
@@ -43,15 +44,31 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 	private boolean saveDraft = true;
 
 	/**
-	 * Create a new reply dialog fragment optionally displaying the
+	 * Create a new reply dialog fragment displaying the
 	 * user's previous draft to continue editing
 	 *
-	 * @param draft saved draft of a post we're resuming editing
+	 * @param draft saved draft of a reply we're resuming editing
 	 */
 	public static ReplyDialogFragment newInstance(String draft){
 		ReplyDialogFragment f = new ReplyDialogFragment();
 		Bundle args = new Bundle();
 		args.putString(DRAFT, draft);
+		f.setArguments(args);
+		return f;
+	}
+
+	/**
+	 * Create a new reply dialog fragment displaying the
+	 * user's previous draft to continue editing
+	 *
+	 * @param draft   saved draft of a message we're resuming editing
+	 * @param subject saved subject of a message we're resuming editing
+	 */
+	public static ReplyDialogFragment newInstance(String draft, String subject){
+		ReplyDialogFragment f = new ReplyDialogFragment();
+		Bundle args = new Bundle();
+		args.putString(DRAFT, draft);
+		args.putString(SUBJECT, subject);
 		f.setArguments(args);
 		return f;
 	}
@@ -70,6 +87,7 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.dialog_reply, container, false);
 		postText = (EditText)view.findViewById(R.id.post_text);
+		postSubject = (EditText)view.findViewById(R.id.subject);
 		preview = (TextView)view.findViewById(R.id.post_preview);
 		Button discard = (Button)view.findViewById(R.id.discard);
 		Button reply = (Button)view.findViewById(R.id.reply);
@@ -82,12 +100,22 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 
 		//If we're restoring from a saved state the edit text takes care of restoring the contents
 		//Otherwise we can restore a previous draft to show
-		if (savedInstanceState == null && getArguments().getString(DRAFT) != null){
-			postText.append(getArguments().getString(DRAFT));
+		if (savedInstanceState == null){
+			if (getArguments().getString(DRAFT) != null){
+				postText.append(getArguments().getString(DRAFT));
+			}
+			if (getArguments().getString(SUBJECT) != null){
+				postSubject.append(getArguments().getString(SUBJECT));
+				postSubject.setVisibility(View.VISIBLE);
+			}
 		}
 		if (savedInstanceState != null){
 			postText.setText(savedInstanceState.getString(DRAFT));
 			setPreviewState(savedInstanceState.getBoolean(PREVIEWING));
+			if (savedInstanceState.getString(SUBJECT) != null){
+				postSubject.append(getArguments().getString(SUBJECT));
+				postSubject.setVisibility(View.VISIBLE);
+			}
 		}
 		return view;
 	}
@@ -97,6 +125,9 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 		super.onSaveInstanceState(outState);
 		outState.putBoolean(PREVIEWING, preview.getVisibility() == View.VISIBLE);
 		outState.putString(DRAFT, postText.getText().toString());
+		if (postSubject.isShown()){
+			outState.putString(SUBJECT, postSubject.getText().toString());
+		}
 	}
 
 	@Override
@@ -106,6 +137,9 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 		if (saveDraft && !draft.isEmpty()){
 			Intent intent = new Intent();
 			intent.putExtra(DRAFT, draft);
+			if (postSubject.getText().length() > 0){
+				intent.putExtra(SUBJECT, postSubject.getText().toString());
+			}
 			getTargetFragment().onActivityResult(0, SAVE_DRAFT, intent);
 			Toast.makeText(getActivity(), "Draft saved", Toast.LENGTH_SHORT).show();
 		}
@@ -128,6 +162,9 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 				saveDraft = false;
 				Intent intent = new Intent();
 				intent.putExtra(DRAFT, postText.getText().toString());
+				if (postSubject.getText().length() > 0){
+					intent.putExtra(SUBJECT, postSubject.getText().toString());
+				}
 				getTargetFragment().onActivityResult(0, POST_REPLY, intent);
 				getDialog().dismiss();
 				break;

@@ -39,6 +39,16 @@
 
         </LinearLayout>
 
+        <!-- The subject field is only used when sending new messages, so hide by default -->
+        <EditText
+                android:id="@+id/subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:inputType="text|textCapSentences"
+                android:hint="@string/subject"
+                android:visibility="gone"/>
+
         <EditText
                 android:id="@+id/post_text"
                 android:layout_width="match_parent"

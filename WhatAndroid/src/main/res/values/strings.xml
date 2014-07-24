@@ -44,6 +44,8 @@
     <string name="uploaded">Uploaded</string>
     <string name="downloaded">Downloaded</string>
     <string name="paranoia">Paranoia</string>
+    <string name="send_message">Send Message</string>
+    <string name="subject">Subject</string>
     <string name="whatandroid_logo">WhatAndroid Logo</string>
     <string name="action_settings">Settings</string>
     <string name="action_send_feedback">Send Feedback</string>

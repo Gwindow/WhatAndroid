@@ -12,4 +12,13 @@
             android:orderInCategory="10"
             android:showAsAction="always"/>
 
+    <!-- We don't show the send message item until we've loaded the user -->
+    <item
+            android:id="@+id/action_message"
+            android:icon="@drawable/ic_action_new_message"
+            android:title="@string/send_message"
+            android:orderInCategory="20"
+            android:showAsAction="ifRoom"
+            android:visible="false"/>
+
 </menu>

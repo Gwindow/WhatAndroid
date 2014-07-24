@@ -1,32 +1,44 @@
 package what.whatandroid.profile;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.text.format.DateUtils;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.Date;
+
 import api.cli.Utils;
 import api.index.Index;
 import api.soup.MySoup;
 import api.user.Profile;
+import api.user.User;
 import api.user.UserProfile;
 import api.user.recent.UserRecents;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
+import what.whatandroid.forums.thread.ReplyDialogFragment;
 import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
-
-import java.util.Date;
 
 /**
  * Fragment to display a user's profile
@@ -68,6 +80,14 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 	 */
 	private RecentTorrentPagerAdapter snatchesAdapter, uploadsAdapter;
 	private View snatchesContainer, uploadsContainer, donor, warned, banned;
+	/**
+	 * Draft of a message we're writing to the user
+	 */
+	private String messageDraft = "", messageSubject = "";
+	/**
+	 * Send message menu item, so we can hide it if we're viewing our own profile
+	 */
+	private MenuItem sendMessage;
 
 	/**
 	 * Use this factory method to create a new instance of the fragment displaying the
@@ -128,6 +148,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 		userID = getArguments().getInt(ProfileActivity.USER_ID);
 		deferLoad = getArguments().getBoolean(ProfileFragment.DEFER_LOADING);
 		setHasOptionsMenu(true);
+		if (savedInstanceState != null){
+			messageDraft = savedInstanceState.getString(ReplyDialogFragment.DRAFT);
+			messageSubject = savedInstanceState.getString(ReplyDialogFragment.SUBJECT);
+		}
 	}
 
 	@Override
@@ -176,6 +200,13 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		outState.putString(ReplyDialogFragment.DRAFT, messageDraft);
+		outState.putString(ReplyDialogFragment.SUBJECT, messageSubject);
+	}
+
+	@Override
 	public void onLoggedIn(){
 		if (isAdded() && !deferLoad){
 			//We could get -1 user id if we were logged out and trying to view our own profile, so update it
@@ -209,6 +240,9 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 				if (indexLoadingListener != null){
 					indexLoadingListener.onLoadingComplete(MySoup.getIndex());
 				}
+				if (userID != MySoup.getUserId()){
+					sendMessage.setVisible(true);
+				}
 			}
 			else {
 				Toast.makeText(getActivity(), "Could not load profile", Toast.LENGTH_LONG).show();
@@ -223,6 +257,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		inflater.inflate(R.menu.profile, menu);
+		sendMessage = menu.findItem(R.id.action_message);
+		if (userProfile != null && userID != MySoup.getUserId()){
+			sendMessage.setVisible(true);
+		}
 	}
 
 	@Override
@@ -232,7 +270,51 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 			args.putInt(ProfileActivity.USER_ID, userID);
 			getLoaderManager().restartLoader(0, args, this);
 		}
+		if (item.getItemId() == R.id.action_message){
+			showReplyDialog();
+		}
 		return false;
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 0){
+			switch (resultCode){
+				case ReplyDialogFragment.DISCARD:
+					messageDraft = "";
+					messageSubject = "";
+					break;
+				case ReplyDialogFragment.SAVE_DRAFT:
+					messageDraft = data.getStringExtra(ReplyDialogFragment.DRAFT);
+					messageSubject = data.getStringExtra(ReplyDialogFragment.SUBJECT);
+					break;
+				case ReplyDialogFragment.POST_REPLY:
+					messageDraft = "";
+					messageSubject = "";
+					String reply = data.getStringExtra(ReplyDialogFragment.DRAFT);
+					String subject = data.getStringExtra(ReplyDialogFragment.SUBJECT);
+					new SendMessageTask().execute(subject, reply);
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	/**
+	 * Display the compose reply dialog so the user can write their response
+	 */
+	private void showReplyDialog(){
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+		if (prev != null){
+			ft.remove(prev);
+		}
+		ft.addToBackStack(null);
+		ReplyDialogFragment reply = ReplyDialogFragment.newInstance(messageDraft, messageSubject);
+		reply.setTargetFragment(this, 0);
+		reply.show(ft, "dialog");
 	}
 
 	/**
@@ -320,6 +402,23 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback, Loa
 		}
 		if (profile.getPersonal().isEnabled()){
 			banned.setVisibility(View.GONE);
+		}
+	}
+
+	private class SendMessageTask extends AsyncTask<String, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(String... params){
+			return User.sendMessage(userID, params[0], params[1]);
+		}
+
+		@Override
+		protected void onPostExecute(Boolean status){
+			if (!status){
+				Toast.makeText(getActivity(), "Could not send message", Toast.LENGTH_LONG).show();
+			}
+			else {
+				Toast.makeText(getActivity(), "Message sent", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 }
