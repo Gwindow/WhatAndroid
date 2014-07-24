@@ -53,7 +53,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 		//Setup saved user name and password if we've got them
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		String savedUserName = preferences.getString(SettingsFragment.USER_NAME, "");
-		username.setText(savedUserName);
+		username.append(savedUserName);
 		password.setOnEditorActionListener(this);
 
 		loginRequest = getIntent().getBooleanExtra(LOGIN_REQUEST, false);
