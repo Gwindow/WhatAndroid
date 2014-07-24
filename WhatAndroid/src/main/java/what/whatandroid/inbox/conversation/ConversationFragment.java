@@ -2,6 +2,7 @@ package what.whatandroid.inbox.conversation;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
@@ -31,6 +32,7 @@ public class ConversationFragment extends Fragment implements OnLoggedInCallback
 	AddQuoteCallback, LoaderManager.LoaderCallbacks<Conversation>, ReplyDialogFragment.ReplyDialogListener {
 
 	public static final String CONVERSATION = "what.whatandroid.conversationfragment.CONVERSATION";
+	private static final String SCROLL_STATE = "what.whatandroid.conversationfragment.SCROLL_STATE";
 
 	private ProgressBar loadingIndicator;
 	/**
@@ -46,6 +48,11 @@ public class ConversationFragment extends Fragment implements OnLoggedInCallback
 	 * Draft of the reply we're writing for this conversation
 	 */
 	private String replyDraft = "";
+	/**
+	 * Save the scroll position to return too instead of jumping to the
+	 * last post when restoring from an orientation change or such
+	 */
+	private Parcelable scrollState;
 
 	/**
 	 * Create a conversation fragment displaying the messages in the
@@ -71,6 +78,7 @@ public class ConversationFragment extends Fragment implements OnLoggedInCallback
 		setHasOptionsMenu(true);
 		if (savedInstanceState != null){
 			replyDraft = savedInstanceState.getString(ReplyDialogFragment.DRAFT);
+			scrollState = savedInstanceState.getParcelable(SCROLL_STATE);
 		}
 	}
 
@@ -91,6 +99,7 @@ public class ConversationFragment extends Fragment implements OnLoggedInCallback
 	public void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
 		outState.putString(ReplyDialogFragment.DRAFT, replyDraft);
+		outState.putParcelable(SCROLL_STATE, list.onSaveInstanceState());
 	}
 
 	@Override
@@ -172,8 +181,14 @@ public class ConversationFragment extends Fragment implements OnLoggedInCallback
 			if (adapter.isEmpty()){
 				adapter.addAll(data.getResponse().getMessages());
 				adapter.notifyDataSetChanged();
-				//Jump to the most recent post in the conversation
-				list.setSelection(list.getCount() - 1);
+				//If we've got a saved scroll state use that, otherwise jump
+				//to the last post in the conversation since it's our first time here
+				if (scrollState != null){
+					list.onRestoreInstanceState(scrollState);
+				}
+				else {
+					list.setSelection(list.getCount() - 1);
+				}
 			}
 		}
 	}
