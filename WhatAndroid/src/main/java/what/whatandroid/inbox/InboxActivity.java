@@ -47,7 +47,6 @@ public class InboxActivity extends LoggedInActivity implements ViewConversationC
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_frame);
 		setupNavDrawer();
-		setTitle(getTitle());
 
 		FragmentManager fm = getSupportFragmentManager();
 		if (savedInstanceState != null){
@@ -80,6 +79,8 @@ public class InboxActivity extends LoggedInActivity implements ViewConversationC
 		if (fm.getBackStackEntryCount() > 0){
 			fm.popBackStackImmediate();
 			loginListener = (OnLoggedInCallback)fm.findFragmentById(R.id.container);
+			//The conversation shows the subject in the title, so put back the activity title
+			setTitle(getString(R.string.inbox));
 		}
 		else {
 			super.onBackPressed();

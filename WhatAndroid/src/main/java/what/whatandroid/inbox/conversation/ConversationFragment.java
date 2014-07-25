@@ -23,6 +23,7 @@ import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.AddQuoteCallback;
 import what.whatandroid.callbacks.OnLoggedInCallback;
+import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.comments.CommentsAdapter;
 import what.whatandroid.forums.thread.ReplyDialogFragment;
 import what.whatandroid.inbox.ConversationChangesPasser;
@@ -215,6 +216,7 @@ public class ConversationFragment extends Fragment implements OnLoggedInCallback
 		}
 		else {
 			conversation = data;
+			((SetTitleCallback)getActivity()).setTitle(conversation.getResponse().getSubject());
 			if (adapter.isEmpty()){
 				adapter.addAll(data.getResponse().getMessages());
 				adapter.notifyDataSetChanged();
