@@ -191,9 +191,7 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 				getDialog().dismiss();
 				break;
 			case R.id.reply:
-				saveDraft = false;
-				listener.post(postText.getText().toString(), postSubject.getText().toString());
-				getDialog().dismiss();
+				postReply();
 				break;
 			//We want to toggle the preview state here, eg. show preview if we aren't
 			//and show the edit box if we are
@@ -202,6 +200,28 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 				break;
 			default:
 				break;
+		}
+	}
+
+	/**
+	 * Validate that a subject (if being shown) and body text have been entered
+	 * before sending a reply
+	 */
+	private void postReply(){
+		if (postSubject.isShown() && postSubject.getText().length() == 0){
+			Toast.makeText(getActivity(), "Please enter a subject", Toast.LENGTH_SHORT).show();
+			postSubject.requestFocus();
+		}
+		else if (postText.getText().length() == 0){
+			Toast.makeText(getActivity(), "Please enter your message", Toast.LENGTH_SHORT).show();
+			//Make sure the edit box is showing and focus on it
+			setPreviewState(false);
+			postText.requestFocus();
+		}
+		else {
+			saveDraft = false;
+			listener.post(postText.getText().toString(), postSubject.getText().toString());
+			getDialog().dismiss();
 		}
 	}
 
