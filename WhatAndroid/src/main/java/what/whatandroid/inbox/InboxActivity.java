@@ -27,9 +27,20 @@ import what.whatandroid.subscriptions.SubscriptionsActivity;
  * Activity for viewing the user's inbox and conversations
  */
 public class InboxActivity extends LoggedInActivity implements ViewConversationCallbacks,
-	ViewUserCallbacks, AddQuoteCallback {
+	ViewUserCallbacks, AddQuoteCallback, ConversationChangesPasser {
 
+	private static final String CHANGES = "what.whatandroid.inboxactivity.CHANGES";
+
+	/**
+	 * Listener to alert when we've logged in
+	 */
 	private OnLoggedInCallback loginListener;
+
+	/**
+	 * Bundle containing information about any changes made to
+	 * a conversation that was being viewed
+	 */
+	private Bundle conversationChanges;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -41,6 +52,7 @@ public class InboxActivity extends LoggedInActivity implements ViewConversationC
 		FragmentManager fm = getSupportFragmentManager();
 		if (savedInstanceState != null){
 			loginListener = (OnLoggedInCallback)fm.findFragmentById(R.id.container);
+			conversationChanges = savedInstanceState.getBundle(CHANGES);
 		}
 		else {
 			InboxFragment f = new InboxFragment();
@@ -52,6 +64,14 @@ public class InboxActivity extends LoggedInActivity implements ViewConversationC
 		preferences.edit()
 			.putInt(getString(R.string.key_pref_new_messages), 0)
 			.apply();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		if (hasChanges()){
+			outState.putBundle(CHANGES, conversationChanges);
+		}
 	}
 
 	@Override
@@ -91,10 +111,30 @@ public class InboxActivity extends LoggedInActivity implements ViewConversationC
 	@Override
 	public void quote(String quote){
 		//Notify the conversation fragment about the quote
-		ConversationFragment f = (ConversationFragment)getSupportFragmentManager().findFragmentById(R.id.container);
+		ConversationFragment f = (ConversationFragment)loginListener;
 		if (f != null){
 			f.quote(quote);
 		}
+	}
+
+	@Override
+	public void setChanges(Bundle changes){
+		conversationChanges = changes;
+	}
+
+	@Override
+	public Bundle getChanges(){
+		return conversationChanges;
+	}
+
+	@Override
+	public void consumeChanges(){
+		conversationChanges = null;
+	}
+
+	@Override
+	public boolean hasChanges(){
+		return conversationChanges != null;
 	}
 
 	@Override

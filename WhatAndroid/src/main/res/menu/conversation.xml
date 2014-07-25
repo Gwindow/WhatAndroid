@@ -9,4 +9,10 @@
             android:orderInCategory="0"
             android:showAsAction="ifRoom"/>
 
+    <item
+            android:id="@+id/action_manage"
+            android:title="@string/manage_conversation"
+            android:orderInCategory="10"
+            android:showAsAction="never"/>
+
 </menu>

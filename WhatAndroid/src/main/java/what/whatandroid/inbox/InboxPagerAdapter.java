@@ -14,9 +14,7 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
 /**
  * Adapter to display the paged lists of conversations in the inbox
  */
-public class InboxPagerAdapter extends FragmentStatePagerAdapter
-	implements OnLoggedInCallback, LoadingListener<Inbox> {
-
+public class InboxPagerAdapter extends FragmentStatePagerAdapter implements OnLoggedInCallback, LoadingListener<Inbox> {
 	/**
 	 * Loading listener to alert when we've loaded the inbox
 	 * The InboxFragment uses this to find and save the total number of pages

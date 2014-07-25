@@ -1,5 +1,6 @@
 package what.whatandroid.inbox;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.Collections;
+
 import api.inbox.inbox.Inbox;
+import api.inbox.inbox.Message;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
@@ -30,6 +34,12 @@ public class InboxListFragment extends Fragment implements OnLoggedInCallback, L
 	 * Listener to alert when we're finished loading this page
 	 */
 	private LoadingListener<Inbox> listener;
+	/**
+	 * Conversation changes passer to query after loading if there's
+	 * been some changes made so we can update our view
+	 */
+	private ConversationChangesPasser changesPasser;
+
 	private ProgressBar loadingIndicator;
 	private ListView list;
 	private InboxListAdapter adapter;
@@ -51,6 +61,17 @@ public class InboxListFragment extends Fragment implements OnLoggedInCallback, L
 
 	public InboxListFragment(){
 		//Required empty ctor
+	}
+
+	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		try {
+			changesPasser = (ConversationChangesPasser)activity;
+		}
+		catch (ClassCastException e){
+			throw new ClassCastException(activity.toString() + " must implement ConversationChangesPasser");
+		}
 	}
 
 	@Override
@@ -108,6 +129,8 @@ public class InboxListFragment extends Fragment implements OnLoggedInCallback, L
 		}
 		else {
 			if (adapter.isEmpty()){
+				//Check if any conversation changes were made to the conversations we're showing
+				applyConversationChanges(data);
 				adapter.addAll(data.getResponse().getMessages());
 				adapter.notifyDataSetChanged();
 				if (listener != null){
@@ -115,6 +138,34 @@ public class InboxListFragment extends Fragment implements OnLoggedInCallback, L
 				}
 				if (scrollState != null){
 					list.onRestoreInstanceState(scrollState);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Check if the conversation changes are being applied to
+	 * one of the conversations we're displaying and apply them if so
+	 */
+	public void applyConversationChanges(Inbox data){
+		if (changesPasser.hasChanges()){
+			Bundle changes = changesPasser.getChanges();
+			int convId = changes.getInt(ConversationChangesPasser.CONVERSATION);
+			for (int i = 0; i < data.getResponse().getMessages().size(); ++i){
+				Message m = data.getResponse().getMessages().get(i);
+				if (m.getConvId().intValue() == convId){
+					if (changes.getBoolean(ConversationChangesPasser.DELETED)){
+						data.getResponse().getMessages().remove(i);
+						//Notify the passer that we've consumed the changes
+						changesPasser.consumeChanges();
+						return;
+					}
+					m.setSticky(changes.getBoolean(ConversationChangesPasser.STICKY));
+					m.setUnread(changes.getBoolean(ConversationChangesPasser.UNREAD));
+					//Re-sort the messages to put sticky posts at the top
+					Collections.sort(data.getResponse().getMessages(), new Message.StickyMessageComparator());
+					//Notify the passer that we've consumed the changes
+					changesPasser.consumeChanges();
 				}
 			}
 		}

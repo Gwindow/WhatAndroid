@@ -74,6 +74,7 @@ public class InboxListAdapter extends ArrayAdapter<Message> implements AdapterVi
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 		Message m = getItem(position);
+		m.setUnread(false);
 		viewConversation.viewConversation(m.getConvId().intValue());
 	}
 

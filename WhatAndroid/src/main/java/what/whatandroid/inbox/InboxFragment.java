@@ -16,31 +16,36 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
  * the user's inbox so they can pick one to view or manage them
  */
 public class InboxFragment extends Fragment implements OnLoggedInCallback {
-	private static String PAGES = "what.whatandroid.inboxfragment.PAGES";
+
+	private static final String PAGES = "what.whatandroid.inboxfragment.PAGES";
 
 	/**
 	 * The adapter to alert when we've logged in to the site
 	 */
-	private OnLoggedInCallback loginListener;
+	private InboxPagerAdapter adapter;
+	private int pages = 1;
 
 	/**
 	 * Create a fragment displaying the user's inbox
 	 */
 	public InboxFragment(){
+		//Required empty ctor
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null){
+			pages = savedInstanceState.getInt(PAGES);
+		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_view_pager_strip, container, false);
 		ViewPager viewPager = (ViewPager)view.findViewById(R.id.pager);
-		InboxPagerAdapter pagerAdapter = new InboxPagerAdapter(getChildFragmentManager(), 1);
-		viewPager.setAdapter(pagerAdapter);
-		loginListener = pagerAdapter;
+		adapter = new InboxPagerAdapter(getChildFragmentManager(), pages);
+		viewPager.setAdapter(adapter);
 		if (MySoup.isLoggedIn()){
 			onLoggedIn();
 		}
@@ -48,7 +53,13 @@ public class InboxFragment extends Fragment implements OnLoggedInCallback {
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		outState.putInt(PAGES, adapter.getCount());
+	}
+
+	@Override
 	public void onLoggedIn(){
-		loginListener.onLoggedIn();
+		adapter.onLoggedIn();
 	}
 }

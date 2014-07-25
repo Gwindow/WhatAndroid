@@ -89,6 +89,10 @@
     <string name="locked_thread">Locked Thread</string>
     <string name="toggle_subscription">Toggle subscription</string>
     <string name="reply">Reply</string>
+    <string name="manage_conversation">Manage Conversation</string>
+    <string name="sticky">Sticky</string>
+    <string name="mark_unread">Mark as Unread</string>
+    <string name="delete_conversation">Delete Conversation</string>
     <string name="compose_hint">Enter your reply here, going back will save the draft</string>
     <string name="discard">Discard</string>
     <string name="preview">Preview</string>
