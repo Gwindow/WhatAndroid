@@ -1,45 +1,38 @@
 package what.whatandroid.artist;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.view.*;
-import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.astuetz.PagerSlidingTabStrip;
+
+import api.soup.MySoup;
 import api.torrents.artist.Artist;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
-import what.whatandroid.callbacks.SetTitleCallback;
-import what.whatandroid.imgloader.ImageLoadingListener;
-import what.whatandroid.settings.SettingsActivity;
-import what.whatandroid.views.ImageDialog;
 
 /**
  * Fragment for viewing an artist's information and torrent groups
  */
-public class ArtistFragment extends Fragment implements OnLoggedInCallback, View.OnClickListener,
-	LoaderManager.LoaderCallbacks<Artist> {
+public class ArtistFragment extends Fragment implements OnLoggedInCallback, LoaderManager.LoaderCallbacks<Artist> {
 	/**
 	 * The artist being viewed
 	 */
 	private Artist artist;
 	/**
-	 * Callbacks to the activity so we can set the title
+	 * Adapter containing the fragments displaying the artist information
 	 */
-	private SetTitleCallback callbacks;
-	/**
-	 * Various content views displaying the artist information
-	 */
-	private ImageView image;
-	private ProgressBar spinner;
-	private View artContainer;
-	private ExpandableListView torrentList;
+	private ArtistPagerAdapter pagerAdapter;
 	/**
 	 * Menu items for toggling bookmarks/notifications status
 	 */
@@ -70,17 +63,6 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	}
 
 	@Override
-	public void onAttach(Activity activity){
-		super.onAttach(activity);
-		try {
-			callbacks = (SetTitleCallback)activity;
-		}
-		catch (ClassCastException e){
-			throw new ClassCastException(activity.toString() + " must implement ViewTorrentCallbacks!");
-		}
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
@@ -88,16 +70,14 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		View view = inflater.inflate(R.layout.expandable_list_view, container, false);
-		torrentList = (ExpandableListView)view.findViewById(R.id.exp_list);
-		View header = inflater.inflate(R.layout.header_image, null);
-		torrentList.addHeaderView(header);
-		image = (ImageView)header.findViewById(R.id.image);
-		image.setOnClickListener(this);
-		spinner = (ProgressBar)header.findViewById(R.id.loading_indicator);
-		artContainer = header.findViewById(R.id.art_container);
-		if (artist != null){
-			populateViews();
+		View view = inflater.inflate(R.layout.fragment_view_pager_tabs, container, false);
+		ViewPager viewPager = (ViewPager)view.findViewById(R.id.pager);
+		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip)view.findViewById(R.id.tabs);
+		pagerAdapter = new ArtistPagerAdapter(getChildFragmentManager());
+		viewPager.setAdapter(pagerAdapter);
+		tabs.setViewPager(viewPager);
+		if (MySoup.isLoggedIn()){
+			getLoaderManager().initLoader(0, getArguments(), this);
 		}
 		return view;
 	}
@@ -138,14 +118,6 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	}
 
 	@Override
-	public void onClick(View v){
-		if (v.getId() == R.id.image){
-			ImageDialog dialog = ImageDialog.newInstance(artist.getResponse().getImage());
-			dialog.show(getChildFragmentManager(), "image_dialog");
-		}
-	}
-
-	@Override
 	public Loader<Artist> onCreateLoader(int id, Bundle args){
 		if (isAdded()){
 			getActivity().setProgressBarIndeterminate(true);
@@ -161,8 +133,8 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 			getActivity().setProgressBarIndeterminate(false);
 			getActivity().setProgressBarIndeterminateVisibility(false);
 			if (artist != null && artist.getStatus()){
-				populateViews();
 				updateMenus();
+				pagerAdapter.onLoadingComplete(artist);
 			}
 			else {
 				Toast.makeText(getActivity(), "Could not load artist", Toast.LENGTH_LONG).show();
@@ -197,30 +169,9 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	}
 
 	/**
-	 * Update all the artist information with the loaded api request
-	 */
-	private void populateViews(){
-		callbacks.setTitle(artist.getResponse().getName());
-		String imgUrl = artist.getResponse().getImage();
-		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner, artContainer));
-		}
-		else {
-			artContainer.setVisibility(View.GONE);
-		}
-		if (torrentList.getAdapter() == null){
-			ArtistTorrentAdapter adapter = new ArtistTorrentAdapter(getActivity(), artist.getReleases().flatten(),
-				artist.getResponse().getRequests());
-			torrentList.setAdapter(adapter);
-			torrentList.setOnChildClickListener(adapter);
-		}
-	}
-
-	/**
 	 * Async task to toggle the artists bookmark status
 	 */
 	private class ToggleBookmarkTask extends AsyncTask<Void, Void, Boolean> {
-
 		@Override
 		protected Boolean doInBackground(Void... params){
 			if (artist.getResponse().isBookmarked()){
@@ -266,7 +217,6 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, View
 	 * Async task to toggle the artist's notification status
 	 */
 	private class ToggleNotificationsTask extends AsyncTask<Void, Void, Boolean> {
-
 		@Override
 		protected Boolean doInBackground(Void... params){
 			if (artist.getResponse().hasNotificationsEnabled()){

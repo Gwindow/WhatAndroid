@@ -2,6 +2,7 @@ package what.whatandroid.artist;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.Window;
 
 import java.io.UnsupportedEncodingException;
@@ -14,6 +15,7 @@ import what.whatandroid.R;
 import what.whatandroid.announcements.AnnouncementsActivity;
 import what.whatandroid.barcode.BarcodeActivity;
 import what.whatandroid.bookmarks.BookmarksActivity;
+import what.whatandroid.callbacks.ViewArtistCallbacks;
 import what.whatandroid.callbacks.ViewRequestCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.inbox.InboxActivity;
@@ -28,7 +30,7 @@ import what.whatandroid.torrentgroup.TorrentGroupActivity;
 /**
  * View information about the artist and a list of their torrent groups
  */
-public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallbacks, ViewRequestCallbacks {
+public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallbacks, ViewRequestCallbacks, ViewArtistCallbacks {
 	/**
 	 * Param to pass the user id to display to the activity
 	 * the USE_SEARCH parameter should be set to true and will indicate that the artist
@@ -107,6 +109,27 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 		Intent intent = new Intent(this, RequestActivity.class);
 		intent.putExtra(RequestActivity.REQUEST_ID, id);
 		startActivity(intent);
+	}
+
+	@Override
+	public void viewArtist(int id){
+		artistFragment = ArtistFragment.newInstance(id, null, false);
+		getSupportFragmentManager().beginTransaction()
+			.replace(R.id.container, artistFragment)
+			.addToBackStack(null)
+			.commit();
+	}
+
+	@Override
+	public void onBackPressed(){
+		FragmentManager fm = getSupportFragmentManager();
+		if (fm.getBackStackEntryCount() > 0){
+			fm.popBackStackImmediate();
+			artistFragment = (ArtistFragment)fm.findFragmentById(R.id.container);
+		}
+		else {
+			super.onBackPressed();
+		}
 	}
 
 	@Override
