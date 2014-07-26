@@ -7,13 +7,32 @@ import android.text.Spanned;
 import android.text.style.BulletSpan;
 import android.text.style.URLSpan;
 import android.util.Patterns;
-import what.whatandroid.comments.tags.*;
 
 import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import what.whatandroid.comments.tags.AlignTagStyle;
+import what.whatandroid.comments.tags.ArtistTagStyle;
+import what.whatandroid.comments.tags.BoldTagStyle;
+import what.whatandroid.comments.tags.CodeTagStyle;
+import what.whatandroid.comments.tags.ColorTagStyle;
+import what.whatandroid.comments.tags.HiddenTagStyle;
+import what.whatandroid.comments.tags.ImageTagStyle;
+import what.whatandroid.comments.tags.ImportantTagStyle;
+import what.whatandroid.comments.tags.ItalicTagStyle;
+import what.whatandroid.comments.tags.ModeratorTagStyle;
+import what.whatandroid.comments.tags.QuoteTagStyle;
+import what.whatandroid.comments.tags.SizeTagStyle;
+import what.whatandroid.comments.tags.StrikethroughTagStyle;
+import what.whatandroid.comments.tags.Tag;
+import what.whatandroid.comments.tags.TagStyle;
+import what.whatandroid.comments.tags.TorrentTagStyle;
+import what.whatandroid.comments.tags.URLTagStyle;
+import what.whatandroid.comments.tags.UnderlineTagStyle;
+import what.whatandroid.comments.tags.UserTagStyle;
 
 /**
  * Takes a bb formatted string and builds a formatted Spanned to display the text
@@ -263,7 +282,9 @@ public class WhatBBParser {
 	private void parsePlainUrls(){
 		Matcher urls = Patterns.WEB_URL.matcher(builder);
 		while (urls.find()){
-			builder.setSpan(new URLSpan(urls.group()), urls.start(), urls.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			if (urls.group().startsWith("http")){
+				builder.setSpan(new URLSpan(urls.group()), urls.start(), urls.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
 		}
 	}
 

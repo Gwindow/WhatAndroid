@@ -20,7 +20,6 @@ public class URLTagStyle implements TagStyle {
 		else {
 			url = text.toString();
 		}
-		//TODO: Is it safe to assume all urls without the http bit will be site urls?
 		if (!url.startsWith("http")){
 			url = MySoup.getSite() + url;
 		}
