@@ -4,7 +4,7 @@
           android:versionCode="17"
           android:versionName="2.0.9.a">
 
-<uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -45,6 +45,14 @@
                         android:host="what.cd"
                         android:pathPrefix="/user"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                        android:scheme="https"
+                        android:host="ssl.what.cd"
+                        android:pathPrefix="/user"/>
+            </intent-filter>
         </activity>
         <activity
                 android:name=".artist.ArtistActivity"
@@ -66,11 +74,18 @@
                         android:host="what.cd"
                         android:pathPrefix="/artist"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                        android:scheme="https"
+                        android:host="ssl.what.cd"
+                        android:pathPrefix="/artist"/>
+            </intent-filter>
         </activity>
         <activity
                 android:name=".torrentgroup.TorrentGroupActivity"
                 android:label="@string/torrent_group">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -85,6 +100,14 @@
                 <data
                         android:scheme="https"
                         android:host="what.cd"
+                        android:pathPrefix="/torrents"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                        android:scheme="https"
+                        android:host="ssl.what.cd"
                         android:pathPrefix="/torrents"/>
             </intent-filter>
         </activity>
@@ -103,7 +126,6 @@
         <activity
                 android:name=".barcode.BarcodeActivity"
                 android:label="@string/barcode_lookup">
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -133,6 +155,14 @@
                 <data
                         android:scheme="https"
                         android:host="what.cd"
+                        android:pathPrefix="/forums"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                        android:scheme="https"
+                        android:host="ssl.what.cd"
                         android:pathPrefix="/forums"/>
             </intent-filter>
         </activity>
