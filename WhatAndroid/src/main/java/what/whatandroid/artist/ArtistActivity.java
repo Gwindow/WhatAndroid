@@ -114,6 +114,7 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 	@Override
 	public void viewArtist(int id){
 		artistFragment = ArtistFragment.newInstance(id, null, false);
+		setTitle(getString(R.string.artist));
 		getSupportFragmentManager().beginTransaction()
 			.replace(R.id.container, artistFragment)
 			.addToBackStack(null)
@@ -124,6 +125,7 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 	public void onBackPressed(){
 		FragmentManager fm = getSupportFragmentManager();
 		if (fm.getBackStackEntryCount() > 0){
+			setTitle(getString(R.string.artist));
 			fm.popBackStackImmediate();
 			artistFragment = (ArtistFragment)fm.findFragmentById(R.id.container);
 		}
