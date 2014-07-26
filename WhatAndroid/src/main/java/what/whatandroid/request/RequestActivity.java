@@ -17,6 +17,7 @@ import what.whatandroid.bookmarks.BookmarksActivity;
 import what.whatandroid.callbacks.ViewArtistCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.callbacks.ViewUserCallbacks;
+import what.whatandroid.forums.ForumActivity;
 import what.whatandroid.inbox.InboxActivity;
 import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
@@ -129,6 +130,10 @@ public class RequestActivity extends LoggedInActivity
 		}
 		else if (selection.contains(getString(R.string.subscriptions))){
 			Intent intent = new Intent(this, SubscriptionsActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.forums))){
+			Intent intent = new Intent(this, ForumActivity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.blog))){
