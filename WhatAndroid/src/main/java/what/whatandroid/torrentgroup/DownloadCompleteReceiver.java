@@ -16,7 +16,7 @@ import what.whatandroid.R;
  * the phone has finished downloading
  */
 public class DownloadCompleteReceiver extends BroadcastReceiver {
-	int torrent;
+	private int torrent;
 
 	public DownloadCompleteReceiver(int torrent){
 		this.torrent = torrent;
