@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import what.whatandroid.R;
@@ -17,11 +16,17 @@ import what.whatandroid.R;
  * the phone has finished downloading
  */
 public class DownloadCompleteReceiver extends BroadcastReceiver {
+	int torrent;
+
+	public DownloadCompleteReceiver(int torrent){
+		this.torrent = torrent;
+	}
 
 	@Override
 	public void onReceive(Context context, Intent intent){
 		context.unregisterReceiver(this);
 		long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
+		int reqId = (int)System.currentTimeMillis();
 		DownloadManager.Query query = new DownloadManager.Query();
 		query.setFilterById(id);
 		Cursor cursor = ((DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE)).query(query);
@@ -34,8 +39,9 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
 					.setContentText("Download of " + title + " completed")
 					.setAutoCancel(true);
 
-				Intent view = new Intent(Intent.ACTION_VIEW, Uri.parse(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI))));
-				PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, view, 0);
+				Intent view = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
+				view.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				PendingIntent pendingIntent = PendingIntent.getActivity(context, reqId, view, 0);
 				builder.setContentIntent(pendingIntent);
 			}
 			else {
@@ -45,9 +51,13 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
 					.setContentText("Download of " + title + " failed\n" +
 						cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_REASON)))
 					.setAutoCancel(true);
+				Intent view = new Intent(context, TorrentGroupActivity.class);
+				view.putExtra(TorrentGroupActivity.TORRENT_ID, torrent);
+				PendingIntent pendingIntent = PendingIntent.getActivity(context, reqId, view, 0);
+				builder.setContentIntent(pendingIntent);
 			}
 			NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-			manager.notify(1, builder.build());
+			manager.notify(reqId, builder.build());
 		}
 		cursor.close();
 	}

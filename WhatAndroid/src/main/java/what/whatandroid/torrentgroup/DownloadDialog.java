@@ -34,10 +34,11 @@ public class DownloadDialog extends DialogFragment {
 		/**
 		 * If the user wants to download the torrent to their phone
 		 *
+		 * @param torrentId id of the torrent to download
 		 * @param link  download link for the torrent
 		 * @param title the title of the torrent being downloaded
 		 */
-		public void downloadToPhone(String link, String title);
+		public void downloadToPhone(int torrentId, String link, String title);
 	}
 
 	private DownloadDialogListener listener;
@@ -98,7 +99,7 @@ public class DownloadDialog extends DialogFragment {
 				@Override
 				public void onClick(DialogInterface dialog, int which){
 					if (listener != null){
-						listener.downloadToPhone(downloadLink, title + " " + edition);
+						listener.downloadToPhone(torrentId, downloadLink, title + " " + edition);
 					}
 				}
 			});
