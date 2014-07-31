@@ -145,9 +145,7 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 			//If don't have the user's information we need to kick them to the login activity
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 			String cookie = preferences.getString(SettingsFragment.USER_COOKIE, null);
-			String username = preferences.getString(SettingsFragment.USER_NAME, null);
-			String password = preferences.getString(SettingsFragment.USER_PASSWORD, null);
-			if (cookie == null || username == null || password == null){
+			if (cookie == null){
 				Toast.makeText(this, "Please log in", Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(this, LoginActivity.class);
 				intent.putExtra(LoginActivity.LOGIN_REQUEST, true);
@@ -158,7 +156,7 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 				initImageLoader(this);
 				launchServices(this);
 				loginTask = new Login();
-				loginTask.execute(username, password);
+				loginTask.execute();
 			}
 		}
 		//If we're already logged in tell the activity it's ok to start loading if we haven't already told them
