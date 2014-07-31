@@ -99,7 +99,7 @@ public class WhatBBParser {
 		//plain block or not
 		boolean plain = false;
 		//Run through the text and examine potential tags, parsing tags as we encounter them
-		for (int start = indexOf(builder, "["), end = indexOf(builder, "]"); start != -1;
+		for (int start = indexOf(builder, "["), end = indexOf(builder, "]"); start != -1 && end != -1;
 		     start = indexOf(builder, "[", start + 1), end = indexOf(builder, "]", start))
 		{
 			CharSequence block = builder.subSequence(start, end + 1);
@@ -142,7 +142,7 @@ public class WhatBBParser {
 	private int openTag(Stack<Tag> tags, Tag tag){
 		//Hidden tags have their content hidden so we extract it into the tag and don't waste time parsing
 		//that content, since it'll only be shown if the hidden tag is clicked
-		if (tag.tag.equalsIgnoreCase("hide")){
+		if (tag.tag.equalsIgnoreCase("hide") || tag.tag.equalsIgnoreCase("mature")){
 			return parseHiddenTag(tag);
 		}
 		//If it's a self-closing image tag (the only type of tag that can self-close) handle the special case
@@ -170,6 +170,10 @@ public class WhatBBParser {
 		do {
 			Tag t = tags.pop();
 			t.end = start;
+			//If a user enters an improperly formatted tag this can occur and we need to skip the tag
+			if (t.start + t.tagLength > t.end){
+				continue;
+			}
 			//plain tags give a null style, ie. just remove the tags but apply no formatting
 			TagStyle style = tagStyles.get(t.tag);
 			Spannable styled;
