@@ -91,4 +91,10 @@ public class ForumPagerAdapter extends FragmentStatePagerAdapter implements OnLo
 		notifyDataSetChanged();
 		listener.onLoadingComplete(data);
 	}
+
+    public void switchFragmentsLayout(){
+        for (int i = 0; i < fragments.size(); ++i){
+            fragments.valueAt(i).switchLayout();
+        }
+    }
 }

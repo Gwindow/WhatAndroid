@@ -16,6 +16,12 @@
                 android:summary="@string/pref_updater_description"
                 android:defaultValue="false"/>
 
+        <CheckBoxPreference
+            android:title="@string/pref_light_layout"
+            android:key="@string/key_pref_light_layout"
+            android:summary="@string/pref_light_layout_description"
+            android:defaultValue="false"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

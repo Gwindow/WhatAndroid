@@ -115,6 +115,10 @@
     <string name="key_pref_new_messages">key_pref_new_messages</string>
     <string name="fontawesome_font">fontawesome-webfont.ttf</string>
     <string name="roboto_black">Roboto-Black.ttf</string>
+    <string name="switch_layout">Switch Layout</string>
+    <string name="pref_light_layout">Use Light Layout for Forums</string>
+    <string name="key_pref_light_layout">pref_light_layout</string>
+    <string name="pref_light_layout_description" />
 
     <string-array name="vote_units">
         <item>MB</item>

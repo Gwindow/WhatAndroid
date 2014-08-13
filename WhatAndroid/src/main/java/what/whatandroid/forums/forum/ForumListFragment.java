@@ -8,6 +8,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.forums.ForumActivity;
+import what.whatandroid.settings.SettingsActivity;
 
 /**
  * Fragment that displays a list of the forum threads on some page of the forum
@@ -31,6 +33,8 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 	private ListView list;
 	private ForumListAdapter adapter;
 	private Parcelable scrollState;
+
+    private boolean isLightLayout; // is the light layout used now?
 
 	/**
 	 * Get a fragment displaying the list of posts at some page in the forum
@@ -64,7 +68,14 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		list = (ListView) view.findViewById(R.id.list);
 		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
-		adapter = new ForumListAdapter(getActivity());
+        // Set correct layout according to settings
+        if(SettingsActivity.lightLayoutEnabled(getActivity())){
+            adapter = new ForumListAdapterLight(getActivity());
+            isLightLayout = true;
+        } else {
+            adapter = new ForumListAdapterDefault(getActivity());
+            isLightLayout = false;
+        }
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(adapter);
 		if (MySoup.isLoggedIn()){
@@ -126,4 +137,15 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 		adapter.clear();
 		adapter.notifyDataSetChanged();
 	}
+
+    public void switchLayout(){
+        if(isLightLayout){
+            adapter = new ForumListAdapterDefault(getActivity());
+            isLightLayout = false;
+        } else {
+            adapter = new ForumListAdapterLight(getActivity());
+            isLightLayout = true;
+        }
+        adapter.notifyDataSetChanged();
+    }
 }

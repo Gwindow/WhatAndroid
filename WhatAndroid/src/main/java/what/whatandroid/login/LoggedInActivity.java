@@ -47,7 +47,7 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-	public static final String SITE = "192.168.1.100:8080/";
+	public static final String SITE = "what.cd/";
 	protected NavigationDrawerFragment navDrawer;
 	/**
 	 * Used to store the last screen title, for use in restoreActionBar
@@ -67,7 +67,7 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 	 * Initialize MySoup so that we can start making API requests
 	 */
 	public static void initSoup(){
-		MySoup.setSite(SITE, false);
+		MySoup.setSite(SITE, true);
 		MySoup.setUserAgent("WhatAndroid Android");
 	}
 
