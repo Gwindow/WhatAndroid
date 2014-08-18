@@ -34,8 +34,6 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 	private ForumListAdapter adapter;
 	private Parcelable scrollState;
 
-    private boolean isLightLayout; // is the light layout used now?
-
 	/**
 	 * Get a fragment displaying the list of posts at some page in the forum
 	 *
@@ -71,10 +69,8 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
         // Set correct layout according to settings
         if(SettingsActivity.lightLayoutEnabled(getActivity())){
             adapter = new ForumListAdapterLight(getActivity());
-            isLightLayout = true;
         } else {
             adapter = new ForumListAdapterDefault(getActivity());
-            isLightLayout = false;
         }
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(adapter);
@@ -138,14 +134,20 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 		adapter.notifyDataSetChanged();
 	}
 
-    public void switchLayout(){
-        if(isLightLayout){
-            adapter = new ForumListAdapterDefault(getActivity());
-            isLightLayout = false;
-        } else {
+    /**
+     * Set the forum layout to light/default layout.
+     * @param set True if set light version.
+     */
+    public void setUseLightLayout(boolean set){
+        if(set){
             adapter = new ForumListAdapterLight(getActivity());
-            isLightLayout = true;
+        } else {
+            adapter = new ForumListAdapterDefault(getActivity());
         }
-        adapter.notifyDataSetChanged();
+        list.setAdapter(adapter);
+        // Load the data again
+        if (MySoup.isLoggedIn()){
+            getLoaderManager().initLoader(0, getArguments(), this);
+        }
     }
 }

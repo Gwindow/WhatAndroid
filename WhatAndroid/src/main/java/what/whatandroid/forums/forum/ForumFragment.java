@@ -128,12 +128,13 @@ public class ForumFragment extends Fragment implements OnLoggedInCallback, Loadi
 				viewPager.setCurrentItem(pages - 1);
 				return true;
             case R.id.action_switch_layout:
-                pagerAdapter.switchFragmentsLayout();
-                // Set the corresponding settings value
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                Boolean previousState = settings.getBoolean("pref_light_layout",false);
+                pagerAdapter.setUseLightLayout(!previousState);
+                // Set the corresponding settings value
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putBoolean(getResources().getString(R.string.key_pref_light_layout), !(SettingsActivity.lightLayoutEnabled(getActivity())));
-                editor.commit();
+                editor.putBoolean(getResources().getString(R.string.key_pref_light_layout), !previousState);
+                editor.apply();
                 return true;
 			default:
 				break;

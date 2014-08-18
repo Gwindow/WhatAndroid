@@ -92,9 +92,13 @@ public class ForumPagerAdapter extends FragmentStatePagerAdapter implements OnLo
 		listener.onLoadingComplete(data);
 	}
 
-    public void switchFragmentsLayout(){
+    /**
+     * Set the forum layout to light/default layout for all used fragments.
+     * @param set True if set light version.
+     */
+    public void setUseLightLayout(boolean set){
         for (int i = 0; i < fragments.size(); ++i){
-            fragments.valueAt(i).switchLayout();
+            fragments.valueAt(i).setUseLightLayout(set);
         }
     }
 }
