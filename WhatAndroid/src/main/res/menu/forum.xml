@@ -14,4 +14,10 @@
             android:orderInCategory="20"
             android:showAsAction="never"/>
 
+    <item
+            android:id="@+id/action_switch_layout"
+            android:title="@string/switch_layout"
+            android:orderInCategory="25"
+            android:showAsAction="never"/>
+
 </menu>

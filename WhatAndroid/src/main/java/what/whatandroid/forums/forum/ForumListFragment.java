@@ -8,6 +8,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.forums.ForumActivity;
+import what.whatandroid.settings.SettingsActivity;
 
 /**
  * Fragment that displays a list of the forum threads on some page of the forum
@@ -64,7 +66,12 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		list = (ListView) view.findViewById(R.id.list);
 		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
-		adapter = new ForumListAdapter(getActivity());
+        // Set correct layout according to settings
+        if(SettingsActivity.lightLayoutEnabled(getActivity())){
+            adapter = new ForumListAdapterLight(getActivity());
+        } else {
+            adapter = new ForumListAdapterDefault(getActivity());
+        }
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(adapter);
 		if (MySoup.isLoggedIn()){
@@ -126,4 +133,21 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 		adapter.clear();
 		adapter.notifyDataSetChanged();
 	}
+
+    /**
+     * Set the forum layout to light/default layout.
+     * @param set True if set light version.
+     */
+    public void setUseLightLayout(boolean set){
+        if(set){
+            adapter = new ForumListAdapterLight(getActivity());
+        } else {
+            adapter = new ForumListAdapterDefault(getActivity());
+        }
+        list.setAdapter(adapter);
+        // Load the data again
+        if (MySoup.isLoggedIn()){
+            getLoaderManager().initLoader(0, getArguments(), this);
+        }
+    }
 }

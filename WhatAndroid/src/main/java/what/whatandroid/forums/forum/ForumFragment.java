@@ -1,7 +1,9 @@
 package what.whatandroid.forums.forum;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.forums.ForumActivity;
 import what.whatandroid.forums.NumberPickerDialog;
+import what.whatandroid.settings.SettingsActivity;
 
 /**
  * Displays a paged view of the posts in some forum
@@ -124,6 +127,15 @@ public class ForumFragment extends Fragment implements OnLoggedInCallback, Loadi
 			case R.id.action_pick_last_page:
 				viewPager.setCurrentItem(pages - 1);
 				return true;
+            case R.id.action_switch_layout:
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                Boolean previousState = settings.getBoolean("pref_light_layout",false);
+                pagerAdapter.setUseLightLayout(!previousState);
+                // Set the corresponding settings value
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean(getResources().getString(R.string.key_pref_light_layout), !previousState);
+                editor.apply();
+                return true;
 			default:
 				break;
 		}

@@ -42,4 +42,18 @@ public class SettingsActivity extends Activity {
 		}
 		return true;
 	}
+
+    /**
+     * See if light layout for forums is enabled for the context.
+     *
+     * @return true if enabled, false if not
+     */
+    public static Boolean lightLayoutEnabled(Context context){
+        if (context == null){
+            return false;
+        }
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean lightEnabled = preferences.getBoolean(context.getString(R.string.key_pref_light_layout), false);
+        return lightEnabled;
+    }
 }
