@@ -8,7 +8,6 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -64,20 +63,42 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
-		list = (ListView) view.findViewById(R.id.list);
+		list = (ListView)view.findViewById(R.id.list);
 		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
-        // Set correct layout according to settings
-        if(SettingsActivity.lightLayoutEnabled(getActivity())){
-            adapter = new ForumListAdapterLight(getActivity());
-        } else {
-            adapter = new ForumListAdapterDefault(getActivity());
-        }
-		list.setAdapter(adapter);
-		list.setOnItemClickListener(adapter);
-		if (MySoup.isLoggedIn()){
-			getLoaderManager().initLoader(0, getArguments(), this);
-		}
 		return view;
+	}
+
+	@Override
+	public void onResume(){
+		super.onResume();
+		//Pick the appropriate list adapter depending on our preference, if this is the first time we're
+		//making the view then we just pick the adapter, if we've already got an adapter we check that
+		//that type is still the one we want to show, ie. did the user go to settings and change it?
+		boolean light = SettingsActivity.lightLayoutEnabled(getActivity());
+		if (adapter == null || !showingRightAdapter(light)){
+			if (light){
+				adapter = new ForumListAdapterLight(getActivity());
+			}
+			else {
+				adapter = new ForumListAdapterDefault(getActivity());
+			}
+			list.setAdapter(adapter);
+			list.setOnItemClickListener(adapter);
+			if (MySoup.isLoggedIn()){
+				getLoaderManager().initLoader(0, getArguments(), this);
+			}
+		}
+	}
+
+	/**
+	 * Test that we're showing the correct adapter for the light forum preference state
+	 *
+	 * @param light if we should be showing a light layout
+	 * @return true if we're showing the right adapter, false if we aren't
+	 */
+	private boolean showingRightAdapter(boolean light){
+		return (light && adapter instanceof ForumListAdapterLight)
+			|| (!light && adapter instanceof ForumListAdapterDefault);
 	}
 
 	@Override
@@ -134,20 +155,23 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 		adapter.notifyDataSetChanged();
 	}
 
-    /**
-     * Set the forum layout to light/default layout.
-     * @param set True if set light version.
-     */
-    public void setUseLightLayout(boolean set){
-        if(set){
-            adapter = new ForumListAdapterLight(getActivity());
-        } else {
-            adapter = new ForumListAdapterDefault(getActivity());
-        }
-        list.setAdapter(adapter);
-        // Load the data again
-        if (MySoup.isLoggedIn()){
-            getLoaderManager().initLoader(0, getArguments(), this);
-        }
-    }
+	/**
+	 * Set the forum layout to light/default layout.
+	 *
+	 * @param set True if set light version.
+	 */
+	public void setUseLightLayout(boolean set){
+		if (set){
+			adapter = new ForumListAdapterLight(getActivity());
+		}
+		else {
+			adapter = new ForumListAdapterDefault(getActivity());
+		}
+		list.setAdapter(adapter);
+		//Make sure we're loading data, or if we've finished loading just re-call onLoadFinished
+		//to populate the new adapter
+		if (MySoup.isLoggedIn()){
+			getLoaderManager().initLoader(0, getArguments(), this);
+		}
+	}
 }
