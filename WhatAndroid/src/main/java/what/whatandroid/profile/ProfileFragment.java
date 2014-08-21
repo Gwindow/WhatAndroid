@@ -232,21 +232,19 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 
 	@Override
 	public void onLoadFinished(Loader<UserProfile> loader, UserProfile data){
-		userProfile = data;
-		if (isAdded()){
-			getActivity().setProgressBarIndeterminate(false);
-			getActivity().setProgressBarIndeterminateVisibility(false);
-			if (userProfile.getStatus()){
-				populateViews();
-				if (indexLoadingListener != null){
-					indexLoadingListener.onLoadingComplete(MySoup.getIndex());
-				}
-				if (userID != MySoup.getUserId() && sendMessage != null){
-					sendMessage.setVisible(true);
-				}
+		getActivity().setProgressBarIndeterminate(false);
+		getActivity().setProgressBarIndeterminateVisibility(false);
+		if (data == null || !data.getStatus()){
+			Toast.makeText(getActivity(), "Could not load profile", Toast.LENGTH_LONG).show();
+		}
+		else {
+			userProfile = data;
+			populateViews();
+			if (indexLoadingListener != null){
+				indexLoadingListener.onLoadingComplete(MySoup.getIndex());
 			}
-			else {
-				Toast.makeText(getActivity(), "Could not load profile", Toast.LENGTH_LONG).show();
+			if (userID != MySoup.getUserId() && sendMessage != null){
+				sendMessage.setVisible(true);
 			}
 		}
 	}
@@ -409,10 +407,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 		protected void onPostExecute(Boolean status){
 			if (!status){
 				Toast.makeText(getActivity(), "Could not send message", Toast.LENGTH_LONG).show();
-			}
+		}
 			else {
 				Toast.makeText(getActivity(), "Message sent", Toast.LENGTH_SHORT).show();
 			}
-		}
+	}
 	}
 }
