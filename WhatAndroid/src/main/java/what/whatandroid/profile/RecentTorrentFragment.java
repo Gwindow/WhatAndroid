@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import api.user.recent.RecentTorrent;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import api.user.recent.RecentTorrent;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
@@ -116,17 +118,24 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 				artContainer.setVisibility(View.GONE);
 			}
 			albumName.setText(torrent.getName());
-			//For 3+ artists show Various Artists, for 2 show A & B for 1 just show the artist name
-			switch (torrent.getArtists().size()){
-				case 1:
-					artistName.setText(torrent.getArtists().get(0).getName());
-					break;
-				case 2:
-					artistName.setText(torrent.getArtists().get(0).getName()
-						+ " & " + torrent.getArtists().get(1).getName());
-					break;
-				default:
-					artistName.setText("Various Artists");
+			//Fixing a crash report it seems like getArtists can give null here? Perhaps if the user downloaded
+			//a non-music torrent?
+			if (torrent.getArtists() != null){
+				//For 3+ artists show Various Artists, for 2 show A & B for 1 just show the artist name
+				switch (torrent.getArtists().size()){
+					case 1:
+						artistName.setText(torrent.getArtists().get(0).getName());
+						break;
+					case 2:
+						artistName.setText(torrent.getArtists().get(0).getName()
+							+ " & " + torrent.getArtists().get(1).getName());
+						break;
+					default:
+						artistName.setText("Various Artists");
+				}
+			}
+			else {
+				artistName.setVisibility(View.GONE);
 			}
 		}
 	}
