@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import what.whatandroid.R;
@@ -39,8 +40,7 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
 					.setContentText("Download of " + title + " completed")
 					.setAutoCancel(true);
 
-				Intent view = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
-				view.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				Intent view = new Intent(Intent.ACTION_VIEW, Uri.parse(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI))));
 				PendingIntent pendingIntent = PendingIntent.getActivity(context, reqId, view, 0);
 				builder.setContentIntent(pendingIntent);
 			}
