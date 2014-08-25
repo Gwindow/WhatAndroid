@@ -98,6 +98,7 @@ public class NavigationDrawerFragment extends Fragment {
 			getString(R.string.subscriptions),
 			getString(R.string.notifications),
 			getString(R.string.forums),
+			getString(R.string.top10),
 			getString(R.string.torrents),
 			getString(R.string.artists),
 			getString(R.string.requests),

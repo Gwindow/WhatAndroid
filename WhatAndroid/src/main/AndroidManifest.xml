@@ -172,6 +172,9 @@
         <activity
                 android:name=".inbox.InboxActivity"
                 android:label="@string/inbox"/>
+        <activity
+                android:name=".top10.Top10Activity"
+                android:label="@string/top10"/>
 
         <service
                 android:name=".errors.ErrorReporterService"
