@@ -2,18 +2,26 @@ package what.whatandroid.torrentgroup;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
-import api.torrents.torrents.TorrentGroup;
+
 import com.astuetz.PagerSlidingTabStrip;
+
+import api.torrents.torrents.TorrentGroup;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
 
 /**
  * Fragment for showing swipeable views of the torrent group overview and comments
  */
-public class TorrentGroupFragment extends android.support.v4.app.Fragment implements LoadingListener<TorrentGroup> {
+public class TorrentGroupFragment extends Fragment implements LoadingListener<TorrentGroup> {
 	private TorrentGroupPagerAdapter torrentGroupPagerAdapter;
 	private TorrentGroup group;
 	/**
