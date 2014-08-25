@@ -19,6 +19,10 @@ import what.whatandroid.R;
 public class DownloadCompleteReceiver extends BroadcastReceiver {
 	private int torrent;
 
+	public DownloadCompleteReceiver(){
+		torrent = 0;
+	}
+
 	public DownloadCompleteReceiver(int torrent){
 		this.torrent = torrent;
 	}
