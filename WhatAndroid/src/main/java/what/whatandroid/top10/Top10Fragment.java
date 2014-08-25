@@ -27,6 +27,7 @@ public class Top10Fragment extends Fragment implements OnLoggedInCallback, Loade
 	 * Adapter displaying the categories of the top 10 torrent lists
 	 */
 	private Top10PagerAdapter pagerAdapter;
+	private PagerSlidingTabStrip tabs;
 
 	public Top10Fragment(){
 		//Required empty ctor
@@ -36,7 +37,7 @@ public class Top10Fragment extends Fragment implements OnLoggedInCallback, Loade
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_view_pager_tabs, container, false);
 		ViewPager pager = (ViewPager)view.findViewById(R.id.pager);
-		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip)view.findViewById(R.id.tabs);
+		tabs = (PagerSlidingTabStrip)view.findViewById(R.id.tabs);
 		pagerAdapter = new Top10PagerAdapter(getChildFragmentManager());
 		pager.setAdapter(pagerAdapter);
 		tabs.setViewPager(pager);
@@ -65,6 +66,7 @@ public class Top10Fragment extends Fragment implements OnLoggedInCallback, Loade
 		}
 		else {
 			pagerAdapter.onLoadingComplete(data);
+			tabs.notifyDataSetChanged();
 		}
 	}
 

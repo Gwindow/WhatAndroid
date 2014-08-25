@@ -24,14 +24,6 @@ public class Top10PagerAdapter extends FragmentStatePagerAdapter implements Load
 	 */
 	private SparseArray<Top10ListFragment> fragments;
 
-	/**
-	 * The various top 10 categories being shown.
-	 * TODO: Make these categories depend on the loaded data? It's a bit more
-	 * of a hassle to do but will be more robust in case categories change down the line
-	 */
-	private String[] titles = {"Day", "Week", "All Time",
-		"Most Snatched", "Most Data Transferred", "Best Seeded"};
-
 	public Top10PagerAdapter(FragmentManager fm){
 		super(fm);
 		fragments = new SparseArray<Top10ListFragment>();
@@ -44,12 +36,24 @@ public class Top10PagerAdapter extends FragmentStatePagerAdapter implements Load
 
 	@Override
 	public CharSequence getPageTitle(int position){
-		return titles[position];
+		if (topTorrents == null){
+			return "loading";
+		}
+		//We use the captions for the titles but remove some unnecessary parts of
+		//the title to make it shorter
+		String title = topTorrents.getResponse().get(position).getCaption();
+		if (title.startsWith("Most Active")){
+			return title.substring("Most Active Torrents ".length());
+		}
+		return title.replace("Torrents", "");
 	}
 
 	@Override
 	public int getCount(){
-		return titles.length;
+		if (topTorrents == null){
+			return 1;
+		}
+		return topTorrents.getResponse().size();
 	}
 
 	@Override
@@ -71,6 +75,7 @@ public class Top10PagerAdapter extends FragmentStatePagerAdapter implements Load
 	@Override
 	public void onLoadingComplete(TopTorrents data){
 		topTorrents = data;
+		notifyDataSetChanged();
 		for (int i = 0; i < fragments.size(); ++i){
 			int pos = fragments.keyAt(i);
 			fragments.get(pos).onLoadingComplete(topTorrents.getResponse().get(pos));
