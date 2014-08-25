@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import api.cli.Utils;
 import api.top.Torrent;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
@@ -38,20 +39,41 @@ public class Top10Adapter extends ArrayAdapter<Torrent> implements AdapterView.O
 			holder = (ViewHolder)convertView.getTag();
 		}
 		else {
-			convertView = inflater.inflate(R.layout.list_torrent_notification, parent, false);
+			convertView = inflater.inflate(R.layout.list_top_torrent, parent, false);
 			holder = new ViewHolder();
-			holder.title = (TextView)convertView.findViewById(R.id.artist_name);
-			holder.edition = (TextView)convertView.findViewById(R.id.album_name);
+			holder.artist = (TextView)convertView.findViewById(R.id.artist_name);
+			holder.torrentName = (TextView)convertView.findViewById(R.id.torrent_name);
+			holder.year = (TextView)convertView.findViewById(R.id.year);
+			holder.tags = (TextView)convertView.findViewById(R.id.tags);
+			holder.size = (TextView)convertView.findViewById(R.id.size);
+			holder.data = (TextView)convertView.findViewById(R.id.data_transferred);
+			holder.snatches = (TextView)convertView.findViewById(R.id.snatches);
+			holder.seeders = (TextView)convertView.findViewById(R.id.seeders);
+			holder.leechers = (TextView)convertView.findViewById(R.id.leechers);
 			convertView.setTag(holder);
 		}
 		Torrent t = getItem(position);
 		if (!t.getArtist().equalsIgnoreCase("false")){
-			holder.title.setText(t.getArtist() + " - " + t.getGroupName());
+			holder.artist.setText(t.getArtist());
 		}
 		else {
-			holder.title.setText(t.getGroupName());
+			holder.artist.setVisibility(View.GONE);
 		}
-		holder.edition.setText(t.getShortTitle());
+		holder.torrentName.setText(t.getGroupName());
+		if (t.isRemastered()){
+			holder.year.setText("[" + t.getYear().toString() + "] - [" + t.getShortTitle() + "]");
+		}
+		else {
+			holder.year.setText("[" + t.getGroupYear().toString() + "] - [" + t.getShortTitle() + "]");
+		}
+		holder.size.setText(Utils.toHumanReadableSize(t.getSize().longValue()));
+		holder.data.setText(Utils.toHumanReadableSize(t.getData().longValue()));
+		holder.snatches.setText(t.getSnatched().toString());
+		holder.seeders.setText(t.getSeeders().toString());
+		holder.leechers.setText(t.getLeechers().toString());
+		String tagString = t.getTags().toString();
+		tagString = tagString.substring(tagString.indexOf('[') + 1, tagString.lastIndexOf(']'));
+		holder.tags.setText(tagString);
 		return convertView;
 	}
 
@@ -62,6 +84,7 @@ public class Top10Adapter extends ArrayAdapter<Torrent> implements AdapterView.O
 	}
 
 	private static class ViewHolder {
-		public TextView title, edition;
+		public TextView artist, torrentName, year, tags, size, data, snatches,
+			seeders, leechers;
 	}
 }

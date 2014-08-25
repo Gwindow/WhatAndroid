@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+    <TextView
+            android:id="@+id/artist_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/primary_text_dark"/>
+
+    <TextView
+            android:id="@+id/torrent_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@android:color/primary_text_dark"/>
+
+    <TextView
+            android:id="@+id/year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@android:color/primary_text_dark"/>
+
+    <TextView
+            android:id="@+id/tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textStyle="italic"
+            android:textSize="14sp"
+            android:textColor="@android:color/secondary_text_dark"/>
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="4dp">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:textColor="@android:color/primary_text_dark"
+                android:text="@string/size"/>
+
+        <TextView
+                android:id="@+id/size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="16dp"
+                android:textColor="@android:color/primary_text_dark"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:textColor="@android:color/primary_text_dark"
+                android:text="@string/data_transferred"/>
+
+        <TextView
+                android:id="@+id/data_transferred"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="16dp"
+                android:textColor="@android:color/primary_text_dark"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="4dp">
+
+        <TextView
+                android:id="@+id/snatches"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:textColor="@android:color/primary_text_dark"/>
+
+        <what.whatandroid.views.TypeFacedTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fa_undo"
+                app:font="@string/fontawesome_font"
+                android:paddingRight="16dp"
+                android:textColor="@android:color/primary_text_dark"/>
+
+        <TextView
+                android:id="@+id/seeders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:textColor="@android:color/primary_text_dark"/>
+
+        <what.whatandroid.views.TypeFacedTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fa_arrow_up"
+                app:font="@string/fontawesome_font"
+                android:paddingRight="16dp"
+                android:textColor="@android:color/primary_text_dark"/>
+
+        <TextView
+                android:id="@+id/leechers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:textColor="@android:color/primary_text_dark"/>
+
+        <what.whatandroid.views.TypeFacedTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fa_arrow_down"
+                app:font="@string/fontawesome_font"
+                android:textColor="@android:color/primary_text_dark"/>
+
+    </LinearLayout>
+</LinearLayout>

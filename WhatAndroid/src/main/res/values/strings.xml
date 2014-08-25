@@ -97,6 +97,8 @@
     <string name="compose_hint">Enter your reply here, going back will save the draft</string>
     <string name="discard">Discard</string>
     <string name="preview">Preview</string>
+    <string name="size">Size</string>
+    <string name="data_transferred">Data Transferred</string>
     <string name="similar_artists">Similar Artists</string>
     <string name="pref_img_on_wifi_only">Load Images on Wifi Only</string>
     <string name="key_pref_img_wifi">pref_img_wifi_only</string>

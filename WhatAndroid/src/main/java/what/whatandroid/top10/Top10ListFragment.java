@@ -56,8 +56,10 @@ public class Top10ListFragment extends Fragment implements LoadingListener<Respo
 		torrents = data.getResults();
 		if (adapter != null){
 			loadingIndicator.setVisibility(View.GONE);
-			adapter.addAll(torrents);
-			adapter.notifyDataSetChanged();
+			if (adapter.isEmpty()){
+				adapter.addAll(torrents);
+				adapter.notifyDataSetChanged();
+			}
 		}
 	}
 }
