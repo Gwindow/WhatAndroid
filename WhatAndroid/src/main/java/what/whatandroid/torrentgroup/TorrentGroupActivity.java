@@ -37,6 +37,7 @@ import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.subscriptions.SubscriptionsActivity;
+import what.whatandroid.top10.Top10Activity;
 
 /**
  * View information about a torrent group and the torrents in it. Must pass in the intent at least one
@@ -271,6 +272,10 @@ public class TorrentGroupActivity extends LoggedInActivity
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.forums))){
 			Intent intent = new Intent(this, ForumActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.top10))){
+			Intent intent = new Intent(this, Top10Activity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){

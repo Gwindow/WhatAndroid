@@ -19,6 +19,7 @@ import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
+import what.whatandroid.top10.Top10Activity;
 
 /**
  * Subscriptions activity lets the user view and interact with
@@ -120,6 +121,10 @@ public class SubscriptionsActivity extends LoggedInActivity implements ViewForum
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.forums))){
 			Intent intent = new Intent(this, ForumActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.top10))){
+			Intent intent = new Intent(this, Top10Activity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){

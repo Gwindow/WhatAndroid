@@ -19,6 +19,7 @@ import what.whatandroid.login.LoggedInActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.subscriptions.SubscriptionsActivity;
+import what.whatandroid.top10.Top10Activity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 /**
@@ -95,11 +96,6 @@ public class NotificationsActivity extends LoggedInActivity implements ViewTorre
 			intent.putExtra(AnnouncementsActivity.SHOW, AnnouncementsActivity.BLOGS);
 			startActivity(intent);
 		}
-		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){
-			Intent intent = new Intent(this, SearchActivity.class);
-			intent.putExtra(SearchActivity.SEARCH, SearchActivity.TORRENT);
-			startActivity(intent);
-		}
 		else if (selection.contains(getString(R.string.messages))){
 			Intent intent = new Intent(this, InboxActivity.class);
 			startActivity(intent);
@@ -110,6 +106,15 @@ public class NotificationsActivity extends LoggedInActivity implements ViewTorre
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.forums))){
 			Intent intent = new Intent(this, ForumActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.top10))){
+			Intent intent = new Intent(this, Top10Activity.class);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){
+			Intent intent = new Intent(this, SearchActivity.class);
+			intent.putExtra(SearchActivity.SEARCH, SearchActivity.TORRENT);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.artists))){

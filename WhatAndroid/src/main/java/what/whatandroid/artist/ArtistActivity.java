@@ -26,6 +26,7 @@ import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.request.RequestActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.subscriptions.SubscriptionsActivity;
+import what.whatandroid.top10.Top10Activity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 /**
@@ -178,6 +179,10 @@ public class ArtistActivity extends LoggedInActivity implements ViewTorrentCallb
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.forums))){
 			Intent intent = new Intent(this, ForumActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.top10))){
+			Intent intent = new Intent(this, Top10Activity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){

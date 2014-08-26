@@ -31,6 +31,7 @@ import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.search.SearchActivity;
 import what.whatandroid.subscriptions.SubscriptionsActivity;
+import what.whatandroid.top10.Top10Activity;
 
 /**
  * Activity for viewing the forums
@@ -234,6 +235,10 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 		}
 		else if (selection.contains(getString(R.string.subscriptions))){
 			Intent intent = new Intent(this, SubscriptionsActivity.class);
+			startActivity(intent);
+		}
+		else if (selection.equalsIgnoreCase(getString(R.string.top10))){
+			Intent intent = new Intent(this, Top10Activity.class);
 			startActivity(intent);
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){
