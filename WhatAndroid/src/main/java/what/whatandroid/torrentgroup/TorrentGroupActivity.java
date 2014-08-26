@@ -220,7 +220,7 @@ public class TorrentGroupActivity extends LoggedInActivity
 	@Override
 	public void downloadToPhone(int torrent, String link, String title){
 		//Register our listener for downloading torrents to the phone
-		getApplicationContext().registerReceiver(new DownloadCompleteReceiver(torrent), new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+		getApplicationContext().registerReceiver(new DownloadCompleteReceiver(), new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 		DownloadManager dm = (DownloadManager)getSystemService(DOWNLOAD_SERVICE);
 		DownloadManager.Request request = new DownloadManager.Request(Uri.parse(link));
 		request.setTitle(title);

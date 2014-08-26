@@ -10,6 +10,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
+import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import what.whatandroid.R;
 
 /**
@@ -17,15 +21,7 @@ import what.whatandroid.R;
  * the phone has finished downloading
  */
 public class DownloadCompleteReceiver extends BroadcastReceiver {
-	private int torrent;
-
-	public DownloadCompleteReceiver(){
-		torrent = 0;
-	}
-
-	public DownloadCompleteReceiver(int torrent){
-		this.torrent = torrent;
-	}
+	private static final Pattern torrentId = Pattern.compile("id=(\\d+)");
 
 	@Override
 	public void onReceive(Context context, Intent intent){
@@ -44,8 +40,13 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
 					.setContentText("Download of " + title + " completed")
 					.setAutoCancel(true);
 
-				Intent view = new Intent(Intent.ACTION_VIEW, Uri.parse(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI))));
-				PendingIntent pendingIntent = PendingIntent.getActivity(context, reqId, view, 0);
+				//We can't use COLUMN_LOCAL_URI like sane people because Transdroid is too dumb to handle
+				//content://downloads/my_downloads/#### since it can only figure out content://downloads/all_downloads/####
+				Uri uri = Uri.fromFile(new File(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME))));
+				Intent view = new Intent(Intent.ACTION_VIEW, uri);
+				view.setDataAndType(uri, "application/x-bittorrent");
+				view.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+				PendingIntent pendingIntent = PendingIntent.getActivity(context, reqId + 1000, view, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.setContentIntent(pendingIntent);
 			}
 			else {
@@ -55,6 +56,12 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
 					.setContentText("Download of " + title + " failed\n" +
 						cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_REASON)))
 					.setAutoCancel(true);
+
+				Matcher matcher = torrentId.matcher(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_URI)));
+				int torrent = 0;
+				if (matcher.find()){
+					torrent = Integer.parseInt(matcher.group(1));
+				}
 				Intent view = new Intent(context, TorrentGroupActivity.class);
 				view.putExtra(TorrentGroupActivity.TORRENT_ID, torrent);
 				PendingIntent pendingIntent = PendingIntent.getActivity(context, reqId, view, 0);
