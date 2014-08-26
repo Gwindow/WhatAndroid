@@ -65,6 +65,17 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 		View view = inflater.inflate(R.layout.fragment_list_view, container, false);
 		list = (ListView)view.findViewById(R.id.list);
 		loadingIndicator = (ProgressBar)view.findViewById(R.id.loading_indicator);
+		if (SettingsActivity.lightLayoutEnabled(getActivity())){
+			adapter = new ForumListAdapterLight(getActivity());
+		}
+		else {
+			adapter = new ForumListAdapterDefault(getActivity());
+		}
+		list.setAdapter(adapter);
+		list.setOnItemClickListener(adapter);
+		if (MySoup.isLoggedIn()){
+			getLoaderManager().initLoader(0, getArguments(), this);
+		}
 		return view;
 	}
 
@@ -84,9 +95,9 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 			}
 			list.setAdapter(adapter);
 			list.setOnItemClickListener(adapter);
-			if (MySoup.isLoggedIn()){
-				getLoaderManager().initLoader(0, getArguments(), this);
-			}
+		}
+		if (MySoup.isLoggedIn()){
+			getLoaderManager().initLoader(0, getArguments(), this);
 		}
 	}
 
@@ -168,6 +179,7 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 			adapter = new ForumListAdapterDefault(getActivity());
 		}
 		list.setAdapter(adapter);
+		list.setOnItemClickListener(adapter);
 		//Make sure we're loading data, or if we've finished loading just re-call onLoadFinished
 		//to populate the new adapter
 		if (MySoup.isLoggedIn()){
