@@ -1,6 +1,7 @@
 package what.whatandroid.top10;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -23,28 +24,51 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
  * lists of the torrents for each category
  */
 public class Top10Fragment extends Fragment implements OnLoggedInCallback, LoaderManager.LoaderCallbacks<TopTorrents> {
+	private static final String VIEW_PAGER_STATE = "what.whatandroid.top10.top10fragment.VIEW_PAGER_STATE";
 	/**
 	 * Adapter displaying the categories of the top 10 torrent lists
 	 */
 	private Top10PagerAdapter pagerAdapter;
 	private PagerSlidingTabStrip tabs;
+	private ViewPager viewPager;
+	/**
+	 * Since we're setting the number of items in the view pager
+	 * based on the data loaded we need to restore the selected
+	 * page after setting the data up when coming back from an
+	 * orientation change
+	 */
+	private Parcelable viewPagerState;
 
 	public Top10Fragment(){
 		//Required empty ctor
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null){
+			viewPagerState = savedInstanceState.getParcelable(VIEW_PAGER_STATE);
+		}
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_view_pager_tabs, container, false);
-		ViewPager pager = (ViewPager)view.findViewById(R.id.pager);
+		viewPager = (ViewPager)view.findViewById(R.id.pager);
 		tabs = (PagerSlidingTabStrip)view.findViewById(R.id.tabs);
 		pagerAdapter = new Top10PagerAdapter(getChildFragmentManager());
-		pager.setAdapter(pagerAdapter);
-		tabs.setViewPager(pager);
+		viewPager.setAdapter(pagerAdapter);
+		tabs.setViewPager(viewPager);
 		if (MySoup.isLoggedIn()){
 			getLoaderManager().initLoader(0, null, this);
 		}
 		return view;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		outState.putParcelable(VIEW_PAGER_STATE, viewPager.onSaveInstanceState());
 	}
 
 	@Override
@@ -67,6 +91,9 @@ public class Top10Fragment extends Fragment implements OnLoggedInCallback, Loade
 		else {
 			pagerAdapter.onLoadingComplete(data);
 			tabs.notifyDataSetChanged();
+			if (viewPagerState != null){
+				viewPager.onRestoreInstanceState(viewPagerState);
+			}
 		}
 	}
 
