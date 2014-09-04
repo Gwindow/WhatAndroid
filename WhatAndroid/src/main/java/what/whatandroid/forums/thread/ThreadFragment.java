@@ -244,7 +244,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 				new ToggleSubscriptionsTask().execute();
 				return true;
 			case R.id.action_pick_page:
-				NumberPickerDialog dialog = NumberPickerDialog.newInstance("Select Page", 1, pages);
+				NumberPickerDialog dialog = NumberPickerDialog.newInstance("Select Page", 1, pages, viewPager.getCurrentItem()+1);
 				dialog.setTargetFragment(this, 0);
 				dialog.show(getFragmentManager(), "dialog");
 				return true;

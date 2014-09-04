@@ -35,7 +35,8 @@ public class NumberPickerDialog extends DialogFragment {
 
 	public static final String MIN = "what.whatandroid.numberpickerdialog.MIN",
 		MAX = "what.whatandroid.numberpickerdialog.MAX",
-		TITLE = "what.whatandroid.numberpickerdialog.TITLE";
+		TITLE = "what.whatandroid.numberpickerdialog.TITLE",
+        VALUE = "what.whatandroid.numberpickerdialog.VALUE";
 
 	private NumberPickerListener listener;
 
@@ -53,9 +54,26 @@ public class NumberPickerDialog extends DialogFragment {
 		args.putString(TITLE, title);
 		args.putInt(MIN, min);
 		args.putInt(MAX, max);
+        args.putInt(VALUE, 1); // default page is 1
 		d.setArguments(args);
 		return d;
 	}
+
+    /**
+     * Create a NumberPickerDialog to pick values in the range [min, max]
+     * and with the desired title and initial value
+     *
+     * @param title title for the dialog
+     * @param min   min value that should be selectable
+     * @param max   max value that should be selectable
+     * @param value initial value of the dialog
+     */
+    public static NumberPickerDialog newInstance(String title, int min, int max, int value){
+        NumberPickerDialog d = newInstance(title,min,max);
+        d.getArguments().remove(VALUE);
+        d.getArguments().putInt(VALUE,value);
+        return d;
+    }
 
 	public NumberPickerDialog(){
 		//Required empty ctor
@@ -83,6 +101,7 @@ public class NumberPickerDialog extends DialogFragment {
 		Bundle args = getArguments();
 		picker.setMinValue(args.getInt(MIN));
 		picker.setMaxValue(args.getInt(MAX));
+        picker.setValue(args.getInt(VALUE));
 
 		builder.setView(view)
 			.setTitle(args.getString(TITLE))
@@ -100,4 +119,8 @@ public class NumberPickerDialog extends DialogFragment {
 			});
 		return builder.create();
 	}
+
+    public void setValue(int value){
+
+    }
 }
