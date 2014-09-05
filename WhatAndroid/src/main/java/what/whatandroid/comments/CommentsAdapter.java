@@ -55,7 +55,9 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements View
 	 */
 	private WhatBBParser whatBBParser;
 
-	public CommentsAdapter(Context context){
+    private boolean isQuoteVisible = true;
+
+    public CommentsAdapter(Context context){
 		super(context, R.layout.list_user_comment);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		imageGetter = new HtmlImageHider(context);
@@ -133,6 +135,9 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements View
 			holder.quote.setTag(position);
 			holder.quote.setOnClickListener(this);
 		}
+        if(!isQuoteVisible){
+            holder.quote.setVisibility(View.GONE);
+        }
 		return convertView;
 	}
 
@@ -142,6 +147,14 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements View
 			addQuote.quote(getItem((Integer) v.getTag()).getQuote());
 		}
 	}
+
+    public boolean isQuoteVisible() {
+        return isQuoteVisible;
+    }
+
+    public void setQuoteVisible(boolean isQuoteVisible) {
+        this.isQuoteVisible = isQuoteVisible;
+    }
 
 	private static class ViewHolder {
 		public TextView username, postDate, commentText;
@@ -161,4 +174,5 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements View
 			viewUser.viewUser(userId);
 		}
 	}
+
 }
