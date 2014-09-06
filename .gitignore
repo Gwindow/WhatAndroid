@@ -1,5 +1,7 @@
 .gradle
 .idea
+!.idea/codeStyleSettings.xml
+build/
 gradle
 gradlew
 gradlew.bat
