@@ -35,7 +35,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 	ReplyDialogFragment.ReplyDialogListener {
 
     private static final String THREAD_NAME = "what.whatandroid.forums.THREAD_NAME",
-		PAGES = "what.whatandroid.forums.PAGES";
+	    PAGES = "what.whatandroid.forums.PAGES", LOCKED = "what.whatandroid.forums.LOCKED";
 
 	private SetTitleCallback setTitle;
 	private ThreadPagerAdapter pagerAdapter;
@@ -106,6 +106,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 			pages = savedInstanceState.getInt(PAGES);
 			threadName = savedInstanceState.getString(THREAD_NAME);
 			replyDraft = savedInstanceState.getString(ReplyDialogFragment.DRAFT, "");
+			locked = savedInstanceState.getBoolean(LOCKED);
 			if (savedInstanceState.containsKey(PollDialog.POLL)){
 				poll = (Poll) MySon.toObjectFromString(savedInstanceState.getString(PollDialog.POLL), Poll.class);
 			}
@@ -142,6 +143,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 		super.onSaveInstanceState(outState);
 		outState.putInt(PAGES, pages);
 		outState.putString(ReplyDialogFragment.DRAFT, replyDraft);
+		outState.putBoolean(LOCKED, locked);
 		if (threadName != null){
 			outState.putString(THREAD_NAME, threadName);
 			if (poll != null){
