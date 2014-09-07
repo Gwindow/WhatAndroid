@@ -11,6 +11,7 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import api.soup.MySoup;
 import api.torrents.torrents.TorrentGroup;
 import api.torrents.torrents.comments.TorrentComments;
@@ -145,5 +146,7 @@ public class TorrentCommentsFragment extends Fragment
 
 	@Override
 	public void onLoaderReset(Loader<TorrentComments> loader){
+		adapter.clear();
+		comments = null;
 	}
 }
