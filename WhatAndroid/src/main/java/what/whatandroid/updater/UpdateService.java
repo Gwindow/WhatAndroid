@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+
 import api.son.MySon;
 import what.whatandroid.R;
 
@@ -17,9 +18,9 @@ import what.whatandroid.R;
  */
 public class UpdateService extends IntentService {
 	/**
-	 * The github pages webpage that we check
+	 * The github releases API endpoint for the project
 	 */
-	private static final String RELEASES_PAGE = "http://gwindow.github.io/WhatAndroid/alpha_updater.html";
+	private static final String RELEASES_PAGE = "https://api.github.com/repos/Gwindow/WhatAndroid/releases";
 
 	public UpdateService(){
 		super("WhatAndroid-UpdateService");
@@ -28,11 +29,25 @@ public class UpdateService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent){
 		try {
-			AlphaRelease release = (AlphaRelease)MySon.toObjectOther(RELEASES_PAGE, AlphaRelease.class);
-			if (release != null){
+			GitRelease[] releases = (GitRelease[])MySon.toObjectOther(RELEASES_PAGE, GitRelease[].class);
+			if (releases != null){
 				VersionNumber current = getVersionNumber();
-				if (current == null || release.getVersionNumber().isHigher(current)){
-					notifyNewRelease(release);
+				for (GitRelease gr : releases){
+					System.out.println("Looking at release " + gr);
+					//TODO: Check if it's a pre-release and if we're subscribed to the testing channel
+					//if we're not subscribed to testing channel we should ignore pre-releases too
+					if (gr.isDraft()){
+						continue;
+					}
+					//Releases are in chronological order so the first higher release we encounter is the latest
+					//for the same reason if we hit a release <= our version then we know there's no new build
+					if (current == null || gr.getVersionNumber().isHigher(current)){
+						notifyNewRelease(gr);
+						return;
+					}
+					else {
+						return;
+					}
 				}
 			}
 		}
@@ -41,14 +56,14 @@ public class UpdateService extends IntentService {
 		}
 	}
 
-	private void notifyNewRelease(AlphaRelease release){
+	private void notifyNewRelease(GitRelease release){
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 		builder.setSmallIcon(R.drawable.ic_launcher)
 			.setContentTitle("WhatAndroid Update Available")
-			.setContentText("Version: " + release.getVersionNumber() + " is available")
+			.setContentText("Version " + release.getVersionNumber() + " is available")
 			.setAutoCancel(true);
 
-		Intent download = new Intent(Intent.ACTION_VIEW, Uri.parse(release.getUrl()));
+		Intent download = new Intent(Intent.ACTION_VIEW, Uri.parse(release.getHtmlUrl()));
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, download, PendingIntent.FLAG_UPDATE_CURRENT);
 		builder.setContentIntent(pendingIntent);
 
