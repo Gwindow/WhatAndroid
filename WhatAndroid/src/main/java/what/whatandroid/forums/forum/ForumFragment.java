@@ -120,8 +120,8 @@ public class ForumFragment extends Fragment implements OnLoggedInCallback, Loadi
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch (item.getItemId()){
 			case R.id.action_pick_page:
-				NumberPickerDialog dialog = NumberPickerDialog.newInstance("Select Page", 1, pages);
-				dialog.setTargetFragment(this, 0);
+				NumberPickerDialog dialog = NumberPickerDialog.newInstance("Select Page", 1, pages, viewPager.getCurrentItem()+1);
+                dialog.setTargetFragment(this, 0);
 				dialog.show(getFragmentManager(), "dialog");
 				return true;
 			case R.id.action_pick_last_page:

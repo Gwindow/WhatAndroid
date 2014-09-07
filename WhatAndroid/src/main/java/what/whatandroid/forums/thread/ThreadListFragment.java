@@ -140,6 +140,7 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 		}
 		else {
 			if (adapter.isEmpty()){
+                if(data.getResponse().isLocked()){adapter.setQuoteVisible(false);}
 				adapter.addAll(data.getResponse().getPosts());
 				adapter.notifyDataSetChanged();
 				if (listener != null){

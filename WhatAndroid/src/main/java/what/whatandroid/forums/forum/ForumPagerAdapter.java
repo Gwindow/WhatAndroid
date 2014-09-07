@@ -9,6 +9,7 @@ import api.forum.forum.Forum;
 import api.soup.MySoup;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.OnLoggedInCallback;
+import what.whatandroid.forums.ForumActivity;
 
 /**
  * Adapter for swiping through the pages of the forum

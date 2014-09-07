@@ -34,7 +34,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 	LoadingListener<ForumThread>, AddQuoteCallback, NumberPickerDialog.NumberPickerListener,
 	ReplyDialogFragment.ReplyDialogListener {
 
-	private static final String THREAD_NAME = "what.whatandroid.forums.THREAD_NAME",
+    private static final String THREAD_NAME = "what.whatandroid.forums.THREAD_NAME",
 		PAGES = "what.whatandroid.forums.PAGES";
 
 	private SetTitleCallback setTitle;
@@ -42,8 +42,8 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 	private ViewPager viewPager;
 	private int thread, pages = 0, postId = -1;
 	private String threadName;
-	private boolean subscribed = false;
-	private MenuItem viewPoll, toggleSubscription;
+	private boolean subscribed = false, locked = false;
+	private MenuItem viewPoll, toggleSubscription, reply;
 	/**
 	 * We track the poll separately from the rest of the thread so we can update
 	 * it without having to reload the page
@@ -167,6 +167,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 		pages = data.getPages();
 		setTitle.setTitle(threadName);
 		subscribed = data.getResponse().isSubscribed();
+        locked = data.getResponse().isLocked();
 		updateMenus();
 	}
 
@@ -182,6 +183,11 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 				toggleSubscription.setIcon(R.drawable.ic_eye_off);
 			}
 		}
+        if(reply != null) {
+            if(locked){
+                reply.setVisible(false); // visible by default
+            }
+        }
 	}
 
 	/**
@@ -224,6 +230,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		inflater.inflate(R.menu.forum_thread, menu);
 		viewPoll = menu.findItem(R.id.action_view_poll);
+        reply = menu.findItem(R.id.action_reply);
 		toggleSubscription = menu.findItem(R.id.action_subscription);
 		updateMenus();
 	}
@@ -244,7 +251,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 				new ToggleSubscriptionsTask().execute();
 				return true;
 			case R.id.action_pick_page:
-				NumberPickerDialog dialog = NumberPickerDialog.newInstance("Select Page", 1, pages);
+				NumberPickerDialog dialog = NumberPickerDialog.newInstance("Select Page", 1, pages, viewPager.getCurrentItem()+1);
 				dialog.setTargetFragment(this, 0);
 				dialog.show(getFragmentManager(), "dialog");
 				return true;
