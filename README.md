@@ -1,10 +1,21 @@
-WhatAndroid 2.0 Develop Branch
-===========
+WhatAndroid
+=
+An android app for What, includes everything you love about What as well as barcode scanning for quick music look ups.
 
-This branch is for development of the 2.0 version of the WhatAndroid app. It's a full rewrite and we're aiming
-to adhere to proper design guidelines and clean up some of the unnecessary stuff in the current version.
+The app will work with a default setup of Gazelle, just change the url to point to your site and enjoy.
 
-Contact Twinklebear in the site IRC or via PM if you're interested in helping!
+Licensed under the 2-Clause BSD License, see LICENSE for full terms.
+
+Releases
+-
+Releases and alpha/beta testing builds can be found in the [releases](https://github.com/Gwindow/WhatAndroid/releases) page.
+Screenshots of the app can be founded on the [webpage](http://gwindow.github.io/WhatAndroid/).
+
+Contributing
+-
+We're following the Git branching model outlined in [this post](http://nvie.com/posts/a-successful-git-branching-model/) for development.
+
+Questions? [Twinklebear](https://github.com/Twinklebear) through GitHub, the site, or in #whatAndroid on the site irc.
 
 Dependencies
 -
