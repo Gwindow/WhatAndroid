@@ -33,7 +33,6 @@ public class UpdateService extends IntentService {
 			if (releases != null){
 				VersionNumber current = getVersionNumber();
 				for (GitRelease gr : releases){
-					System.out.println("Looking at release " + gr);
 					//TODO: Check if it's a pre-release and if we're subscribed to the testing channel
 					//if we're not subscribed to testing channel we should ignore pre-releases too
 					if (gr.isDraft()){
