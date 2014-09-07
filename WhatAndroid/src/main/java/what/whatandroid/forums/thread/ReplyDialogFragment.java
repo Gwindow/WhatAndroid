@@ -173,7 +173,6 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 		String draft = postText.getText().toString();
 		if (saveDraft && !draft.isEmpty()){
 			listener.saveDraft(draft, postSubject.getText().toString());
-			Toast.makeText(getActivity(), "Draft saved", Toast.LENGTH_SHORT).show();
 		}
 	}
 
