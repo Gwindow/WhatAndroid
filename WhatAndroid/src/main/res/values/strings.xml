@@ -94,7 +94,7 @@
     <string name="sticky">Sticky</string>
     <string name="mark_unread">Mark as Unread</string>
     <string name="delete_conversation">Delete Conversation</string>
-    <string name="compose_hint">Enter your reply here, going back will save the draft</string>
+    <string name="compose_hint">Enter your reply here, going back will save the draft automatically.</string>
     <string name="discard">Discard</string>
     <string name="preview">Preview</string>
     <string name="size">Size</string>

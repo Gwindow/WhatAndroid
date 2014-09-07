@@ -11,6 +11,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.widget.Toast;
 
 import what.whatandroid.R;
 import what.whatandroid.updater.UpdateBroadcastReceiver;
@@ -52,6 +53,7 @@ public class SettingsFragment extends PreferenceFragment {
 		if (preference.getKey() != null && getActivity() != null){
 			//If the version number is clicked launch an update check
 			if (preference.getKey().equalsIgnoreCase(getString(R.string.key_pref_version_name))){
+				Toast.makeText(getActivity(), "Checking for updates", Toast.LENGTH_SHORT).show();
 				Intent checkUpdates = new Intent(getActivity(), UpdateService.class);
 				getActivity().startService(checkUpdates);
 				return true;
