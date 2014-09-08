@@ -15,7 +15,7 @@ Contributing
 -
 We're following the Git branching model outlined in [this post](http://nvie.com/posts/a-successful-git-branching-model/) for development.
 
-Questions? [Twinklebear](https://github.com/Twinklebear) through GitHub, the site, or in #whatAndroid on the site irc.
+Questions? Contact [Twinklebear](https://github.com/Twinklebear) through GitHub, the site, or in #whatAndroid on the site irc.
 
 Dependencies
 -
