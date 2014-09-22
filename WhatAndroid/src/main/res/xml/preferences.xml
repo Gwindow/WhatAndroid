@@ -17,10 +17,16 @@
                 android:defaultValue="false"/>
 
         <CheckBoxPreference
-            android:title="@string/pref_light_layout"
-            android:key="@string/key_pref_light_layout"
-            android:summary="@string/pref_light_layout_description"
-            android:defaultValue="false"/>
+                android:title="@string/pref_light_layout"
+                android:key="@string/key_pref_light_layout"
+                android:defaultValue="false"/>
+
+        <EditTextPreference
+                android:title="@string/pref_torrent_download_path"
+                android:summary="@string/pref_torrent_download_path_summary"
+                android:key="@string/key_pref_torrent_download_path"
+                android:defaultValue=""
+                android:inputType="textUri"/>
 
     </PreferenceCategory>
 
