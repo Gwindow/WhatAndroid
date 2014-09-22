@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
 import what.whatandroid.R;
 
 /**
@@ -53,7 +54,14 @@ public class SettingsActivity extends Activity {
             return false;
         }
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean lightEnabled = preferences.getBoolean(context.getString(R.string.key_pref_light_layout), false);
-        return lightEnabled;
+	    return preferences.getBoolean(context.getString(R.string.key_pref_light_layout), false);
     }
+
+	public static String torrentDownloadPath(Context context){
+		if (context == null){
+			return "";
+		}
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return preferences.getString(context.getString(R.string.key_pref_torrent_download_path), "");
+	}
 }

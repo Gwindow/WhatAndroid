@@ -8,13 +8,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
+
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import what.whatandroid.R;
+import what.whatandroid.settings.SettingsActivity;
 
 /**
  * Receiver to listen for when a torrent downloaded to
@@ -42,7 +48,28 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
 
 				//We can't use COLUMN_LOCAL_URI like sane people because Transdroid is too dumb to handle
 				//content://downloads/my_downloads/#### since it can only figure out content://downloads/all_downloads/####
-				Uri uri = Uri.fromFile(new File(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME))));
+				File torrent = new File(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME)));
+				String torrentDir = SettingsActivity.torrentDownloadPath(context);
+				if (!torrentDir.isEmpty()){
+					File oldTorrent = torrent;
+					torrent = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+						"/" + torrentDir + "/" + oldTorrent.getName());
+					try {
+						FileUtils.copyFile(oldTorrent, torrent);
+					}
+					catch (IOException e){
+						Toast.makeText(context, "Failed to move torrent to " + torrentDir, Toast.LENGTH_SHORT).show();
+						e.printStackTrace();
+						//Switch back to the original file download if we couldn't move it
+						torrent = oldTorrent;
+					}
+					//Delete the old torrent file if we moved it successfully
+					if (!torrent.equals(oldTorrent)){
+						oldTorrent.deleteOnExit();
+					}
+				}
+
+				Uri uri = Uri.fromFile(torrent);
 				Intent view = new Intent(Intent.ACTION_VIEW, uri);
 				view.setDataAndType(uri, "application/x-bittorrent");
 				view.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

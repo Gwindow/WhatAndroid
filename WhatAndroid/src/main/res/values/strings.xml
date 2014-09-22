@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WhatAndroid</string>
-    <string name="app_version_unknown">WhatAndroid Alpha</string>
+    <string name="app_version_unknown">WhatAndroid</string>
     <string name="login">Login</string>
     <string name="announcements">Announcements</string>
     <string name="blog">Blog</string>
@@ -121,7 +121,9 @@
     <string name="switch_layout">Switch Layout</string>
     <string name="pref_light_layout">Use Light Layout for Forums</string>
     <string name="key_pref_light_layout">pref_light_layout</string>
-    <string name="pref_light_layout_description"/>
+    <string name="pref_torrent_download_path">Torrent Download Path</string>
+    <string name="pref_torrent_download_path_summary">Optional path to place downloaded torrents in your downloads folder</string>
+    <string name="key_pref_torrent_download_path">pref_torrent_download_path</string>
 
     <string-array name="vote_units">
         <item>MB</item>
