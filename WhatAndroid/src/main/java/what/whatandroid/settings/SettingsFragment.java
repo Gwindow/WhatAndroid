@@ -1,5 +1,6 @@
 package what.whatandroid.settings;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -7,11 +8,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.widget.Toast;
+
+import java.io.File;
 
 import what.whatandroid.R;
 import what.whatandroid.updater.UpdateBroadcastReceiver;
@@ -27,10 +31,36 @@ public class SettingsFragment extends PreferenceFragment {
 	 */
 	public static final String USER_COOKIE = "pref_user_cookie", USER_NAME = "pref_user_name",
 		USER_PASSWORD = "pref_user_password";
+	/**
+	 * We need to keep the listener alive ourselves since Android just holds a weak
+	 * reference to these listeners
+	 */
+	private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
 
 	public SettingsFragment(){
 		//required empty ctor
+	}
+
+	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		//Listen for changes to the user torrent dir and make sure we can write to the directory
+		listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+			@Override
+			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key){
+				if (key.equalsIgnoreCase(getString(R.string.key_pref_torrent_download_path))){
+					String torrentDir = sharedPreferences.getString(key, "");
+					File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/" + torrentDir + "/");
+					if (!dir.exists()){
+						if (!dir.mkdirs()){
+							Toast.makeText(getActivity(), "Failed to create download directory " + torrentDir, Toast.LENGTH_LONG).show();
+						}
+					}
+				}
+			}
+		};
+		PreferenceManager.getDefaultSharedPreferences(activity).registerOnSharedPreferenceChangeListener(listener);
 	}
 
 	@Override
@@ -63,7 +93,7 @@ public class SettingsFragment extends PreferenceFragment {
 				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 				Intent updater = new Intent(getActivity(), UpdateBroadcastReceiver.class);
 				PendingIntent pending = PendingIntent.getBroadcast(getActivity(), 2, updater, PendingIntent.FLAG_NO_CREATE);
-				AlarmManager alarmMgr = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+				AlarmManager alarmMgr = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
 				boolean checkerDisabled = preferences.getBoolean(getActivity().getString(R.string.key_pref_disable_updater), false);
 				//Cancel the alarm if we're disabling the checker
 				if (pending != null && checkerDisabled){

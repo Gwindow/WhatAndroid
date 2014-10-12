@@ -37,9 +37,13 @@ public class ProfileAsyncLoader extends AsyncTaskLoader<UserProfile> {
 					Context context = getContext();
 					Notifications notifications = MySoup.getIndex().getResponse().getNotifications();
 					SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+					if (MySoup.isNotificationsEnabled()){
+						preferences.edit()
+							.putInt(context.getString(R.string.key_pref_num_notifications),
+								notifications.getTorrentNotifications().intValue())
+							.apply();
+					}
 					preferences.edit()
-						.putInt(context.getString(R.string.key_pref_num_notifications),
-							notifications.getTorrentNotifications().intValue())
 						.putBoolean(context.getString(R.string.key_pref_new_subscriptions),
 							notifications.hasNewSubscriptions())
 						.putInt(context.getString(R.string.key_pref_new_messages),
