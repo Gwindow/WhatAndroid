@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.android.tools.build:gradle:0.13.0'
     }
 }
 
@@ -18,16 +18,16 @@ android {
     buildToolsVersion "19.1.0"
 
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 19
     }
 
     signingConfigs {
         release {
             storeFile file("${System.properties['user.home']}/.android/whatandroid_release.keystore")
-            storePassword ""
+            storePassword "ASK TWINKLEBEAR"
             keyAlias "whatandroid_release"
-            keyPassword ""
+            keyPassword "ASK TWINKLEBEAR"
         }
     }
 
@@ -47,11 +47,11 @@ android {
 dependencies {
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile files('libs/WhatAPI.jar')
     compile files('libs/commons-io-2.4.jar')
     compile files('libs/commons-lang3-3.1.jar')
     compile files('libs/commons-codec-1.9.jar')
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/signpost-core-1.2.1.2.jar')
-    compile files('libs/universal-image-loader-1.9.1.jar')
 }

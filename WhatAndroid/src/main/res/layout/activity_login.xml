@@ -15,7 +15,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/whatandroid_logo"
-            android:src="@drawable/whatandroid_logo_alpha"/>
+            android:src="@drawable/whatandroid_logo_beta"/>
 
     <EditText
             android:id="@+id/username_input"
