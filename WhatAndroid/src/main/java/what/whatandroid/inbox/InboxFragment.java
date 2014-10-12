@@ -55,7 +55,9 @@ public class InboxFragment extends Fragment implements OnLoggedInCallback {
 	@Override
 	public void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
-		outState.putInt(PAGES, adapter.getCount());
+		if (adapter != null){
+			outState.putInt(PAGES, adapter.getCount());
+		}
 	}
 
 	@Override
