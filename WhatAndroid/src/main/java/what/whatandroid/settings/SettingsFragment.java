@@ -64,6 +64,12 @@ public class SettingsFragment extends PreferenceFragment {
 	}
 
 	@Override
+	public void onDetach(){
+		PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(listener);
+		super.onDetach();
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
