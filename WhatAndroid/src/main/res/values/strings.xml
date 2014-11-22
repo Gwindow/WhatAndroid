@@ -100,6 +100,7 @@
     <string name="size">Size</string>
     <string name="data_transferred">Data Transferred</string>
     <string name="similar_artists">Similar Artists</string>
+    <string name="copy_url">Copy URL</string>
     <string name="pref_img_on_wifi_only">Load Images on Wifi Only</string>
     <string name="key_pref_img_wifi">pref_img_wifi_only</string>
     <string name="pref_disable_updater">Disable Periodic Update Checking</string>
