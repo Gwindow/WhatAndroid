@@ -75,10 +75,10 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 
 	@Override
 	protected void onPause(){
-		super.onPause();
 		if (loginTask != null){
 			loginTask.cancel(true);
 		}
+		super.onPause();
 	}
 
 	@Override
