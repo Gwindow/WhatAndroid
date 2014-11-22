@@ -134,6 +134,13 @@ public class ForumListFragment extends Fragment implements OnLoggedInCallback, L
 		}
 	}
 
+	public void refresh() {
+		if (isAdded()) {
+			getLoaderManager().destroyLoader(0);
+			getLoaderManager().initLoader(0, getArguments(), this);
+		}
+	}
+
 	@Override
 	public Loader<Forum> onCreateLoader(int id, Bundle args){
 		loadingIndicator.setVisibility(View.VISIBLE);
