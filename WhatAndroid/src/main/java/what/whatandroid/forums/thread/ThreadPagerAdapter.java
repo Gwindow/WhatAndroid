@@ -89,6 +89,12 @@ public class ThreadPagerAdapter extends MovableFragmentStatePagerAdapter impleme
 		}
 	}
 
+	public void refresh() {
+		for (int i = 0; i < fragments.size(); ++i) {
+			fragments.valueAt(i).refresh();
+		}
+	}
+
 	public void setLoadingListener(LoadingListener<ForumThread> listener){
 		this.listener = listener;
 	}

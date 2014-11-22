@@ -260,6 +260,9 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 			case R.id.action_pick_last_page:
 				viewPager.setCurrentItem(pages - 1);
 				return true;
+			case R.id.action_refresh:
+				pagerAdapter.refresh();
+				return true;
 			default:
 				break;
 		}
