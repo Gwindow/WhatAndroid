@@ -70,7 +70,7 @@
     <string name="load_terms">Load Terms</string>
     <string name="scanned">Scanned</string>
     <string name="add_barcodes">Scan Barcodes</string>
-    <string name="delete_all">Clear All</string>
+    <string name="delete_all">Delete All</string>
     <string name="preferences">Preferences</string>
     <string name="bookmark">Bookmark</string>
     <string name="bookmarks">Bookmarks</string>
