@@ -41,7 +41,8 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 	public static final String FORUM_ID = "what.whatandroid.forums.FORUM_ID",
 		THREAD_ID = "what.whatandroid.forums.THREAD_ID",
 		PAGE = "what.whatandroid.forums.PAGE",
-		POST_ID = "what.whatandroid.forums.POST_ID";
+			POST_ID = "what.whatandroid.forums.POST_ID",
+			CATEGORY_TAG = "what.whatandroid.forums.categoriesfragment";
 	/**
 	 * Matchers to match against forum url links
 	 */
@@ -72,6 +73,7 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 			//Determine what part of the forums we want to view, eg. jump to a post, thread or forum
 			Fragment f;
 			Intent intent = getIntent();
+			String tag = null;
 			//If we're coming from some link to the forums parse it and return the corresponding fragment
 			if (intent.getScheme() != null && intent.getDataString() != null && intent.getDataString().contains("what.cd")){
 				f = parseLink(intent.getDataString());
@@ -91,9 +93,10 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 			//Not jumping anywhere, just going to the regular categories view
 			else {
 				f = new ForumCategoriesFragment();
+				tag = CATEGORY_TAG;
 			}
 			loginListener = (OnLoggedInCallback)f;
-			fm.beginTransaction().add(R.id.container, f).commit();
+			fm.beginTransaction().add(R.id.container, f, tag).commit();
 		}
 	}
 
@@ -152,7 +155,7 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 		loginListener = f;
 		getSupportFragmentManager().beginTransaction()
 			.replace(R.id.container, f)
-			.addToBackStack(null)
+				.addToBackStack(CATEGORY_TAG)
 			.commit();
 	}
 
@@ -240,6 +243,20 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 		else if (selection.equalsIgnoreCase(getString(R.string.top10))){
 			Intent intent = new Intent(this, Top10Activity.class);
 			startActivity(intent);
+		} else if (selection.equalsIgnoreCase(getString(R.string.forums))) {
+			//Need to check if the category fragment is in the back stack since we may have come
+			//here through an intent and not through the categories view
+			FragmentManager fm = getSupportFragmentManager();
+			if (fm.findFragmentByTag(CATEGORY_TAG) != null) {
+				fm.popBackStack(CATEGORY_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			} else {
+				ForumCategoriesFragment f = new ForumCategoriesFragment();
+				loginListener = f;
+				fm.beginTransaction().replace(R.id.container, f, CATEGORY_TAG).commit();
+				if (MySoup.isLoggedIn()) {
+					loginListener.onLoggedIn();
+				}
+			}
 		}
 		else if (selection.equalsIgnoreCase(getString(R.string.torrents))){
 			Intent intent = new Intent(this, SearchActivity.class);

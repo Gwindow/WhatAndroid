@@ -1,5 +1,6 @@
 package what.whatandroid.forums.categories;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -15,6 +16,7 @@ import api.forum.categories.ForumCategories;
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
+import what.whatandroid.callbacks.SetTitleCallback;
 
 /**
  * Fragment for displaying the forum categories
@@ -26,9 +28,20 @@ public class ForumCategoriesFragment extends Fragment implements OnLoggedInCallb
 	 */
 	private ForumCategoriesListAdapter adapter;
 	private ProgressBar loadingIndicator;
+	private SetTitleCallback setTitle;
 
 	public ForumCategoriesFragment(){
 		//Required empty ctor
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			setTitle = (SetTitleCallback) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + " must implement SetTitleCallbacks");
+		}
 	}
 
 	@Override
@@ -45,6 +58,12 @@ public class ForumCategoriesFragment extends Fragment implements OnLoggedInCallb
 			onLoggedIn();
 		}
 		return view;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		setTitle.setTitle(getString(R.string.forums));
 	}
 
 	@Override
