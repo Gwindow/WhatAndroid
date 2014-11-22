@@ -1,17 +1,25 @@
-package what.whatandroid.torrentgroup;
+package what.whatandroid.torrentgroup.torrent;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
+import java.util.List;
+
 import api.torrents.torrents.TorrentGroup;
 import api.torrents.torrents.Torrents;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.SetTitleCallback;
-
-import java.util.List;
+import what.whatandroid.torrentgroup.DownloadDialog;
+import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 /**
  * Fragment that contains the swipe view of the torrents

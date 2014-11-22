@@ -1,9 +1,10 @@
-package what.whatandroid.torrentgroup;
+package what.whatandroid.torrentgroup.group;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
+
 import api.torrents.torrents.TorrentGroup;
 import what.whatandroid.callbacks.LoadingListener;
 
@@ -20,14 +21,14 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 	private TorrentGroup torrentGroup;
 	private int groupId;
 
-	public TorrentGroupPagerAdapter(FragmentManager fm, int groupId){
+	public TorrentGroupPagerAdapter(FragmentManager fm, int groupId) {
 		super(fm);
 		this.groupId = groupId;
 	}
 
 	@Override
-	public Fragment getItem(int position){
-		switch (position){
+	public Fragment getItem(int position) {
+		switch (position) {
 			case 0:
 				return new TorrentGroupOverviewFragment();
 			case 1:
@@ -38,13 +39,13 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 	}
 
 	@Override
-	public int getCount(){
+	public int getCount() {
 		return 3;
 	}
 
 	@Override
-	public CharSequence getPageTitle(int position){
-		switch (position){
+	public CharSequence getPageTitle(int position) {
+		switch (position) {
 			case 0:
 				return "Torrent Group";
 			case 1:
@@ -55,23 +56,21 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 	}
 
 	@Override
-	public Object instantiateItem(ViewGroup container, int position){
-		Fragment f = (Fragment)super.instantiateItem(container, position);
-		if (position == 0){
-			overview = (TorrentGroupOverviewFragment)f;
-			if (torrentGroup != null){
+	public Object instantiateItem(ViewGroup container, int position) {
+		Fragment f = (Fragment) super.instantiateItem(container, position);
+		if (position == 0) {
+			overview = (TorrentGroupOverviewFragment) f;
+			if (torrentGroup != null) {
 				overview.onLoadingComplete(torrentGroup);
 			}
-		}
-		else if (position == 1){
-			description = (DescriptionFragment)f;
-			if (torrentGroup != null){
+		} else if (position == 1) {
+			description = (DescriptionFragment) f;
+			if (torrentGroup != null) {
 				description.onLoadingComplete(torrentGroup.getResponse().getGroup().getWikiBody());
 			}
-		}
-		else {
-			comments = (TorrentCommentsFragment)f;
-			if (torrentGroup != null){
+		} else {
+			comments = (TorrentCommentsFragment) f;
+			if (torrentGroup != null) {
 				//We call logged in on the fragment if loading's done to let it know that it can start loading
 				comments.onLoadingComplete(torrentGroup);
 			}
@@ -80,9 +79,9 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 	}
 
 	@Override
-	public void destroyItem(ViewGroup container, int position, Object object){
+	public void destroyItem(ViewGroup container, int position, Object object) {
 		super.destroyItem(container, position, object);
-		switch (position){
+		switch (position) {
 			case 0:
 				overview = null;
 				break;
@@ -95,15 +94,15 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 	}
 
 	@Override
-	public void onLoadingComplete(TorrentGroup group){
+	public void onLoadingComplete(TorrentGroup group) {
 		torrentGroup = group;
-		if (overview != null){
+		if (overview != null) {
 			overview.onLoadingComplete(torrentGroup);
 		}
-		if (description != null){
+		if (description != null) {
 			description.onLoadingComplete(torrentGroup.getResponse().getGroup().getWikiBody());
 		}
-		if (comments != null){
+		if (comments != null) {
 			comments.onLoadingComplete(torrentGroup);
 		}
 	}
