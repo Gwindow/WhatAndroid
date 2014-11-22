@@ -99,15 +99,15 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="WhatAPI" level="project" />
-    <orderEntry type="library" exported="" name="pagerslidingtabstrip-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
-    <orderEntry type="library" exported="" name="signpost-core-1.2.1.2" level="project" />
+    <orderEntry type="library" exported="" name="pagerslidingtabstrip-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
-    <orderEntry type="library" exported="" name="commons-codec-1.9" level="project" />
     <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
     <orderEntry type="library" exported="" name="commons-lang3-3.1" level="project" />
+    <orderEntry type="library" exported="" name="WhatAPI" level="project" />
+    <orderEntry type="library" exported="" name="signpost-core-1.2.1.2" level="project" />
     <orderEntry type="library" exported="" name="universal-image-loader-1.9.3" level="project" />
+    <orderEntry type="library" exported="" name="commons-codec-1.9" level="project" />
   </component>
 </module>
 
