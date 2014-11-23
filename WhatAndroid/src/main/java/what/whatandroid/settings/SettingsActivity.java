@@ -13,7 +13,7 @@ import what.whatandroid.R;
 /**
  * Activity for changing user settings
  */
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends Activity implements FolderPickerDialog.FolderPickerCallback {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -44,8 +44,14 @@ public class SettingsActivity extends Activity {
 		return true;
 	}
 
-    /**
-     * See if light layout for forums is enabled for the context.
+	@Override
+	public void pickFolder(String folder){
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		preferences.edit().putString(getString(R.string.key_pref_torrent_download_path), folder).apply();
+	}
+
+	/**
+	 * See if light layout for forums is enabled for the context.
      *
      * @return true if enabled, false if not
      */

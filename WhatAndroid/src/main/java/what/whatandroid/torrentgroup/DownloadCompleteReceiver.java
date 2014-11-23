@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
@@ -52,8 +51,7 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
 				String torrentDir = SettingsActivity.torrentDownloadPath(context);
 				if (!torrentDir.isEmpty()){
 					File oldTorrent = torrent;
-					torrent = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-						"/" + torrentDir + "/" + oldTorrent.getName());
+					torrent = new File(torrentDir + "/" + oldTorrent.getName());
 					try {
 						FileUtils.copyFile(oldTorrent, torrent);
 					}

@@ -1,6 +1,5 @@
 package what.whatandroid.settings;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -14,8 +13,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.widget.Toast;
-
-import java.io.File;
 
 import what.whatandroid.R;
 import what.whatandroid.updater.UpdateBroadcastReceiver;
@@ -31,42 +28,9 @@ public class SettingsFragment extends PreferenceFragment {
 	 */
 	public static final String USER_COOKIE = "pref_user_cookie", USER_NAME = "pref_user_name",
 		USER_PASSWORD = "pref_user_password";
-	/**
-	 * We need to keep the listener alive ourselves since Android just holds a weak
-	 * reference to these listeners
-	 */
-	private SharedPreferences.OnSharedPreferenceChangeListener listener;
-
 
 	public SettingsFragment(){
 		//required empty ctor
-	}
-
-	@Override
-	public void onAttach(Activity activity){
-		super.onAttach(activity);
-		//Listen for changes to the user torrent dir and make sure we can write to the directory
-		listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-			@Override
-			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key){
-				if (key.equalsIgnoreCase(getString(R.string.key_pref_torrent_download_path))){
-					String torrentDir = sharedPreferences.getString(key, "");
-					File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/" + torrentDir + "/");
-					if (!dir.exists()){
-						if (!dir.mkdirs()){
-							Toast.makeText(getActivity(), "Failed to create download directory " + torrentDir, Toast.LENGTH_LONG).show();
-						}
-					}
-				}
-			}
-		};
-		PreferenceManager.getDefaultSharedPreferences(activity).registerOnSharedPreferenceChangeListener(listener);
-	}
-
-	@Override
-	public void onDetach(){
-		PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(listener);
-		super.onDetach();
 	}
 
 	@Override
@@ -87,6 +51,13 @@ public class SettingsFragment extends PreferenceFragment {
 	@Override
 	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference){
 		if (preference.getKey() != null && getActivity() != null){
+			if (preference.getKey().equalsIgnoreCase(getString(R.string.key_pref_torrent_download_path))){
+				String dir = preference.getSharedPreferences().getString(preference.getKey(),
+						Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
+				FolderPickerDialog dialog = FolderPickerDialog.newInstance(dir);
+				dialog.show(getFragmentManager(), "folder_picker");
+				return true;
+			}
 			//If the version number is clicked launch an update check
 			if (preference.getKey().equalsIgnoreCase(getString(R.string.key_pref_version_name))){
 				Toast.makeText(getActivity(), "Checking for updates", Toast.LENGTH_SHORT).show();

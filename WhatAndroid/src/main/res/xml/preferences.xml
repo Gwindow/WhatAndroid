@@ -21,12 +21,11 @@
                 android:key="@string/key_pref_light_layout"
                 android:defaultValue="false"/>
 
-        <EditTextPreference
+        <Preference
                 android:title="@string/pref_torrent_download_path"
                 android:summary="@string/pref_torrent_download_path_summary"
                 android:key="@string/key_pref_torrent_download_path"
-                android:defaultValue=""
-                android:inputType="textUri"/>
+                android:defaultValue=""/>
 
     </PreferenceCategory>
 
