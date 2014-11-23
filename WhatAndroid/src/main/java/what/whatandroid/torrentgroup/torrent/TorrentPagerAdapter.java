@@ -1,10 +1,11 @@
-package what.whatandroid.torrentgroup;
+package what.whatandroid.torrentgroup.torrent;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
+
 import api.torrents.torrents.TorrentGroup;
 import what.whatandroid.callbacks.LoadingListener;
 

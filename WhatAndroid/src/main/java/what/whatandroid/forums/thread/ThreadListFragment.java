@@ -126,6 +126,13 @@ public class ThreadListFragment extends Fragment implements OnLoggedInCallback, 
 		}
 	}
 
+	public void refresh() {
+		if (isAdded()) {
+			getLoaderManager().destroyLoader(0);
+			getLoaderManager().initLoader(0, getArguments(), this);
+		}
+	}
+
 	@Override
 	public Loader<ForumThread> onCreateLoader(int id, Bundle args){
 		loadingIndicator.setVisibility(View.VISIBLE);

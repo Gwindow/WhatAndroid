@@ -6,23 +6,22 @@
               android:layout_height="match_parent">
 
     <TextView
-            android:id="@+id/total_votes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/accept_bitrates"
-            android:padding="16dp"
-            android:visibility="gone"
-            android:textSize="18sp"
-            android:textColor="@android:color/primary_text_dark"
-            android:background="@drawable/search_border_line"/>
+        android:id="@+id/total_votes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:textColor="@android:color/primary_text_dark"
+        android:background="@drawable/search_border_line"/>
 
     <ListView
-            android:id="@+id/poll_answers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="#333"
-            android:dividerHeight="2dp"
-            android:choiceMode="singleChoice"
-            android:listSelector="@drawable/poll_selector"/>
+        android:id="@+id/poll_answers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="#333"
+        android:dividerHeight="2dp"
+        android:choiceMode="singleChoice"
+        android:listSelector="@drawable/poll_selector"/>
 
 </LinearLayout>

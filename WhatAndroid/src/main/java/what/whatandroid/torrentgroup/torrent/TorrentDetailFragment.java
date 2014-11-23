@@ -1,4 +1,4 @@
-package what.whatandroid.torrentgroup;
+package what.whatandroid.torrentgroup.torrent;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.Date;
+
 import api.cli.Utils;
 import api.soup.MySoup;
 import api.torrents.torrents.Torrents;
@@ -17,8 +20,6 @@ import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.comments.WhatBBParser;
-
-import java.util.Date;
 
 /**
  * A fragment showing a detailed view of a torrent

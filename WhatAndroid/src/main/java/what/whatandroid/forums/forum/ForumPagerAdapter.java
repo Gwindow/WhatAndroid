@@ -5,11 +5,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
+
 import api.forum.forum.Forum;
 import api.soup.MySoup;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.OnLoggedInCallback;
-import what.whatandroid.forums.ForumActivity;
 
 /**
  * Adapter for swiping through the pages of the forum
@@ -73,6 +73,12 @@ public class ForumPagerAdapter extends FragmentStatePagerAdapter implements OnLo
 	public void onLoggedIn(){
 		for (int i = 0; i < fragments.size(); ++i){
 			fragments.valueAt(i).onLoggedIn();
+		}
+	}
+
+	public void refresh() {
+		for (int i = 0; i < fragments.size(); ++i) {
+			fragments.valueAt(i).refresh();
 		}
 	}
 

@@ -1,4 +1,4 @@
-package what.whatandroid.torrentgroup;
+package what.whatandroid.torrentgroup.group;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import api.torrents.torrents.TorrentGroup;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
+import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 /**
  * Fragment for showing swipeable views of the torrent group overview and comments
@@ -30,7 +31,7 @@ public class TorrentGroupFragment extends Fragment implements LoadingListener<To
 	 */
 	private MenuItem bookmarkMenu;
 
-	public static TorrentGroupFragment newInstance(int groupId){
+	public static TorrentGroupFragment newInstance(int groupId) {
 		TorrentGroupFragment f = new TorrentGroupFragment();
 		Bundle args = new Bundle();
 		args.putInt(TorrentGroupActivity.GROUP_ID, groupId);
@@ -38,22 +39,22 @@ public class TorrentGroupFragment extends Fragment implements LoadingListener<To
 		return f;
 	}
 
-	public TorrentGroupFragment(){
+	public TorrentGroupFragment() {
 		//Required empty ctor
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		int groupId = getArguments().getInt(TorrentGroupActivity.GROUP_ID);
 		View view = inflater.inflate(R.layout.fragment_view_pager_tabs, container, false);
-		ViewPager viewPager = (ViewPager)view.findViewById(R.id.pager);
-		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip)view.findViewById(R.id.tabs);
+		ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
+		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
 		torrentGroupPagerAdapter = new TorrentGroupPagerAdapter(getChildFragmentManager(), groupId);
 		viewPager.setAdapter(torrentGroupPagerAdapter);
 		tabs.setViewPager(viewPager);
@@ -61,25 +62,23 @@ public class TorrentGroupFragment extends Fragment implements LoadingListener<To
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.torrent_group, menu);
 		bookmarkMenu = menu.findItem(R.id.action_bookmark);
-		if (group != null){
-			if (group.getResponse().getGroup().isBookmarked()){
+		if (group != null) {
+			if (group.getResponse().getGroup().isBookmarked()) {
 				bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
-			}
-			else {
+			} else {
 				bookmarkMenu.setIcon(R.drawable.ic_bookmark_off);
 			}
-		}
-		else {
+		} else {
 			bookmarkMenu.setVisible(false);
 		}
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item){
-		if (item.getItemId() == R.id.action_bookmark){
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.action_bookmark) {
 			new ToggleBookmarkTask().execute();
 			return true;
 		}
@@ -87,15 +86,14 @@ public class TorrentGroupFragment extends Fragment implements LoadingListener<To
 	}
 
 	@Override
-	public void onLoadingComplete(TorrentGroup data){
+	public void onLoadingComplete(TorrentGroup data) {
 		group = data;
 		torrentGroupPagerAdapter.onLoadingComplete(group);
-		if (bookmarkMenu != null){
+		if (bookmarkMenu != null) {
 			bookmarkMenu.setVisible(true);
-			if (group.getResponse().getGroup().isBookmarked()){
+			if (group.getResponse().getGroup().isBookmarked()) {
 				bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
-			}
-			else {
+			} else {
 				bookmarkMenu.setIcon(R.drawable.ic_bookmark_off);
 			}
 		}
@@ -107,48 +105,45 @@ public class TorrentGroupFragment extends Fragment implements LoadingListener<To
 	private class ToggleBookmarkTask extends AsyncTask<Void, Void, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(Void... params){
-			if (group.getResponse().getGroup().isBookmarked()){
+		protected Boolean doInBackground(Void... params) {
+			if (group.getResponse().getGroup().isBookmarked()) {
 				return group.removeBookmark();
 			}
 			return group.addBookmark();
 		}
 
 		@Override
-		protected void onPreExecute(){
+		protected void onPreExecute() {
 			//Be optimistic that the change will succeed and show updated icon
-			if (group.getResponse().getGroup().isBookmarked()){
+			if (group.getResponse().getGroup().isBookmarked()) {
 				bookmarkMenu.setIcon(R.drawable.ic_bookmark_off);
-			}
-			else {
+			} else {
 				bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
 			}
-			if (isAdded()){
+			if (isAdded()) {
 				getActivity().setProgressBarIndeterminate(true);
 				getActivity().setProgressBarIndeterminateVisibility(true);
 			}
 		}
 
 		@Override
-		protected void onPostExecute(Boolean status){
-			if (isAdded()){
+		protected void onPostExecute(Boolean status) {
+			if (isAdded()) {
 				getActivity().setProgressBarIndeterminate(false);
 				getActivity().setProgressBarIndeterminateVisibility(false);
 			}
-			if (!status){
-				if (group.getResponse().getGroup().isBookmarked()){
+			if (!status) {
+				if (group.getResponse().getGroup().isBookmarked()) {
 					Toast.makeText(getActivity(), "Could not remove bookmark", Toast.LENGTH_LONG).show();
-				}
-				else {
+				} else {
 					Toast.makeText(getActivity(), "Could not add bookmark", Toast.LENGTH_LONG).show();
 				}
 			}
-			if (bookmarkMenu != null){
+			if (bookmarkMenu != null) {
 				bookmarkMenu.setVisible(true);
-				if (group.getResponse().getGroup().isBookmarked()){
+				if (group.getResponse().getGroup().isBookmarked()) {
 					bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
-				}
-				else {
+				} else {
 					bookmarkMenu.setIcon(R.drawable.ic_bookmark_off);
 				}
 			}

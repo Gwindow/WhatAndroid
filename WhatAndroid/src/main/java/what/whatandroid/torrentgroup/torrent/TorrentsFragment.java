@@ -1,17 +1,29 @@
-package what.whatandroid.torrentgroup;
+package what.whatandroid.torrentgroup.torrent;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.List;
+
 import api.torrents.torrents.TorrentGroup;
 import api.torrents.torrents.Torrents;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.SetTitleCallback;
-
-import java.util.List;
+import what.whatandroid.torrentgroup.DownloadDialog;
+import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
 /**
  * Fragment that contains the swipe view of the torrents
@@ -95,6 +107,13 @@ public class TorrentsFragment extends Fragment implements LoadingListener<Torren
 			Torrents t = torrentGroup.getResponse().getTorrents().get(viewPager.getCurrentItem());
 			DownloadDialog dialog = DownloadDialog.newInstance(torrentGroup.getResponse().getGroup().getName(), t);
 			dialog.show(getChildFragmentManager(), "download_dialog");
+			return true;
+		}
+		if (item.getItemId() == R.id.action_copy_url && torrentGroup != null) {
+			Torrents t = torrentGroup.getResponse().getTorrents().get(viewPager.getCurrentItem());
+			ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+			clipboard.setPrimaryClip(ClipData.newPlainText(t.getShortTitle() + " download url", t.getDownloadLink()));
+			Toast.makeText(getActivity(), "Download URL copied to clipboard", Toast.LENGTH_SHORT).show();
 			return true;
 		}
 		return false;

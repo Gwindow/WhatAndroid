@@ -1,4 +1,4 @@
-package what.whatandroid.torrentgroup;
+package what.whatandroid.torrentgroup.torrent;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import api.cli.Utils;
 import api.torrents.torrents.TorrentFile;
 import what.whatandroid.R;
@@ -16,22 +17,21 @@ import what.whatandroid.R;
 public class TorrentFilesAdapter extends ArrayAdapter<TorrentFile> {
 	private final LayoutInflater inflater;
 
-	public TorrentFilesAdapter(Context context){
+	public TorrentFilesAdapter(Context context) {
 		super(context, R.layout.list_torrent_file);
-		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent){
+	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
-		if (convertView != null){
-			holder = (ViewHolder)convertView.getTag();
-		}
-		else {
+		if (convertView != null) {
+			holder = (ViewHolder) convertView.getTag();
+		} else {
 			convertView = inflater.inflate(R.layout.list_torrent_file, parent, false);
 			holder = new ViewHolder();
-			holder.name = (TextView)convertView.findViewById(R.id.name);
-			holder.size = (TextView)convertView.findViewById(R.id.size);
+			holder.name = (TextView) convertView.findViewById(R.id.name);
+			holder.size = (TextView) convertView.findViewById(R.id.size);
 			convertView.setTag(holder);
 		}
 		TorrentFile file = getItem(position);
@@ -45,7 +45,7 @@ public class TorrentFilesAdapter extends ArrayAdapter<TorrentFile> {
 	 * clicking on a filename
 	 */
 	@Override
-	public boolean isEnabled(int position){
+	public boolean isEnabled(int position) {
 		return false;
 	}
 

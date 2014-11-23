@@ -182,7 +182,6 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 
 	@Override
 	protected void onPause(){
-		super.onPause();
 		calledLogin = false;
 		if (loginTask != null){
 			loginTask.cancel(true);
@@ -190,6 +189,7 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 		if (logoutTask != null){
 			logoutTask.dismissDialog();
 		}
+		super.onPause();
 	}
 
 	@Override

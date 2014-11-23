@@ -4,9 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
+
 import api.requests.Request;
 import what.whatandroid.callbacks.LoadingListener;
-import what.whatandroid.torrentgroup.DescriptionFragment;
+import what.whatandroid.torrentgroup.group.DescriptionFragment;
 
 /**
  * Fragment pager adapter to show the request details and comments
@@ -20,13 +21,13 @@ public class RequestPagerAdapter extends FragmentPagerAdapter implements Loading
 	private DescriptionFragment description;
 	private Request request;
 
-	public RequestPagerAdapter(FragmentManager fm){
+	public RequestPagerAdapter(FragmentManager fm) {
 		super(fm);
 	}
 
 	@Override
-	public Fragment getItem(int position){
-		switch (position){
+	public Fragment getItem(int position) {
+		switch (position) {
 			case 0:
 				return new RequestDetailFragment();
 			case 1:
@@ -37,13 +38,13 @@ public class RequestPagerAdapter extends FragmentPagerAdapter implements Loading
 	}
 
 	@Override
-	public int getCount(){
+	public int getCount() {
 		return 3;
 	}
 
 	@Override
-	public CharSequence getPageTitle(int position){
-		switch (position){
+	public CharSequence getPageTitle(int position) {
+		switch (position) {
 			case 0:
 				return "Request";
 			case 1:
@@ -54,23 +55,21 @@ public class RequestPagerAdapter extends FragmentPagerAdapter implements Loading
 	}
 
 	@Override
-	public Object instantiateItem(ViewGroup container, int position){
-		Fragment f = (Fragment)super.instantiateItem(container, position);
-		if (position == 0){
-			detail = (RequestDetailFragment)f;
-			if (request != null){
+	public Object instantiateItem(ViewGroup container, int position) {
+		Fragment f = (Fragment) super.instantiateItem(container, position);
+		if (position == 0) {
+			detail = (RequestDetailFragment) f;
+			if (request != null) {
 				detail.onLoadingComplete(request);
 			}
-		}
-		else if (position == 1){
-			description = (DescriptionFragment)f;
-			if (request != null){
+		} else if (position == 1) {
+			description = (DescriptionFragment) f;
+			if (request != null) {
 				description.onLoadingComplete(request.getResponse().getDescription());
 			}
-		}
-		else {
-			comments = (RequestCommentsFragment)f;
-			if (request != null){
+		} else {
+			comments = (RequestCommentsFragment) f;
+			if (request != null) {
 				comments.onLoadingComplete(request);
 			}
 		}
@@ -78,9 +77,9 @@ public class RequestPagerAdapter extends FragmentPagerAdapter implements Loading
 	}
 
 	@Override
-	public void destroyItem(ViewGroup container, int position, Object object){
+	public void destroyItem(ViewGroup container, int position, Object object) {
 		super.destroyItem(container, position, object);
-		switch (position){
+		switch (position) {
 			case 0:
 				detail = null;
 				break;
@@ -93,15 +92,15 @@ public class RequestPagerAdapter extends FragmentPagerAdapter implements Loading
 	}
 
 	@Override
-	public void onLoadingComplete(Request data){
+	public void onLoadingComplete(Request data) {
 		request = data;
-		if (detail != null){
+		if (detail != null) {
 			detail.onLoadingComplete(data);
 		}
-		if (description != null){
+		if (description != null) {
 			description.onLoadingComplete(request.getResponse().getDescription());
 		}
-		if (comments != null){
+		if (comments != null) {
 			comments.onLoadingComplete(data);
 		}
 	}

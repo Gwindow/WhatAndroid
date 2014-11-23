@@ -21,7 +21,6 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.forums.ForumActivity;
 import what.whatandroid.forums.NumberPickerDialog;
-import what.whatandroid.settings.SettingsActivity;
 
 /**
  * Displays a paged view of the posts in some forum
@@ -136,6 +135,9 @@ public class ForumFragment extends Fragment implements OnLoggedInCallback, Loadi
                 editor.putBoolean(getResources().getString(R.string.key_pref_light_layout), !previousState);
                 editor.apply();
                 return true;
+			case R.id.action_refresh:
+				pagerAdapter.refresh();
+				return true;
 			default:
 				break;
 		}
