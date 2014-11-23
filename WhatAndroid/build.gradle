@@ -18,9 +18,9 @@ android {
     buildToolsVersion "19.1.0"
 
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 21
-        versionCode 22
+        versionCode 23
     }
 
     signingConfigs {
