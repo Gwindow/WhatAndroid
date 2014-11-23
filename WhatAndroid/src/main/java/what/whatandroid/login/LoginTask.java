@@ -52,6 +52,7 @@ public class LoginTask extends AsyncTask<String, Void, LoginTask.Status> {
 			//If the cookie expired and we don't have a password to login, bail out
 			//and tell them the cookie is dead
 			if (params.length < 2 || params[1] == null || params[1].isEmpty()){
+				dialog.dismiss();
 				return Status.COOKIE_EXPIRED;
 			}
 			MySoup.login("login.php", params[0], params[1], true);
