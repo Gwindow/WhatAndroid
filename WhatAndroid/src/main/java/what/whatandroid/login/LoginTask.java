@@ -40,7 +40,7 @@ public class LoginTask extends AsyncTask<String, Void, LoginTask.Status> {
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 			String cookieJson = preferences.getString(SettingsFragment.USER_COOKIE, null);
 			if (cookieJson != null){
-				HttpCookie cookie = (HttpCookie) MySon.toObjectFromString(cookieJson, HttpCookie.class);
+				HttpCookie cookie = (HttpCookie)MySon.toObjectFromString(cookieJson, HttpCookie.class);
 				if (loginWithCookie(cookie)){
 					return Status.OK;
 				}
@@ -57,21 +57,21 @@ public class LoginTask extends AsyncTask<String, Void, LoginTask.Status> {
 			MySoup.login("login.php", params[0], params[1], true);
 			cookieJson = MySon.toJson(MySoup.getSessionCookie(), HttpCookie.class);
 			preferences.edit()
-				.putString(SettingsFragment.USER_COOKIE, cookieJson)
-				.putString(SettingsFragment.USER_NAME, params[0])
-				.apply();
+					.putString(SettingsFragment.USER_COOKIE, cookieJson)
+					.putString(SettingsFragment.USER_NAME, params[0])
+					.apply();
 			if (MySoup.isNotificationsEnabled()){
 				preferences.edit()
-					.putInt(context.getString(R.string.key_pref_num_notifications),
-						MySoup.getIndex().getResponse().getNotifications().getTorrentNotifications().intValue())
-					.apply();
+						.putInt(context.getString(R.string.key_pref_num_notifications),
+								MySoup.getIndex().getResponse().getNotifications().getTorrentNotifications().intValue())
+						.apply();
 			}
 			preferences.edit()
-				.putBoolean(context.getString(R.string.key_pref_new_subscriptions),
-					MySoup.getIndex().getResponse().getNotifications().hasNewSubscriptions())
-				.putInt(context.getString(R.string.key_pref_new_messages),
-					MySoup.getIndex().getResponse().getNotifications().getMessages().intValue())
-				.apply();
+					.putBoolean(context.getString(R.string.key_pref_new_subscriptions),
+							MySoup.getIndex().getResponse().getNotifications().hasNewSubscriptions())
+					.putInt(context.getString(R.string.key_pref_new_messages),
+							MySoup.getIndex().getResponse().getNotifications().getMessages().intValue())
+					.apply();
 			return Status.OK;
 		}
 		catch (Exception e){
@@ -105,24 +105,5 @@ public class LoginTask extends AsyncTask<String, Void, LoginTask.Status> {
 		dialog.setIndeterminate(true);
 		dialog.setMessage("Logging in...");
 		dialog.show();
-	}
-
-	@Override
-	protected void onPostExecute(Status status){
-		dismissDialog();
-	}
-
-	@Override
-	protected void onCancelled(Status status){
-		dismissDialog();
-	}
-
-	/**
-	 * Explicitly dismiss the progress dialog. This should be done if the view is being destroyed
-	 */
-	public void dismissDialog(){
-		if (dialog.isShowing()){
-			dialog.cancel();
-		}
 	}
 }
