@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import what.whatandroid.R;
 
@@ -28,7 +29,8 @@ import what.whatandroid.R;
  */
 public class FolderPickerDialog extends DialogFragment
 		implements AdapterView.OnItemClickListener, View.OnClickListener {
-	private static String DIRECTORY = "what.whatandroid.folderpickerdialog.DIRECTORY";
+	private static String DIRECTORY = "what.whatandroid.folderpickerdialog.DIRECTORY",
+			FALLBACK_DIR = "what.whatandroid.folderpickerdialog.FALLBACK_DIR:";
 	/**
 	 * Adapter displaying the list of directories in the current directory
 	 */
@@ -63,11 +65,13 @@ public class FolderPickerDialog extends DialogFragment
 	 * Create the folder picker dialog and specify the initial directory to display
 	 *
 	 * @param dir initial directory to display
+	 * @param fallbackDir directory to fallback to if dir can't be opened
 	 */
-	public static FolderPickerDialog newInstance(String dir){
+	public static FolderPickerDialog newInstance(String dir, String fallbackDir){
 		FolderPickerDialog d = new FolderPickerDialog();
 		Bundle args = new Bundle();
 		args.putString(DIRECTORY, dir);
+		args.putString(FALLBACK_DIR, fallbackDir);
 		d.setArguments(args);
 		return d;
 	}
@@ -103,15 +107,16 @@ public class FolderPickerDialog extends DialogFragment
 		else {
 			currentDir = new File(getArguments().getString(DIRECTORY));
 		}
+		//Try to open the directory and load the list of subdirectories
+		List<String> dirs = readDirectory(currentDir);
+		//If we fail to open the directory read the fallback directory
+		if (dirs == null){
+			Toast.makeText(getActivity(), "Could not enter directory " + currentDir.getName(), Toast.LENGTH_SHORT).show();
+			currentDir = new File(getArguments().getString(FALLBACK_DIR));
+			dirs = readDirectory(currentDir);
+		}
 		currentDirTitle.setText(currentDir.getName());
-		ArrayList<String> directories = new ArrayList<String>(Arrays.asList(currentDir.list(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String filename){
-				return new File(dir, filename).isDirectory();
-			}
-		})));
-		directories.add(0, "..");
-		adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_folder, R.id.folder_name, directories);
+		adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_folder, R.id.folder_name, dirs);
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(this);
 
@@ -142,6 +147,30 @@ public class FolderPickerDialog extends DialogFragment
 	}
 
 	/**
+	 * Read and return a list of all subdirectories in the passed directory, returns null
+	 * if reading failed. This list will also contain '..' as the first entry if the
+	 * directory has a parent directory
+	 * @param directory directory to read
+	 * @return list of subdirectories or null if we couldn't read the directory
+	 */
+	public List<String> readDirectory(File directory){
+		String sd[] = directory.list(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String filename){
+				return new File(dir, filename).isDirectory();
+			}
+		});
+		if (sd == null){
+			return null;
+		}
+		ArrayList<String> subdirs = new ArrayList<String>(Arrays.asList(sd));
+		if (directory.getParent() != null){
+			subdirs.add(0, "..");
+		}
+		return subdirs;
+	}
+
+	/**
 	 * Enter a new directory from the current one, or go up a directory
 	 *
 	 * @param dir '..' will specify to go up to the parent if possible, any other string
@@ -155,12 +184,7 @@ public class FolderPickerDialog extends DialogFragment
 		else {
 			currentDir = new File(currentDir, dir);
 		}
-		String dirs[] = currentDir.list(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String filename){
-				return new File(dir, filename).isDirectory();
-			}
-		});
+		List<String> dirs = readDirectory(currentDir);
 		//If we can't enter the directory don't update the list and inform the user (we probably don't have adequate permissions)
 		if (dirs == null){
 			Toast.makeText(getActivity(), "Could not enter directory " + dir, Toast.LENGTH_SHORT).show();
@@ -173,12 +197,8 @@ public class FolderPickerDialog extends DialogFragment
 		else {
 			currentDirTitle.setText("/");
 		}
-		ArrayList<String> directories = new ArrayList<String>(Arrays.asList(dirs));
-		if (currentDir.getParent() != null){
-			directories.add(0, "..");
-		}
 		adapter.clear();
-		adapter.addAll(directories);
+		adapter.addAll(dirs);
 		adapter.notifyDataSetChanged();
 	}
 

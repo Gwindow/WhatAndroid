@@ -52,9 +52,9 @@ public class SettingsFragment extends PreferenceFragment {
 	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference){
 		if (preference.getKey() != null && getActivity() != null){
 			if (preference.getKey().equalsIgnoreCase(getString(R.string.key_pref_torrent_download_path))){
-				String dir = preference.getSharedPreferences().getString(preference.getKey(),
-						Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
-				FolderPickerDialog dialog = FolderPickerDialog.newInstance(dir);
+				String downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+				String dir = preference.getSharedPreferences().getString(preference.getKey(), downloadDir);
+				FolderPickerDialog dialog = FolderPickerDialog.newInstance(dir, downloadDir);
 				dialog.show(getFragmentManager(), "folder_picker");
 				return true;
 			}
