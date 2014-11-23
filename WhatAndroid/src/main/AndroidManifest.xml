@@ -1,131 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="what.whatandroid"
-          android:versionCode="21"
           android:versionName="2.1.1.b">
 
-<uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
-            android:allowBackup="true"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
         <activity
-                android:name=".login.LoginActivity"
-                android:label="@string/app_name">
+            android:name=".login.LoginActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-                android:name=".announcements.AnnouncementsActivity"
-                android:label="@string/app_name">
+            android:name=".announcements.AnnouncementsActivity"
+            android:label="@string/app_name">
         </activity>
         <activity
-                android:name=".profile.ProfileActivity"
-                android:label="@string/profile">
+            android:name=".profile.ProfileActivity"
+            android:label="@string/profile">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                        android:scheme="http"
-                        android:host="what.cd"
-                        android:pathPrefix="/user"/>
+                    android:scheme="http"
+                    android:host="what.cd"
+                    android:pathPrefix="/user"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                        android:scheme="https"
-                        android:host="what.cd"
-                        android:pathPrefix="/user"/>
+                    android:scheme="https"
+                    android:host="what.cd"
+                    android:pathPrefix="/user"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                        android:scheme="https"
-                        android:host="ssl.what.cd"
-                        android:pathPrefix="/user"/>
+                    android:scheme="https"
+                    android:host="ssl.what.cd"
+                    android:pathPrefix="/user"/>
             </intent-filter>
         </activity>
         <activity
-                android:name=".artist.ArtistActivity"
-                android:label="@string/artist">
+            android:name=".artist.ArtistActivity"
+            android:label="@string/artist">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                        android:scheme="http"
-                        android:host="what.cd"
-                        android:pathPrefix="/artist"/>
+                    android:scheme="http"
+                    android:host="what.cd"
+                    android:pathPrefix="/artist"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                        android:scheme="https"
-                        android:host="what.cd"
-                        android:pathPrefix="/artist"/>
+                    android:scheme="https"
+                    android:host="what.cd"
+                    android:pathPrefix="/artist"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                        android:scheme="https"
-                        android:host="ssl.what.cd"
-                        android:pathPrefix="/artist"/>
+                    android:scheme="https"
+                    android:host="ssl.what.cd"
+                    android:pathPrefix="/artist"/>
             </intent-filter>
         </activity>
         <activity
-                android:name=".torrentgroup.TorrentGroupActivity"
-                android:label="@string/torrent_group">
+            android:name=".torrentgroup.TorrentGroupActivity"
+            android:label="@string/torrent_group">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                        android:scheme="http"
-                        android:host="what.cd"
-                        android:pathPrefix="/torrents"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data
-                        android:scheme="https"
-                        android:host="what.cd"
-                        android:pathPrefix="/torrents"/>
+                    android:scheme="http"
+                    android:host="what.cd"
+                    android:pathPrefix="/torrents"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                        android:scheme="https"
-                        android:host="ssl.what.cd"
-                        android:pathPrefix="/torrents"/>
+                    android:scheme="https"
+                    android:host="what.cd"
+                    android:pathPrefix="/torrents"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                    android:scheme="https"
+                    android:host="ssl.what.cd"
+                    android:pathPrefix="/torrents"/>
             </intent-filter>
         </activity>
         <activity
-                android:name=".search.SearchActivity"
-                android:label="@string/search">
+            android:name=".search.SearchActivity"
+            android:label="@string/search">
         </activity>
         <activity
-                android:name=".settings.SettingsActivity"
-                android:label="@string/action_settings">
+            android:name=".settings.SettingsActivity"
+            android:label="@string/action_settings">
         </activity>
         <activity
-                android:name=".request.RequestActivity"
-                android:label="@string/request">
+            android:name=".request.RequestActivity"
+            android:label="@string/request">
         </activity>
         <activity
-                android:name=".barcode.BarcodeActivity"
-                android:label="@string/barcode_lookup">
+            android:name=".barcode.BarcodeActivity"
+            android:label="@string/barcode_lookup">
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -133,62 +132,62 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".bookmarks.BookmarksActivity"
-                android:label="@string/bookmarks"/>
+            android:name=".bookmarks.BookmarksActivity"
+            android:label="@string/bookmarks"/>
         <activity
-                android:name=".notifications.NotificationsActivity"
-                android:label="@string/notifications"/>
+            android:name=".notifications.NotificationsActivity"
+            android:label="@string/notifications"/>
         <activity
-                android:name=".forums.ForumActivity"
-                android:label="@string/forums">
+            android:name=".forums.ForumActivity"
+            android:label="@string/forums">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                        android:scheme="http"
-                        android:host="what.cd"
-                        android:pathPrefix="/forums"/>
+                    android:scheme="http"
+                    android:host="what.cd"
+                    android:pathPrefix="/forums"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                        android:scheme="https"
-                        android:host="what.cd"
-                        android:pathPrefix="/forums"/>
+                    android:scheme="https"
+                    android:host="what.cd"
+                    android:pathPrefix="/forums"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                        android:scheme="https"
-                        android:host="ssl.what.cd"
-                        android:pathPrefix="/forums"/>
+                    android:scheme="https"
+                    android:host="ssl.what.cd"
+                    android:pathPrefix="/forums"/>
             </intent-filter>
         </activity>
         <activity
-                android:name=".subscriptions.SubscriptionsActivity"
-                android:label="@string/subscriptions"/>
+            android:name=".subscriptions.SubscriptionsActivity"
+            android:label="@string/subscriptions"/>
         <activity
-                android:name=".inbox.InboxActivity"
-                android:label="@string/inbox"/>
+            android:name=".inbox.InboxActivity"
+            android:label="@string/inbox"/>
         <activity
-                android:name=".top10.Top10Activity"
-                android:label="@string/top10"/>
+            android:name=".top10.Top10Activity"
+            android:label="@string/top10"/>
 
         <service
-                android:name=".errors.ErrorReporterService"
-                android:exported="false"/>
+            android:name=".errors.ErrorReporterService"
+            android:exported="false"/>
         <service
-                android:name=".updater.UpdateService"
-                android:exported="false"/>
+            android:name=".updater.UpdateService"
+            android:exported="false"/>
 
         <receiver
-                android:name=".updater.UpdateBroadcastReceiver"
-                android:exported="false"/>
+            android:name=".updater.UpdateBroadcastReceiver"
+            android:exported="false"/>
         <receiver
-                android:name=".torrentgroup.DownloadCompleteReceiver"
-                android:exported="false"/>
+            android:name=".torrentgroup.DownloadCompleteReceiver"
+            android:exported="false"/>
     </application>
 
 </manifest>
