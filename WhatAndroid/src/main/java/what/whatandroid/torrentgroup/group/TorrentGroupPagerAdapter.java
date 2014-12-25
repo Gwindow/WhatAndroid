@@ -66,8 +66,8 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 		} else if (position == 1) {
 			description = (DescriptionFragment) f;
 			if (torrentGroup != null) {
-				description.onLoadingComplete(torrentGroup.getResponse().getGroup().getWikiBody());
-			}
+                description.onLoadingComplete(torrentGroup.getResponse().getGroup());
+            }
 		} else {
 			comments = (TorrentCommentsFragment) f;
 			if (torrentGroup != null) {
@@ -100,8 +100,8 @@ public class TorrentGroupPagerAdapter extends FragmentPagerAdapter implements Lo
 			overview.onLoadingComplete(torrentGroup);
 		}
 		if (description != null) {
-			description.onLoadingComplete(torrentGroup.getResponse().getGroup().getWikiBody());
-		}
+            description.onLoadingComplete(torrentGroup.getResponse().getGroup());
+        }
 		if (comments != null) {
 			comments.onLoadingComplete(torrentGroup);
 		}
