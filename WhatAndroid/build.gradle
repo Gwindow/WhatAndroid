@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.2'
+        classpath 'com.android.tools.build:gradle:1.0.0'
     }
 }
 
@@ -15,7 +15,7 @@ repositories {
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "19.1.0"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         minSdkVersion 16
@@ -34,7 +34,7 @@ android {
 
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             signingConfig signingConfigs.release
         }
     }
@@ -46,7 +46,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.android.support:support-v4:21.0.3'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile files('libs/WhatAPI.jar')
