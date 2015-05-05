@@ -190,6 +190,9 @@
         <service
             android:name=".barcode.BarcodeActivity$LogoutService"
             android:exported="false"/>
+        <service
+            android:name=".request.RequestActivity$AddBountyService"
+            android:exported="false"/>
 
         <receiver
             android:name=".updater.UpdateBroadcastReceiver"
