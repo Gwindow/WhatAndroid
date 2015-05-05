@@ -187,6 +187,9 @@
         <service
             android:name=".forums.ForumActivity$PollVoteService"
             android:exported="false"/>
+        <service
+            android:name=".barcode.BarcodeActivity$LogoutService"
+            android:exported="false"/>
 
         <receiver
             android:name=".updater.UpdateBroadcastReceiver"
