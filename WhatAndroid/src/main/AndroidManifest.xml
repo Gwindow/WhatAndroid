@@ -199,6 +199,9 @@
         <service
             android:name=".inbox.conversation.ConversationFragment$ManageConversationService"
             android:exported="false"/>
+        <service
+            android:name=".profile.ProfileFragment$SendMessageService"
+            android:exported="false"/>
 
         <receiver
             android:name=".updater.UpdateBroadcastReceiver"
