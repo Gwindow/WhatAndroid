@@ -184,6 +184,9 @@
         <service
             android:name=".torrentgroup.TorrentGroupActivity$SendToPyWAService"
             android:exported="false"/>
+        <service
+            android:name=".forums.ForumActivity$PollVoteService"
+            android:exported="false"/>
 
         <receiver
             android:name=".updater.UpdateBroadcastReceiver"
