@@ -3,16 +3,20 @@ package what.whatandroid.barcode;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.IntentService;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
@@ -47,9 +51,11 @@ import what.whatandroid.top10.Top10Activity;
 public class BarcodeActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
 	ScannerDialog.ScannerDialogListener, ViewSearchCallbacks {
 
+	public static final String LOGOUT_FILTER = "BarcodeActivity_receiver";
 	private NavigationDrawerFragment navDrawer;
 	private CharSequence title;
 	private BarcodeFragment fragment;
+	private LogoutReceiver receiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -72,6 +78,17 @@ public class BarcodeActivity extends FragmentActivity implements NavigationDrawe
 		//Setup our Semantics3 fallback API info
 		ProductSearch.setCredentials("",
 			"", false);
+
+		receiver = new LogoutReceiver();
+		LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(LOGOUT_FILTER));
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (receiver != null) {
+			LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+		}
 	}
 
 	public void restoreActionBar(){
@@ -100,7 +117,9 @@ public class BarcodeActivity extends FragmentActivity implements NavigationDrawe
 		Intent intent;
 		switch (item.getItemId()){
 			case R.id.action_logout:
-				new LogoutTask().execute();
+				Intent logout = new Intent(this, LogoutService.class);
+				receiver.showProgressDialog();
+				this.startService(logout);
 				return true;
 			case R.id.action_settings:
 				intent = new Intent(this, SettingsActivity.class);
@@ -253,14 +272,10 @@ public class BarcodeActivity extends FragmentActivity implements NavigationDrawe
 		}
 	}
 
-	/**
-	 * Async task for logging out the user
-	 */
-	private class LogoutTask extends AsyncTask<Void, Void, Boolean> {
+	private class LogoutReceiver extends BroadcastReceiver {
 		private ProgressDialog dialog;
 
-		@Override
-		protected void onPreExecute(){
+		public void showProgressDialog(){
 			dialog = new ProgressDialog(BarcodeActivity.this);
 			dialog.setIndeterminate(true);
 			dialog.setMessage("Logging out...");
@@ -271,8 +286,9 @@ public class BarcodeActivity extends FragmentActivity implements NavigationDrawe
 		 * Once we've logged out clear the saved cookie, name and password and head to the home screen
 		 */
 		@Override
-		protected void onPostExecute(Boolean status){
-			if (dialog.isShowing()){
+		public void onReceive(Context receiverContext, Intent receiverIntent){
+			boolean status = receiverIntent.getBooleanExtra("status", false);
+			if (dialog != null && dialog.isShowing()){
 				dialog.dismiss();
 			}
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BarcodeActivity.this);
@@ -288,8 +304,22 @@ public class BarcodeActivity extends FragmentActivity implements NavigationDrawe
 			startActivity(intent);
 		}
 
-		@Override
-		protected Boolean doInBackground(Void... params){
+		public void dismissDialog(){
+			if (dialog != null && dialog.isShowing()){
+				dialog.dismiss();
+			}
+		}
+	}
+
+	/**
+	 * LogoutService for logging out the user
+	 */
+	public static class LogoutService extends IntentService {
+		public LogoutService() {
+			super("LogoutService");
+		}
+
+		public void onHandleIntent(Intent intent) {
 			Boolean status = false;
 			try {
 				status = MySoup.logout("logout.php");
@@ -297,13 +327,10 @@ public class BarcodeActivity extends FragmentActivity implements NavigationDrawe
 			catch (Exception e){
 				e.printStackTrace();
 			}
-			return status;
-		}
-
-		public void dismissDialog(){
-			if (dialog.isShowing()){
-				dialog.dismiss();
-			}
+			Intent resultIntent = new Intent(LOGOUT_FILTER);
+			resultIntent.putExtra("status", status);
+			LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+			return;
 		}
 	}
 }

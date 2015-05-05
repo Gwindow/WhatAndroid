@@ -1,9 +1,13 @@
 package what.whatandroid.request;
 
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -32,11 +36,14 @@ import what.whatandroid.torrentgroup.TorrentGroupActivity;
  */
 public class RequestActivity extends LoggedInActivity
 	implements ViewArtistCallbacks, ViewUserCallbacks, ViewTorrentCallbacks, VoteDialog.VoteDialogListener {
+
+	public static final String ADDBOUNTY_FILTER = "RequestActivity_receiver";
 	/**
 	 * Param to pass the request id to be shown
 	 */
 	public final static String REQUEST_ID = "what.whatandroid.REQUEST_ID";
 	private RequestFragment fragment;
+	private AddBountyReceiver receiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -54,6 +61,16 @@ public class RequestActivity extends LoggedInActivity
 		else {
 			fragment = RequestFragment.newInstance(intentId);
 			manager.beginTransaction().add(R.id.container, fragment).commit();
+		}
+		receiver = new AddBountyReceiver();
+		LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(ADDBOUNTY_FILTER));
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (receiver != null) {
+			LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
 		}
 	}
 
@@ -94,7 +111,11 @@ public class RequestActivity extends LoggedInActivity
 	@Override
 	public void addBounty(int request, long amt){
 		if (request != -1){
-			new AddBountyTask().execute(request, amt);
+			Intent addBounty = new Intent(this, AddBountyService.class);
+			receiver.setProgressBar();
+			Number[] params = { request, amt };
+			addBounty.putExtra("params", params);
+			this.startService(addBounty);
 		}
 		else {
 			Toast.makeText(this, "Invalid request id", Toast.LENGTH_SHORT).show();
@@ -172,25 +193,15 @@ public class RequestActivity extends LoggedInActivity
 		}
 	}
 
-	/**
-	 * Add bounty to some request. params should be { requestId, voteAmount }
-	 */
-	private class AddBountyTask extends AsyncTask<Number, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(Number... params){
-			int id = params[0].intValue();
-			long amt = params[1].longValue();
-			return Request.addBounty(id, amt);
-		}
-
-		@Override
-		protected void onPreExecute(){
+	private class AddBountyReceiver extends BroadcastReceiver {
+		public void setProgressBar(){
 			setProgressBarIndeterminate(true);
 			setProgressBarIndeterminateVisibility(true);
 		}
 
 		@Override
-		protected void onPostExecute(Boolean status){
+		public void onReceive(Context receiverContext, Intent receiverIntent){
+			boolean status = receiverIntent.getBooleanExtra("status", false);
 			setProgressBarIndeterminate(false);
 			setProgressBarIndeterminateVisibility(false);
 			if (status){
@@ -200,6 +211,25 @@ public class RequestActivity extends LoggedInActivity
 			else {
 				Toast.makeText(RequestActivity.this, "Could not add bounty", Toast.LENGTH_LONG).show();
 			}
+		}
+	}
+
+	/**
+	 * Add bounty to some request. params should be { requestId, voteAmount }
+	 */
+	public static class AddBountyService extends IntentService {
+		public AddBountyService(){
+			super("AddBountyService");
+		}
+
+		public void onHandleIntent(Intent intent){
+			Number[] params = (Number[]) intent.getSerializableExtra("params");
+			int id = params[0].intValue();
+			long amt = params[1].longValue();
+			Intent resultIntent = new Intent(ADDBOUNTY_FILTER);
+			resultIntent.putExtra("status", Request.addBounty(id, amt));
+			LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+			return;
 		}
 	}
 }

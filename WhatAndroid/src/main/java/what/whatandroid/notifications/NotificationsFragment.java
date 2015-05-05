@@ -1,8 +1,14 @@
 package what.whatandroid.notifications;
 
-import android.os.AsyncTask;
+import android.app.Activity;
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,9 +27,11 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
  * Fragment containing the swipe view of notification pages
  */
 public class NotificationsFragment extends Fragment implements OnLoggedInCallback {
+	public static final String CLEAR_NOTIFICATION_FILTER = "NotificationsFragment_recevier";
 	private NotificationsPagerAdapter pagerAdapter;
 	private ViewPager viewPager;
 	private int pages;
+	private ClearNotificationsReceiver receiver;
 
 	public NotificationsFragment(){
 		//Required empty ctor
@@ -36,6 +44,22 @@ public class NotificationsFragment extends Fragment implements OnLoggedInCallbac
 		pages = 1;
 		if (savedInstanceState != null){
 			pages = savedInstanceState.getInt("PAGES");
+		}
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		receiver = new ClearNotificationsReceiver();
+		LocalBroadcastManager.getInstance(activity)
+			.registerReceiver(receiver, new IntentFilter(CLEAR_NOTIFICATION_FILTER));
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		if (receiver != null) {
+			LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
 		}
 	}
 
@@ -67,7 +91,9 @@ public class NotificationsFragment extends Fragment implements OnLoggedInCallbac
 		if (item.getItemId() == R.id.clear){
 			viewPager.setCurrentItem(0);
 			pagerAdapter.clearNotifications();
-			new ClearNotificationsTask().execute();
+			Intent clearNotifications = new Intent(getActivity(), ClearNotificationsService.class);
+			receiver.serProgressBar();
+			getActivity().startService(clearNotifications);
 			return true;
 		}
 		return false;
@@ -78,26 +104,34 @@ public class NotificationsFragment extends Fragment implements OnLoggedInCallbac
 		pagerAdapter.onLoggedIn();
 	}
 
-	private class ClearNotificationsTask extends AsyncTask<Void, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(Void... params){
-			return Notifications.clearNotifications();
-		}
-
-		@Override
-		protected void onPreExecute(){
+	private class ClearNotificationsReceiver extends BroadcastReceiver {
+		public void serProgressBar(){
 			getActivity().setProgressBarIndeterminate(true);
 			getActivity().setProgressBarIndeterminateVisibility(true);
 		}
 
 		@Override
-		protected void onPostExecute(Boolean status){
+		public void onReceive(Context receiverContext, Intent receiverIntent){
+			boolean status = receiverIntent.getBooleanExtra("status", false);
 			if (isAdded()){
 				getActivity().setProgressBarIndeterminateVisibility(false);
 				if (!status){
 					Toast.makeText(getActivity(), "Could not clear notifications", Toast.LENGTH_LONG).show();
 				}
 			}
+		}
+	}
+
+	public static class ClearNotificationsService extends IntentService {
+		public ClearNotificationsService() {
+			super("ClearNotificationsService");
+		}
+
+		public void onHandleIntent(Intent intent) {
+			Intent resultIntent = new Intent(CLEAR_NOTIFICATION_FILTER);
+			resultIntent.putExtra("status", Notifications.clearNotifications());
+			LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+			return;
 		}
 	}
 }

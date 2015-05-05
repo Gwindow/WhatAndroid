@@ -1,12 +1,17 @@
 package what.whatandroid.profile;
 
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -45,6 +50,7 @@ import what.whatandroid.settings.SettingsActivity;
 public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 	LoaderManager.LoaderCallbacks<UserProfile>, ReplyDialogFragment.ReplyDialogListener {
 
+	public static final String SEND_MSG_FILTER = "ProfileFragment_receiver";
 	public static final String DEFER_LOADING = "what.whatandroid.DEFER_LOADING";
 	/**
 	 * The user's profile information
@@ -89,6 +95,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 	 * Send message menu item, so we can hide it if we're viewing our own profile
 	 */
 	private MenuItem sendMessage;
+	private SendMessageReceiver receiver;
 
 	/**
 	 * Use this factory method to create a new instance of the fragment displaying the
@@ -140,6 +147,17 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(activity.toString() + " must implement ViewTorrent & SetTitle Callbacks");
+		}
+		receiver = new SendMessageReceiver();
+		LocalBroadcastManager.getInstance(getActivity())
+			.registerReceiver(receiver, new IntentFilter(SEND_MSG_FILTER));
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		if (receiver != null) {
+			LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
 		}
 	}
 
@@ -279,7 +297,11 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 	public void post(String message, String subject){
 		messageDraft = "";
 		messageSubject = "";
-		new SendMessageTask().execute(subject, message);
+		Intent sendMsg = new Intent(getActivity(), SendMessageService.class);
+		sendMsg.putExtra("userID", userID);
+		String[] params = { subject, message };
+		sendMsg.putExtra("params", params);
+		getActivity().startService(sendMsg);
 	}
 
 	@Override
@@ -397,14 +419,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 		}
 	}
 
-	private class SendMessageTask extends AsyncTask<String, Void, Boolean> {
+	private class SendMessageReceiver extends BroadcastReceiver {
 		@Override
-		protected Boolean doInBackground(String... params){
-			return User.sendMessage(userID, params[0], params[1]);
-		}
-
-		@Override
-		protected void onPostExecute(Boolean status){
+		public void onReceive(Context receiverContext, Intent receiverIntent){
+			Boolean status = receiverIntent.getBooleanExtra("status", false);
 			if (!status){
 				Toast.makeText(getActivity(), "Could not send message", Toast.LENGTH_LONG).show();
 		}
@@ -412,5 +430,22 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 				Toast.makeText(getActivity(), "Message sent", Toast.LENGTH_SHORT).show();
 			}
 	}
+	}
+
+	public static class SendMessageService extends IntentService {
+		private int userID;
+
+		public SendMessageService() {
+			super("SendMessageService");
+		}
+
+		public void onHandleIntent(Intent intent) {
+			userID = intent.getIntExtra("userID", 0);
+			String[] params = intent.getStringArrayExtra("params");
+			Intent resultIntent = new Intent(SEND_MSG_FILTER);
+			resultIntent.putExtra("status", User.sendMessage(userID, params[0], params[1]));
+			LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+			return;
+		}
 	}
 }

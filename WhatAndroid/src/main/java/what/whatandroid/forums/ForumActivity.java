@@ -1,10 +1,14 @@
 package what.whatandroid.forums;
 
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -56,6 +60,8 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 	 * when to start loading
 	 */
 	private OnLoggedInCallback loginListener;
+	private PollVoteReceiver receiver;
+	public static final String POLLVOTE_FILTER = "ForumActivity_receiver";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -97,6 +103,16 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 			}
 			loginListener = (OnLoggedInCallback)f;
 			fm.beginTransaction().add(R.id.container, f, tag).commit();
+		}
+		receiver = new PollVoteReceiver();
+		LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(POLLVOTE_FILTER));
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (receiver != null) {
+			LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
 		}
 	}
 
@@ -181,7 +197,10 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 
 	@Override
 	public void makeVote(int thread, int vote){
-		new PollVoteTask().execute(thread, vote);
+		Intent pollVote = new Intent(this, PollVoteService.class);
+		Integer[] params = { thread, vote };
+		pollVote.putExtra("params", params);
+		this.startService(pollVote);
 		//Also notify the thread fragment showing that it should update the poll it's caching
 		ThreadFragment fragment = (ThreadFragment)getSupportFragmentManager().findFragmentById(R.id.container);
 		if (fragment != null){
@@ -284,20 +303,30 @@ public class ForumActivity extends LoggedInActivity implements ViewUserCallbacks
 		}
 	}
 
-	/**
-	 * Makes a vote on a poll in the background, params should be { thread, vote }
-	 */
-	private class PollVoteTask extends AsyncTask<Integer, Void, Boolean> {
+	private class PollVoteReceiver extends BroadcastReceiver {
 		@Override
-		protected Boolean doInBackground(Integer... params){
-			return Poll.vote(params[0], params[1]);
-		}
-
-		@Override
-		protected void onPostExecute(Boolean status){
+		public void onReceive(Context receiverContext, Intent receiverIntent){
+			boolean status = receiverIntent.getBooleanExtra("status", false);
 			if (!status){
 				Toast.makeText(ForumActivity.this, "Could not vote on poll", Toast.LENGTH_LONG).show();
 			}
+		}
+	}
+
+	/**
+	 * Makes a vote on a poll in the background, params should be { thread, vote }
+	 */
+	public static class PollVoteService extends IntentService {
+		public PollVoteService() {
+			super("PollVoteService");
+		}
+
+		public void onHandleIntent(Intent intent) {
+			Integer[] params = (Integer[]) intent.getSerializableExtra("params");
+			Intent resultIntent = new Intent(POLLVOTE_FILTER);
+			resultIntent.putExtra("status", Poll.vote(params[0], params[1]));
+			LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+			return;
 		}
 	}
 }

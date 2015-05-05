@@ -181,6 +181,33 @@
         <service
             android:name=".updater.UpdateService"
             android:exported="false"/>
+        <service
+            android:name=".torrentgroup.TorrentGroupActivity$SendToPyWAService"
+            android:exported="false"/>
+        <service
+            android:name=".forums.ForumActivity$PollVoteService"
+            android:exported="false"/>
+        <service
+            android:name=".barcode.BarcodeActivity$LogoutService"
+            android:exported="false"/>
+        <service
+            android:name=".request.RequestActivity$AddBountyService"
+            android:exported="false"/>
+        <service
+            android:name=".notifications.NotificationsFragment$ClearNotificationsService"
+            android:exported="false"/>
+        <service
+            android:name=".inbox.conversation.ConversationFragment$ManageConversationService"
+            android:exported="false"/>
+        <service
+            android:name=".profile.ProfileFragment$SendMessageService"
+            android:exported="false"/>
+        <service
+            android:name=".forums.thread.ThreadFragment$ToggleSubscriptionsService"
+            android:exported="false"/>
+        <service
+            android:name=".forums.thread.ThreadFragment$PostReplyService"
+            android:exported="false"/>
 
         <receiver
             android:name=".updater.UpdateBroadcastReceiver"

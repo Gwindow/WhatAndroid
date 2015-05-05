@@ -1,6 +1,11 @@
 package what.whatandroid.inbox.conversation;
 
 import android.app.Activity;
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -8,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +41,7 @@ public class ConversationFragment extends Fragment implements OnLoggedInCallback
 	AddQuoteCallback, LoaderManager.LoaderCallbacks<Conversation>, ReplyDialogFragment.ReplyDialogListener,
 	ManageConversationDialog.Listener {
 
+	public static final String MANAGE_CONVERSATION_FILTER = "ConversationFragment_receiver";
 	public static final String CONVERSATION = "what.whatandroid.conversationfragment.CONVERSATION";
 	private static final String SCROLL_STATE = "what.whatandroid.conversationfragment.SCROLL_STATE";
 
@@ -62,6 +69,8 @@ public class ConversationFragment extends Fragment implements OnLoggedInCallback
 	 */
 	private ConversationChangesPasser changesPasser;
 
+	private ManageConversationReceiver receiver;
+
 	/**
 	 * Create a conversation fragment displaying the messages in the
 	 * desired conversation
@@ -88,6 +97,17 @@ public class ConversationFragment extends Fragment implements OnLoggedInCallback
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(activity.toString() + " must implement ConversationChangesPasser");
+		}
+		receiver = new ManageConversationReceiver();
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver,
+				new IntentFilter(MANAGE_CONVERSATION_FILTER));
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		if (receiver != null) {
+			LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
 		}
 	}
 
@@ -155,7 +175,11 @@ public class ConversationFragment extends Fragment implements OnLoggedInCallback
 		changesPasser.setChanges(changes);
 
 		conversation.getResponse().setSticky(sticky);
-		new ManageConversationTask(convId).execute(sticky, unread, delete);
+		Intent manageConversation = new Intent(getActivity(), ManageConversationService.class);
+		Boolean[] params = { sticky, unread, delete };
+		manageConversation.putExtra("params", params);
+		manageConversation.putExtra("convId", convId);
+		getActivity().startService(manageConversation);
 	}
 
 	@Override
@@ -263,25 +287,13 @@ public class ConversationFragment extends Fragment implements OnLoggedInCallback
 	 * make sense to keep viewing the conversation if we delete it. Instead we tell
 	 * the inbox to delete the message and go back
 	 */
-	private class ManageConversationTask extends AsyncTask<Boolean, Void, Boolean> {
+	private class ManageConversationReceiver extends BroadcastReceiver {
 		private boolean delete;
-		private int convId;
-
-		public ManageConversationTask(int convId){
-			this.convId = convId;
-		}
-
-		/**
-		 * @param params {sticky, mark unread, delete}, true to set the corresponding value to true.
-		 */
-		@Override
-		protected Boolean doInBackground(Boolean... params){
-			delete = params[2];
-			return Conversation.manage(convId, params[0], params[1], params[2]);
-		}
 
 		@Override
-		protected void onPostExecute(Boolean status){
+		public void onReceive(Context receiverContext, Intent receiverIntent){
+			boolean status = receiverIntent.getBooleanExtra("status", false);
+			delete = receiverIntent.getBooleanExtra("delete", false);
 			if (!status){
 				Toast.makeText(getActivity(), "Could not update conversation", Toast.LENGTH_LONG).show();
 			}
@@ -294,6 +306,32 @@ public class ConversationFragment extends Fragment implements OnLoggedInCallback
 					Toast.makeText(getActivity(), "Conversation updated", Toast.LENGTH_SHORT).show();
 				}
 			}
+		}
+	}
+
+	/**
+	 * Manage the conversation in the background. Doesn't handle deletion as it doesn't
+	 * make sense to keep viewing the conversation if we delete it. Instead we tell
+	 * the inbox to delete the message and go back
+	 */
+	public static class ManageConversationService extends IntentService {
+		int convId;
+		Boolean delete;
+
+		public ManageConversationService() {
+			super("ManageConversationService");
+		}
+
+		public void onHandleIntent(Intent intent) {
+			convId = intent.getIntExtra("convId", 0);
+			Boolean[] params = (Boolean[]) intent.getSerializableExtra("params");
+			delete = params[2];
+			Intent resultIntent = new Intent(MANAGE_CONVERSATION_FILTER);
+			resultIntent.putExtra("status",
+					Conversation.manage(convId, params[0], params[1], params[2]));
+			resultIntent.putExtra("delete", delete);
+			LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+			return;
 		}
 	}
 }
