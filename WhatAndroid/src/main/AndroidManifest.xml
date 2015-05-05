@@ -181,6 +181,9 @@
         <service
             android:name=".updater.UpdateService"
             android:exported="false"/>
+        <service
+            android:name=".torrentgroup.TorrentGroupActivity$SendToPyWAService"
+            android:exported="false"/>
 
         <receiver
             android:name=".updater.UpdateBroadcastReceiver"

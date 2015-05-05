@@ -1,17 +1,20 @@
 package what.whatandroid.torrentgroup;
 
 import android.app.DownloadManager;
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -69,6 +72,9 @@ public class TorrentGroupActivity extends LoggedInActivity
 	private static final Pattern groupIdPattern = Pattern.compile(".*id=(\\d+).*"),
 			torrentIdPattern = Pattern.compile(".*torrentid=(\\d+).*");
 
+	private SendToPyWAReceiver receiver;
+	private static final String SENDTOPYWA_FILTER = "TorrentGroupActivity_receiver";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -117,6 +123,17 @@ public class TorrentGroupActivity extends LoggedInActivity
 						.commit();
 			}
 			loadingListener = (LoadingListener) f;
+		}
+
+		receiver = new SendToPyWAReceiver();
+		LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(SENDTOPYWA_FILTER));
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (receiver != null) {
+			LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
 		}
 	}
 
@@ -212,7 +229,10 @@ public class TorrentGroupActivity extends LoggedInActivity
 			Intent intent = new Intent(this, SettingsActivity.class);
 			startActivity(intent);
 		} else {
-			new SendToPyWA().execute(host, port, pass, Integer.toString(torrentId));
+			Intent sendToPyWA = new Intent(this, SendToPyWAService.class);
+			String[] params = { host, port, pass, Integer.toString(torrentId) };
+			sendToPyWA.putExtra("params", params);
+			this.startService(sendToPyWA);
 		}
 	}
 
@@ -289,34 +309,47 @@ public class TorrentGroupActivity extends LoggedInActivity
 		}
 	}
 
-	/**
-	 * Async task to instruct the user's PyWA server to download some torrent from the site
-	 * params should be: 0: host, 1: port, 2: PyWA password, 3: torrent id
-	 */
-	private class SendToPyWA extends AsyncTask<String, Void, Boolean> {
+	private class SendToPyWAReceiver extends BroadcastReceiver {
 		@Override
-		protected Boolean doInBackground(String... params) {
-			String url = params[0] + ":" + params[1] + "/dl.pywa?pass=" + params[2]
-					+ "&site=whatcd&id=" + params[3];
-			try {
-				String result = MySoup.scrapeOther(url);
-				if (result.contains("success")) {
-					return true;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return false;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean status) {
+		public void onReceive(Context receiverContext, Intent receiverIntent) {
+			boolean status = receiverIntent.getBooleanExtra("status", false);
 			if (status) {
 				Toast.makeText(TorrentGroupActivity.this, "Torrent sent", Toast.LENGTH_LONG).show();
 			} else {
 				Toast.makeText(TorrentGroupActivity.this, "Failed to send torrent, check PyWA settings",
 						Toast.LENGTH_SHORT).show();
 			}
+		}
+	}
+
+	/**
+	 * IntentService to instruct the user's PyWA server to download some torrent from the site
+	 * params should be: 0: host, 1: port, 2: PyWA password, 3: torrent id
+	 */
+	public static class SendToPyWAService extends IntentService {
+		public SendToPyWAService() {
+			super("SendToPyWAService");
+		}
+
+		public void onHandleIntent(Intent intent) {
+			String[] params = intent.getStringArrayExtra("params");
+			String url = params[0] + ":" + params[1] + "/dl.pywa?pass=" + params[2]
+					+ "&site=whatcd&id=" + params[3];
+			try {
+				String result = MySoup.scrapeOther(url);
+				if (result.contains("success")) {
+					Intent resultIntent = new Intent(SENDTOPYWA_FILTER);
+					resultIntent.putExtra("status", true);
+					LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+					return;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Intent resultIntent = new Intent(SENDTOPYWA_FILTER);
+			resultIntent.putExtra("status", false);
+			LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+			return;
 		}
 	}
 }
