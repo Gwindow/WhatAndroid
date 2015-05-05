@@ -1,10 +1,16 @@
 package what.whatandroid.forums.thread;
 
 import android.app.Activity;
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +40,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 	LoadingListener<ForumThread>, AddQuoteCallback, NumberPickerDialog.NumberPickerListener,
 	ReplyDialogFragment.ReplyDialogListener {
 
+	public static final String TOGGLE_SUBSCRIBE_FILTER = "ThreadFragment_toggleReceiver";
     private static final String THREAD_NAME = "what.whatandroid.forums.THREAD_NAME",
 	    PAGES = "what.whatandroid.forums.PAGES", LOCKED = "what.whatandroid.forums.LOCKED";
 
@@ -53,6 +60,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 	 * The current draft of the reply we might be writing for this thread
 	 */
 	private String replyDraft = "";
+	private ToggleSubscriptionsReceiver toggleReceiver;
 
 	/**
 	 * Create a new thread fragment showing the first page of the thread
@@ -94,6 +102,17 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 		}
 		catch (ClassCastException e){
 			throw new ClassCastException(activity.toString() + " must implement SetTitleCallback");
+		}
+		toggleReceiver = new ToggleSubscriptionsReceiver();
+		LocalBroadcastManager.getInstance(getActivity())
+			.registerReceiver(toggleReceiver, new IntentFilter(TOGGLE_SUBSCRIBE_FILTER));
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		if (toggleReceiver != null) {
+			LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(toggleReceiver);
 		}
 	}
 
@@ -250,7 +269,11 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 				pollDialog.show(getFragmentManager(), "dialog");
 				return true;
 			case R.id.action_subscription:
-				new ToggleSubscriptionsTask().execute();
+				Intent toggleSubscriptions = new Intent(getActivity(), ToggleSubscriptionsService.class);
+				toggleReceiver.setProgressBar();
+				toggleSubscriptions.putExtra("thread", thread);
+				toggleSubscriptions.putExtra("subscribed", subscribed);
+				getActivity().startService(toggleSubscriptions);
 				return true;
 			case R.id.action_pick_page:
 				NumberPickerDialog dialog = NumberPickerDialog.newInstance("Select Page", 1, pages, viewPager.getCurrentItem()+1);
@@ -284,21 +307,9 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 		reply.show(ft, "dialog");
 	}
 
-	/**
-	 * Async task to toggle the artist's notification status
-	 */
-	private class ToggleSubscriptionsTask extends AsyncTask<Void, Void, Boolean> {
+	private class ToggleSubscriptionsReceiver extends BroadcastReceiver {
 
-		@Override
-		protected Boolean doInBackground(Void... params){
-			if (subscribed){
-				return ForumThread.unsubscribe(thread);
-			}
-			return ForumThread.subscribe(thread);
-		}
-
-		@Override
-		protected void onPreExecute(){
+		public void setProgressBar(){
 			//Display action as successful while we load
 			if (subscribed){
 				toggleSubscription.setIcon(R.drawable.ic_eye_off);
@@ -313,7 +324,8 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 		}
 
 		@Override
-		protected void onPostExecute(Boolean status){
+		public void onReceive(Context receiverContext, Intent receiverIntent){
+			boolean status = receiverIntent.getBooleanExtra("status", false);
 			if (isAdded()){
 				getActivity().setProgressBarIndeterminate(false);
 				getActivity().setProgressBarIndeterminateVisibility(false);
@@ -330,6 +342,33 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 				subscribed = !subscribed;
 			}
 			updateMenus();
+		}
+	}
+
+	/**
+	 * Background task to toggle the artist's notification status
+	 */
+	public static class ToggleSubscriptionsService extends IntentService {
+		private int thread;
+		private boolean subscribed;
+
+		public ToggleSubscriptionsService() {
+			super("ToggleSubscriptionsService");
+		}
+
+		public void onHandleIntent(Intent intent) {
+			this.thread = intent.getIntExtra("thread", 0);
+			this.subscribed = intent.getBooleanExtra("subscribed", false);
+			if (subscribed) {
+				Intent resultIntent = new Intent(TOGGLE_SUBSCRIBE_FILTER);
+				resultIntent.putExtra("status", ForumThread.unsubscribe(thread));
+				LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+				return;
+			}
+			Intent resultIntent = new Intent(TOGGLE_SUBSCRIBE_FILTER);
+			resultIntent.putExtra("status", ForumThread.subscribe(thread));
+			LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+			return;
 		}
 	}
 

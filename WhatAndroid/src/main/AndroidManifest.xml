@@ -202,6 +202,9 @@
         <service
             android:name=".profile.ProfileFragment$SendMessageService"
             android:exported="false"/>
+        <service
+            android:name=".forums.thread.ThreadFragment$ToggleSubscriptionsService"
+            android:exported="false"/>
 
         <receiver
             android:name=".updater.UpdateBroadcastReceiver"
