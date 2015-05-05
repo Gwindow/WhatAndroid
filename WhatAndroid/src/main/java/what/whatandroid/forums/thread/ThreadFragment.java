@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -41,6 +40,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 	ReplyDialogFragment.ReplyDialogListener {
 
 	public static final String TOGGLE_SUBSCRIBE_FILTER = "ThreadFragment_toggleReceiver";
+	public static final String POST_REPLY_FILTER = "ThreadFragment_postReplyReceiver";
     private static final String THREAD_NAME = "what.whatandroid.forums.THREAD_NAME",
 	    PAGES = "what.whatandroid.forums.PAGES", LOCKED = "what.whatandroid.forums.LOCKED";
 
@@ -61,6 +61,7 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 	 */
 	private String replyDraft = "";
 	private ToggleSubscriptionsReceiver toggleReceiver;
+	private PostReplyReceiver postReplyReceiver;
 
 	/**
 	 * Create a new thread fragment showing the first page of the thread
@@ -106,6 +107,9 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 		toggleReceiver = new ToggleSubscriptionsReceiver();
 		LocalBroadcastManager.getInstance(getActivity())
 			.registerReceiver(toggleReceiver, new IntentFilter(TOGGLE_SUBSCRIBE_FILTER));
+		postReplyReceiver = new PostReplyReceiver();
+		LocalBroadcastManager.getInstance(getActivity())
+			.registerReceiver(postReplyReceiver, new IntentFilter(POST_REPLY_FILTER));
 	}
 
 	@Override
@@ -113,6 +117,9 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 		super.onDetach();
 		if (toggleReceiver != null) {
 			LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(toggleReceiver);
+		}
+		if (postReplyReceiver != null) {
+			LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(postReplyReceiver);
 		}
 	}
 
@@ -234,7 +241,11 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 	@Override
 	public void post(String message, String subject){
 		replyDraft = "";
-		new PostReplyTask().execute(message);
+		Intent postReply = new Intent(getActivity(), PostReplyService.class);
+		postReply.putExtra("thread", thread);
+		String[] params = { message };
+		postReply.putExtra("params", params);
+		getActivity().startService(postReply);
 	}
 
 	@Override
@@ -372,20 +383,33 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 		}
 	}
 
-	private class PostReplyTask extends AsyncTask<String, Void, Boolean> {
+	private class PostReplyReceiver extends BroadcastReceiver {
 		@Override
-		protected Boolean doInBackground(String... params){
-			return ForumThread.postReply(thread, params[0], false);
-		}
-
-		@Override
-		protected void onPostExecute(Boolean status){
+		public void onReceive(Context receiverContext, Intent receiverIntent){
+			boolean status = receiverIntent.getBooleanExtra("status", false);
 			if (!status){
 				Toast.makeText(getActivity(), "Could not post reply", Toast.LENGTH_LONG).show();
 			}
 			else {
 				pagerAdapter.getNewPosts(viewPager);
 			}
+		}
+	}
+
+	public static class PostReplyService extends IntentService {
+		int thread;
+
+		public PostReplyService() {
+			super("PostReplyService");
+		}
+
+		public void onHandleIntent(Intent intent) {
+			this.thread = intent.getIntExtra("thread", 0);
+			String[] params = intent.getStringArrayExtra("params");
+			Intent resultIntent = new Intent(POST_REPLY_FILTER);
+			resultIntent.putExtra("status", ForumThread.postReply(thread, params[0], false));
+			LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+			return;
 		}
 	}
 }

@@ -205,6 +205,9 @@
         <service
             android:name=".forums.thread.ThreadFragment$ToggleSubscriptionsService"
             android:exported="false"/>
+        <service
+            android:name=".forums.thread.ThreadFragment$PostReplyService"
+            android:exported="false"/>
 
         <receiver
             android:name=".updater.UpdateBroadcastReceiver"
