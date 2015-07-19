@@ -36,7 +36,7 @@
     <string name="refresh">Refresh</string>
     <string name="download">Download</string>
     <string name="send_to_pywa">Send to PyWA</string>
-    <string name="download_to_phone">Save to phone</string>
+    <string name="download_to_device">Save to device</string>
     <string name="cancel">Cancel</string>
     <string name="stats">Stats</string>
     <string name="snatches">Snatches</string>

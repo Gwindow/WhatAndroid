@@ -95,7 +95,7 @@ public class DownloadDialog extends DialogFragment {
 					}
 				}
 			})
-			.setNegativeButton(R.string.download_to_phone, new DialogInterface.OnClickListener() {
+			.setNegativeButton(R.string.download_to_device, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which){
 					if (listener != null){
