@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.android.tools.build:gradle:1.2.3'
     }
 }
 
@@ -14,21 +14,21 @@ repositories {
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 21
-        versionCode 23
+        targetSdkVersion 22
+        versionCode 24
     }
 
     signingConfigs {
         release {
             storeFile file("${System.properties['user.home']}/.android/whatandroid_release.keystore")
-            storePassword "ASK TWINKLEBEAR"
+            storePassword ""
             keyAlias "whatandroid_release"
-            keyPassword "ASK TWINKLEBEAR"
+            keyPassword ""
         }
     }
 
@@ -46,9 +46,9 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:support-v4:22.2.1'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile files('libs/WhatAPI.jar')
     compile files('libs/commons-io-2.4.jar')
     compile files('libs/commons-lang3-3.1.jar')
