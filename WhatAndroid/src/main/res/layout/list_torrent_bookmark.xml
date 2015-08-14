@@ -14,8 +14,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/ic_bookmark_on"
-            android:contentDescription="@string/remove_bookmark"/>
+            android:src="@drawable/ic_bookmark_on"
+            android:contentDescription="@string/remove_bookmark"
+            style="?android:attr/borderlessButtonStyle"/>
 
     <TextView
             android:id="@+id/title"
