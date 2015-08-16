@@ -33,17 +33,19 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_action_discard"
             android:contentDescription="@string/delete"
-            android:background="@drawable/ic_action_discard"/>
+            style="?android:attr/borderlessButtonStyle"/>
 
-    <ImageButton
+        <ImageButton
             android:id="@+id/load_terms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:background="@drawable/ic_action_search"
-            android:contentDescription="@string/load_terms"/>
+            android:src="@drawable/ic_action_search"
+            android:contentDescription="@string/load_terms"
+            style="?android:attr/borderlessButtonStyle"/>
 
     <ProgressBar
             android:id="@+id/loading_indicator"
