@@ -1,6 +1,5 @@
 package what.whatandroid.login;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -13,6 +12,8 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -41,7 +42,7 @@ import what.whatandroid.views.ImageDialog;
  * enters a LoggedInActivity it will try to load their saved cookie, or if no
  * cookie is found will kick them to the login activity.
  */
-public abstract class LoggedInActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+public abstract class LoggedInActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
 	SetTitleCallback, OnLoggedInCallback, ShowHiddenTagListener {
 
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
@@ -195,14 +196,14 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 	@Override
 	public void setTitle(String t){
 		title = t;
-		ActionBar actionBar = getActionBar();
+		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null){
 			actionBar.setTitle(title);
 		}
 	}
 
 	public void restoreActionBar(){
-		ActionBar actionBar = getActionBar();
+		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(title);

@@ -48,6 +48,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/art_container"
                     android:textSize="22sp"
+
                     android:textColor="@android:color/primary_text_light"
                     app:font="@string/roboto_black"/>
 
@@ -115,7 +116,9 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingBottom="12dp"
                 android:paddingTop="12dp"
-                android:background="#444">
+                android:background="#444"
+                android:elevation="5dp"
+                >
 
             <TextView
                     android:layout_width="wrap_content"
@@ -223,26 +226,38 @@
                 android:id="@+id/snatches_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#444">
+                android:background="#444"
+                >
 
-            <TextView
-                    android:id="@+id/snatches_header"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/snatches_header_container"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="12dp"
-                    android:text="@string/snatches"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/secondary_text_dark"/>
+
+                    android:background="#444"
+                    android:elevation="5dp"
+                    >
+                <TextView
+                        android:id="@+id/snatches_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingBottom="12dp"
+                        android:paddingTop="12dp"
+                        android:text="@string/snatches"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/secondary_text_dark"/>
+            </LinearLayout>
 
             <android.support.v4.view.ViewPager
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/recent_snatches"
                     android:layout_width="match_parent"
                     android:layout_height="196dp"
-                    android:layout_below="@id/snatches_header"
+                    android:layout_below="@id/snatches_header_container"
                     android:paddingBottom="8dp"
                     android:background="#222"/>
         </RelativeLayout>
@@ -253,24 +268,34 @@
                 android:layout_height="match_parent"
                 android:background="#444">
 
-            <TextView
-                    android:id="@+id/uploads_header"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/uploads_header_container"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="12dp"
-                    android:text="@string/uploads"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/secondary_text_dark"/>
+                    android:background="#444"
+                    android:elevation="5dp"
+                    >
+                <TextView
+                        android:id="@+id/uploads_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingBottom="12dp"
+                        android:paddingTop="12dp"
+                        android:text="@string/uploads"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/secondary_text_dark"/>
+            </LinearLayout>
 
             <android.support.v4.view.ViewPager
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/recent_uploads"
                     android:layout_width="match_parent"
                     android:layout_height="196dp"
-                    android:layout_below="@id/uploads_header"
+                    android:layout_below="@id/uploads_header_container"
                     android:paddingBottom="8dp"
                     android:background="#222"/>
         </RelativeLayout>
