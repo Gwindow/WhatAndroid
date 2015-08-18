@@ -13,7 +13,7 @@
             android:layout_gravity="right"
             android:textColor="@android:color/primary_text_dark"
             android:background="#222"
-            app:pstsIndicatorColor="@android:color/holo_blue_dark"
+            app:pstsIndicatorColor="@color/accent_material_dark"
             app:pstsUnderlineColor="#333"
             app:pstsDividerColor="#555"
             app:pstsShouldExpand="true"/>

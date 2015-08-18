@@ -1,6 +1,5 @@
 package what.whatandroid.barcode;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -14,6 +13,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,7 +45,7 @@ import what.whatandroid.top10.Top10Activity;
  * Activity for receiving intents for loading barcodes, viewing scanned barcodes
  * and launching searches with the terms
  */
-public class BarcodeActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+public class BarcodeActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
 	ScannerDialog.ScannerDialogListener, ViewSearchCallbacks {
 
 	private NavigationDrawerFragment navDrawer;
@@ -54,7 +55,6 @@ public class BarcodeActivity extends FragmentActivity implements NavigationDrawe
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_frame);
 		navDrawer = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 		navDrawer.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.drawer_layout));
@@ -75,8 +75,8 @@ public class BarcodeActivity extends FragmentActivity implements NavigationDrawe
 	}
 
 	public void restoreActionBar(){
-		ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(title);
 	}

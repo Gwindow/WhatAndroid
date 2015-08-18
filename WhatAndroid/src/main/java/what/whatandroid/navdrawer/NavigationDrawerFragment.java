@@ -1,16 +1,17 @@
 package what.whatandroid.navdrawer;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -200,12 +201,13 @@ public class NavigationDrawerFragment extends Fragment {
 		this.drawerLayout = drawerLayout;
 		this.drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-		ActionBar actionBar = getActionBar();
+		AppCompatActivity activity = (AppCompatActivity) getActivity();
+		ActionBar actionBar = activity.getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
 
 		drawerToggle = new ActionBarDrawerToggle(getActivity(), NavigationDrawerFragment.this.drawerLayout,
-			R.drawable.ic_drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+			 R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 			@Override
 			public void onDrawerClosed(View drawerView){
 				super.onDrawerClosed(drawerView);
@@ -242,7 +244,7 @@ public class NavigationDrawerFragment extends Fragment {
 		}
 		this.drawerLayout.post(new Runnable() {
 			@Override
-			public void run(){
+			public void run() {
 				drawerToggle.syncState();
 			}
 		});
@@ -340,7 +342,8 @@ public class NavigationDrawerFragment extends Fragment {
 	}
 
 	private ActionBar getActionBar(){
-		return getActivity().getActionBar();
+		AppCompatActivity activity = (AppCompatActivity) getActivity();
+		return activity.getSupportActionBar();
 	}
 
 	/**

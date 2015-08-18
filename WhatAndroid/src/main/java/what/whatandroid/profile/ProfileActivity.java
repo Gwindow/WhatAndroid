@@ -46,7 +46,6 @@ public class ProfileActivity extends LoggedInActivity implements ViewTorrentCall
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_frame);
 		setupNavDrawer();
 
