@@ -125,6 +125,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/stats"
                     android:textSize="14sp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:textColor="@android:color/secondary_text_dark"/>
         </LinearLayout>
 
