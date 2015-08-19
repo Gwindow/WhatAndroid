@@ -8,7 +8,9 @@
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="8dp"
               android:paddingBottom="8dp"
-              android:background="#333">
+              android:background="#333"
+              android:elevation="5dp"
+        >
 
     <TextView
             android:id="@+id/category"
