@@ -1,11 +1,11 @@
 package what.whatandroid.torrentgroup;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.ContextThemeWrapper;
 
 import api.torrents.torrents.Torrents;
@@ -82,8 +82,7 @@ public class DownloadDialog extends DialogFragment {
 		final String downloadLink = args.getString(DOWNLOAD_LINK);
 		final String title = args.getString(DOWNLOAD_TITLE);
 		final String edition = args.getString(EDITION);
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(),
-			android.R.style.Theme_Holo_Dialog));
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 		builder.setTitle("Download " + title)
 			.setMessage("Edition: " + edition)

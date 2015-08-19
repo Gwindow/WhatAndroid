@@ -1,11 +1,11 @@
 package what.whatandroid.settings;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,8 +93,7 @@ public class FolderPickerDialog extends DialogFragment
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState){
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(),
-				android.R.style.Theme_Holo_Dialog));
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_folder_picker, null);
 		currentDirTitle = (TextView)view.findViewById(R.id.current_folder);
@@ -219,8 +218,7 @@ public class FolderPickerDialog extends DialogFragment
 	 */
 	@Override
 	public void onClick(View v){
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(),
-				android.R.style.Theme_Holo_Dialog));
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		final EditText input = new EditText(getActivity());
 		input.setSingleLine(true);
 		builder.setTitle("Enter New Directory Name:")

@@ -1,12 +1,11 @@
 package what.whatandroid.forums.poll;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.ContextThemeWrapper;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -91,7 +90,6 @@ public class PollDialog extends DialogFragment implements AdapterView.OnItemClic
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo);
 		if (savedInstanceState != null) {
 			poll = (Poll) MySon.toObjectFromString(savedInstanceState.getString(POLL), Poll.class);
 		}
@@ -103,8 +101,7 @@ public class PollDialog extends DialogFragment implements AdapterView.OnItemClic
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(),
-			android.R.style.Theme_Holo_Dialog));
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_poll, null);
 		answers = (ListView)view.findViewById(R.id.poll_answers);

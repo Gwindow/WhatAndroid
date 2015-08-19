@@ -1,7 +1,6 @@
 package what.whatandroid.barcode;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
@@ -156,8 +156,7 @@ public class BarcodeActivity extends AppCompatActivity implements NavigationDraw
 	 * and prompt them to install it
 	 */
 	private void noScannerAlert(){
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this,
-			android.R.style.Theme_Holo_Dialog));
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("ZXing Barcode Scanner Not Found")
 			.setMessage("The ZXing Barcode scanner is required to use the scanning features, would you like to install it?")
 			.setPositiveButton("Install", new DialogInterface.OnClickListener() {
