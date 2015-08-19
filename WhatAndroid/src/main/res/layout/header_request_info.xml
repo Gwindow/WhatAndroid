@@ -210,7 +210,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/filled_torrent_text"
                     android:textSize="18sp"
-                    android:textColor="@color/blue_link_text"/>
+                    android:textColor="@color/link_text_material_dark"/>
 
             <TextView
                     android:id="@+id/filled_user_text"
@@ -232,7 +232,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/filled_user_text"
                     android:textSize="18sp"
-                    android:textColor="@color/blue_link_text"/>
+                    android:textColor="@color/link_text_material_dark"/>
 
         </RelativeLayout>
 

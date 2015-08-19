@@ -59,7 +59,7 @@
             android:paddingLeft="4dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/blue_link_text"/>
+            android:textColor="@color/link_text_material_dark"/>
 
     <LinearLayout
             android:layout_width="wrap_content"
