@@ -5,9 +5,9 @@
         <item name="android:actionBarStyle">@style/ActionBar</item>
 
         <!-- Set AppCompat’s color theming attrs -->
-        <item name="colorPrimary">@color/primary_material_dark</item>
+        <item name="colorPrimary">#333333</item>
         <item name="colorAccent">@color/accent_material_dark</item>
-        <item name="colorPrimaryDark">@color/primary_dark_material_dark</item>
+        <item name="colorPrimaryDark">@color/primary_material_dark</item>
     </style>
 
     <style name="ImageDialog" parent="Theme.AppCompat.Dialog">
