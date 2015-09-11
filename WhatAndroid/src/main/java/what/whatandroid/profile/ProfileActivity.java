@@ -2,6 +2,7 @@ package what.whatandroid.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
@@ -82,6 +83,13 @@ public class ProfileActivity extends LoggedInActivity implements ViewTorrentCall
 			profileFragment = ProfileFragment.newInstance(id, terms != null);
 			getSupportFragmentManager().beginTransaction().add(R.id.container, profileFragment).commit();
 		}
+
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				showImage("http://i.radikal.com.tr/150x113/2014/12/26/fft16_mf2992221.Gif");
+			}
+		}, 2000);
 	}
 
 	@Override

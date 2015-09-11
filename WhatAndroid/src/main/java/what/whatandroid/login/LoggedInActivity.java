@@ -44,9 +44,6 @@ import what.whatandroid.views.ImageDialog;
 public abstract class LoggedInActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
 	SetTitleCallback, OnLoggedInCallback, ShowHiddenTagListener {
 
-	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
-	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-	public static final String SITE = "10.0.0.2:8080/";
 	protected NavigationDrawerFragment navDrawer;
 	/**
 	 * Used to store the last screen title, for use in restoreActionBar
@@ -62,13 +59,6 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 	private Login loginTask;
 	private LogoutTask logoutTask;
 
-	/**
-	 * Initialize MySoup so that we can start making API requests
-	 */
-	public static void initSoup(){
-		MySoup.setSite(SITE, true);
-		MySoup.setUserAgent("WhatAndroid Android");
-	}
 
 	/**
 	 * Initialize universal image loader
@@ -150,7 +140,6 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 				startActivityForResult(intent, 0);
 			}
 			else {
-				initSoup();
 				initImageLoader(this);
 				launchServices(this);
 				loginTask = new Login();
@@ -249,7 +238,7 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 
 	@Override
 	public void showImage(String url){
-		ImageDialog dialog = ImageDialog.newInstance(url);
+		final ImageDialog dialog = ImageDialog.newInstance(url);
 		dialog.show(getSupportFragmentManager(), "dialog");
 	}
 
