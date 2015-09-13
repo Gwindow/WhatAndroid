@@ -6,14 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
 import api.cli.Utils;
 import api.search.requests.Request;
 import api.soup.MySoup;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.WhatApplication;
 import what.whatandroid.callbacks.ViewRequestCallbacks;
 import what.whatandroid.imgloader.ImageLoadFailTracker;
-import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
 import java.util.Date;
@@ -58,7 +58,6 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 			holder.art = (ImageView)convertView.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
 			holder.artContainer = convertView.findViewById(R.id.art_container);
-			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer, imageFailTracker);
 			holder.artistName = (TextView)convertView.findViewById(R.id.artist_name);
 			holder.albumName = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.year);
@@ -93,12 +92,14 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 		}
 
 		String imgUrl = r.getImage();
-		if (imagesEnabled && imgUrl != null && !imgUrl.isEmpty() && !imageFailTracker.failed(imgUrl)){
-			ImageLoader.getInstance().displayImage(imgUrl, holder.art, holder.listener);
-		}
-		else {
-			holder.artContainer.setVisibility(View.GONE);
-		}
+
+        if (!imagesEnabled) {
+            holder.artContainer.setVisibility(View.GONE);
+        } else {
+            holder.artContainer.setVisibility(View.VISIBLE);
+            WhatApplication.loadImage(getContext(), imgUrl, holder.art, holder.spinner, imageFailTracker, null);
+        }
+
 		if (r.getYear().intValue() != 0){
 			holder.year.setText(r.getYear().toString());
 		}
@@ -120,7 +121,6 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 		public ImageView art;
 		public ProgressBar spinner;
 		public View artContainer;
-		public ImageLoadingListener listener;
 		public TextView artistName, albumName, year, votes, bounty, created;
 	}
 }

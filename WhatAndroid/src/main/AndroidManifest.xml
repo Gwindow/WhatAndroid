@@ -189,6 +189,9 @@
         <receiver
             android:name=".torrentgroup.DownloadCompleteReceiver"
             android:exported="false"/>
+
+        <meta-data android:name="what.whatandroid.glide.GlideConfiguration"
+                   android:value="GlideModule"/>
     </application>
 
 </manifest>

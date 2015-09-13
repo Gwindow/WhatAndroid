@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import java.util.List;
 
 import api.torrents.torrents.Artist;
@@ -20,10 +18,10 @@ import api.torrents.torrents.EditionTorrents;
 import api.torrents.torrents.MusicInfo;
 import api.torrents.torrents.TorrentGroup;
 import what.whatandroid.R;
+import what.whatandroid.WhatApplication;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.callbacks.ViewArtistCallbacks;
-import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.views.ImageDialog;
 
@@ -116,11 +114,14 @@ public class TorrentGroupOverviewFragment extends Fragment implements View.OnCli
 		setTitle.setTitle(group.getResponse().getGroup().getName());
 
 		String imgUrl = group.getResponse().getGroup().getWikiImage();
-		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()) {
-			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner, artContainer));
-		} else {
-			artContainer.setVisibility(View.GONE);
-		}
+
+        if (!SettingsActivity.imagesEnabled(getActivity())) {
+            artContainer.setVisibility(View.GONE);
+        } else {
+            artContainer.setVisibility(View.VISIBLE);
+            WhatApplication.loadImage(getActivity(), imgUrl, image, spinner, null, null);
+        }
+
 		albumTitle.setText(group.getResponse().getGroup().getName());
 
 		//Choose the names for ArtistA and ArtistB or hide entirely depending on the number of artists

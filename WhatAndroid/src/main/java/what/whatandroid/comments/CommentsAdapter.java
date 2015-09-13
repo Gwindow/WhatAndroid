@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +14,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import java.util.Date;
 
 import api.comments.SimpleComment;
 import what.whatandroid.R;
+import what.whatandroid.WhatApplication;
 import what.whatandroid.callbacks.AddQuoteCallback;
 import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.imgloader.HtmlImageHider;
 import what.whatandroid.imgloader.ImageLoadFailTracker;
-import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
 /**
@@ -94,8 +93,6 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements View
 			holder.artContainer = convertView.findViewById(R.id.art_container);
 			holder.image = (ImageView)convertView.findViewById(R.id.image);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
-			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer,
-				imageFailTracker, R.drawable.no_avatar);
 			holder.userClickListener = new UserClickListener();
 			holder.quote = (ImageButton) convertView.findViewById(R.id.reply_quote);
 			View header = convertView.findViewById(R.id.user_header);
@@ -118,18 +115,12 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements View
 
 		holder.image.setOnClickListener(holder.userClickListener);
 		String imgUrl = comment.getAvatar();
-		if (imagesEnabled){
-			if (imgUrl != null && !imgUrl.isEmpty() && !imageFailTracker.failed(imgUrl)){
-				ImageLoader.getInstance().displayImage(imgUrl, holder.image, holder.listener);
-			}
-			else {
-				ImageLoader.getInstance().displayImage("drawable://" + R.drawable.no_avatar, holder.image, holder.listener);
-			}
-		}
-		else {
-			holder.image.setVisibility(View.GONE);
-			holder.spinner.setVisibility(View.GONE);
-		}
+
+        if (!imagesEnabled) holder.artContainer.setVisibility(View.GONE);
+        else {
+            holder.artContainer.setVisibility(View.VISIBLE);
+            WhatApplication.loadImage(getContext(), imgUrl, holder.image, holder.spinner, imageFailTracker, R.drawable.no_avatar);
+        }
 		if (addQuote != null){
 			holder.quote.setVisibility(View.VISIBLE);
 			holder.quote.setTag(position);
@@ -161,7 +152,6 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements View
 		public View artContainer;
 		public ImageView image;
 		public ProgressBar spinner;
-		public ImageLoadingListener listener;
 		public UserClickListener userClickListener;
 		public ImageButton quote;
 	}

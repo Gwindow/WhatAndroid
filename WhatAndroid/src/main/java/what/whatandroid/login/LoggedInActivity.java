@@ -17,10 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
@@ -60,26 +56,6 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 	private LogoutTask logoutTask;
 
 
-	/**
-	 * Initialize universal image loader
-	 *
-	 * @param context context to get the application context from
-	 */
-	public static void initImageLoader(Context context){
-		//Setup Universal Image loader global config
-		if (!ImageLoader.getInstance().isInited()){
-			DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.cacheOnDisk(true)
-				.cacheInMemory(true)
-				.build();
-			ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context.getApplicationContext())
-				.defaultDisplayImageOptions(options)
-				.denyCacheImageMultipleSizesInMemory()
-				.diskCacheSize(10 * 1024 * 1024)
-				.build();
-			ImageLoader.getInstance().init(config);
-		}
-	}
 
 	/**
 	 * Setup the error logger and run the error reporting and update checking services
@@ -140,7 +116,6 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 				startActivityForResult(intent, 0);
 			}
 			else {
-				initImageLoader(this);
 				launchServices(this);
 				loginTask = new Login();
 				loginTask.execute();

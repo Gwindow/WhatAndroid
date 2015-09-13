@@ -46,7 +46,6 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 		password = (TextView)findViewById(R.id.password_input);
 		Button login = (Button)findViewById(R.id.login_button);
 		login.setOnClickListener(this);
-		LoggedInActivity.initImageLoader(this);
 		LoggedInActivity.launchServices(this);
 
 		//Setup saved user name and password if we've got them

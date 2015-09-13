@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import com.bumptech.glide.Glide;
 
 import what.whatandroid.R;
+import what.whatandroid.WhatApplication;
 
 /**
  * Basic dialog to display a full image, similar to how the site does when you
@@ -63,11 +64,8 @@ public class ImageDialog extends DialogFragment implements View.OnClickListener 
 		View view = inflater.inflate(R.layout.dialog_image, null);
 		TouchImageView imageView = (TouchImageView) view.findViewById(R.id.image);
 		final ProgressBar spinner = (ProgressBar) view.findViewById(R.id.loading_indicator);
-//		spinner.setVisibility(View.GONE);
-//		imageView.setVisibility(View.VISIBLE);
-//		ImageLoader.getInstance().displayImage(imageUrl, imageView, new ImageLoadingListener(spinner));
 
-		Glide.with(getActivity()).load(imageUrl).into(imageView);
+        WhatApplication.loadImage(getContext(), imageUrl, imageView, spinner, null, null);
 		imageView.setOnClickListener(this);
 		return view;
 	}
