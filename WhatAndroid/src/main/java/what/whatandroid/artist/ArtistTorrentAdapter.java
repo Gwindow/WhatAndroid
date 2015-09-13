@@ -6,17 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
 import api.cli.Utils;
 import api.soup.MySoup;
 import api.torrents.ReleaseType;
 import api.torrents.artist.Requests;
 import api.torrents.artist.TorrentGroup;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.WhatApplication;
 import what.whatandroid.callbacks.ViewRequestCallbacks;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.imgloader.ImageLoadFailTracker;
-import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
 import java.util.*;
@@ -118,7 +118,6 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 			holder.art = (ImageView)convert.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convert.findViewById(R.id.loading_indicator);
 			holder.artContainer = convert.findViewById(R.id.art_container);
-			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer, imageFailTracker);
 			holder.albumName = (TextView)convert.findViewById(R.id.album_name);
 			holder.year = (TextView)convert.findViewById(R.id.album_year);
 			holder.tags = (TextView)convert.findViewById(R.id.album_tags);
@@ -126,12 +125,14 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 		}
 		holder.torrentGroup = (TorrentGroup)getChild(groupPos, childPos);
 		String img = holder.torrentGroup.getWikiImage();
-		if (imagesEnabled && img != null && !img.isEmpty() && !imageFailTracker.failed(img)){
-			ImageLoader.getInstance().displayImage(holder.torrentGroup.getWikiImage(), holder.art, holder.listener);
-		}
-		else {
-			holder.artContainer.setVisibility(View.GONE);
-		}
+
+        if (!imagesEnabled) {
+            holder.artContainer.setVisibility(View.GONE);
+        } else {
+            holder.artContainer.setVisibility(View.VISIBLE);
+            WhatApplication.loadImage(inflater.getContext(), img, holder.art, holder.spinner, imageFailTracker, null);
+        }
+
 		holder.albumName.setText(holder.torrentGroup.getGroupName());
 		holder.year.setText(holder.torrentGroup.getGroupYear().toString());
 		String tagString = holder.torrentGroup.getTags().toString();
@@ -263,7 +264,6 @@ public class ArtistTorrentAdapter extends BaseExpandableListAdapter implements E
 		public ImageView art;
 		public ProgressBar spinner;
 		public View artContainer;
-		public ImageLoadingListener listener;
 		public TextView albumName, year, tags;
 	}
 

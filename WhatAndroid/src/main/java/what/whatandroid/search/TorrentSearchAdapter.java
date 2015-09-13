@@ -5,12 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
 import api.search.torrents.TorrentGroup;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.WhatApplication;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.imgloader.ImageLoadFailTracker;
-import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
 /**
@@ -54,7 +54,6 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 			holder.art = (ImageView)convertView.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
 			holder.artContainer = convertView.findViewById(R.id.art_container);
-			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer, imageFailTracker);
 			holder.artist = (TextView)convertView.findViewById(R.id.artist_name);
 			holder.title = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.album_year);
@@ -63,12 +62,13 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 		}
 		TorrentGroup group = getItem(position);
 		String coverUrl = group.getCover();
-		if (imagesEnabled && coverUrl != null && !coverUrl.isEmpty() && !imageFailTracker.failed(coverUrl)){
-			ImageLoader.getInstance().displayImage(coverUrl, holder.art, holder.listener);
-		}
-		else {
-			holder.artContainer.setVisibility(View.GONE);
-		}
+
+        if (!imagesEnabled) holder.artContainer.setVisibility(View.GONE);
+        else {
+            holder.artContainer.setVisibility(View.VISIBLE);
+            WhatApplication.loadImage(getContext(), coverUrl, holder.art, holder.spinner, imageFailTracker, null);
+        }
+
 		if (group.getArtist() != null){
 			holder.artist.setText(group.getArtist());
 			holder.title.setVisibility(View.VISIBLE);
@@ -106,7 +106,6 @@ public class TorrentSearchAdapter extends ArrayAdapter<TorrentGroup> implements 
 		public ImageView art;
 		public ProgressBar spinner;
 		public View artContainer;
-		public ImageLoadingListener listener;
 		public TextView artist, title, year, tags;
 	}
 }

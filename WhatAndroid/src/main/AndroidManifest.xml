@@ -11,7 +11,8 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".WhatApplication">
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/app_name">
@@ -188,6 +189,9 @@
         <receiver
             android:name=".torrentgroup.DownloadCompleteReceiver"
             android:exported="false"/>
+
+        <meta-data android:name="what.whatandroid.glide.GlideConfiguration"
+                   android:value="GlideModule"/>
     </application>
 
 </manifest>
