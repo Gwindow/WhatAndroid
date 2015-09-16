@@ -42,7 +42,7 @@
             android:layout_below="@id/input_container"
             android:paddingTop="8dp"
             android:textSize="18sp"
-            android:textColor="@android:color/primary_text_dark"
+            android:textColor="@android:color/primary_text_dark_nodisable"
             android:text="@string/after_tax"/>
 
     <TextView
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/after_tax_text"
             android:layout_alignParentRight="true"
-            android:textColor="@android:color/primary_text_dark"
+            android:textColor="@android:color/primary_text_dark_nodisable"
             android:textSize="18sp"/>
 
     <TextView
@@ -62,7 +62,7 @@
             android:layout_below="@id/after_tax_text"
             android:paddingTop="4dp"
             android:textSize="18sp"
-            android:textColor="@android:color/primary_text_dark"
+            android:textColor="@android:color/primary_text_dark_nodisable"
             android:text="@string/uploaded"/>
 
     <TextView
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/new_upload_text"
             android:layout_alignParentRight="true"
-            android:textColor="@android:color/primary_text_dark"
+            android:textColor="@android:color/primary_text_dark_nodisable"
             android:textSize="18sp"/>
 
     <TextView
@@ -82,7 +82,7 @@
             android:layout_below="@id/new_upload_text"
             android:paddingTop="4dp"
             android:textSize="18sp"
-            android:textColor="@android:color/primary_text_dark"
+            android:textColor="@android:color/primary_text_dark_nodisable"
             android:text="@string/ratio_required"/>
 
     <TextView
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/new_ratio_text"
             android:layout_alignParentRight="true"
-            android:textColor="@android:color/primary_text_dark"
+            android:textColor="@android:color/primary_text_dark_nodisable"
             android:textSize="18sp"/>
 
     <TextView

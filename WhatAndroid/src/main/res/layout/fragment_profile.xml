@@ -126,7 +126,7 @@
                     android:text="@string/stats"
                     android:textSize="14sp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:textColor="@android:color/secondary_text_dark"/>
+                    android:textColor="@android:color/secondary_text_dark_nodisable"/>
         </LinearLayout>
 
         <RelativeLayout
@@ -145,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:text="@string/ratio_required"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
@@ -155,7 +155,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/ratio_text"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"/>
 
             <TextView
@@ -166,7 +166,7 @@
                     android:layout_below="@id/ratio_text"
                     android:layout_marginTop="16dp"
                     android:text="@string/uploaded"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
@@ -176,7 +176,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/uploaded_text"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"/>
 
             <TextView
@@ -187,7 +187,7 @@
                     android:layout_below="@id/uploaded_text"
                     android:layout_marginTop="16dp"
                     android:text="@string/downloaded"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
@@ -197,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/downloaded_text"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"/>
 
             <TextView
@@ -208,7 +208,7 @@
                     android:layout_below="@id/downloaded_text"
                     android:layout_marginTop="16dp"
                     android:text="@string/paranoia"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
@@ -218,7 +218,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/paranoia_text"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"/>
 
         </RelativeLayout>
@@ -250,7 +250,7 @@
                         android:paddingTop="12dp"
                         android:text="@string/snatches"
                         android:textSize="14sp"
-                        android:textColor="@android:color/secondary_text_dark"/>
+                        android:textColor="@android:color/secondary_text_dark_nodisable"/>
             </LinearLayout>
 
             <android.support.v4.view.ViewPager
@@ -288,7 +288,7 @@
                         android:paddingTop="12dp"
                         android:text="@string/uploads"
                         android:textSize="14sp"
-                        android:textColor="@android:color/secondary_text_dark"/>
+                        android:textColor="@android:color/secondary_text_dark_nodisable"/>
             </LinearLayout>
 
             <android.support.v4.view.ViewPager

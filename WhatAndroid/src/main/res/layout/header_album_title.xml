@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/artist_a"

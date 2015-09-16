@@ -13,14 +13,14 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
-            android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark_nodisable"
             android:textSize="18sp"/>
 
     <TextView
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/year"
             android:layout_marginTop="8dp"
-            android:textColor="@android:color/primary_text_dark"
+            android:textColor="@android:color/primary_text_dark_nodisable"
             android:textStyle="bold"
             android:text="@string/votes"/>
 
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/votes_text"
             android:layout_alignParentRight="true"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/bounty_text"
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/votes_text"
             android:layout_marginTop="4dp"
-            android:textColor="@android:color/primary_text_dark"
+            android:textColor="@android:color/primary_text_dark_nodisable"
             android:textStyle="bold"
             android:text="@string/bounty"/>
 
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/bounty_text"
             android:layout_alignParentRight="true"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/created_text"
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/bounty_text"
             android:layout_marginTop="4dp"
-            android:textColor="@android:color/primary_text_dark"
+            android:textColor="@android:color/primary_text_dark_nodisable"
             android:textStyle="bold"
             android:text="@string/created"/>
 
@@ -75,6 +75,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/created_text"
             android:layout_alignParentRight="true"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
 </RelativeLayout>

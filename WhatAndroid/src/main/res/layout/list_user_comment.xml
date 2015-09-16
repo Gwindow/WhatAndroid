@@ -22,7 +22,7 @@
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/primary_text_dark"
+                android:textColor="@android:color/primary_text_dark_nodisable"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
@@ -33,7 +33,7 @@
                 android:layout_toRightOf="@id/username"
                 android:layout_alignBaseline="@id/username"
                 android:paddingLeft="8dp"
-                android:textColor="@android:color/secondary_text_dark"
+                android:textColor="@android:color/secondary_text_dark_nodisable"
                 android:textSize="14sp"/>
 
         <!-- Only the forums implement quoting at the moment so this is hidden by default -->
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/art_container"
             android:layout_below="@id/user_header"
-            android:textColor="@android:color/primary_text_dark"
+            android:textColor="@android:color/primary_text_dark_nodisable"
             android:padding="8dp"
             android:linksClickable="true"/>
 

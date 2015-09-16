@@ -42,21 +42,21 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/primary_text_dark"/>
+                android:textColor="@android:color/primary_text_dark_nodisable"/>
 
         <TextView
                 android:id="@+id/album_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textColor="@android:color/primary_text_dark"/>
+                android:textColor="@android:color/primary_text_dark_nodisable"/>
 
         <TextView
                 android:id="@+id/album_year"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:textColor="@android:color/secondary_text_dark"/>
+                android:textColor="@android:color/secondary_text_dark_nodisable"/>
 
         <TextView
                 android:id="@+id/album_tags"
@@ -66,7 +66,7 @@
                 android:ellipsize="end"
                 android:textStyle="italic"
                 android:textSize="14sp"
-                android:textColor="@android:color/secondary_text_dark"/>
+                android:textColor="@android:color/secondary_text_dark_nodisable"/>
 
         <LinearLayout
                 android:layout_width="wrap_content"
@@ -79,14 +79,14 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="12dp"
                     android:paddingRight="16dp"
-                    android:textColor="@android:color/primary_text_dark"/>
+                    android:textColor="@android:color/primary_text_dark_nodisable"/>
 
             <TextView
                     android:id="@+id/snatches"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="4dp"
-                    android:textColor="@android:color/primary_text_dark"/>
+                    android:textColor="@android:color/primary_text_dark_nodisable"/>
 
             <what.whatandroid.views.TypeFacedTextView
                     android:id="@+id/snatched_icon"
@@ -95,14 +95,14 @@
                     android:text="@string/fa_undo"
                     app:font="@string/fontawesome_font"
                     android:paddingRight="16dp"
-                    android:textColor="@android:color/primary_text_dark"/>
+                    android:textColor="@android:color/primary_text_dark_nodisable"/>
 
             <TextView
                     android:id="@+id/seeders"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="4dp"
-                    android:textColor="@android:color/primary_text_dark"/>
+                    android:textColor="@android:color/primary_text_dark_nodisable"/>
 
             <what.whatandroid.views.TypeFacedTextView
                     android:id="@+id/seeders_icon"
@@ -111,14 +111,14 @@
                     android:text="@string/fa_arrow_up"
                     app:font="@string/fontawesome_font"
                     android:paddingRight="16dp"
-                    android:textColor="@android:color/primary_text_dark"/>
+                    android:textColor="@android:color/primary_text_dark_nodisable"/>
 
             <TextView
                     android:id="@+id/leechers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="4dp"
-                    android:textColor="@android:color/primary_text_dark"/>
+                    android:textColor="@android:color/primary_text_dark_nodisable"/>
 
             <what.whatandroid.views.TypeFacedTextView
                     android:id="@+id/leechers_icon"
@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/fa_arrow_down"
                     app:font="@string/fontawesome_font"
-                    android:textColor="@android:color/primary_text_dark"/>
+                    android:textColor="@android:color/primary_text_dark_nodisable"/>
 
         </LinearLayout>
     </LinearLayout>

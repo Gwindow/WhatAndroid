@@ -43,10 +43,10 @@ public class ForumListAdapterLight extends ForumListAdapter {
         holder.jumpToLastRead.setOnClickListener(this);
 
         if (thread.isRead()){
-            holder.name.setTextColor(getContext().getResources().getColor(android.R.color.secondary_text_dark));
+            holder.name.setTextColor(getContext().getResources().getColor(android.R.color.secondary_text_dark_nodisable));
         }
         else {
-            holder.name.setTextColor(getContext().getResources().getColor(android.R.color.primary_text_dark));
+            holder.name.setTextColor(getContext().getResources().getColor(android.R.color.primary_text_dark_nodisable));
         }
 
         if (thread.isSticky()){

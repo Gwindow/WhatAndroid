@@ -14,7 +14,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="8dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <LinearLayout
             android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
             android:layout_below="@id/format"
             android:layout_toLeftOf="@+id/snatches"
             android:paddingRight="16dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/snatches"
@@ -60,7 +60,7 @@
             android:layout_toLeftOf="@+id/snatched_icon"
             android:layout_alignBaseline="@id/size"
             android:paddingRight="4dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <what.whatandroid.views.TypeFacedTextView
             android:id="@+id/snatched_icon"
@@ -71,7 +71,7 @@
             android:text="@string/fa_undo"
             app:font="@string/fontawesome_font"
             android:paddingRight="16dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/seeders"
@@ -80,7 +80,7 @@
             android:layout_toLeftOf="@+id/seeders_icon"
             android:layout_alignBaseline="@id/size"
             android:paddingRight="4dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <what.whatandroid.views.TypeFacedTextView
             android:id="@+id/seeders_icon"
@@ -91,7 +91,7 @@
             android:text="@string/fa_arrow_up"
             app:font="@string/fontawesome_font"
             android:paddingRight="16dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/leechers"
@@ -100,7 +100,7 @@
             android:layout_toLeftOf="@+id/leechers_icon"
             android:layout_alignBaseline="@id/size"
             android:paddingRight="4dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <what.whatandroid.views.TypeFacedTextView
             android:id="@+id/leechers_icon"
@@ -110,6 +110,6 @@
             android:layout_alignBaseline="@id/size"
             android:text="@string/fa_arrow_down"
             app:font="@string/fontawesome_font"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
 </RelativeLayout>

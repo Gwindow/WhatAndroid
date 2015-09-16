@@ -11,7 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="right"
-            android:textColor="@android:color/primary_text_dark"
+            android:textColor="@android:color/primary_text_dark_nodisable"
             android:background="#222"
             app:pstsIndicatorColor="@color/accent_material_dark"
             app:pstsUnderlineColor="#333"

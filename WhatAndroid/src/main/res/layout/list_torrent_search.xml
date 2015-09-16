@@ -42,21 +42,21 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/primary_text_dark"/>
+                android:textColor="@android:color/primary_text_dark_nodisable"/>
 
         <TextView
                 android:id="@+id/album_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textColor="@android:color/primary_text_dark"/>
+                android:textColor="@android:color/primary_text_dark_nodisable"/>
 
         <TextView
                 android:id="@+id/album_year"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:textColor="@android:color/secondary_text_dark"/>
+                android:textColor="@android:color/secondary_text_dark_nodisable"/>
 
         <TextView
                 android:id="@+id/album_tags"
@@ -66,7 +66,7 @@
                 android:ellipsize="end"
                 android:textStyle="italic"
                 android:textSize="14sp"
-                android:textColor="@android:color/secondary_text_dark"/>
+                android:textColor="@android:color/secondary_text_dark_nodisable"/>
 
     </LinearLayout>
 

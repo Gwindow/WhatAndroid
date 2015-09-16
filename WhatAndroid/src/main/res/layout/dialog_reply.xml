@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:visibility="gone"
-                android:textColor="@android:color/primary_text_dark"/>
+                android:textColor="@android:color/primary_text_dark_nodisable"/>
 
         <Button
                 android:id="@+id/render_preview"

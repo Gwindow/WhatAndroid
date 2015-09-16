@@ -18,7 +18,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:background="#333"
-                android:textColor="@android:color/primary_text_dark"
+                android:textColor="@android:color/primary_text_dark_nodisable"
                 android:textAppearance="@style/PagerTabStrip"/>
 
     </android.support.v4.view.ViewPager>
