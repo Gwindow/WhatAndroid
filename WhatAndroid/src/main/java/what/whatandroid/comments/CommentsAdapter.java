@@ -129,6 +129,7 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements View
 		else {
 			holder.image.setVisibility(View.GONE);
 			holder.spinner.setVisibility(View.GONE);
+			holder.artContainer.setVisibility(View.GONE);
 		}
 		if (addQuote != null){
 			holder.quote.setVisibility(View.VISIBLE);
