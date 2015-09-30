@@ -1,9 +1,12 @@
 package what.whatandroid.comments;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.Html;
+import android.text.SpannableString;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,12 +111,29 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements View
 		holder.postDate.setText(DateUtils.getRelativeTimeSpanString(comment.getTimePosted().getTime(),
 			new Date().getTime(), 0, DateUtils.FORMAT_ABBREV_ALL));
 		//The RequestComments don't have the bbBody field
-		if (comment.getBBbody() != null){
-			holder.commentText.setText(whatBBParser.parsebb(comment.getBBbody()));
-		}
-		else {
-			holder.commentText.setText(Html.fromHtml(comment.getBody(), imageGetter, new HTMLListTagHandler()));
-		}
+
+		int leftMargin = holder.image.getWidth() + 10;
+		SpannableString ss = new SpannableString("");
+
+//		if (comment.getBBbody() != null){
+			ss = new SpannableString(whatBBParser.parsebb(comment.getBBbody()));
+//			ss.setSpan(new MyLeadingMarginSpan2(6, leftMargin), 0, ss.length(), 0);
+			ss.setSpan(new MyLeadingMarginSpan2(holder.image.getHeight(), leftMargin), 0, 6, 0);
+
+			holder.commentText.setText(ss);
+//			holder.commentText.setText(whatBBParser.parsebb(comment.getBBbody()));
+//			String html = whatBBParser.parsebb(comment.getBBbody()).toString();
+//			FlowTextHelper.tryFlowText(html, holder.image, holder.commentText, convertView.getContext().getResources().getDisplayMetrics().widthPixels, convertView.getContext().getResources().getDisplayMetrics().heightPixels);
+
+
+//		}
+//		else {
+//			ss = new SpannableString(Html.fromHtml(comment.getBody(), imageGetter, new HTMLListTagHandler()));
+//			ss.setSpan(new MyLeadingMarginSpan2(6, leftMargin), 0, ss.length(), 0);
+////			holder.commentText.setText(ss);
+//		}
+
+
 		holder.commentText.setMovementMethod(LinkMovementMethod.getInstance());
 
 		holder.image.setOnClickListener(holder.userClickListener);
