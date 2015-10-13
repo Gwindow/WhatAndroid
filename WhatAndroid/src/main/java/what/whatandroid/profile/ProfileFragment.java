@@ -182,6 +182,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 		warned = view.findViewById(R.id.warned);
 		banned = view.findViewById(R.id.banned);
 
+		donor.setVisibility(View.GONE);
+		warned.setVisibility(View.GONE);
+		banned.setVisibility(View.GONE);
+
 		snatchesAdapter = new RecentTorrentPagerAdapter(getChildFragmentManager());
 		uploadsAdapter = new RecentTorrentPagerAdapter(getChildFragmentManager());
 		recentSnatches.setAdapter(snatchesAdapter);
@@ -386,14 +390,14 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 			uploadsContainer.setVisibility(View.GONE);
 		}
 
-		if (!profile.getPersonal().isDonor()){
-			donor.setVisibility(View.GONE);
+		if (profile.getPersonal().isDonor()){
+			donor.setVisibility(View.VISIBLE);
 		}
-		if (!profile.getPersonal().isWarned()){
-			warned.setVisibility(View.GONE);
+		if (profile.getPersonal().isWarned()){
+			warned.setVisibility(View.VISIBLE);
 		}
-		if (profile.getPersonal().isEnabled()){
-			banned.setVisibility(View.GONE);
+		if (!profile.getPersonal().isEnabled()){
+			banned.setVisibility(View.VISIBLE);
 		}
 	}
 
