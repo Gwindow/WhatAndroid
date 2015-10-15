@@ -20,8 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import java.util.Date;
 
 import api.cli.Utils;
@@ -32,11 +30,11 @@ import api.user.User;
 import api.user.UserProfile;
 import api.user.recent.UserRecents;
 import what.whatandroid.R;
+import what.whatandroid.WhatApplication;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.forums.thread.ReplyDialogFragment;
-import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
 /**
@@ -327,12 +325,11 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 
 		//We need to check all the paranoia cases that may cause a field to be missing and hide the views for it
 		String avatarUrl = profile.getAvatar();
-		if (SettingsActivity.imagesEnabled(getActivity()) && avatarUrl != null && !avatarUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(profile.getAvatar(), avatar,
-				new ImageLoadingListener(spinner, artContainer));
-		}
-		else {
+		if (!SettingsActivity.imagesEnabled(getActivity())) {
 			artContainer.setVisibility(View.GONE);
+		} else {
+			artContainer.setVisibility(View.VISIBLE);
+			WhatApplication.loadImage(getActivity(), avatarUrl, avatar, spinner, null, null);
 		}
 		if (profile.getPersonal().getParanoia().intValue() > 0 && userID != MySoup.getUserId()){
 			paranoiaText.setVisibility(View.VISIBLE);

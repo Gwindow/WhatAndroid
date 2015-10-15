@@ -17,10 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
 import api.soup.MySoup;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.OnLoggedInCallback;
@@ -44,9 +40,6 @@ import what.whatandroid.views.ImageDialog;
 public abstract class LoggedInActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks,
 	SetTitleCallback, OnLoggedInCallback, ShowHiddenTagListener {
 
-	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
-	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-	public static final String SITE = "10.0.0.2:8080/";
 	protected NavigationDrawerFragment navDrawer;
 	/**
 	 * Used to store the last screen title, for use in restoreActionBar
@@ -62,34 +55,6 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 	private Login loginTask;
 	private LogoutTask logoutTask;
 
-	/**
-	 * Initialize MySoup so that we can start making API requests
-	 */
-	public static void initSoup(){
-		MySoup.setSite(SITE, true);
-		MySoup.setUserAgent("WhatAndroid Android");
-	}
-
-	/**
-	 * Initialize universal image loader
-	 *
-	 * @param context context to get the application context from
-	 */
-	public static void initImageLoader(Context context){
-		//Setup Universal Image loader global config
-		if (!ImageLoader.getInstance().isInited()){
-			DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.cacheOnDisk(true)
-				.cacheInMemory(true)
-				.build();
-			ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context.getApplicationContext())
-				.defaultDisplayImageOptions(options)
-				.denyCacheImageMultipleSizesInMemory()
-				.diskCacheSize(10 * 1024 * 1024)
-				.build();
-			ImageLoader.getInstance().init(config);
-		}
-	}
 
 	/**
 	 * Setup the error logger and run the error reporting and update checking services
@@ -150,8 +115,6 @@ public abstract class LoggedInActivity extends FragmentActivity implements Navig
 				startActivityForResult(intent, 0);
 			}
 			else {
-				initSoup();
-				initImageLoader(this);
 				launchServices(this);
 				loginTask = new Login();
 				loginTask.execute();

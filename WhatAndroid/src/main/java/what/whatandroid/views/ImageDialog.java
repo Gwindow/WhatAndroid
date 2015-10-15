@@ -1,5 +1,6 @@
 package what.whatandroid.views;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -7,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import com.nostra13.universalimageloader.core.ImageLoader;
+
+import com.bumptech.glide.Glide;
+
 import what.whatandroid.R;
-import what.whatandroid.imgloader.ImageLoadingListener;
+import what.whatandroid.WhatApplication;
 
 /**
  * Basic dialog to display a full image, similar to how the site does when you
@@ -24,7 +27,7 @@ public class ImageDialog extends DialogFragment implements View.OnClickListener 
 	 * In typical usage of the app this image will already be cached by UIL so we won't
 	 * actually need to do any downloading
 	 */
-	public static ImageDialog newInstance(String imgUrl){
+	public static ImageDialog newInstance(String imgUrl) {
 		ImageDialog dialog = new ImageDialog();
 		Bundle args = new Bundle();
 		args.putString(IMAGE_URL, imgUrl);
@@ -32,29 +35,43 @@ public class ImageDialog extends DialogFragment implements View.OnClickListener 
 		return dialog;
 	}
 
-	public ImageDialog(){
+	public ImageDialog() {
 		//Required empty ctor
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		imageUrl = getArguments().getString(IMAGE_URL);
+//		setStyle(STYLE_NORMAL, R.style.MY_DIALOG);
 		setStyle(STYLE_NO_FRAME, R.style.ImageDialog);
+//		setStyle(STYLE_NORMAL, android.R.style.Theme_Translucent_NoTitleBar);
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+	public void onStart() {
+		super.onStart();
+		Dialog d = getDialog();
+		if (d != null) {
+			int width = ViewGroup.LayoutParams.MATCH_PARENT;
+			int height = ViewGroup.LayoutParams.MATCH_PARENT;
+			d.getWindow().setLayout(width, height);
+		}
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.dialog_image, null);
-		ImageView imageView = (ImageView)view.findViewById(R.id.image);
-		ProgressBar spinner = (ProgressBar)view.findViewById(R.id.loading_indicator);
-		ImageLoader.getInstance().displayImage(imageUrl, imageView, new ImageLoadingListener(spinner));
+		TouchImageView imageView = (TouchImageView) view.findViewById(R.id.image);
+		final ProgressBar spinner = (ProgressBar) view.findViewById(R.id.loading_indicator);
+
+		WhatApplication.loadImage(getContext(), imageUrl, imageView, spinner, null, null);
 		imageView.setOnClickListener(this);
 		return view;
 	}
 
 	@Override
-	public void onClick(View v){
+	public void onClick(View v) {
 		getDialog().dismiss();
 	}
 }

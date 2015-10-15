@@ -15,12 +15,11 @@ import api.cli.Utils;
 import api.requests.Request;
 import api.requests.Response;
 import api.soup.MySoup;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.WhatApplication;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.callbacks.ViewUserCallbacks;
-import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.views.ImageDialog;
 
@@ -161,11 +160,11 @@ public class RequestDetailFragment extends Fragment implements View.OnClickListe
 
 		//Requests may be missing any of these fields
 		String imgUrl = response.getImage();
-		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner, artContainer));
-		}
-		else {
+		if (!SettingsActivity.imagesEnabled(getActivity())) {
 			artContainer.setVisibility(View.GONE);
+		} else {
+			artContainer.setVisibility(View.VISIBLE);
+			WhatApplication.loadImage(getActivity(), imgUrl, image, spinner, null, null);
 		}
 		if (response.isFilled()){
 			addVote.setVisibility(View.GONE);
