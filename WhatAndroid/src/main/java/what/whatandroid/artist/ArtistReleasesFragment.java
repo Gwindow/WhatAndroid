@@ -60,11 +60,11 @@ public class ArtistReleasesFragment extends Fragment implements LoadingListener<
 	private void populateViews(){
 		((SetTitleCallback)getActivity()).setTitle(artist.getResponse().getName());
 		String imgUrl = artist.getResponse().getImage();
-		if (!SettingsActivity.imagesEnabled(getContext())) {
+		if (!SettingsActivity.imagesEnabled(getActivity())) {
 			artContainer.setVisibility(View.GONE);
 		} else {
 			artContainer.setVisibility(View.VISIBLE);
-			WhatApplication.loadImage(getContext(), imgUrl, image, spinner, null, null);
+			WhatApplication.loadImage(getActivity(), imgUrl, image, spinner, null, null);
 		}
 		if (torrentList.getAdapter() == null){
 			ArtistTorrentAdapter adapter = new ArtistTorrentAdapter(getActivity(), artist.getReleases().flatten(),

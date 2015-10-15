@@ -65,7 +65,7 @@ public class ImageDialog extends DialogFragment implements View.OnClickListener 
 		TouchImageView imageView = (TouchImageView) view.findViewById(R.id.image);
 		final ProgressBar spinner = (ProgressBar) view.findViewById(R.id.loading_indicator);
 
-		WhatApplication.loadImage(getContext(), imageUrl, imageView, spinner, null, null);
+		WhatApplication.loadImage(getActivity(), imageUrl, imageView, spinner, null, null);
 		imageView.setOnClickListener(this);
 		return view;
 	}
