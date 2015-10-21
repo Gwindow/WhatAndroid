@@ -113,10 +113,11 @@
 
         <ImageButton
                 android:id="@+id/go_to_last_read"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/go_to_last_read"
                 android:src="@drawable/ic_action_forward"
+                android:tint="@color/LightGrey"
                 style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
