@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/topics_text"
             android:layout_alignStart="@id/topics_text"
+            android:layout_alignLeft="@id/topics_text"
             android:text="@string/posts"
             android:textColor="@android:color/secondary_text_dark_nodisable"/>
 
