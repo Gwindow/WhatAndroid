@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/artist_a"
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:textSize="22sp"
-            android:textColor="@color/blue_link_text"/>
+            android:textColor="@color/link_text_material_dark"/>
 
     <TextView
             android:id="@+id/artist_b"
@@ -32,6 +32,6 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:textSize="22sp"
-            android:textColor="@color/blue_link_text"/>
+            android:textColor="@color/link_text_material_dark"/>
 
 </LinearLayout>

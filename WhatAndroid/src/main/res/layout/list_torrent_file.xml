@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:textSize="14sp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/size"
@@ -24,6 +24,6 @@
             android:layout_below="@id/name"
             android:textStyle="italic"
             android:textSize="14sp"
-            android:textColor="@android:color/secondary_text_dark"/>
+            android:textColor="@android:color/secondary_text_dark_nodisable"/>
 
 </RelativeLayout>

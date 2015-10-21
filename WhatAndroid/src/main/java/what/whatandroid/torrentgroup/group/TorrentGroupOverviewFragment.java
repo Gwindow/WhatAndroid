@@ -137,7 +137,7 @@ public class TorrentGroupOverviewFragment extends Fragment implements View.OnCli
 			} else {
 				artistA.setText("Various Artists");
 				//Change color to indicate it's not clickable
-				artistA.setTextColor(getResources().getColor(android.R.color.secondary_text_dark));
+				artistA.setTextColor(getResources().getColor(android.R.color.secondary_text_dark_nodisable));
 				artistB.setVisibility(View.GONE);
 			}
 		} else {

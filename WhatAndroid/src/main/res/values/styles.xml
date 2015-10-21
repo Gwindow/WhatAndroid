@@ -1,11 +1,16 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo">
+    <style name="AppTheme" parent="Theme.AppCompat">
         <item name="android:actionBarStyle">@style/ActionBar</item>
+
+        <!-- Set AppCompat’s color theming attrs -->
+        <item name="colorPrimary">#333333</item>
+        <item name="colorAccent">@color/accent_material_dark</item>
+        <item name="colorPrimaryDark">@color/primary_material_dark</item>
     </style>
 
-    <style name="ImageDialog" parent="android:Theme.Holo.Dialog">
+    <style name="ImageDialog" parent="Theme.AppCompat.Dialog">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:windowIsFloating">true</item>
@@ -18,10 +23,11 @@
         <item name="android:textAllCaps">true</item>
     </style>
     
-    <style name="ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:titleTextStyle">@android:style/TextAppearance.Holo</item>
-        <item name="android:actionBarTabTextStyle">@android:style/Widget.Holo.ActionBar</item>
-        <item name="android:actionMenuTextColor">@android:style/Widget.Holo.ActionBar</item>
+    <style name="ActionBar" parent="AppTheme">
+        <!--<item name="android:titleTextStyle">@android:style/TextAppearance.Holo</item>-->
+        <!--<item name="android:actionBarTabTextStyle">@android:style/Widget.Holo.ActionBar</item>-->
+        <!--<item name="android:actionMenuTextColor">@android:style/Widget.Holo.ActionBar</item>-->
+        <item name="android:colorBackground">@color/primary_material_dark</item>
     </style>
 
 </resources>

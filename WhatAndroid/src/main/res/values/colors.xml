@@ -143,4 +143,5 @@
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
+    <color name="DarkBackground">@color/background_material_dark</color>
 </resources>

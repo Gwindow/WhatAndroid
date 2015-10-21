@@ -1,11 +1,11 @@
 package what.whatandroid.request;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextThemeWrapper;
@@ -89,8 +89,7 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 		requestId = getArguments().getInt(RequestActivity.REQUEST_ID);
 		taxPercent = getArguments().getFloat(REQUEST_TAX);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(),
-			android.R.style.Theme_Holo_Dialog));
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_request_vote, null);
 		size = (EditText)view.findViewById(R.id.size);
@@ -112,10 +111,10 @@ public class VoteDialog extends DialogFragment implements TextWatcher, AdapterVi
 			.setTitle("Select Vote Amount")
 			.setPositiveButton(R.string.vote, new DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which){
+				public void onClick(DialogInterface dialog, int which) {
 					long unitsAmt = units.getSelectedItemPosition() == 0 ? megaByte : gigaByte;
 					float voteAmt = Float.parseFloat(size.getText().toString());
-					listener.addBounty(requestId, (long)(voteAmt * unitsAmt));
+					listener.addBounty(requestId, (long) (voteAmt * unitsAmt));
 				}
 			})
 			.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

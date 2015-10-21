@@ -18,7 +18,7 @@
             android:layout_alignParentLeft="true"
             android:textStyle="bold"
             android:textSize="22sp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/format"
@@ -28,7 +28,7 @@
             android:layout_alignParentLeft="true"
             android:textSize="18sp"
             android:paddingTop="4dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
 
     <TextView
@@ -39,7 +39,7 @@
             android:layout_alignParentLeft="true"
             android:paddingTop="4dp"
             android:textSize="18sp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/uploaded_by_text"
@@ -48,7 +48,7 @@
             android:layout_below="@id/uploaded_date"
             android:text="@string/by"
             android:textSize="18sp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/uploaded_by"
@@ -59,7 +59,7 @@
             android:paddingLeft="4dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/blue_link_text"/>
+            android:textColor="@color/link_text_material_dark"/>
 
     <LinearLayout
             android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
             android:layout_alignParentLeft="true"
             android:paddingTop="12dp"
             android:paddingRight="16dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/snatches"
@@ -106,7 +106,7 @@
             android:layout_toRightOf="@id/size"
             android:layout_alignBaseline="@id/size"
             android:paddingRight="4dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <what.whatandroid.views.TypeFacedTextView
             android:id="@+id/snatched_icon"
@@ -117,7 +117,7 @@
             android:text="@string/fa_undo"
             app:font="@string/fontawesome_font"
             android:paddingRight="16dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/seeders"
@@ -126,7 +126,7 @@
             android:layout_toRightOf="@id/snatched_icon"
             android:layout_alignBaseline="@id/size"
             android:paddingRight="4dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <what.whatandroid.views.TypeFacedTextView
             android:id="@+id/seeders_icon"
@@ -137,7 +137,7 @@
             android:text="@string/fa_arrow_up"
             app:font="@string/fontawesome_font"
             android:paddingRight="16dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <TextView
             android:id="@+id/leechers"
@@ -146,7 +146,7 @@
             android:layout_toRightOf="@id/seeders_icon"
             android:layout_alignBaseline="@id/size"
             android:paddingRight="4dp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <what.whatandroid.views.TypeFacedTextView
             android:id="@+id/leechers_icon"
@@ -156,7 +156,7 @@
             android:layout_alignBaseline="@id/size"
             android:text="@string/fa_arrow_down"
             app:font="@string/fontawesome_font"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
 
     <TextView
@@ -165,7 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/size"
             android:paddingTop="12dp"
-            android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark_nodisable"
             android:linksClickable="true"/>
 
     <TextView
@@ -175,6 +175,6 @@
             android:layout_below="@id/description"
             android:paddingTop="12dp"
             android:textSize="12sp"
-            android:textColor="@android:color/secondary_text_dark"/>
+            android:textColor="@android:color/secondary_text_dark_nodisable"/>
 
 </RelativeLayout>

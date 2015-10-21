@@ -17,7 +17,7 @@
             android:layout_toLeftOf="@+id/unsubscribe"
             android:layout_alignParentLeft="true"
             android:textSize="18sp"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark_nodisable"/>
 
     <ImageButton
             android:id="@+id/unsubscribe"

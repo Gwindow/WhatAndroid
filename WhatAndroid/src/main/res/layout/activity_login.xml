@@ -10,12 +10,15 @@
 
     <ImageView
             android:id="@+id/logo"
+            android:paddingTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/whatandroid_logo"
-            android:src="@drawable/whatandroid_logo_beta"/>
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/what"/>
 
     <EditText
             android:id="@+id/username_input"

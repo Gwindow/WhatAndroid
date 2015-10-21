@@ -22,7 +22,7 @@
             android:layout_below="@id/list"
             android:paddingTop="16dp"
             android:layout_centerHorizontal="true"
-            android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark_nodisable"
             android:textSize="14sp"
             android:textAllCaps="true"
             android:visibility="gone"/>

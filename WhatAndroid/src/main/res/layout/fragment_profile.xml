@@ -33,7 +33,7 @@
 
                 <ProgressBar
                         android:id="@+id/loading_indicator"
-                        style="@android:style/Widget.Holo.ProgressBar.Large"
+                        style="@android:style/Widget.DeviceDefault.ProgressBar.Large"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"/>
@@ -48,6 +48,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/art_container"
                     android:textSize="22sp"
+
                     android:textColor="@android:color/primary_text_light"
                     app:font="@string/roboto_black"/>
 
@@ -115,14 +116,17 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingBottom="12dp"
                 android:paddingTop="12dp"
-                android:background="#444">
+                android:background="#444"
+                android:elevation="5dp"
+                >
 
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/stats"
                     android:textSize="14sp"
-                    android:textColor="@android:color/secondary_text_dark"/>
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:textColor="@android:color/secondary_text_dark_nodisable"/>
         </LinearLayout>
 
         <RelativeLayout
@@ -141,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:text="@string/ratio_required"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
@@ -151,7 +155,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/ratio_text"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"/>
 
             <TextView
@@ -162,7 +166,7 @@
                     android:layout_below="@id/ratio_text"
                     android:layout_marginTop="16dp"
                     android:text="@string/uploaded"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
@@ -172,7 +176,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/uploaded_text"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"/>
 
             <TextView
@@ -183,7 +187,7 @@
                     android:layout_below="@id/uploaded_text"
                     android:layout_marginTop="16dp"
                     android:text="@string/downloaded"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
@@ -193,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/downloaded_text"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"/>
 
             <TextView
@@ -204,7 +208,7 @@
                     android:layout_below="@id/downloaded_text"
                     android:layout_marginTop="16dp"
                     android:text="@string/paranoia"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
@@ -214,7 +218,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/paranoia_text"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/primary_text_dark_nodisable"
                     android:textSize="18sp"/>
 
         </RelativeLayout>
@@ -223,26 +227,38 @@
                 android:id="@+id/snatches_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#444">
+                android:background="#444"
+                >
 
-            <TextView
-                    android:id="@+id/snatches_header"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/snatches_header_container"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="12dp"
-                    android:text="@string/snatches"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/secondary_text_dark"/>
+
+                    android:background="#444"
+                    android:elevation="5dp"
+                    >
+                <TextView
+                        android:id="@+id/snatches_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingBottom="12dp"
+                        android:paddingTop="12dp"
+                        android:text="@string/snatches"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/secondary_text_dark_nodisable"/>
+            </LinearLayout>
 
             <android.support.v4.view.ViewPager
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/recent_snatches"
                     android:layout_width="match_parent"
                     android:layout_height="196dp"
-                    android:layout_below="@id/snatches_header"
+                    android:layout_below="@id/snatches_header_container"
                     android:paddingBottom="8dp"
                     android:background="#222"/>
         </RelativeLayout>
@@ -253,24 +269,34 @@
                 android:layout_height="match_parent"
                 android:background="#444">
 
-            <TextView
-                    android:id="@+id/uploads_header"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/uploads_header_container"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="12dp"
-                    android:text="@string/uploads"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/secondary_text_dark"/>
+                    android:background="#444"
+                    android:elevation="5dp"
+                    >
+                <TextView
+                        android:id="@+id/uploads_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingBottom="12dp"
+                        android:paddingTop="12dp"
+                        android:text="@string/uploads"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/secondary_text_dark_nodisable"/>
+            </LinearLayout>
 
             <android.support.v4.view.ViewPager
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/recent_uploads"
                     android:layout_width="match_parent"
                     android:layout_height="196dp"
-                    android:layout_below="@id/uploads_header"
+                    android:layout_below="@id/uploads_header_container"
                     android:paddingBottom="8dp"
                     android:background="#222"/>
         </RelativeLayout>

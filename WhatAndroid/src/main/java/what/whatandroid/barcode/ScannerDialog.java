@@ -1,11 +1,11 @@
 package what.whatandroid.barcode;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.ContextThemeWrapper;
 
 /**
@@ -34,8 +34,7 @@ public class ScannerDialog extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState){
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(),
-			android.R.style.Theme_Holo_Dialog));
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 		builder.setTitle("Select Scan Mode")
 			.setMessage("Bulk scan: scan as many barcodes as you like then share your history to the app\n\nSingle scan: scan a single barcode")

@@ -56,10 +56,10 @@ public class InboxListAdapter extends ArrayAdapter<Message> implements AdapterVi
 			new Date().getTime(), 0, DateUtils.FORMAT_ABBREV_ALL));
 
 		if (message.isUnread()){
-			holder.subject.setTextColor(getContext().getResources().getColor(android.R.color.primary_text_dark));
+			holder.subject.setTextColor(getContext().getResources().getColor(android.R.color.primary_text_dark_nodisable));
 		}
 		else {
-			holder.subject.setTextColor(getContext().getResources().getColor(android.R.color.secondary_text_dark));
+			holder.subject.setTextColor(getContext().getResources().getColor(android.R.color.secondary_text_dark_nodisable));
 		}
 
 		if (message.isSticky()){

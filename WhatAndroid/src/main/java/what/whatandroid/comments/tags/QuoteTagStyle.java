@@ -29,7 +29,7 @@ public class QuoteTagStyle implements TagStyle {
         }
         int end = ssb.length();
         ssb.append(text);
-        ssb.setSpan(new LargeQuoteSpan(0xff33b5e5), end, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new LargeQuoteSpan(0xff80cbc4), end, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         ssb.append(" \n");
         return ssb;
     }

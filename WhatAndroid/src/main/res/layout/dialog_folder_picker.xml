@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fa_folder_open_o"
-                android:textColor="@android:color/primary_text_dark"
+                android:textColor="@android:color/primary_text_dark_nodisable"
                 android:textSize="18sp"
                 app:font="@string/fontawesome_font"/>
 
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:textColor="@android:color/primary_text_dark"
+                android:textColor="@android:color/primary_text_dark_nodisable"
                 android:textSize="18sp"/>
         </LinearLayout>
 
