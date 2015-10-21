@@ -9,13 +9,12 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import api.torrents.artist.Artist;
 import what.whatandroid.R;
+import what.whatandroid.WhatApplication;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.SetTitleCallback;
-import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.views.ImageDialog;
 
@@ -61,11 +60,11 @@ public class ArtistReleasesFragment extends Fragment implements LoadingListener<
 	private void populateViews(){
 		((SetTitleCallback)getActivity()).setTitle(artist.getResponse().getName());
 		String imgUrl = artist.getResponse().getImage();
-		if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
-			ImageLoader.getInstance().displayImage(imgUrl, image, new ImageLoadingListener(spinner, artContainer));
-		}
-		else {
+		if (!SettingsActivity.imagesEnabled(getActivity())) {
 			artContainer.setVisibility(View.GONE);
+		} else {
+			artContainer.setVisibility(View.VISIBLE);
+			WhatApplication.loadImage(getActivity(), imgUrl, image, spinner, null, null);
 		}
 		if (torrentList.getAdapter() == null){
 			ArtistTorrentAdapter adapter = new ArtistTorrentAdapter(getActivity(), artist.getReleases().flatten(),

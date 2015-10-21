@@ -7,11 +7,10 @@ import android.view.ViewGroup;
 import android.widget.*;
 import api.cli.Utils;
 import api.notifications.Torrent;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import what.whatandroid.R;
+import what.whatandroid.WhatApplication;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
 import what.whatandroid.imgloader.ImageLoadFailTracker;
-import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 
 /**
@@ -48,7 +47,6 @@ public class NotificationsListAdapter extends ArrayAdapter<Torrent> implements A
 			holder.art = (ImageView)convertView.findViewById(R.id.art);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
 			holder.artContainer = convertView.findViewById(R.id.art_container);
-			holder.listener = new ImageLoadingListener(holder.spinner, holder.artContainer, imageFailTracker);
 			holder.artist = (TextView)convertView.findViewById(R.id.artist_name);
 			holder.title = (TextView)convertView.findViewById(R.id.album_name);
 			holder.year = (TextView)convertView.findViewById(R.id.album_year);
@@ -61,11 +59,11 @@ public class NotificationsListAdapter extends ArrayAdapter<Torrent> implements A
 		}
 		Torrent t = getItem(position);
 		String coverUrl = t.getWikiImage();
-		if (imagesEnabled && coverUrl != null && !coverUrl.isEmpty() && !imageFailTracker.failed(coverUrl)){
-			ImageLoader.getInstance().displayImage(coverUrl, holder.art, holder.listener);
-		}
-		else {
+		if (!imagesEnabled) {
 			holder.artContainer.setVisibility(View.GONE);
+		} else {
+			holder.artContainer.setVisibility(View.VISIBLE);
+			WhatApplication.loadImage(inflater.getContext(), coverUrl, holder.art, holder.spinner, imageFailTracker, null);
 		}
 		holder.artist.setText(t.getGroupName());
 		holder.title.setText(t.getMediaFormatEncoding());
@@ -90,7 +88,6 @@ public class NotificationsListAdapter extends ArrayAdapter<Torrent> implements A
 		public ImageView art;
 		public ProgressBar spinner;
 		public View artContainer;
-		public ImageLoadingListener listener;
 		public TextView artist, title, year, tags, size, snatches, seeders, leechers;
 	}
 }

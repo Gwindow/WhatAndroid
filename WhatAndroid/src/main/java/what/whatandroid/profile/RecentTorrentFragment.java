@@ -10,13 +10,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import api.user.recent.RecentTorrent;
 import what.whatandroid.R;
+import what.whatandroid.WhatApplication;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.callbacks.ViewTorrentCallbacks;
-import what.whatandroid.imgloader.ImageLoadingListener;
 import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
@@ -110,12 +108,11 @@ public class RecentTorrentFragment extends Fragment implements View.OnClickListe
 		//If we've got the views then update them
 		if (artistName != null){
 			String imgUrl = torrent.getWikiImage();
-			if (SettingsActivity.imagesEnabled(getActivity()) && imgUrl != null && !imgUrl.isEmpty()){
-				ImageLoader.getInstance().displayImage(torrent.getWikiImage(), art,
-					new ImageLoadingListener(spinner, artContainer));
-			}
-			else {
+			if (!SettingsActivity.imagesEnabled(getActivity())) {
 				artContainer.setVisibility(View.GONE);
+			} else {
+				artContainer.setVisibility(View.VISIBLE);
+				WhatApplication.loadImage(getActivity(), imgUrl, art, spinner, null, null);
 			}
 			albumName.setText(torrent.getName());
 			//Fixing a crash report it seems like getArtists can give null here? Perhaps if the user downloaded
