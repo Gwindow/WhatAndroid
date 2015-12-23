@@ -1,5 +1,8 @@
 package what.whatandroid.torrentgroup.group;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +19,7 @@ import com.astuetz.PagerSlidingTabStrip;
 
 import api.torrents.torrents.TorrentGroup;
 import what.whatandroid.R;
+import what.whatandroid.WhatApplication;
 import what.whatandroid.callbacks.LoadingListener;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;
 
@@ -80,6 +84,15 @@ public class TorrentGroupFragment extends Fragment implements LoadingListener<To
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_bookmark) {
 			new ToggleBookmarkTask().execute();
+			return true;
+		}else if (item.getItemId() == R.id.action_share){
+			int id  = group.getId();
+			ClipboardManager clipboard = (ClipboardManager)
+					getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+			ClipData clip = ClipData.newPlainText("torrent group url", WhatApplication.DEFAULT_SITE + "/torrents.php?id=" + id);
+					Toast.makeText(getActivity(), "Link saved to clipboard", Toast.LENGTH_LONG).show();
+			clipboard.setPrimaryClip(clip);
+
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
