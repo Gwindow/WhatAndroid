@@ -15,10 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import java.util.Date;
 
@@ -87,6 +84,18 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 	 * Send message menu item, so we can hide it if we're viewing our own profile
 	 */
 	private MenuItem sendMessage;
+    /**
+     * Text views to display user ranks
+     */
+    private TextView dataUploadedText, dataUploaded, dataDownloadedText, dataDownloaded, torrentsUploadedText, torrentsUploaded, requestsFilledText, requestsFilled, bountySpentText, bountySpent, postsMadeText, postsMade, artistsAddedText, artistsAdded, overallText, overall;
+    /**
+     * Button to show/collapse the ranks view
+     */
+    private ImageButton toggleRanks;
+    /**
+     * Ranks view layout
+     */
+    private RelativeLayout ranksView;
 
 	/**
 	 * Use this factory method to create a new instance of the fragment displaying the
@@ -183,6 +192,39 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 		donor.setVisibility(View.GONE);
 		warned.setVisibility(View.GONE);
 		banned.setVisibility(View.GONE);
+
+        dataDownloadedText = (TextView) view.findViewById(R.id.data_downloaded_text);
+        dataDownloaded = (TextView) view.findViewById(R.id.data_downloaded);
+        dataUploadedText = (TextView) view.findViewById(R.id.data_uploaded_text);
+        dataUploaded = (TextView) view.findViewById(R.id.data_uploaded);
+        torrentsUploadedText = (TextView) view.findViewById(R.id.torrents_uploaded_text);
+        torrentsUploaded = (TextView) view.findViewById(R.id.torrents_uploaded);
+        requestsFilledText = (TextView) view.findViewById(R.id.requests_filled_text);
+        requestsFilled = (TextView) view.findViewById(R.id.requests_filled);
+        bountySpentText = (TextView) view.findViewById(R.id.bounty_spent_text);
+        bountySpent = (TextView) view.findViewById(R.id.bounty_spent);
+        postsMadeText = (TextView) view.findViewById(R.id.posts_made_text);
+        postsMade = (TextView) view.findViewById(R.id.posts_made);
+        artistsAddedText = (TextView) view.findViewById(R.id.artists_added_text);
+        artistsAdded = (TextView) view.findViewById(R.id.artists_added);
+        overallText = (TextView) view.findViewById(R.id.overall_text);
+        overall = (TextView) view.findViewById(R.id.overall);
+
+        ranksView = (RelativeLayout) view.findViewById(R.id.user_ranks);
+
+        toggleRanks = (ImageButton) view.findViewById(R.id.toggle_ranks);
+        toggleRanks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ranksView.isShown()){
+                    ranksView.setVisibility(View.GONE);
+                    toggleRanks.setImageResource(R.drawable.ic_action_add);
+                }else if (!ranksView.isShown()){
+                    ranksView.setVisibility(View.VISIBLE);
+                    toggleRanks.setImageResource(R.drawable.ic_action_remove);
+                }
+            }
+        });
 
 		snatchesAdapter = new RecentTorrentPagerAdapter(getChildFragmentManager());
 		uploadsAdapter = new RecentTorrentPagerAdapter(getChildFragmentManager());
@@ -396,6 +438,55 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 		if (!profile.getPersonal().isEnabled()){
 			banned.setVisibility(View.VISIBLE);
 		}
+
+        if (profile.getRanks().getDownloaded().intValue() > 0) {
+            dataDownloadedText.setVisibility(View.VISIBLE);
+            dataDownloaded.setText("" + profile.getRanks().getDownloaded().intValue() + "%");
+        } else {
+            dataDownloaded.setVisibility(View.GONE);
+        }
+        if (profile.getRanks().getUploaded().intValue() > 0) {
+            dataUploadedText.setVisibility(View.VISIBLE);
+            dataUploaded.setText("" + profile.getRanks().getUploaded().intValue() + "%");
+        } else {
+            dataUploaded.setVisibility(View.GONE);
+        }
+        if (profile.getRanks().getUploads().intValue() > 0) {
+            torrentsUploadedText.setVisibility(View.VISIBLE);
+            torrentsUploaded.setText("" + profile.getRanks().getUploads().intValue() + "%");
+        } else {
+            torrentsUploaded.setVisibility(View.GONE);
+        }
+        if (profile.getRanks().getRequests().intValue() > 0) {
+            requestsFilledText.setVisibility(View.VISIBLE);
+            requestsFilled.setText("" + profile.getRanks().getRequests().intValue() + "%");
+        } else {
+            requestsFilled.setVisibility(View.GONE);
+        }
+        if (profile.getRanks().getBounty().intValue() > 0) {
+            bountySpentText.setVisibility(View.VISIBLE);
+            bountySpent.setText("" + profile.getRanks().getBounty().intValue() + "%");
+        } else {
+            bountySpent.setVisibility(View.GONE);
+        }
+        if (profile.getRanks().getPosts().intValue() > 0) {
+            postsMadeText.setVisibility(View.VISIBLE);
+            postsMade.setText("" + profile.getRanks().getPosts().intValue() + "%");
+        } else {
+            postsMade.setVisibility(View.GONE);
+        }
+        if (profile.getRanks().getArtists().intValue() > 0) {
+            artistsAddedText.setVisibility(View.VISIBLE);
+            artistsAdded.setText("" + profile.getRanks().getArtists().intValue() + "%");
+        } else {
+            artistsAdded.setVisibility(View.GONE);
+        }
+        if (profile.getRanks().getOverall().intValue() > 0) {
+            overallText.setVisibility(View.VISIBLE);
+            overall.setText("" + profile.getRanks().getOverall().intValue() + "%");
+        } else {
+            overall.setVisibility(View.GONE);
+        }
 	}
 
 	private class SendMessageTask extends AsyncTask<String, Void, Boolean> {
