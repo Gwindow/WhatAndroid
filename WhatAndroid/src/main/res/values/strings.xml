@@ -126,6 +126,15 @@
     <string name="pref_torrent_download_path">Torrent Download Directory</string>
     <string name="pref_torrent_download_path_summary">Optional directory to place downloaded torrents in</string>
     <string name="key_pref_torrent_download_path">pref_torrent_download_path</string>
+    <string name="ranks">Ranks</string>
+    <string name="overall">Overall</string>
+    <string name="artists_added">Artists added</string>
+    <string name="posts_made">Posts made</string>
+    <string name="bounty_spent">Bounty spent</string>
+    <string name="requests_filled">Requests filled</string>
+    <string name="torrents_uploaded">Torrents uploaded</string>
+    <string name="data_downloaded">Data downloaded</string>
+    <string name="data_uploaded">Data uploaded</string>
 
     <string-array name="vote_units">
         <item>MB</item>

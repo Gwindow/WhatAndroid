@@ -10,4 +10,10 @@
             android:title="@string/bookmark"
             android:orderInCategory="10"
             app:showAsAction="always"/>
+        <item
+                android:id="@+id/action_share"
+                android:icon="@drawable/ic_action_content_copy"
+                android:title="@string/bookmark"
+                android:orderInCategory="10"
+                app:showAsAction="ifRoom"/>
 </menu>
