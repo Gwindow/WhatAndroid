@@ -64,12 +64,12 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
     /**
      * The user's stats being shown
      */
-    private TextView username, userClass, joined, upload, download, ratio, paranoia;
+    private TextView username, userClass, joined, invited, ratio, paranoia;
     /**
      * Text views saying what the various numbers in the profile mean, so we can hide those that are hidden
      * by the user's paranoia
      */
-    private TextView uploadText, downloadText, ratioText, paranoiaText;
+    private TextView invitedText, ratioText, paranoiaText;
     /**
      * View pagers & adapters for displaying the lists of recent snatches and uploads & headers for the views
      * headers are needed so we can hide the views if hidden by paranoia
@@ -88,6 +88,11 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
      * Text views to display user ranks
      */
     private TextView dataUploadedText, dataUploaded, dataDownloadedText, dataDownloaded, torrentsUploadedText, torrentsUploaded, requestsFilledText, requestsFilled, bountySpentText, bountySpent, postsMadeText, postsMade, artistsAddedText, artistsAdded, overallText, overall;
+    /**
+     * Text views to display user rank values
+     */
+    private TextView dataUploadedValue,dataDownloadedValue, torrentsUploadedValue, requestsFilledValue, postsMadeValue;
+
     /**
      * Button to show/collapse the sections
      */
@@ -178,10 +183,8 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
         username = (TextView) view.findViewById(R.id.username);
         userClass = (TextView) view.findViewById(R.id.user_class);
         joined = (TextView) view.findViewById(R.id.joined);
-        upload = (TextView) view.findViewById(R.id.upload);
-        uploadText = (TextView) view.findViewById(R.id.uploaded_text);
-        download = (TextView) view.findViewById(R.id.download);
-        downloadText = (TextView) view.findViewById(R.id.downloaded_text);
+        invited = (TextView) view.findViewById(R.id.invited);
+        invitedText = (TextView) view.findViewById(R.id.invited_text);
         ratio = (TextView) view.findViewById(R.id.ratio);
         ratioText = (TextView) view.findViewById(R.id.ratio_text);
         paranoia = (TextView) view.findViewById(R.id.paranoia);
@@ -216,6 +219,12 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
         artistsAdded = (TextView) view.findViewById(R.id.artists_added);
         overallText = (TextView) view.findViewById(R.id.overall_text);
         overall = (TextView) view.findViewById(R.id.overall);
+
+        dataDownloadedValue = (TextView) view.findViewById(R.id.data_downloaded_value);
+        dataUploadedValue = (TextView) view.findViewById(R.id.data_uploaded_value);
+        postsMadeValue = (TextView) view.findViewById(R.id.posts_made_value);
+        requestsFilledValue = (TextView) view.findViewById(R.id.requests_filled_value);
+        torrentsUploadedValue = (TextView) view.findViewById(R.id.torrents_uploaded_value);
 
         ranksView = (RelativeLayout) view.findViewById(R.id.user_ranks);
         statsView = (RelativeLayout) view.findViewById(R.id.user_stats);
@@ -436,17 +445,11 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
         } else {
             paranoia.setVisibility(View.GONE);
         }
-        if (profile.getStats().getUploaded() != null) {
-            upload.setText(Utils.toHumanReadableSize(profile.getStats().getUploaded().longValue()));
+        if (profile.getCommunity().getInvited() != null) {
+            invited.setText("" + profile.getCommunity().getInvited());
         } else {
-            uploadText.setVisibility(View.GONE);
-            upload.setVisibility(View.GONE);
-        }
-        if (profile.getStats().getDownloaded() != null) {
-            download.setText(Utils.toHumanReadableSize(profile.getStats().getDownloaded().longValue()));
-        } else {
-            downloadText.setVisibility(View.GONE);
-            download.setVisibility(View.GONE);
+            invitedText.setVisibility(View.GONE);
+            invited.setVisibility(View.GONE);
         }
         if (profile.getStats().getRatio() != null && profile.getStats().getRequiredRatio() != null) {
             ratio.setText(String.format("%.2f", profile.getStats().getRatio().floatValue())
@@ -486,56 +489,66 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
         }
 
 
-        if (profile.getRanks().getDownloaded() != null && profile.getRanks().getDownloaded().intValue() > 0) {
+        if (profile.getRanks().getDownloaded() != null) {
             dataDownloadedText.setVisibility(View.VISIBLE);
             dataDownloaded.setText("" + profile.getRanks().getDownloaded().intValue() + "%");
+            dataDownloadedValue.setVisibility(View.VISIBLE);
+            dataDownloadedValue.setText("(" + Utils.toHumanReadableSize(profile.getStats().getDownloaded().longValue()) + ") ");
         } else {
             dataDownloaded.setVisibility(View.GONE);
             dataDownloadedText.setVisibility(View.GONE);
         }
-        if (profile.getRanks().getUploaded() != null && profile.getRanks().getUploaded().intValue() > 0) {
+        if (profile.getRanks().getUploaded() != null) {
             dataUploadedText.setVisibility(View.VISIBLE);
             dataUploaded.setText("" + profile.getRanks().getUploaded().intValue() + "%");
+            dataUploadedValue.setVisibility(View.VISIBLE);
+            dataUploadedValue.setText("(" + Utils.toHumanReadableSize(profile.getStats().getUploaded().longValue()) + ") ");
         } else {
             dataUploaded.setVisibility(View.GONE);
             dataUploadedText.setVisibility(View.GONE);
         }
-        if (profile.getRanks().getUploads() != null && profile.getRanks().getUploads().intValue() > 0) {
+        if (profile.getRanks().getUploads() != null) {
             torrentsUploadedText.setVisibility(View.VISIBLE);
             torrentsUploaded.setText("" + profile.getRanks().getUploads().intValue() + "%");
+            torrentsUploadedValue.setVisibility(View.VISIBLE);
+            torrentsUploadedValue.setText("(" + profile.getCommunity().getUploaded().intValue() + ") ");
         } else {
             torrentsUploaded.setVisibility(View.GONE);
             torrentsUploadedText.setVisibility(View.GONE);
         }
-        if (profile.getRanks().getRequests() != null && profile.getRanks().getRequests().intValue() > 0) {
+        if (profile.getRanks().getRequests() != null) {
             requestsFilledText.setVisibility(View.VISIBLE);
             requestsFilled.setText("" + profile.getRanks().getRequests().intValue() + "%");
+            requestsFilledValue.setVisibility(View.VISIBLE);
+            requestsFilledValue.setText("(" + profile.getCommunity().getRequestsFilled().intValue() + ") ");
         } else {
             requestsFilled.setVisibility(View.GONE);
             requestsFilledText.setVisibility(View.GONE);
         }
-        if (profile.getRanks().getBounty() != null && profile.getRanks().getBounty().intValue() > 0) {
+        if (profile.getRanks().getBounty() != null) {
             bountySpentText.setVisibility(View.VISIBLE);
             bountySpent.setText("" + profile.getRanks().getBounty().intValue() + "%");
         } else {
             bountySpent.setVisibility(View.GONE);
             bountySpentText.setVisibility(View.GONE);
         }
-        if (profile.getRanks().getPosts() != null && profile.getRanks().getPosts().intValue() > 0) {
+        if (profile.getRanks().getPosts() != null) {
             postsMadeText.setVisibility(View.VISIBLE);
             postsMade.setText("" + profile.getRanks().getPosts().intValue() + "%");
+            postsMadeValue.setVisibility(View.VISIBLE);
+            postsMadeValue.setText("(" + profile.getCommunity().getPosts().intValue() + ") ");
         } else {
             postsMade.setVisibility(View.GONE);
             postsMadeText.setVisibility(View.GONE);
         }
-        if (profile.getRanks().getArtists() != null && profile.getRanks().getArtists().intValue() > 0) {
+        if (profile.getRanks().getArtists() != null) {
             artistsAddedText.setVisibility(View.VISIBLE);
             artistsAdded.setText("" + profile.getRanks().getArtists().intValue() + "%");
         } else {
             artistsAdded.setVisibility(View.GONE);
             artistsAddedText.setVisibility(View.GONE);
         }
-        if (profile.getRanks().getOverall() != null && profile.getRanks().getOverall().intValue() > 0) {
+        if (profile.getRanks().getOverall() != null) {
             overallText.setVisibility(View.VISIBLE);
             overall.setText("" + profile.getRanks().getOverall().intValue() + "%");
         } else {
