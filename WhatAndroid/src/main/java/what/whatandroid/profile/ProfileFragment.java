@@ -96,10 +96,15 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
     /**
      * Button to show/collapse the sections
      */
-    private ImageButton toggleRanks;
-    private ImageButton toggleStats;
-    private ImageButton toggleSnatches;
-    private ImageButton toggleUploads;
+    private RelativeLayout toggleRanks;
+    private RelativeLayout toggleStats;
+    private RelativeLayout toggleSnatches;
+    private RelativeLayout toggleUploads;
+
+    private ImageView toggleStatsBtn;
+    private ImageView toggleRanksBtn;
+    private ImageView toggleSnatchesBtn;
+    private ImageView toggleUploadsBtn;
 
     /**
      * Section view layouts
@@ -174,6 +179,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -231,60 +237,66 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
         snatchesView = (ViewPager) view.findViewById(R.id.recent_snatches);
         uploadsView = (ViewPager) view.findViewById(R.id.recent_uploads);
 
-        toggleStats = (ImageButton) view.findViewById(R.id.toggle_stats);
+        toggleStatsBtn = (ImageView) view.findViewById(R.id.toggle_stats);
+        toggleRanksBtn = (ImageView) view.findViewById(R.id.toggle_ranks);
+        toggleSnatchesBtn = (ImageView) view.findViewById(R.id.toggle_snatches);
+        toggleUploadsBtn = (ImageView) view.findViewById(R.id.toggle_uploads);
+
+        toggleStats = (RelativeLayout) view.findViewById(R.id.info_box);
+
         toggleStats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (statsView.isShown()) {
                     statsView.setVisibility(View.GONE);
-                    toggleStats.setImageResource(R.drawable.ic_action_add);
+                    toggleStatsBtn.setImageResource(R.drawable.ic_action_add);
                 } else if (!statsView.isShown()) {
                     statsView.setVisibility(View.VISIBLE);
-                    toggleStats.setImageResource(R.drawable.ic_action_remove);
+                    toggleStatsBtn.setImageResource(R.drawable.ic_action_remove);
                 }
             }
         });
 
-        toggleRanks = (ImageButton) view.findViewById(R.id.toggle_ranks);
+//   TODO:     ranks and snatches aren't toggling'
+
+        toggleRanks = (RelativeLayout) view.findViewById(R.id.ranks_header_container);
         toggleRanks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ranksView.isShown()) {
                     ranksView.setVisibility(View.GONE);
-                    toggleRanks.setImageResource(R.drawable.ic_action_add);
+                    toggleRanksBtn.setImageResource(R.drawable.ic_action_add);
                 } else if (!ranksView.isShown()) {
                     ranksView.setVisibility(View.VISIBLE);
-
-                    toggleRanks.setImageResource(R.drawable.ic_action_remove);
+                    toggleRanksBtn.setImageResource(R.drawable.ic_action_remove);
                 }
             }
         });
 
-        toggleSnatches = (ImageButton) view.findViewById(R.id.toggle_snatches);
+        toggleSnatches = (RelativeLayout) view.findViewById(R.id.snatches_header_container);
         toggleSnatches.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (snatchesView.isShown()) {
                     snatchesView.setVisibility(View.GONE);
-                    toggleSnatches.setImageResource(R.drawable.ic_action_add);
+                    toggleSnatchesBtn.setImageResource(R.drawable.ic_action_add);
                 } else {
                     snatchesView.setVisibility(View.VISIBLE);
-                    toggleSnatches.setImageResource(R.drawable.ic_action_remove);
+                    toggleSnatchesBtn.setImageResource(R.drawable.ic_action_remove);
                 }
             }
         });
 
-        toggleUploads = (ImageButton) view.findViewById(R.id.toggle_uploads);
+        toggleUploads = (RelativeLayout) view.findViewById(R.id.uploads_header_container);
         toggleUploads.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (uploadsView.isShown()) {
                     uploadsView.setVisibility(View.GONE);
-                    toggleUploads.setImageResource(R.drawable.ic_action_add);
+                    toggleUploadsBtn.setImageResource(R.drawable.ic_action_add);
                 } else {
                     uploadsView.setVisibility(View.VISIBLE);
-                    toggleUploads.setImageResource(R.drawable.ic_action_remove);
+                    toggleUploadsBtn.setImageResource(R.drawable.ic_action_remove);
                 }
             }
         });
