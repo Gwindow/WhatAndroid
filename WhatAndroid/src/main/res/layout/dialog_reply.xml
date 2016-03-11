@@ -29,10 +29,10 @@
                     android:layout_marginRight="4dp"/>
 
             <Button
-                    android:id="@+id/reply"
+                    android:id="@+id/send"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/reply"
+                    android:text="@string/send"
                     android:drawableRight="@drawable/ic_send_24dp"
                     android:layout_weight="1"
                     android:layout_marginLeft="4dp"/>

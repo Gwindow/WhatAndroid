@@ -137,9 +137,9 @@
     <string name="torrents_uploaded">Torrents uploaded</string>
     <string name="data_downloaded">Data downloaded</string>
     <string name="data_uploaded">Data uploaded</string>
-    <string name="send_to_wm">Send to WM</string>
     <string name="invited">Invited</string>
     <string name="info">Info</string>
+    <string name="send">Send</string>
 
     <string-array name="vote_units">
         <item>MB</item>
