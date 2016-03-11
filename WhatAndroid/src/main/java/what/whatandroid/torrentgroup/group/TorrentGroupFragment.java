@@ -71,9 +71,9 @@ public class TorrentGroupFragment extends Fragment implements LoadingListener<To
 		bookmarkMenu = menu.findItem(R.id.action_bookmark);
 		if (group != null) {
 			if (group.getResponse().getGroup().isBookmarked()) {
-				bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_24dp);
 			} else {
-				bookmarkMenu.setIcon(R.drawable.ic_bookmark_off);
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_border_24dp);
 			}
 		} else {
 			bookmarkMenu.setVisible(false);
@@ -105,9 +105,9 @@ public class TorrentGroupFragment extends Fragment implements LoadingListener<To
 		if (bookmarkMenu != null) {
 			bookmarkMenu.setVisible(true);
 			if (group.getResponse().getGroup().isBookmarked()) {
-				bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_24dp);
 			} else {
-				bookmarkMenu.setIcon(R.drawable.ic_bookmark_off);
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_border_24dp);
 			}
 		}
 	}
@@ -129,9 +129,9 @@ public class TorrentGroupFragment extends Fragment implements LoadingListener<To
 		protected void onPreExecute() {
 			//Be optimistic that the change will succeed and show updated icon
 			if (group.getResponse().getGroup().isBookmarked()) {
-				bookmarkMenu.setIcon(R.drawable.ic_bookmark_off);
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_border_24dp);
 			} else {
-				bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_24dp);
 			}
 			if (isAdded()) {
 				getActivity().setProgressBarIndeterminate(true);
@@ -155,9 +155,9 @@ public class TorrentGroupFragment extends Fragment implements LoadingListener<To
 			if (bookmarkMenu != null) {
 				bookmarkMenu.setVisible(true);
 				if (group.getResponse().getGroup().isBookmarked()) {
-					bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
+					bookmarkMenu.setIcon(R.drawable.ic_bookmark_24dp);
 				} else {
-					bookmarkMenu.setIcon(R.drawable.ic_bookmark_off);
+					bookmarkMenu.setIcon(R.drawable.ic_bookmark_border_24dp);
 				}
 			}
 		}

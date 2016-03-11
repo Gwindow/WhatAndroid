@@ -8,21 +8,21 @@
 
     <item
         android:id="@+id/action_reply"
-        android:icon="@drawable/ic_action_reply"
+        android:icon="@drawable/ic_reply_24dp"
         android:orderInCategory="0"
         app:showAsAction="ifRoom"
         android:title="@string/reply"/>
 
     <item
         android:id="@+id/action_subscription"
-        android:icon="@drawable/ic_eye_off"
+        android:icon="@drawable/ic_visibility_off_24dp"
         android:orderInCategory="5"
         app:showAsAction="ifRoom"
         android:title="@string/toggle_subscription"/>
 
     <item
         android:id="@+id/action_refresh"
-        android:icon="@drawable/ic_action_refresh"
+        android:icon="@drawable/ic_refresh_24dp"
         android:orderInCategory="10"
         app:showAsAction="ifRoom"
         android:title="@string/refresh"/>
@@ -30,7 +30,7 @@
     <!-- There aren't a lot of poll threads so we hide this initially and show if there is a poll -->
     <item
         android:id="@+id/action_view_poll"
-        android:icon="@drawable/ic_action_view_poll"
+        android:icon="@drawable/ic_insert_chart_24dp"
         android:orderInCategory="10"
         app:showAsAction="always"
         android:title="@string/view_poll"

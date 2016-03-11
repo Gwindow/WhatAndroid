@@ -1,69 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:descendantFocusability="blocksDescendants">
-
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weekday_root_view"
+        android:paddingBottom="4dp"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardUseCompatPadding="true">
     <RelativeLayout
-        android:id="@+id/thread_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/thread_icons"
-        android:layout_alignTop="@+id/thread_icons">
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:descendantFocusability="blocksDescendants">
 
-        <TextView
-            android:id="@+id/thread_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:textColor="@android:color/primary_text_dark_nodisable"
-            android:textSize="22sp"/>
+        <RelativeLayout
+                android:id="@+id/thread_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/thread_icons"
+                android:layout_alignTop="@+id/thread_icons">
 
+            <TextView
+                    android:id="@+id/thread_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/primary_text"
+                    android:textSize="22sp"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+                android:id="@+id/thread_icons"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+            <ImageView
+                    android:id="@+id/sticky_thread"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_star_24dp"
+                    android:contentDescription="@string/sticky_thread"
+                    android:tint="@color/LightGrey"
+                    android:visibility="gone"/>
+
+            <ImageView
+                    android:id="@+id/locked_thread"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_lock_24dp"
+                    android:contentDescription="@string/locked_thread"
+                    android:tint="@color/LightGrey"
+                    android:visibility="gone"/>
+
+            <ImageButton
+                    android:id="@+id/go_to_last_read"
+                    android:layout_width="32dp"
+                    android:layout_height="26dp"
+                    android:contentDescription="@string/go_to_last_read"
+                    android:src="@drawable/ic_forward_24dp"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_marginTop="2dp"/>
+
+        </LinearLayout>
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/thread_icons"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true">
-
-        <ImageView
-            android:id="@+id/sticky_thread"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_action_pin"
-            android:contentDescription="@string/sticky_thread"
-            android:tint="@color/LightGrey"
-            android:visibility="gone"/>
-
-        <ImageView
-            android:id="@+id/locked_thread"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_locked"
-            android:contentDescription="@string/locked_thread"
-            android:tint="@color/LightGrey"
-            android:visibility="gone"/>
-
-        <ImageButton
-            android:id="@+id/go_to_last_read"
-            android:layout_width="32dp"
-            android:layout_height="26dp"
-            android:contentDescription="@string/go_to_last_read"
-            android:src="@drawable/ic_action_forward"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_marginTop="2dp" />
-
-    </LinearLayout>
-</RelativeLayout>
+</android.support.v7.widget.CardView>

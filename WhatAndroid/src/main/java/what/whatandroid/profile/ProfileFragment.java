@@ -249,10 +249,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
             public void onClick(View v) {
                 if (statsView.isShown()) {
                     statsView.setVisibility(View.GONE);
-                    toggleStatsBtn.setImageResource(R.drawable.ic_action_add);
+                    toggleStatsBtn.setImageResource(R.drawable.ic_expand_more_24dp);
                 } else if (!statsView.isShown()) {
                     statsView.setVisibility(View.VISIBLE);
-                    toggleStatsBtn.setImageResource(R.drawable.ic_action_remove);
+                    toggleStatsBtn.setImageResource(R.drawable.ic_expand_less_24dp);
                 }
             }
         });
@@ -265,10 +265,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
             public void onClick(View v) {
                 if (ranksView.isShown()) {
                     ranksView.setVisibility(View.GONE);
-                    toggleRanksBtn.setImageResource(R.drawable.ic_action_add);
+                    toggleRanksBtn.setImageResource(R.drawable.ic_expand_more_24dp);
                 } else if (!ranksView.isShown()) {
                     ranksView.setVisibility(View.VISIBLE);
-                    toggleRanksBtn.setImageResource(R.drawable.ic_action_remove);
+                    toggleRanksBtn.setImageResource(R.drawable.ic_expand_less_24dp);
                 }
             }
         });
@@ -279,10 +279,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
             public void onClick(View v) {
                 if (snatchesView.isShown()) {
                     snatchesView.setVisibility(View.GONE);
-                    toggleSnatchesBtn.setImageResource(R.drawable.ic_action_add);
+                    toggleSnatchesBtn.setImageResource(R.drawable.ic_expand_more_24dp);
                 } else {
                     snatchesView.setVisibility(View.VISIBLE);
-                    toggleSnatchesBtn.setImageResource(R.drawable.ic_action_remove);
+                    toggleSnatchesBtn.setImageResource(R.drawable.ic_expand_less_24dp);
                 }
             }
         });
@@ -293,10 +293,10 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
             public void onClick(View v) {
                 if (uploadsView.isShown()) {
                     uploadsView.setVisibility(View.GONE);
-                    toggleUploadsBtn.setImageResource(R.drawable.ic_action_add);
+                    toggleUploadsBtn.setImageResource(R.drawable.ic_expand_more_24dp);
                 } else {
                     uploadsView.setVisibility(View.VISIBLE);
-                    toggleUploadsBtn.setImageResource(R.drawable.ic_action_remove);
+                    toggleUploadsBtn.setImageResource(R.drawable.ic_expand_less_24dp);
                 }
             }
         });

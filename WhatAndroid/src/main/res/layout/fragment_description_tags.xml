@@ -3,7 +3,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#222"
+    android:background="@color/Background"
     android:orientation="vertical">
 
     <LinearLayout
@@ -20,12 +20,12 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:textColor="@android:color/primary_text_dark_nodisable" />
+            android:textColor="@color/primary_text" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#444"
+            android:background="@color/BackgroundAccentDark"
             android:paddingBottom="12dp"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tags"
-                android:textColor="@android:color/secondary_text_dark_nodisable"
+                android:textColor="@color/secondary_text"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -49,7 +49,7 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:textColor="@android:color/primary_text_dark_nodisable"
+            android:textColor="@color/primary_text"
             android:textStyle="italic" />
     </LinearLayout>
 </ScrollView>

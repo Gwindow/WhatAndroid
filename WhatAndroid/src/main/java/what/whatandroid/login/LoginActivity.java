@@ -1,12 +1,15 @@
 package what.whatandroid.login;
 
 import android.app.Activity;
+import android.app.UiModeManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.IntentCompat;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +45,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+
 		username = (TextView)findViewById(R.id.username_input);
 		password = (TextView)findViewById(R.id.password_input);
 		Button login = (Button)findViewById(R.id.login_button);

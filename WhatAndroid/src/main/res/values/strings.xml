@@ -123,6 +123,8 @@
     <string name="switch_layout">Switch Layout</string>
     <string name="pref_light_layout">Use Light Layout for Forums</string>
     <string name="key_pref_light_layout">pref_light_layout</string>
+    <string name="pref_light_theme">Use Light Material Theme</string>
+    <string name="key_pref_light_theme">pref_light_theme</string>
     <string name="pref_torrent_download_path">Torrent Download Directory</string>
     <string name="pref_torrent_download_path_summary">Optional directory to place downloaded torrents in</string>
     <string name="key_pref_torrent_download_path">pref_torrent_download_path</string>

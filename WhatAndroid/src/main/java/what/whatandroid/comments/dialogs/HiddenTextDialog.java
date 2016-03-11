@@ -48,7 +48,7 @@ public class HiddenTextDialog extends DialogFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_text, null);
 		TextView textView = (TextView)view.findViewById(R.id.text);
-		textView.setTextColor(getActivity().getResources().getColor(android.R.color.primary_text_dark_nodisable));
+		textView.setTextColor(getActivity().getResources().getColor(R.color.primary_text));
 		textView.setText(new WhatBBParser().parsebb(text));
 		textView.setMovementMethod(LinkMovementMethod.getInstance());
 
