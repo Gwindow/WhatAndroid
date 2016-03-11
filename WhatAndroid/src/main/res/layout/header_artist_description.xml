@@ -23,7 +23,7 @@
             android:paddingBottom="12dp"
             android:paddingTop="12dp"
             android:background="@color/BackgroundAccentDark"
-            android:elevation="5dp"
+            android:elevation="3dp"
             >
 
         <TextView
@@ -53,7 +53,7 @@
             android:paddingBottom="12dp"
             android:paddingTop="12dp"
             android:background="@color/BackgroundAccentDark"
-            android:elevation="5dp"
+            android:elevation="3dp"
             >
 
         <TextView
