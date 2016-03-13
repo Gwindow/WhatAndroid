@@ -154,16 +154,16 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, Load
 			bookmarkMenu.setVisible(true);
 			notificationMenu.setVisible(true);
 			if (artist.getResponse().isBookmarked()){
-				bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_24dp);
 			}
 			else {
-				bookmarkMenu.setIcon(R.drawable.ic_bookmark_off);
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_border_24dp);
 			}
 			if (artist.getResponse().hasNotificationsEnabled()){
-				notificationMenu.setIcon(R.drawable.ic_eye_on);
+				notificationMenu.setIcon(R.drawable.ic_visibility_24dp);
 			}
 			else {
-				notificationMenu.setIcon(R.drawable.ic_eye_off);
+				notificationMenu.setIcon(R.drawable.ic_visibility_off_24dp);
 			}
 		}
 	}
@@ -184,10 +184,10 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, Load
 		protected void onPreExecute(){
 			//Display action as successful as we load
 			if (artist.getResponse().isBookmarked()){
-				bookmarkMenu.setIcon(R.drawable.ic_bookmark_off);
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_border_24dp);
 			}
 			else {
-				bookmarkMenu.setIcon(R.drawable.ic_bookmark_on);
+				bookmarkMenu.setIcon(R.drawable.ic_bookmark_24dp);
 			}
 			if (isAdded()){
 				getActivity().setProgressBarIndeterminate(true);
@@ -229,10 +229,10 @@ public class ArtistFragment extends Fragment implements OnLoggedInCallback, Load
 		protected void onPreExecute(){
 			//Display action as successful while we load
 			if (artist.getResponse().hasNotificationsEnabled()){
-				notificationMenu.setIcon(R.drawable.ic_eye_off);
+				notificationMenu.setIcon(R.drawable.ic_visibility_off_24dp);
 			}
 			else {
-				notificationMenu.setIcon(R.drawable.ic_eye_on);
+				notificationMenu.setIcon(R.drawable.ic_visibility_24dp);
 			}
 			if (isAdded()){
 				getActivity().setProgressBarIndeterminate(true);

@@ -1,115 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weekday_root_view"
+        android:paddingBottom="4dp"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardUseCompatPadding="true">
+    <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/BackgroundAccent"
+            android:padding="16dp">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp">
-
-    <TextView
-            android:id="@+id/format"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="8dp"
-            android:textColor="@android:color/primary_text_dark_nodisable"/>
-
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:orientation="horizontal">
-
-        <what.whatandroid.views.TypeFacedTextView
-                android:id="@+id/freeleech_icon"
+        <TextView
+                android:id="@+id/format"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
-                android:text="@string/fa_gift"
-                android:textSize="18sp"
-                android:textColor="@color/Gold"
-                app:font="@string/fontawesome_font"/>
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/primary_text"/>
 
-        <what.whatandroid.views.TypeFacedTextView
-                android:id="@+id/reported_icon"
+        <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fa_exclamation_triangle"
-                android:textSize="18sp"
-                android:textColor="@android:color/holo_red_dark"
-                app:font="@string/fontawesome_font"/>
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+            <what.whatandroid.views.TypeFacedTextView
+                    android:id="@+id/freeleech_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:text="@string/fa_gift"
+                    android:textSize="18sp"
+                    android:textColor="@color/Gold"
+                    app:font="@string/fontawesome_font"/>
 
-    <TextView
-            android:id="@+id/size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/format"
-            android:layout_toLeftOf="@+id/snatches"
-            android:paddingRight="16dp"
-            android:textColor="@android:color/primary_text_dark_nodisable"/>
+            <what.whatandroid.views.TypeFacedTextView
+                    android:id="@+id/reported_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fa_exclamation_triangle"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/holo_red_dark"
+                    app:font="@string/fontawesome_font"/>
 
-    <TextView
-            android:id="@+id/snatches"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/snatched_icon"
-            android:layout_alignBaseline="@id/size"
-            android:paddingRight="4dp"
-            android:textColor="@android:color/primary_text_dark_nodisable"/>
+        </LinearLayout>
 
-    <what.whatandroid.views.TypeFacedTextView
-            android:id="@+id/snatched_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/seeders"
-            android:layout_alignBaseline="@id/size"
-            android:text="@string/fa_undo"
-            app:font="@string/fontawesome_font"
-            android:paddingRight="16dp"
-            android:textColor="@android:color/primary_text_dark_nodisable"/>
+        <TextView
+                android:id="@+id/size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/format"
+                android:layout_toLeftOf="@+id/snatches"
+                android:paddingRight="16dp"
+                android:textColor="@color/primary_text"/>
 
-    <TextView
-            android:id="@+id/seeders"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/seeders_icon"
-            android:layout_alignBaseline="@id/size"
-            android:paddingRight="4dp"
-            android:textColor="@android:color/primary_text_dark_nodisable"/>
+        <TextView
+                android:id="@+id/snatches"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/snatched_icon"
+                android:layout_alignBaseline="@id/size"
+                android:paddingRight="4dp"
+                android:textColor="@color/primary_text"/>
 
-    <what.whatandroid.views.TypeFacedTextView
-            android:id="@+id/seeders_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/size"
-            android:layout_toLeftOf="@+id/leechers"
-            android:text="@string/fa_arrow_up"
-            app:font="@string/fontawesome_font"
-            android:paddingRight="16dp"
-            android:textColor="@android:color/primary_text_dark_nodisable"/>
+        <what.whatandroid.views.TypeFacedTextView
+                android:id="@+id/snatched_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/seeders"
+                android:layout_alignBaseline="@id/size"
+                android:text="@string/fa_undo"
+                app:font="@string/fontawesome_font"
+                android:paddingRight="16dp"
+                android:textColor="@color/primary_text"/>
 
-    <TextView
-            android:id="@+id/leechers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/leechers_icon"
-            android:layout_alignBaseline="@id/size"
-            android:paddingRight="4dp"
-            android:textColor="@android:color/primary_text_dark_nodisable"/>
+        <TextView
+                android:id="@+id/seeders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/seeders_icon"
+                android:layout_alignBaseline="@id/size"
+                android:paddingRight="4dp"
+                android:textColor="@color/primary_text"/>
 
-    <what.whatandroid.views.TypeFacedTextView
-            android:id="@+id/leechers_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignBaseline="@id/size"
-            android:text="@string/fa_arrow_down"
-            app:font="@string/fontawesome_font"
-            android:textColor="@android:color/primary_text_dark_nodisable"/>
+        <what.whatandroid.views.TypeFacedTextView
+                android:id="@+id/seeders_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/size"
+                android:layout_toLeftOf="@+id/leechers"
+                android:text="@string/fa_arrow_up"
+                app:font="@string/fontawesome_font"
+                android:paddingRight="16dp"
+                android:textColor="@color/primary_text"/>
 
-</RelativeLayout>
+        <TextView
+                android:id="@+id/leechers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/leechers_icon"
+                android:layout_alignBaseline="@id/size"
+                android:paddingRight="4dp"
+                android:textColor="@color/primary_text"/>
+
+        <what.whatandroid.views.TypeFacedTextView
+                android:id="@+id/leechers_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignBaseline="@id/size"
+                android:text="@string/fa_arrow_down"
+                app:font="@string/fontawesome_font"
+                android:textColor="@color/primary_text"/>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

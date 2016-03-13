@@ -1,124 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:descendantFocusability="blocksDescendants">
-
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weekday_root_view"
+        android:paddingBottom="4dp"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardUseCompatPadding="true">
     <RelativeLayout
-            android:id="@+id/thread_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/thread_icons">
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@color/Background"
+            android:descendantFocusability="blocksDescendants">
 
-        <TextView
-                android:id="@+id/thread_name"
+        <RelativeLayout
+                android:id="@+id/thread_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:textColor="@android:color/primary_text_dark_nodisable"
-                android:textSize="22sp"/>
+                android:layout_toLeftOf="@+id/thread_icons">
 
-        <TextView
-                android:id="@+id/author_name_text"
+            <TextView
+                    android:id="@+id/thread_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/primary_text"
+                    android:textSize="22sp"/>
+
+            <TextView
+                    android:id="@+id/author_name_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/thread_name"
+                    android:textColor="@color/secondary_text"
+                    android:text="@string/author"
+                    android:textSize="18sp"/>
+
+            <TextView
+                    android:id="@+id/author_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/author_name_text"
+                    android:layout_toRightOf="@id/author_name_text"
+                    android:paddingLeft="4dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/secondary_text"/>
+
+            <TextView
+                    android:id="@+id/replies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/author_name_text"
+                    android:textSize="18sp"
+                    android:textColor="@color/secondary_text"/>
+
+            <TextView
+                    android:id="@+id/last_post_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/replies"
+                    android:text="@string/last_post_by"
+                    android:textSize="18sp"
+                    android:textColor="@color/secondary_text"/>
+
+            <!-- TODO: clickable to jump to profile? -->
+            <TextView
+                    android:id="@+id/last_post_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/last_post_text"
+                    android:layout_alignBaseline="@id/last_post_text"
+                    android:paddingLeft="4dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/secondary_text"/>
+
+            <TextView
+                    android:id="@+id/last_post_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/last_post_text"
+                    android:textSize="18sp"
+                    android:textColor="@color/secondary_text"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+                android:id="@+id/thread_icons"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/thread_name"
-                android:textColor="@android:color/secondary_text_dark_nodisable"
-                android:text="@string/author"
-                android:textSize="18sp"/>
+                android:layout_alignParentRight="true">
 
-        <TextView
-                android:id="@+id/author_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/author_name_text"
-                android:layout_toRightOf="@id/author_name_text"
-                android:paddingLeft="4dp"
-                android:textSize="18sp"
-                android:textColor="@android:color/secondary_text_dark_nodisable"/>
+            <ImageView
+                    android:id="@+id/sticky_thread"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_star_24dp"
+                    android:contentDescription="@string/sticky_thread"
+                    android:tint="@color/accent"
+                    android:visibility="gone"/>
 
-        <TextView
-                android:id="@+id/replies"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/author_name_text"
-                android:textSize="18sp"
-                android:textColor="@android:color/secondary_text_dark_nodisable"/>
+            <ImageView
+                    android:id="@+id/locked_thread"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_lock_24dp"
+                    android:contentDescription="@string/locked_thread"
+                    android:tint="@color/accent"
+                    android:visibility="gone"/>
 
-        <TextView
-                android:id="@+id/last_post_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/replies"
-                android:text="@string/last_post_by"
-                android:textSize="18sp"
-                android:textColor="@android:color/secondary_text_dark_nodisable"/>
+            <ImageButton
+                    android:id="@+id/go_to_last_read"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/go_to_last_read"
+                    android:src="@drawable/ic_forward_24dp"
+                    android:tint="@color/accent"
+                    style="?android:attr/borderlessButtonStyle"/>
 
-        <!-- TODO: clickable to jump to profile? -->
-        <TextView
-                android:id="@+id/last_post_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/last_post_text"
-                android:layout_alignBaseline="@id/last_post_text"
-                android:paddingLeft="4dp"
-                android:textSize="18sp"
-                android:textColor="@android:color/secondary_text_dark_nodisable"/>
-
-        <TextView
-                android:id="@+id/last_post_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/last_post_username"
-                android:layout_toRightOf="@id/last_post_username"
-                android:paddingLeft="4dp"
-                android:textSize="18sp"
-                android:textColor="@android:color/secondary_text_dark_nodisable"/>
-
+        </LinearLayout>
     </RelativeLayout>
-
-    <LinearLayout
-            android:id="@+id/thread_icons"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true">
-
-        <ImageView
-                android:id="@+id/sticky_thread"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_action_pin"
-                android:contentDescription="@string/sticky_thread"
-                android:tint="@color/LightGrey"
-                android:visibility="gone"/>
-
-        <ImageView
-                android:id="@+id/locked_thread"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_locked"
-                android:contentDescription="@string/locked_thread"
-                android:tint="@color/LightGrey"
-                android:visibility="gone"/>
-
-        <ImageButton
-                android:id="@+id/go_to_last_read"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/go_to_last_read"
-                android:src="@drawable/ic_action_forward"
-                android:tint="@color/LightGrey"
-                style="?android:attr/borderlessButtonStyle"/>
-
-    </LinearLayout>
-</RelativeLayout>
+</android.support.v7.widget.CardView>

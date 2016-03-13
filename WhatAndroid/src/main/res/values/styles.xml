@@ -1,13 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat">
-        <item name="android:actionBarStyle">@style/ActionBar</item>
-
-        <!-- Set AppCompat’s color theming attrs -->
-        <item name="colorPrimary">#333333</item>
-        <item name="colorAccent">@color/accent_material_dark</item>
-        <item name="colorPrimaryDark">@color/primary_material_dark</item>
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
     </style>
 
     <style name="ImageDialog" parent="Theme.AppCompat.Dialog">
@@ -22,13 +16,6 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAllCaps">true</item>
-    </style>
-    
-    <style name="ActionBar" parent="AppTheme">
-        <!--<item name="android:titleTextStyle">@android:style/TextAppearance.Holo</item>-->
-        <!--<item name="android:actionBarTabTextStyle">@android:style/Widget.Holo.ActionBar</item>-->
-        <!--<item name="android:actionMenuTextColor">@android:style/Widget.Holo.ActionBar</item>-->
-        <item name="android:colorBackground">@color/primary_material_dark</item>
     </style>
 
 </resources>

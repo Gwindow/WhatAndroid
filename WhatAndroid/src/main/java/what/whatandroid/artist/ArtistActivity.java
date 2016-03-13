@@ -3,6 +3,7 @@ package what.whatandroid.artist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.Window;
 
 import java.io.UnsupportedEncodingException;
@@ -25,6 +26,7 @@ import what.whatandroid.notifications.NotificationsActivity;
 import what.whatandroid.profile.ProfileActivity;
 import what.whatandroid.request.RequestActivity;
 import what.whatandroid.search.SearchActivity;
+import what.whatandroid.settings.SettingsActivity;
 import what.whatandroid.subscriptions.SubscriptionsActivity;
 import what.whatandroid.top10.Top10Activity;
 import what.whatandroid.torrentgroup.TorrentGroupActivity;

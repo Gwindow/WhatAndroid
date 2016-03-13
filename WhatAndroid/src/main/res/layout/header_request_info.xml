@@ -37,8 +37,8 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingBottom="12dp"
                 android:paddingTop="12dp"
-                android:background="#444"
-                android:elevation="5dp"
+                android:background="@color/BackgroundAccentDark"
+                android:elevation="2dp"
                 >
 
             <TextView
@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:textColor="@android:color/secondary_text_dark_nodisable"/>
+                    android:textColor="@color/secondary_text"/>
 
         </LinearLayout>
 
@@ -66,7 +66,7 @@
                     android:text="@string/created"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
             <TextView
                     android:id="@+id/created"
@@ -75,7 +75,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/created_text"
                     android:textSize="18sp"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
             <TextView
                     android:id="@+id/record_label_text"
@@ -87,7 +87,7 @@
                     android:text="@string/record_label"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
             <TextView
                     android:id="@+id/record_label"
@@ -96,7 +96,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/record_label_text"
                     android:textSize="18sp"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
             <TextView
                     android:id="@+id/catalogue_number_text"
@@ -108,7 +108,7 @@
                     android:text="@string/catalogue_number"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
             <TextView
                     android:id="@+id/catalogue_number"
@@ -117,7 +117,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/catalogue_number_text"
                     android:textSize="18sp"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
             <TextView
                     android:id="@+id/release_type_text"
@@ -129,7 +129,7 @@
                     android:text="@string/release_type"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
             <TextView
                     android:id="@+id/release_type"
@@ -138,7 +138,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/release_type_text"
                     android:textSize="18sp"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
             <TextView
                     android:id="@+id/votes_text"
@@ -150,7 +150,7 @@
                     android:text="@string/votes"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
             <TextView
                     android:id="@+id/votes"
@@ -160,7 +160,7 @@
                     android:layout_alignBaseline="@id/votes_text"
                     android:paddingRight="8dp"
                     android:textSize="18sp"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
 
             <TextView
@@ -173,7 +173,7 @@
                     android:text="@string/bounty"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
             <TextView
                     android:id="@+id/bounty"
@@ -182,7 +182,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/bounty_text"
                     android:textSize="18sp"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
             <Button
                     android:id="@+id/add_vote"
@@ -203,7 +203,7 @@
                     android:text="@string/filled"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
             <TextView
                     android:id="@+id/filled_torrent"
@@ -212,7 +212,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/filled_torrent_text"
                     android:textSize="18sp"
-                    android:textColor="@color/link_text_material_dark"/>
+                    android:textColor="@color/material_deep_teal_200"/>
 
             <TextView
                     android:id="@+id/filled_user_text"
@@ -225,7 +225,7 @@
                     android:text="@string/filled_by"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/primary_text_dark_nodisable"/>
+                    android:textColor="@color/primary_text"/>
 
             <TextView
                     android:id="@+id/filled_user"
@@ -234,7 +234,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@id/filled_user_text"
                     android:textSize="18sp"
-                    android:textColor="@color/link_text_material_dark"/>
+                    android:textColor="@color/material_deep_teal_200"/>
 
         </RelativeLayout>
 
@@ -243,7 +243,7 @@
                 android:id="@+id/accept_bitrates_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#444">
+                android:background="@color/BackgroundAccentDark">
 
             <TextView
                     android:id="@+id/accept_bitrates_header"
@@ -255,8 +255,8 @@
                     android:paddingTop="12dp"
                     android:text="@string/accept_bitrates"
                     android:textSize="14sp"
-                    android:textColor="@android:color/secondary_text_dark_nodisable"
-                    android:elevation="5dp"
+                    android:textColor="@color/secondary_text"
+                    android:elevation="2dp"
                     />
 
 
@@ -268,14 +268,14 @@
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingTop="@dimen/activity_vertical_margin"
                     android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:background="#222">
+                    android:background="@color/Background">
 
                 <TextView
                         android:id="@+id/accept_bitrates"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="italic"
-                        android:textColor="@android:color/primary_text_dark_nodisable"/>
+                        android:textColor="@color/primary_text"/>
 
             </LinearLayout>
         </RelativeLayout>
@@ -285,7 +285,7 @@
                 android:id="@+id/accept_formats_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#444">
+                android:background="@color/BackgroundAccentDark">
 
             <TextView
                     android:id="@+id/accept_formats_header"
@@ -297,8 +297,8 @@
                     android:paddingTop="12dp"
                     android:text="@string/accept_formats"
                     android:textSize="14sp"
-                    android:textColor="@android:color/secondary_text_dark_nodisable"
-                    android:elevation="5dp"
+                    android:textColor="@color/secondary_text"
+                    android:elevation="2dp"
                     />
 
 
@@ -310,14 +310,14 @@
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingTop="@dimen/activity_vertical_margin"
                     android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:background="#222">
+                    android:background="@color/Background">
 
                 <TextView
                         android:id="@+id/accept_formats"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="italic"
-                        android:textColor="@android:color/primary_text_dark_nodisable"/>
+                        android:textColor="@color/primary_text"/>
 
             </LinearLayout>
         </RelativeLayout>
@@ -328,7 +328,7 @@
                 android:id="@+id/accept_media_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#444">
+                android:background="@color/BackgroundAccentDark">
 
             <TextView
                     android:id="@+id/accept_media_header"
@@ -340,8 +340,8 @@
                     android:paddingTop="12dp"
                     android:text="@string/accept_media"
                     android:textSize="14sp"
-                    android:textColor="@android:color/secondary_text_dark_nodisable"
-                    android:elevation="5dp"
+                    android:textColor="@color/secondary_text"
+                    android:elevation="2dp"
                     />
 
 
@@ -353,14 +353,14 @@
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingTop="@dimen/activity_vertical_margin"
                     android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:background="#222">
+                    android:background="@color/Background">
 
                 <TextView
                         android:id="@+id/accept_media"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="italic"
-                        android:textColor="@android:color/primary_text_dark_nodisable"/>
+                        android:textColor="@color/primary_text"/>
 
             </LinearLayout>
         </RelativeLayout>
@@ -370,7 +370,7 @@
                 android:id="@+id/tags_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#444">
+                android:background="@color/BackgroundAccentDark">
 
             <TextView
                     android:id="@+id/tags_header"
@@ -382,8 +382,8 @@
                     android:paddingTop="12dp"
                     android:text="@string/tags"
                     android:textSize="14sp"
-                    android:textColor="@android:color/secondary_text_dark_nodisable"
-                    android:elevation="5dp"
+                    android:textColor="@color/secondary_text"
+                    android:elevation="2dp"
                     />
 
 
@@ -395,14 +395,14 @@
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingTop="@dimen/activity_vertical_margin"
                     android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:background="#222">
+                    android:background="@color/Background">
 
                 <TextView
                         android:id="@+id/tags"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="italic"
-                        android:textColor="@android:color/primary_text_dark_nodisable"/>
+                        android:textColor="@color/primary_text"/>
 
             </LinearLayout>
         </RelativeLayout>

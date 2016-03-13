@@ -1,6 +1,7 @@
 package what.whatandroid.inbox;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,10 +57,10 @@ public class InboxListAdapter extends ArrayAdapter<Message> implements AdapterVi
 			new Date().getTime(), 0, DateUtils.FORMAT_ABBREV_ALL));
 
 		if (message.isUnread()){
-			holder.subject.setTextColor(getContext().getResources().getColor(android.R.color.primary_text_dark_nodisable));
+			holder.subject.setTextColor(ContextCompat.getColor(getContext(), R.color.primary_text));
 		}
 		else {
-			holder.subject.setTextColor(getContext().getResources().getColor(android.R.color.secondary_text_dark_nodisable));
+			holder.subject.setTextColor(ContextCompat.getColor(getContext(), R.color.secondary_text));
 		}
 
 		if (message.isSticky()){

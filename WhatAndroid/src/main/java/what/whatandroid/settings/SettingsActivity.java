@@ -63,6 +63,19 @@ public class SettingsActivity extends Activity implements FolderPickerDialog.Fol
 	    return preferences.getBoolean(context.getString(R.string.key_pref_light_layout), false);
     }
 
+	/**
+	 * See if light theme is enabled for the context.
+	 *
+	 * @return true if enabled, false if not
+	 */
+	public static Boolean lightThemeEnabled(Context context){
+		if (context == null){
+			return false;
+		}
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return preferences.getBoolean(context.getString(R.string.key_pref_light_theme), false);
+	}
+
 	public static String torrentDownloadPath(Context context){
 		if (context == null){
 			return "";

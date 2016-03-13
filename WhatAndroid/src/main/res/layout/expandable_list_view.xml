@@ -4,14 +4,14 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#222">
+              android:background="@color/Background">
 
     <ExpandableListView
             android:id="@+id/exp_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:dividerHeight="2dp"
-            android:divider="#222"
-            android:childDivider="#111"/>
+            android:divider="@color/Background"
+            android:childDivider="@android:color/transparent"/>
 
 </LinearLayout>

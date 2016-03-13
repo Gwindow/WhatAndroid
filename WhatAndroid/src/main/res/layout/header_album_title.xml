@@ -8,7 +8,7 @@
               android:paddingRight="16dp"
               android:paddingBottom="8dp"
               android:paddingTop="8dp"
-              android:background="#333">
+              android:background="@color/BackgroundAccent">
 
     <TextView
             android:id="@+id/title"
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@android:color/primary_text_dark_nodisable"/>
+            android:textColor="@color/primary_text"/>
 
     <TextView
             android:id="@+id/artist_a"
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:textSize="22sp"
-            android:textColor="@color/link_text_material_dark"/>
+            android:textColor="@color/material_deep_teal_200"/>
 
     <TextView
             android:id="@+id/artist_b"
@@ -32,6 +32,6 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:textSize="22sp"
-            android:textColor="@color/link_text_material_dark"/>
+            android:textColor="@color/material_deep_teal_200"/>
 
 </LinearLayout>

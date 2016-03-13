@@ -6,14 +6,14 @@
 
     <item
             android:id="@+id/action_notifications"
-            android:icon="@drawable/ic_eye_off"
+            android:icon="@drawable/ic_visibility_24dp"
             android:title="@string/toggle_nofications"
             android:orderInCategory="0"
             app:showAsAction="always"/>
 
     <item
             android:id="@+id/action_bookmark"
-            android:icon="@drawable/ic_bookmark_off"
+            android:icon="@drawable/ic_bookmark_24dp"
             android:title="@string/bookmark"
             android:orderInCategory="10"
             app:showAsAction="always"/>

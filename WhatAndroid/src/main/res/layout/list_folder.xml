@@ -7,20 +7,21 @@
               android:paddingBottom="8dp"
               android:paddingLeft="16dp"
               android:paddingRight="16dp"
+              android:background="@color/BackgroundAccent"
               android:paddingTop="8dp">
 
     <what.whatandroid.views.TypeFacedTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fa_folder_o"
-        android:textColor="@android:color/primary_text_dark_nodisable"
+        android:textColor="@color/primary_text"
         app:font="@string/fontawesome_font"/>
 
     <TextView
         android:id="@+id/folder_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/primary_text_dark_nodisable"
+        android:textColor="@color/primary_text"
         android:textSize="14sp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"/>

@@ -107,7 +107,7 @@ public class NavigationDrawerFragment extends Fragment {
 			getString(R.string.barcode_lookup)
 		};
 		ArrayList<String> navElems = new ArrayList<String>(Arrays.asList(navs));
-		adapter = new NavDrawerAdapter(getActivity(), android.R.layout.simple_list_item_1,
+		adapter = new NavDrawerAdapter(getActivity(), R.layout.list_navigation_entry,
 			android.R.id.text1, navElems);
 
 		listView.setAdapter(adapter);
