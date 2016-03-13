@@ -14,7 +14,7 @@
             android:textColor="@color/primary_text"
             android:background="@color/Background"
             app:pstsIndicatorColor="?attr/colorAccent"
-            app:pstsUnderlineColor="@color/BackgroundAccent"
+            app:pstsUnderlineColor="@color/Background"
             app:pstsDividerColor="#555"
             app:pstsShouldExpand="true"/>
 
