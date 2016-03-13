@@ -25,7 +25,7 @@
                 android:paddingBottom="12dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:elevation="2dp">
+                android:elevation="1dp">
 
             <TextView
                     android:id="@+id/username"
