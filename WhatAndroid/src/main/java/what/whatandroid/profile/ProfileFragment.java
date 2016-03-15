@@ -111,8 +111,8 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
      */
     private RelativeLayout ranksView;
     private RelativeLayout statsView;
-    private ViewPager snatchesView;
-    private ViewPager uploadsView;
+    private WrappingViewPager snatchesView;
+    private WrappingViewPager uploadsView;
 
 
     /**
@@ -234,8 +234,8 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
 
         ranksView = (RelativeLayout) view.findViewById(R.id.user_ranks);
         statsView = (RelativeLayout) view.findViewById(R.id.user_stats);
-        snatchesView = (ViewPager) view.findViewById(R.id.recent_snatches);
-        uploadsView = (ViewPager) view.findViewById(R.id.recent_uploads);
+        snatchesView = (WrappingViewPager) view.findViewById(R.id.recent_snatches);
+        uploadsView = (WrappingViewPager) view.findViewById(R.id.recent_uploads);
 
         toggleStatsBtn = (ImageView) view.findViewById(R.id.toggle_stats);
         toggleRanksBtn = (ImageView) view.findViewById(R.id.toggle_ranks);
