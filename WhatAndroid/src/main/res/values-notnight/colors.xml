@@ -146,7 +146,7 @@
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
     <color name="Background">@color/background_material_light</color>
-    <color name="BackgroundAccent">@color/background_floating_material_light</color>
+    <color name="BackgroundAccent">@color/material_grey_100</color>
     <color name="BackgroundAccentDark">@color/material_grey_300</color>
     <color name="transparent">#00000000</color>
     <color name="dialog_bg">#cc000000</color>

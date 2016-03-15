@@ -123,6 +123,7 @@ public class RequestSearchFragment extends Fragment implements View.OnClickListe
 				startSearch(searchTerms, searchTags, 1);
 			}
 		}
+
 		return view;
 	}
 

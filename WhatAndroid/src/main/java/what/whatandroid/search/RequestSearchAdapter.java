@@ -1,6 +1,8 @@
 package what.whatandroid.search;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,9 +65,11 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 			holder.votes = (TextView)convertView.findViewById(R.id.votes);
 			holder.bounty = (TextView)convertView.findViewById(R.id.bounty);
 			holder.created = (TextView)convertView.findViewById(R.id.created);
+			holder.rootView = (CardView)convertView.findViewById(R.id.card_root_view);
 			convertView.setTag(holder);
 		}
 		Request r = getItem(position);
+		holder.rootView.setBackgroundColor(r.filled() ? ContextCompat.getColor(getContext(), R.color.BackgroundAccentDark) : ContextCompat.getColor(getContext(), R.color.Background));
 		holder.albumName.setText(r.getTitle());
 		holder.votes.setText(r.getVoteCount().toString());
 		holder.bounty.setText(Utils.toHumanReadableSize(r.getBounty().longValue()));
@@ -119,5 +123,6 @@ public class RequestSearchAdapter extends ArrayAdapter<Request> implements Adapt
 		public ProgressBar spinner;
 		public View artContainer;
 		public TextView artistName, albumName, year, votes, bounty, created;
+		public CardView rootView;
 	}
 }

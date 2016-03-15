@@ -192,7 +192,7 @@
                     android:textColor="@color/primary_text"
                     android:textSize="18sp"/>
 
-                <TextView
+            <TextView
                     android:id="@+id/paranoia_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -274,43 +274,43 @@
                     android:textColor="@color/primary_text"
                     android:textSize="18sp"/>
 
-                <TextView
-                        android:id="@+id/data_uploaded_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/data_uploaded"
-                        android:layout_alignBaseline="@id/data_uploaded_text"
-                        android:textColor="@color/primary_text"
-                        android:textSize="18sp"/>
+            <TextView
+                    android:id="@+id/data_uploaded_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/data_uploaded"
+                    android:layout_alignBaseline="@id/data_uploaded_text"
+                    android:textColor="@color/primary_text"
+                    android:textSize="18sp"/>
 
 
-                <TextView
-                        android:id="@+id/data_downloaded_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@id/data_uploaded_text"
-                        android:text="@string/data_downloaded"
-                        android:layout_marginTop="16dp"
-                        android:textColor="@color/accent"
-                        android:textSize="18sp"/>
+            <TextView
+                    android:id="@+id/data_downloaded_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/data_uploaded_text"
+                    android:text="@string/data_downloaded"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/accent"
+                    android:textSize="18sp"/>
 
-                <TextView
-                        android:id="@+id/data_downloaded"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignBaseline="@id/data_downloaded_text"
-                        android:textColor="@color/primary_text"
-                        android:textSize="18sp"/>
-                <TextView
-                        android:id="@+id/data_downloaded_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/data_downloaded"
-                        android:layout_alignBaseline="@id/data_downloaded_text"
-                        android:textColor="@color/primary_text"
-                        android:textSize="18sp"/>
+            <TextView
+                    android:id="@+id/data_downloaded"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBaseline="@id/data_downloaded_text"
+                    android:textColor="@color/primary_text"
+                    android:textSize="18sp"/>
+            <TextView
+                    android:id="@+id/data_downloaded_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/data_downloaded"
+                    android:layout_alignBaseline="@id/data_downloaded_text"
+                    android:textColor="@color/primary_text"
+                    android:textSize="18sp"/>
 
             <TextView
                     android:id="@+id/torrents_uploaded_text"
@@ -331,14 +331,14 @@
                     android:layout_alignBaseline="@id/torrents_uploaded_text"
                     android:textColor="@color/primary_text"
                     android:textSize="18sp"/>
-                <TextView
-                        android:id="@+id/torrents_uploaded_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/torrents_uploaded"
-                        android:layout_alignBaseline="@id/torrents_uploaded_text"
-                        android:textColor="@color/primary_text"
-                        android:textSize="18sp"/>
+            <TextView
+                    android:id="@+id/torrents_uploaded_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/torrents_uploaded"
+                    android:layout_alignBaseline="@id/torrents_uploaded_text"
+                    android:textColor="@color/primary_text"
+                    android:textSize="18sp"/>
 
 
             <TextView
@@ -361,14 +361,14 @@
                     android:textColor="@color/primary_text"
                     android:textSize="18sp"/>
 
-                <TextView
-                        android:id="@+id/requests_filled_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/requests_filled"
-                        android:layout_alignBaseline="@id/requests_filled_text"
-                        android:textColor="@color/primary_text"
-                        android:textSize="18sp"/>
+            <TextView
+                    android:id="@+id/requests_filled_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/requests_filled"
+                    android:layout_alignBaseline="@id/requests_filled_text"
+                    android:textColor="@color/primary_text"
+                    android:textSize="18sp"/>
 
             <TextView
                     android:id="@+id/bounty_spent_text"
@@ -390,14 +390,14 @@
                     android:textColor="@color/primary_text"
                     android:textSize="18sp"/>
 
-                <TextView
-                        android:id="@+id/bounty_spent_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/bounty_spent"
-                        android:layout_alignBaseline="@id/bounty_spent_text"
-                        android:textColor="@color/primary_text"
-                        android:textSize="18sp"/>
+            <TextView
+                    android:id="@+id/bounty_spent_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/bounty_spent"
+                    android:layout_alignBaseline="@id/bounty_spent_text"
+                    android:textColor="@color/primary_text"
+                    android:textSize="18sp"/>
 
             <TextView
                     android:id="@+id/posts_made_text"
@@ -419,14 +419,14 @@
                     android:textColor="@color/primary_text"
                     android:textSize="18sp"/>
 
-                <TextView
-                        android:id="@+id/posts_made_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/posts_made"
-                        android:layout_alignBaseline="@id/posts_made_text"
-                        android:textColor="@color/primary_text"
-                        android:textSize="18sp"/>
+            <TextView
+                    android:id="@+id/posts_made_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/posts_made"
+                    android:layout_alignBaseline="@id/posts_made_text"
+                    android:textColor="@color/primary_text"
+                    android:textSize="18sp"/>
 
             <TextView
                     android:id="@+id/artists_added_text"
@@ -448,14 +448,14 @@
                     android:textColor="@color/primary_text"
                     android:textSize="18sp"/>
 
-                <TextView
-                        android:id="@+id/artists_added_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/artists_added"
-                        android:layout_alignBaseline="@id/artists_added_text"
-                        android:textColor="@color/primary_text"
-                        android:textSize="18sp"/>
+            <TextView
+                    android:id="@+id/artists_added_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/artists_added"
+                    android:layout_alignBaseline="@id/artists_added_text"
+                    android:textColor="@color/primary_text"
+                    android:textSize="18sp"/>
 
             <TextView
                     android:id="@+id/overall_text"
@@ -482,7 +482,7 @@
         <RelativeLayout
                 android:id="@+id/snatches_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/BackgroundAccent"
                 android:layout_marginTop="3dp"
                 android:elevation="2dp"
@@ -518,12 +518,12 @@
                         android:layout_alignParentEnd="true" android:layout_alignParentTop="true"/>
             </RelativeLayout>
 
-            <android.support.v4.view.ViewPager
+            <what.whatandroid.profile.WrappingViewPager
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/recent_snatches"
                     android:visibility="gone"
                     android:layout_width="match_parent"
-                    android:layout_height="196dp"
+                    android:layout_height="match_parent"
                     android:layout_below="@id/snatches_header_container"
                     android:paddingBottom="8dp"
                     android:background="@color/Background"/>
@@ -532,7 +532,7 @@
         <RelativeLayout
                 android:id="@+id/uploads_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:elevation="2dp"
                 android:layout_marginBottom="16dp"
@@ -568,12 +568,12 @@
                         android:layout_alignParentEnd="true" android:layout_alignParentTop="true"/>
             </RelativeLayout>
 
-            <android.support.v4.view.ViewPager
+            <what.whatandroid.profile.WrappingViewPager
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:visibility="gone"
                     android:id="@+id/recent_uploads"
                     android:layout_width="match_parent"
-                    android:layout_height="196dp"
+                    android:layout_height="match_parent"
                     android:layout_below="@id/uploads_header_container"
                     android:paddingBottom="8dp"
                     android:clickable="false"
