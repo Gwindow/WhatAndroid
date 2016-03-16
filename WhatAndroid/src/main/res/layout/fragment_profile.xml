@@ -525,7 +525,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@id/snatches_header_container"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="10dp"
                     android:background="@color/Background"/>
         </RelativeLayout>
 
@@ -575,7 +575,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@id/uploads_header_container"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="10dp"
                     android:clickable="false"
                     android:focusable="false"
                     android:longClickable="false"
