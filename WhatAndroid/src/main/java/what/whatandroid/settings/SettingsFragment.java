@@ -45,6 +45,7 @@ public class SettingsFragment extends PreferenceFragment {
             String versionName = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
             VersionNumber versionNumber = new VersionNumber(versionName);
             version.setTitle(versionNumber.toString());
+            getActivity().setTheme(R.style.AppTheme);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
