@@ -51,7 +51,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/art_container"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     android:textColor="@color/primary_text"
                     app:font="@string/roboto_black"/>
 
@@ -63,8 +63,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/username"
                     android:textSize="14sp"
-                    android:textColor="@color/secondary_text"
-                    android:textAllCaps="true"/>
+                    android:textColor="@color/secondary_text"/>
 
             <TextView
                     android:id="@+id/joined"
