@@ -14,8 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             android:background="@color/Background"
             android:descendantFocusability="blocksDescendants">
 
@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:textColor="@color/primary_text"
-                    android:textSize="22sp"/>
+                    android:textSize="18sp"/>
 
             <TextView
                     android:id="@+id/author_name_text"
@@ -41,7 +41,7 @@
                     android:layout_below="@id/thread_name"
                     android:textColor="@color/secondary_text"
                     android:text="@string/author"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp"/>
 
             <TextView
                     android:id="@+id/author_name"
@@ -58,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/author_name_text"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColor="@color/secondary_text"/>
 
             <TextView
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/replies"
                     android:text="@string/last_post_by"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColor="@color/secondary_text"/>
 
             <!-- TODO: clickable to jump to profile? -->
@@ -78,7 +78,7 @@
                     android:layout_toRightOf="@id/last_post_text"
                     android:layout_alignBaseline="@id/last_post_text"
                     android:paddingLeft="4dp"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColor="@color/secondary_text"/>
 
             <TextView
@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/last_post_text"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColor="@color/secondary_text"/>
 
         </RelativeLayout>

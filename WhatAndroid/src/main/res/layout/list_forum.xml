@@ -14,16 +14,16 @@
                     android:layout_height="match_parent"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="8dp"
+                    android:paddingTop="4dp"
                     android:background="@color/Background"
-                    android:paddingBottom="8dp">
+                    android:paddingBottom="4dp">
 
         <TextView
                 android:id="@+id/forum_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/primary_text"
-                android:textSize="22sp"/>
+                android:textSize="18sp"/>
 
         <TextView
                 android:id="@+id/topics_text"
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/last_post_text"
                 android:textColor="@color/primary_text"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
 
         <TextView
                 android:id="@+id/last_post_by_text"
