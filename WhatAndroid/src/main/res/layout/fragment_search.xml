@@ -8,7 +8,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#222">
+        android:background="@color/Background">
 
     <RelativeLayout
             android:id="@+id/search_header"
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:dividerHeight="2dp"
-                android:divider="#333"/>
+                android:divider="@color/BackgroundAccent"/>
 
         <!-- The no content notice will only be shown if there's no content -->
         <TextView
@@ -65,7 +65,7 @@
                 android:layout_below="@id/list"
                 android:paddingTop="16dp"
                 android:layout_centerHorizontal="true"
-                android:textColor="@android:color/secondary_text_dark_nodisable"
+                android:textColor="@color/secondary_text"
                 android:textSize="14sp"
                 android:textAllCaps="true"
                 android:visibility="gone"/>

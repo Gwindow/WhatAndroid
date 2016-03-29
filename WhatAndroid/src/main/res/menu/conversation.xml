@@ -5,7 +5,7 @@
 
     <item
             android:id="@+id/action_reply"
-            android:icon="@drawable/ic_action_reply"
+            android:icon="@drawable/ic_reply_24dp"
             android:title="@string/reply"
             android:orderInCategory="0"
             app:showAsAction="ifRoom"/>

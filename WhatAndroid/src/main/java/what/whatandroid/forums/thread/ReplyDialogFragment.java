@@ -127,11 +127,11 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 		postSubject = (EditText)view.findViewById(R.id.subject);
 		preview = (TextView)view.findViewById(R.id.post_preview);
 		Button discard = (Button)view.findViewById(R.id.discard);
-		Button reply = (Button)view.findViewById(R.id.reply);
+		Button send = (Button)view.findViewById(R.id.send);
 		renderPreview = (Button)view.findViewById(R.id.render_preview);
 		preview.setOnClickListener(this);
 		discard.setOnClickListener(this);
-		reply.setOnClickListener(this);
+		send.setOnClickListener(this);
 		renderPreview.setOnClickListener(this);
 		getDialog().setTitle("Compose Reply");
 
@@ -189,7 +189,7 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 				listener.discard();
 				getDialog().dismiss();
 				break;
-			case R.id.reply:
+			case R.id.send:
 				postReply();
 				break;
 			//We want to toggle the preview state here, eg. show preview if we aren't

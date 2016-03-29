@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/BackgroundAccent"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
@@ -14,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/delete"
-            android:textColor="@android:color/primary_text_dark_nodisable"
+            android:textColor="@color/primary_text"
             android:textSize="18sp"
             android:textStyle="bold"/>
 
@@ -24,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/barcode_title"
             android:textSize="18sp"
-            android:textColor="@android:color/secondary_text_dark_nodisable"/>
+            android:textColor="@color/secondary_text"/>
 
     <ImageButton
             android:id="@+id/delete"
@@ -33,7 +34,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_action_discard"
+            android:src="@drawable/ic_delete_24dp"
             android:contentDescription="@string/delete"
             style="?android:attr/borderlessButtonStyle"/>
 
@@ -43,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_action_search"
+            android:src="@drawable/ic_search_24dp"
             android:contentDescription="@string/load_terms"
             style="?android:attr/borderlessButtonStyle"/>
 
@@ -61,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/barcode_secondary"
             android:textSize="18sp"
-            android:textColor="@android:color/secondary_text_dark_nodisable"
+            android:textColor="@color/secondary_text"
             android:text="@string/scanned"/>
 
     <TextView
@@ -72,7 +73,7 @@
             android:layout_toRightOf="@id/date_scanned_text"
             android:paddingLeft="4dp"
             android:textSize="18sp"
-            android:textColor="@android:color/secondary_text_dark_nodisable"/>
+            android:textColor="@color/secondary_text"/>
 
     <Button
             android:id="@+id/search_torrents"
@@ -84,11 +85,11 @@
             android:layout_marginTop="8dp"
             android:paddingLeft="4dp"
             android:paddingRight="12dp"
-            android:drawableLeft="@drawable/ic_action_search"
+            android:drawableLeft="@drawable/ic_search_24dp"
             android:drawablePadding="4dp"
             android:gravity="left|center_vertical"
             android:text="@string/torrents"
-            android:textColor="@android:color/secondary_text_dark_nodisable"
+            android:textColor="@color/secondary_text"
             android:visibility="gone"/>
 
     <Button
@@ -101,11 +102,11 @@
             android:layout_marginTop="8dp"
             android:paddingLeft="4dp"
             android:paddingRight="12dp"
-            android:drawableLeft="@drawable/ic_action_search"
+            android:drawableLeft="@drawable/ic_search_24dp"
             android:drawablePadding="4dp"
             android:gravity="left|center_vertical"
             android:text="@string/requests"
-            android:textColor="@android:color/secondary_text_dark_nodisable"
+            android:textColor="@color/secondary_text"
             android:visibility="gone"/>
 
 </RelativeLayout>

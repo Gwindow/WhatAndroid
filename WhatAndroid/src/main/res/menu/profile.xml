@@ -8,7 +8,7 @@
 
     <item
             android:id="@+id/action_refresh"
-            android:icon="@drawable/ic_action_refresh"
+            android:icon="@drawable/ic_refresh_24dp"
             android:title="@string/refresh"
             android:orderInCategory="10"
             app:showAsAction="always"/>
@@ -16,7 +16,7 @@
     <!-- We don't show the send message item until we've loaded the user -->
     <item
             android:id="@+id/action_message"
-            android:icon="@drawable/ic_action_new_message"
+            android:icon="@drawable/ic_mail_24dp"
             android:title="@string/send_message"
             android:orderInCategory="20"
             app:showAsAction="ifRoom"

@@ -12,14 +12,14 @@
         android:padding="16dp"
         android:visibility="gone"
         android:textSize="18sp"
-        android:textColor="@android:color/primary_text_dark_nodisable"
+        android:textColor="@color/primary_text"
         android:background="@drawable/search_border_line"/>
 
     <ListView
         android:id="@+id/poll_answers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="#333"
+        android:divider="@color/BackgroundAccent"
         android:dividerHeight="2dp"
         android:choiceMode="singleChoice"
         android:listSelector="@drawable/poll_selector"/>

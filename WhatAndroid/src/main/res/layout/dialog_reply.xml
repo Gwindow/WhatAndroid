@@ -24,16 +24,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/discard"
-                    android:drawableLeft="@drawable/ic_action_cancel"
+                    android:drawableLeft="@drawable/ic_clear_24dp"
                     android:layout_weight="1"
                     android:layout_marginRight="4dp"/>
 
             <Button
-                    android:id="@+id/reply"
+                    android:id="@+id/send"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/reply"
-                    android:drawableRight="@drawable/ic_action_send_now"
+                    android:text="@string/send"
+                    android:drawableRight="@drawable/ic_send_24dp"
                     android:layout_weight="1"
                     android:layout_marginLeft="4dp"/>
 
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:visibility="gone"
-                android:textColor="@android:color/primary_text_dark_nodisable"/>
+                android:textColor="@color/primary_text"/>
 
         <Button
                 android:id="@+id/render_preview"

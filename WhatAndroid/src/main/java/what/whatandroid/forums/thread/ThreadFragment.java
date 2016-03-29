@@ -179,10 +179,10 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 				viewPoll.setVisible(true);
 			}
 			if (subscribed){
-				toggleSubscription.setIcon(R.drawable.ic_eye_on);
+				toggleSubscription.setIcon(R.drawable.ic_visibility_24dp);
 			}
 			else {
-				toggleSubscription.setIcon(R.drawable.ic_eye_off);
+				toggleSubscription.setIcon(R.drawable.ic_visibility_off_24dp);
 			}
 		}
         if(reply != null) {
@@ -301,10 +301,10 @@ public class ThreadFragment extends Fragment implements OnLoggedInCallback,
 		protected void onPreExecute(){
 			//Display action as successful while we load
 			if (subscribed){
-				toggleSubscription.setIcon(R.drawable.ic_eye_off);
+				toggleSubscription.setIcon(R.drawable.ic_visibility_off_24dp);
 			}
 			else {
-				toggleSubscription.setIcon(R.drawable.ic_eye_on);
+				toggleSubscription.setIcon(R.drawable.ic_visibility_24dp);
 			}
 			if (isAdded()){
 				getActivity().setProgressBarIndeterminate(true);

@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="12dp"
-              android:paddingBottom="12dp"
-              android:background="@drawable/poll_selector">
-
-    <TextView
-            android:id="@+id/title"
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/card_root_view"
+        android:paddingBottom="4dp"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardUseCompatPadding="true">
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@android:color/primary_text_dark_nodisable"/>
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:background="@color/Background">
 
-    <ProgressBar
-            android:id="@+id/vote_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/primary_text"/>
 
-</LinearLayout>
+        <ProgressBar
+                android:id="@+id/vote_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

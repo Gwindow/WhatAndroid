@@ -1,6 +1,7 @@
 package what.whatandroid.forums.forum;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -43,10 +44,10 @@ public class ForumListAdapterLight extends ForumListAdapter {
         holder.jumpToLastRead.setOnClickListener(this);
 
         if (thread.isRead()){
-            holder.name.setTextColor(getContext().getResources().getColor(android.R.color.secondary_text_dark_nodisable));
+            holder.name.setTextColor(ContextCompat.getColor(getContext(), R.color.secondary_text));
         }
         else {
-            holder.name.setTextColor(getContext().getResources().getColor(android.R.color.primary_text_dark_nodisable));
+            holder.name.setTextColor(ContextCompat.getColor(getContext(), R.color.primary_text));
         }
 
         if (thread.isSticky()){
