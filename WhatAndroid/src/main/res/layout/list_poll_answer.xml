@@ -16,7 +16,7 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
-            android:background="@drawable/poll_selector">
+            android:background="@color/Background">
 
         <TextView
                 android:id="@+id/title"
