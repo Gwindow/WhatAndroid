@@ -14,6 +14,7 @@ import com.bumptech.glide.request.target.Target;
 
 import api.soup.MySoup;
 import what.whatandroid.imgloader.ImageLoadFailTracker;
+import what.whatandroid.settings.SettingsActivity;
 
 /**
  * Created by fatih on 11.9.2015.
@@ -31,6 +32,13 @@ public class WhatApplication extends Application {
 		super.onCreate();
 
 		initSoup(DEFAULT_SITE);
+		if (SettingsActivity.lightThemeEnabled(getApplicationContext())) {
+			AppCompatDelegate.setDefaultNightMode(
+					AppCompatDelegate.MODE_NIGHT_NO);
+		} else {
+			AppCompatDelegate.setDefaultNightMode(
+					AppCompatDelegate.MODE_NIGHT_YES);
+		}
 	}
 
 	/**
