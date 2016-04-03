@@ -9,16 +9,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.text.format.DateUtils;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
-
-import java.util.Date;
-
 import api.cli.Utils;
 import api.index.Index;
 import api.soup.MySoup;
@@ -33,6 +25,8 @@ import what.whatandroid.callbacks.OnLoggedInCallback;
 import what.whatandroid.callbacks.SetTitleCallback;
 import what.whatandroid.forums.thread.ReplyDialogFragment;
 import what.whatandroid.settings.SettingsActivity;
+
+import java.util.Date;
 
 /**
  * Fragment to display a user's profile
@@ -256,8 +250,8 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
                 }
             }
         });
+        toggleStatsBtn.setImageResource(R.drawable.ic_expand_more_24dp);
 
-//   TODO:     ranks and snatches aren't toggling'
 
         toggleRanks = (RelativeLayout) view.findViewById(R.id.ranks_header_container);
         toggleRanks.setOnClickListener(new View.OnClickListener() {
@@ -272,6 +266,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
                 }
             }
         });
+        toggleRanksBtn.setImageResource(R.drawable.ic_expand_more_24dp);
 
         toggleSnatches = (RelativeLayout) view.findViewById(R.id.snatches_header_container);
         toggleSnatches.setOnClickListener(new View.OnClickListener() {
@@ -286,6 +281,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
                 }
             }
         });
+        toggleSnatchesBtn.setImageResource(R.drawable.ic_expand_more_24dp);
 
         toggleUploads = (RelativeLayout) view.findViewById(R.id.uploads_header_container);
         toggleUploads.setOnClickListener(new View.OnClickListener() {
@@ -300,6 +296,7 @@ public class ProfileFragment extends Fragment implements OnLoggedInCallback,
                 }
             }
         });
+        toggleUploadsBtn.setImageResource(R.drawable.ic_expand_more_24dp);
 
         snatchesAdapter = new RecentTorrentPagerAdapter(getChildFragmentManager());
         uploadsAdapter = new RecentTorrentPagerAdapter(getChildFragmentManager());
