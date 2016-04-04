@@ -5,22 +5,17 @@ import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
+import android.widget.*;
 import api.subscriptions.ForumThread;
 import api.subscriptions.Subscriptions;
 import api.util.Tuple;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewForumCallbacks;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Adapter for displaying the list of subscriptions,
@@ -114,6 +109,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 			holder = new ItemViewHolder();
 			holder.name = (TextView) convertView.findViewById(R.id.title);
 			holder.unsubscribe = (ImageButton) convertView.findViewById(R.id.unsubscribe);
+			holder.unsubscribe.setImageResource(R.drawable.ic_visibility_24dp);
 			convertView.setTag(holder);
 		}
 		ForumThread thread = (ForumThread) getItem(position);

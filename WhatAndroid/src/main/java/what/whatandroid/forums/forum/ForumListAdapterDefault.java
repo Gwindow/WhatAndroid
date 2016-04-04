@@ -5,16 +5,14 @@ import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.Date;
-
 import api.forum.forum.ForumThread;
 import api.soup.MySoup;
 import what.whatandroid.R;
+
+import java.util.Date;
 
 /**
  * Adapter for showing a listing of forum threads, default version
@@ -40,8 +38,12 @@ public class ForumListAdapterDefault extends ForumListAdapter {
 			holder.lastPostAuthor = (TextView)convertView.findViewById(R.id.last_post_username);
 			holder.lastPostTime = (TextView)convertView.findViewById(R.id.last_post_time);
 			holder.jumpToLastRead = (ImageButton)convertView.findViewById(R.id.go_to_last_read);
+			holder.jumpToLastRead.setImageResource(R.drawable.ic_forward_24dp);
 			holder.sticky = (ImageView) convertView.findViewById(R.id.sticky_thread);
+			holder.sticky.setImageResource(R.drawable.ic_star_24dp);
 			holder.locked = (ImageView) convertView.findViewById(R.id.locked_thread);
+			holder.locked.setImageResource(R.drawable.ic_lock_24dp);
+
 			convertView.setTag(holder);
 		}
 

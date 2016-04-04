@@ -33,7 +33,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
-                android:src="@drawable/ic_visibility_24dp"
                 android:contentDescription="@string/unsubscribe"
                 android:layout_alignParentRight="true"
                 style="?android:attr/borderlessButtonStyle"/>

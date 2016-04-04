@@ -10,12 +10,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.Date;
-
 import api.inbox.inbox.Message;
 import what.whatandroid.R;
 import what.whatandroid.callbacks.ViewConversationCallbacks;
+
+import java.util.Date;
 
 /**
  * Adapter for displaying a list of conversations in the inbox
@@ -48,6 +47,7 @@ public class InboxListAdapter extends ArrayAdapter<Message> implements AdapterVi
 			holder.sender = (TextView)convertView.findViewById(R.id.sender);
 			holder.date = (TextView)convertView.findViewById(R.id.date);
 			holder.sticky = (ImageView)convertView.findViewById(R.id.sticky_thread);
+			holder.sticky.setImageResource(R.drawable.ic_star_24dp);
 			convertView.setTag(holder);
 		}
 		Message message = getItem(position);

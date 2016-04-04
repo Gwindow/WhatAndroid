@@ -24,7 +24,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_bookmark_24dp"
                 android:contentDescription="@string/remove_bookmark"
                 style="?android:attr/borderlessButtonStyle"/>
 

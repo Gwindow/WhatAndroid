@@ -43,6 +43,7 @@ public class ArtistBookmarkAdapter extends ArrayAdapter<Artist> implements Adapt
 			holder = new ViewHolder();
 			holder.title = (TextView)convertView.findViewById(R.id.title);
 			holder.removeBookmark = (ImageButton)convertView.findViewById(R.id.remove_bookmark);
+			holder.removeBookmark.setImageResource(R.drawable.ic_bookmark_24dp);
 			//Hide unused views
 			View year = convertView.findViewById(R.id.year);
 			View tags = convertView.findViewById(R.id.tags);
