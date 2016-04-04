@@ -5,10 +5,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import what.whatandroid.R;
 import what.whatandroid.comments.WhatBBParser;
@@ -127,7 +124,10 @@ public class ReplyDialogFragment extends DialogFragment implements View.OnClickL
 		postSubject = (EditText)view.findViewById(R.id.subject);
 		preview = (TextView)view.findViewById(R.id.post_preview);
 		Button discard = (Button)view.findViewById(R.id.discard);
+		discard.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_clear_24dp, 0);
 		Button send = (Button)view.findViewById(R.id.send);
+		send.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_send_24dp, 0);
+
 		renderPreview = (Button)view.findViewById(R.id.render_preview);
 		preview.setOnClickListener(this);
 		discard.setOnClickListener(this);

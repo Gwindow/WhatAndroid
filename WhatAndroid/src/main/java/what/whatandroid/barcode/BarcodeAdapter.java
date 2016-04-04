@@ -53,7 +53,9 @@ public class BarcodeAdapter extends ArrayAdapter<Barcode> {
 			holder.delete = (ImageButton)convertView.findViewById(R.id.delete);
 			holder.delete.setImageResource(R.drawable.ic_search_24dp);
 			holder.searchTorrents = (Button)convertView.findViewById(R.id.search_torrents);
+			holder.searchTorrents.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_search_24dp, 0);
 			holder.searchRequests = (Button)convertView.findViewById(R.id.search_requests);
+			holder.searchRequests.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_search_24dp, 0);
 			holder.loadTermsListener = new LoadTermsListener(holder);
 			holder.deleteClickListener = new DeleteClickListener();
 			holder.torrentsListener = new SearchClickListener(SearchActivity.TORRENT);
