@@ -5,6 +5,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/card_root_view"
+        card_view:cardBackgroundColor="@color/BackgroundAccent"
         android:paddingBottom="4dp"
         card_view:cardCornerRadius="4dp"
         card_view:cardUseCompatPadding="true">
@@ -51,7 +52,6 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/ic_reply_24dp"
                     style="?android:attr/borderlessButtonStyle"
                     android:contentDescription="@string/reply"
                     android:visibility="gone"/>
