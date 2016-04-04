@@ -35,9 +35,9 @@ public class ForumListAdapterLight extends ForumListAdapter {
             holder.jumpToLastRead = (ImageButton)convertView.findViewById(R.id.go_to_last_read);
             holder.jumpToLastRead.setImageResource(R.drawable.ic_forward_24dp);
             holder.sticky = (ImageView) convertView.findViewById(R.id.sticky_thread);
-            holder.jumpToLastRead.setImageResource(R.drawable.ic_star_24dp);
+            holder.sticky.setImageResource(R.drawable.ic_star_24dp);
             holder.locked = (ImageView) convertView.findViewById(R.id.locked_thread);
-            holder.jumpToLastRead.setImageResource(R.drawable.ic_lock_24dp);
+            holder.locked.setImageResource(R.drawable.ic_lock_24dp);
             convertView.setTag(holder);
         }
 
