@@ -45,7 +45,6 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:contentDescription="@string/new_folder"
-            android:src="@drawable/ic_add_24dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"/>
 
