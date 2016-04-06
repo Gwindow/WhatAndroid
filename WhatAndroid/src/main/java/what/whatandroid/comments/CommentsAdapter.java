@@ -86,10 +86,10 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements View
 			holder.commentText = (TextView)convertView.findViewById(R.id.comment_text);
 			holder.artContainer = convertView.findViewById(R.id.art_container);
 			holder.image = (ImageView)convertView.findViewById(R.id.image);
-			holder.image.setImageResource(R.drawable.ic_reply_24dp);
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
 			holder.userClickListener = new UserClickListener();
 			holder.quote = (ImageButton) convertView.findViewById(R.id.reply_quote);
+			holder.quote.setImageResource(R.drawable.ic_reply_24dp);
 
 			View header = convertView.findViewById(R.id.user_header);
 			header.setOnClickListener(holder.userClickListener);
