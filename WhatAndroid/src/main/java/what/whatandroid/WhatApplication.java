@@ -2,6 +2,7 @@ package what.whatandroid;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -25,7 +26,7 @@ public class WhatApplication extends Application {
 
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-	public static final String DEFAULT_SITE = "10.0.0.2:8080/";
+	public static final String DEFAULT_SITE = "";
 
 	@Override
 	public void onCreate() {
