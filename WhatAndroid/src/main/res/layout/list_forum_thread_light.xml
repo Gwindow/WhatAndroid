@@ -7,6 +7,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/card_root_view"
         android:paddingBottom="4dp"
+        card_view:cardBackgroundColor="@color/BackgroundAccent"
         card_view:cardCornerRadius="4dp"
         card_view:cardUseCompatPadding="true">
     <RelativeLayout
@@ -17,6 +18,7 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:background="@color/BackgroundAccent"
             android:descendantFocusability="blocksDescendants">
 
         <RelativeLayout
@@ -49,9 +51,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_star_24dp"
                     android:contentDescription="@string/sticky_thread"
-                    android:tint="@color/LightGrey"
+                    android:tint="@color/accent"
                     android:visibility="gone"/>
 
             <ImageView
@@ -59,9 +60,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_lock_24dp"
                     android:contentDescription="@string/locked_thread"
-                    android:tint="@color/LightGrey"
+                    android:tint="@color/accent"
                     android:visibility="gone"/>
 
             <ImageButton
@@ -69,8 +69,8 @@
                     android:layout_width="32dp"
                     android:layout_height="26dp"
                     android:contentDescription="@string/go_to_last_read"
-                    android:src="@drawable/ic_forward_24dp"
                     style="?android:attr/borderlessButtonStyle"
+                    android:tint="@color/accent"
                     android:layout_marginTop="2dp"/>
 
         </LinearLayout>

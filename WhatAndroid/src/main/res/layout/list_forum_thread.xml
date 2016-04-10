@@ -6,6 +6,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/card_root_view"
+        card_view:cardBackgroundColor="@color/BackgroundAccent"
         card_view:cardCornerRadius="4dp"
         card_view:cardUseCompatPadding="true">
     <RelativeLayout
@@ -102,7 +103,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_star_24dp"
                     android:contentDescription="@string/sticky_thread"
                     android:tint="@color/accent"
                     android:visibility="gone"/>
@@ -112,7 +112,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_lock_24dp"
                     android:contentDescription="@string/locked_thread"
                     android:tint="@color/accent"
                     android:visibility="gone"/>
@@ -122,7 +121,6 @@
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/go_to_last_read"
-                    android:src="@drawable/ic_forward_24dp"
                     android:tint="@color/accent"
                     style="?android:attr/borderlessButtonStyle"/>
 

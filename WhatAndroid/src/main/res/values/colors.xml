@@ -28,8 +28,6 @@
     <color name="Coral">#FF7F50</color>
     <color name="HotPink">#FF69B4</color>
     <color name="Tomato">#FF6347</color>
-    <color name="TomatoDark">#EA2400</color>
-    <color name="TomatoAccent">#FF2F0A</color>
     <color name="OrangeRed">#FF4500</color>
     <color name="DeepPink">#FF1493</color>
     <color name="Fuchsia">#FF00FF</color>
@@ -148,11 +146,4 @@
     <color name="DarkBackground">@color/background_material_dark</color>
     <color name="transparent">#00000000</color>
     <color name="dialog_bg">#cc000000</color>
-
-    <color name="Background">@color/background_material_light</color>
-    <color name="BackgroundAccent">@color/material_grey_100</color>
-    <color name="BackgroundAccentDark">@color/material_grey_300</color>
-    <color name="primary_text">@color/primary_text_default_material_light</color>
-    <color name="secondary_text">@color/secondary_text_default_material_light</color>
-    <color name="accent">@color/accent_material_light</color>
 </resources>

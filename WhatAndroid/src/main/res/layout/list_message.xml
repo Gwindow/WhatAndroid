@@ -6,6 +6,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/card_root_view"
         android:paddingBottom="4dp"
+        card_view:cardBackgroundColor="@color/BackgroundAccent"
         card_view:cardCornerRadius="4dp"
         card_view:cardUseCompatPadding="true">
     <LinearLayout
@@ -36,7 +37,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/ic_star_24dp"
                     android:contentDescription="@string/sticky_thread"
                     android:tint="@color/LightGrey"
                     android:visibility="gone"/>

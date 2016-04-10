@@ -6,23 +6,16 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
+import what.whatandroid.R;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import what.whatandroid.R;
 
 /**
  * A dialog fragment for navigating to and selecting a folder
@@ -98,7 +91,9 @@ public class FolderPickerDialog extends DialogFragment
 		View view = inflater.inflate(R.layout.dialog_folder_picker, null);
 		currentDirTitle = (TextView)view.findViewById(R.id.current_folder);
 		ListView list = (ListView)view.findViewById(R.id.list);
-		view.findViewById(R.id.new_folder).setOnClickListener(this);
+		ImageButton imgAddFolder = (ImageButton) view.findViewById(R.id.new_folder);
+		imgAddFolder.setImageResource(R.drawable.ic_add_24dp);
+		imgAddFolder.setOnClickListener(this);
 
 		if (savedInstanceState != null){
 			currentDir = new File(savedInstanceState.getString(DIRECTORY));

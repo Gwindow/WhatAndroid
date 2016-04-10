@@ -2,6 +2,7 @@ package what.whatandroid;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -14,6 +15,7 @@ import com.bumptech.glide.request.target.Target;
 
 import api.soup.MySoup;
 import what.whatandroid.imgloader.ImageLoadFailTracker;
+import what.whatandroid.settings.SettingsActivity;
 
 /**
  * Created by fatih on 11.9.2015.
@@ -24,13 +26,20 @@ public class WhatApplication extends Application {
 
 	//TODO: Developers put your local Gazelle install IP here instead of testing on the live site
 	//I recommend setting up with Vagrant: https://github.com/dr4g0nnn/VagrantGazelle
-	public static final String DEFAULT_SITE = "10.0.0.2:8080/";
+	public static final String DEFAULT_SITE = "";
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
 		initSoup(DEFAULT_SITE);
+		if (SettingsActivity.lightThemeEnabled(getApplicationContext())) {
+			AppCompatDelegate.setDefaultNightMode(
+					AppCompatDelegate.MODE_NIGHT_NO);
+		} else {
+			AppCompatDelegate.setDefaultNightMode(
+					AppCompatDelegate.MODE_NIGHT_YES);
+		}
 	}
 
 	/**

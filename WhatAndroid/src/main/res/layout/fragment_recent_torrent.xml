@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/card_root_view"
         android:paddingBottom="4dp"
-        android:background="@color/BackgroundAccent"
+        card_view:cardBackgroundColor="@color/BackgroundAccent"
         card_view:cardCornerRadius="4dp"
         card_view:cardUseCompatPadding="true">
     <RelativeLayout

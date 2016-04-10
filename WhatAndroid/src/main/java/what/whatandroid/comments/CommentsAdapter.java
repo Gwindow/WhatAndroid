@@ -7,14 +7,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import java.util.Date;
-
+import android.widget.*;
 import api.comments.SimpleComment;
 import what.whatandroid.R;
 import what.whatandroid.WhatApplication;
@@ -23,6 +16,8 @@ import what.whatandroid.callbacks.ViewUserCallbacks;
 import what.whatandroid.imgloader.HtmlImageHider;
 import what.whatandroid.imgloader.ImageLoadFailTracker;
 import what.whatandroid.settings.SettingsActivity;
+
+import java.util.Date;
 
 /**
  * Adapter for displaying a list of user comments
@@ -94,6 +89,8 @@ public class CommentsAdapter extends ArrayAdapter<SimpleComment> implements View
 			holder.spinner = (ProgressBar)convertView.findViewById(R.id.loading_indicator);
 			holder.userClickListener = new UserClickListener();
 			holder.quote = (ImageButton) convertView.findViewById(R.id.reply_quote);
+			holder.quote.setImageResource(R.drawable.ic_reply_24dp);
+
 			View header = convertView.findViewById(R.id.user_header);
 			header.setOnClickListener(holder.userClickListener);
 			convertView.setTag(holder);
