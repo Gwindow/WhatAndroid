@@ -99,9 +99,23 @@ public class WhatBBParser {
 		//plain block or not
 		boolean plain = false;
 		//Run through the text and examine potential tags, parsing tags as we encounter them
-		for (int start = indexOf(builder, "["), end = indexOf(builder, "]"); start != -1 && end != -1;
-		     start = indexOf(builder, "[", start + 1), end = indexOf(builder, "]", start))
+		for (int start = indexOf(builder, "["), end = indexOf(builder, "]"); start != -1 && end != -1; start = indexOf(builder, "[", start + 1), end = indexOf(builder, "]", start))
 		{
+			//If a close tag is misplaced before a start tag, ignore that close tag and move on.
+			/**
+			 * 			----]----[----]----[----]						start=10,end=5
+			 * 			--> set "start" to the same value as"end"		start=5,end=5
+			 * 			--> continue iteration
+			 * 			----]----[----]----[----]						start=10,end=15
+			 *
+			 * **/
+
+			if (start > end) {
+				start = end;
+				// Do not allow start to be less than 0
+				if (start < 0) start = 0;
+				continue;
+			}
 			CharSequence block = builder.subSequence(start, end + 1);
 			Matcher open = TAG_OPEN.matcher(block);
 			//It's an opener
