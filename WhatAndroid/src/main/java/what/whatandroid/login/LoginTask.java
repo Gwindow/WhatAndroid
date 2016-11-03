@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.net.HttpCookie;
 
@@ -106,5 +107,14 @@ public class LoginTask extends AsyncTask<String, Void, LoginTask.Status> {
 		dialog.setIndeterminate(true);
 		dialog.setMessage("Logging in...");
 		dialog.show();
+	}
+
+	@Override protected void onPostExecute(Status status) {
+		super.onPostExecute(status);
+		try {
+			dialog.dismiss();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
