@@ -8,6 +8,8 @@ import android.text.style.URLSpan;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import api.soup.MySoup;
+
 /**
  * Tag to implement the behavior of site artist tags, when clicked opens a link to the artist
  */
@@ -15,8 +17,9 @@ public class ArtistTagStyle implements TagStyle {
     @Override
     public Spannable getStyle(CharSequence param, CharSequence text) {
         SpannableString styled = new SpannableString(text);
+		String site = MySoup.getSite();
         try {
-            styled.setSpan(new URLSpan("https://what.cd/artist.php?artistname=" +
+            styled.setSpan(new URLSpan("https://" + site + "/artist.php?artistname=" +
                             URLEncoder.encode(text.toString(), "UTF-8")), 0,
                     styled.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         } catch (UnsupportedEncodingException e) {

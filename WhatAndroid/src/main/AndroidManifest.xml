@@ -34,7 +34,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
                     android:scheme="http"
-                    android:host="what.cd"
+                    android:host=""
                     android:pathPrefix="/user"/>
             </intent-filter>
             <intent-filter>
@@ -42,15 +42,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
                     android:scheme="https"
-                    android:host="what.cd"
-                    android:pathPrefix="/user"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data
-                    android:scheme="https"
-                    android:host="ssl.what.cd"
+                    android:host=""
                     android:pathPrefix="/user"/>
             </intent-filter>
         </activity>
@@ -63,7 +55,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
                     android:scheme="http"
-                    android:host="what.cd"
+                    android:host=""
                     android:pathPrefix="/artist"/>
             </intent-filter>
             <intent-filter>
@@ -71,15 +63,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
                     android:scheme="https"
-                    android:host="what.cd"
-                    android:pathPrefix="/artist"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data
-                    android:scheme="https"
-                    android:host="ssl.what.cd"
+                    android:host=""
                     android:pathPrefix="/artist"/>
             </intent-filter>
         </activity>
@@ -91,7 +75,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
                     android:scheme="http"
-                    android:host="what.cd"
+                    android:host=""
                     android:pathPrefix="/torrents"/>
             </intent-filter>
             <intent-filter>
@@ -99,15 +83,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
                     android:scheme="https"
-                    android:host="what.cd"
-                    android:pathPrefix="/torrents"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data
-                    android:scheme="https"
-                    android:host="ssl.what.cd"
+                    android:host=""
                     android:pathPrefix="/torrents"/>
             </intent-filter>
         </activity>
@@ -146,7 +122,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
                     android:scheme="http"
-                    android:host="what.cd"
+                    android:host=""
                     android:pathPrefix="/forums"/>
             </intent-filter>
             <intent-filter>
@@ -154,15 +130,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
                     android:scheme="https"
-                    android:host="what.cd"
-                    android:pathPrefix="/forums"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data
-                    android:scheme="https"
-                    android:host="ssl.what.cd"
+                    android:host=""
                     android:pathPrefix="/forums"/>
             </intent-filter>
         </activity>
