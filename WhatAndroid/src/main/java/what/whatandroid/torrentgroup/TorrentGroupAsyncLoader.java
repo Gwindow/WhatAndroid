@@ -6,6 +6,8 @@ import android.support.v4.content.AsyncTaskLoader;
 import api.torrents.torrents.Torrent;
 import api.torrents.torrents.TorrentGroup;
 
+import api.soup.MySoup;
+
 /**
  * Use to load some torrent group from the API, must pass at least one of: group id
  * to load or torrent id of torrent inside the group to load
@@ -67,10 +69,11 @@ public class TorrentGroupAsyncLoader extends AsyncTaskLoader<TorrentGroup> {
 			}
 			if (torrentGroup != null && torrentGroup.getStatus()){
 				torrentGroup.getEditions();
+				String site = MySoup.getSite();
 				//Testing replacing internal site links with our own app links
 				//This will be moved into a similar processing step like we do with the smilies
 				String body = torrentGroup.getResponse().getGroup().getWikiBody()
-					.replaceAll("\"artist[.]php", "\"http://what.cd/artist.php");
+					.replaceAll("\"artist[.]php", "\"http://" + site + "/artist.php");
 				torrentGroup.getResponse().getGroup().setWikiBody(body);
 			}
 		}

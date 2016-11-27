@@ -5,6 +5,8 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.URLSpan;
 
+import api.soup.MySoup;
+
 /**
  * Implements the behavior of site torrent tags, although we can't do the artist/group name
  * lookup like the site since that would require more api requests to look up the torrent and artist
@@ -15,8 +17,9 @@ public class TorrentTagStyle implements TagStyle {
         SpannableString styled = new SpannableString(text);
         //The torrent tags can be the full url or just the group id
         String p = text.toString();
-        if (!p.contains("what.cd")) {
-            styled.setSpan(new URLSpan("https://what.cd/torrents.php?id=" + text), 0, styled.length(),
+		String site = MySoup.getSite();
+        if (!p.contains(site)) {
+            styled.setSpan(new URLSpan("https://" + site + "/torrents.php?id=" + text), 0, styled.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         } else {
             styled.setSpan(new URLSpan(p), 0, styled.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

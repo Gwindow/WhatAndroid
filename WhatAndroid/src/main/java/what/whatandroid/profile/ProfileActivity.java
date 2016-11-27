@@ -57,7 +57,8 @@ public class ProfileActivity extends LoggedInActivity implements ViewTorrentCall
 		}
 		else {
 			String terms = null;
-			if (intent.getScheme() != null && intent.getDataString() != null && intent.getDataString().contains("what.cd")){
+			String site = MySoup.getSite();
+			if (intent.getScheme() != null && intent.getDataString() != null && intent.getDataString().contains(site)){
 				Matcher m = userIdPattern.matcher(intent.getDataString());
 				if (m.find()){
 					id = Integer.parseInt(m.group(1));
